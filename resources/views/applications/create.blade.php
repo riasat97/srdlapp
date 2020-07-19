@@ -52,7 +52,8 @@
             <div class="form-row">
                     <div class="form-group  col-md-4">
                         {{Form::label('div', 'বিভাগ') }}
-                        {{Form::select('division', array('primary'=>'প্রাইমারি','school' => 'স্কুল', 'college' => 'কলেজ', 'school and college'=> "স্কুল ও কলেজ", 'madrasha'=> "মাদ্রাসা",'technical'=>"টেকনিক্যাল",'gov_university'=>"সরকারি বিশ্ববিদ্যালয়",'others'=>"অন্যান্য"), 'স্কুল',['id'=>'div'])}}
+                        {{ Form::select('division', $divisionList,'',array('class'=>'form-control','id'=>'div','style'=>'width:350px;')) }}
+
                     </div>
                     <div class="form-group  col-md-4">
                         {{Form::label('dis', 'জেলা') }}

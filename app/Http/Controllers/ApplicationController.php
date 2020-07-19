@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Area;
 use Illuminate\Http\Request;
 
 class ApplicationController extends Controller
@@ -16,10 +17,14 @@ class ApplicationController extends Controller
             $labs[$tag->name]=$tag->translate('name', 'bn');
         }
        // dd($labs);
-        return view('applications.create',['labs'=>$labs]);
+        $divisionList=[];
+        $divisions = Area::distinct()->get("division")->toArray();
+        foreach ($divisions as $key=>$division)
+            $divisionList[$key+1]=$division['division'];
+        return view('applications.create',['labs'=>$labs,'divisionList'=>$divisionList]);
     }
 
-  
+
     public function store(Request $request)
     {
         dump($request->all());

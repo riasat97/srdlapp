@@ -28,3 +28,7 @@ Route::group(['prefix' => 'applications', 'as' => 'applications.'], function () 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/divisions', 'AreaController@getDivisions')->name('divisions');
+Route::get('/districts', 'AreaController@getDistricts')->name('districts');
+Route::get('/upazilas', 'AreaController@getUpazilas')->name('upazilas');
