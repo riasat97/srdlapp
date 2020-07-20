@@ -20,7 +20,7 @@ class ApplicationController extends Controller
         $divisionList=[];
         $divisions = Area::distinct()->get("division")->toArray();
         foreach ($divisions as $key=>$division)
-            $divisionList[$key+1]=$division['division'];
+            $divisionList[$division['division']]=$division['division'];
         return view('applications.create',['labs'=>$labs,'divisionList'=>$divisionList]);
     }
 

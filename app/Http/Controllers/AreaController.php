@@ -13,22 +13,24 @@ class AreaController extends Controller
         $divisionList=[];
         $divisions = Area::distinct()->get("division")->toArray();
         foreach ($divisions as $key=>$division)
-            $divisionList[$key+1]=$division['division'];
+            $divisionList[$division['division']]=$division['division'];
         //dd($divisionList);
-        return view('index',compact('divisionList'));
+        return response()->json($divisionList);
     }
     public function getDistricts(Request $request)
     {
-        $states = DB::table("areas")
-            ->pluck("division","id");
-        dd($states);
-        return response()->json($states);
+        //dd($request->divId);
+        $districts = Area::
+            where("division",$request->divId)
+            ->groupBy('district')->pluck('district','district');
+        //dd($districts);
+        return response()->json($districts);
     }
     public function getUpazilas(Request $request)
     {
-        $cities = DB::table("cities")
-            ->where("state_id",$request->state_id)
-            ->lists("name","id");
-        return response()->json($cities);
+        $upazilas = Area::
+        where("district",$request->disId)
+        ->pluck('upazila','upazila');
+        return response()->json($upazilas);
     }
 }

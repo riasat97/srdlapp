@@ -57,11 +57,13 @@
                     </div>
                     <div class="form-group  col-md-4">
                         {{Form::label('dis', 'জেলা') }}
-                        {{Form::select('district', array('primary'=>'প্রাইমারি','school' => 'স্কুল', 'college' => 'কলেজ', 'school and college'=> "স্কুল ও কলেজ", 'madrasha'=> "মাদ্রাসা",'technical'=>"টেকনিক্যাল",'gov_university'=>"সরকারি বিশ্ববিদ্যালয়",'others'=>"অন্যান্য"), 'স্কুল',['id'=>'dis'])}}
+                        {{Form::select('district', [], '',['id'=>'dis','class'=>'form-control','style'=>'width:350px;'])}}
+{{--                        <select name="district" id="dis" class="form-control" style="width:350px">--}}
+{{--                        </select>--}}
                     </div>
                     <div class="form-group  col-md-4">
                         {{Form::label('upazila', 'উপজেলা') }}
-                        {{Form::select('upazila', array('primary'=>'প্রাইমারি','school' => 'স্কুল', 'college' => 'কলেজ', 'school and college'=> "স্কুল ও কলেজ", 'madrasha'=> "মাদ্রাসা",'technical'=>"টেকনিক্যাল",'gov_university'=>"সরকারি বিশ্ববিদ্যালয়",'others'=>"অন্যান্য",['id'=>'upazila']), 'স্কুল')}}
+                        {{Form::select('upazila', [], '',['id'=>'upazila','class'=>'form-control','style'=>'width:350px;'])}}
                     </div>
             </div>
 
@@ -511,5 +513,5 @@
         });
     </script>
 
-
+@include('applications.applicationjs')
 @endsection
