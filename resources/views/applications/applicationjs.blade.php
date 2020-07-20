@@ -50,3 +50,16 @@
 
     });
 </script>
+
+<script type="text/javascript">
+    $(function () {
+        $("#institution_type").change(function () {
+
+            if ($("#institution_type option:selected" ).text() == "প্রাইমারি") {
+                $("#eiin").attr("disabled", "disabled");
+            } else {
+                $("#eiin").removeAttr("disabled");
+            }
+        });
+    });
+</script>

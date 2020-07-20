@@ -23,6 +23,18 @@
     </h3>
     <fieldset>
         <div class="fieldset-content">
+
+            <div class="form-row">
+                <div class="form-group col-md-8">
+                <label for="">প্রতিষ্ঠানের ধরন</label>
+                {{Form::select('institution_type', array('primary'=>'প্রাইমারি','school' => 'স্কুল', 'college' => 'কলেজ', 'school and college'=> "স্কুল ও কলেজ", 'madrasha'=> "মাদ্রাসা",'technical'=>"টেকনিক্যাল",'gov_university'=>"সরকারি বিশ্ববিদ্যালয়",'others'=>"অন্যান্য"), 'স্কুল',['id'=>'institution_type',])}}
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="">EIIN নম্বর</label>
+                    {{ Form::number('eiin',null,['id'=>"eiin","disabled"=>"disabled"])}}
+                </div>
+            </div>
+
             <div class="form-row">
                 <div class="form-group col-md-6">
                 <label for="">শিক্ষা প্রতিষ্ঠানের নাম</label>
@@ -32,11 +44,6 @@
                 <label for="">শিক্ষা প্রতিষ্ঠানের নাম</label>
                 <input type="text" class="form-control" id="inputInsEn" name="institution" placeholder="ইংরেজিতে">
                 </div>
-            </div>
-
-            <div class="form-group">
-                <label for="">প্রতিষ্ঠানের ধরন</label>
-                {{Form::select('institution_type', array('primary'=>'প্রাইমারি','school' => 'স্কুল', 'college' => 'কলেজ', 'school and college'=> "স্কুল ও কলেজ", 'madrasha'=> "মাদ্রাসা",'technical'=>"টেকনিক্যাল",'gov_university'=>"সরকারি বিশ্ববিদ্যালয়",'others'=>"অন্যান্য"), 'স্কুল')}}
             </div>
 
             <div class="form-row">
@@ -82,22 +89,19 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                {{ Form::label('is_mpo', 'MPO ভুক্ত কিনা ?') }}
-                <label for="chkYes" class="radio-inline">
-                    <input type="radio" id="chkYes" name="chkPassPort" />
-                    হ্যাঁ
-                </label>
-                <label for="chkNo" class="radio-inline">
-                    <input type="radio" id="chkNo" name="chkPassPort" />
-                    না
-                </label>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    {{ Form::label('is_mpo', 'MPO ভুক্ত কিনা ?') }}
+                    <input name="is_mpo" id="is_mpo" type="checkbox"  class="toggle" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                    {{Form::hidden('hidden_is_mpo',"No",["id"=>"hidden_is_mpo"])}}
+                </div>
+
+                <div class="form-group col-md-6">
+                    {{ Form::label('mpo', 'MPO কোড ') }}
+                    {{ Form::number('mpo',null,['id'=>"mpo","disabled"=>"disabled"])}}
+                </div>
             </div>
 
-            <div class="form-group">
-                {{ Form::label('mpo', 'MPO কোড ') }}
-                {{ Form::number('mpo',null,['id'=>"txtPassportNumber","disabled"=>"disabled"])}}
-            </div>
         </div>
         <div class="fieldset-footer">
             <span>Step 1 of 4</span>
@@ -154,7 +158,7 @@
                 {{Form::hidden('hidden_internet_connection',"No",["id"=>"hidden_internet_connection"])}}
                 </div>
                 <div class="form-group  col-md-6">
-                {{ Form::label('internet_connection_type', 'ইন্টারনেট সংযোগ এর ধরন ?') }}
+                {{Form::label('internet_connection_type', 'ইন্টারনেট সংযোগ এর ধরন ?') }}
                 {{Form::select('internet_connection_type', array('modem' => 'মডেম', 'broadband' => 'ব্রডব্যান্ড'), null,['class' => 'form-control',"disabled"=>"true"])}}
                 </div>
             </div>
@@ -367,18 +371,20 @@
 
     </script>
 
-    <script type="text/javascript">
-    $(function () {
-        $("input[name='chkPassPort']").click(function () {
-            if ($("#chkYes").is(":checked")) {
-                $("#txtPassportNumber").removeAttr("disabled");
-                $("#txtPassportNumber").focus();
-            } else {
-                $("#txtPassportNumber").attr("disabled", "disabled");
-            }
-        });
-    });
-    </script>
+ 
+     <script type="text/javascript">
+         $(function () {
+             $("#is_mpo").change(function () {
+
+                 if ($(this).prop("checked") == true) {
+                     $("#mpo").removeAttr("disabled");
+                     $("#mpo").focus();
+                 } else {
+                     $("#mpo").attr("disabled", "disabled");
+                 }
+             });
+         });
+     </script>
 
     <script type="text/javascript">
         $(function () {
@@ -393,6 +399,7 @@
             });
         });
     </script>
+
     <script type="text/javascript">
         $(function () {
             $("#reference").change(function () {
@@ -469,6 +476,7 @@
     <script type="text/javascript">
 
      $(document).ready(function(){
+         $('#institution_type').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
         $('#total_boys').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
         $('#total_girls').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
         $('#total_teachers').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
