@@ -115,40 +115,31 @@
 
         <div class="fieldset-content">
 
-            <div class="form-group">
-            <span>প্রতিষ্ঠানের নিজেস্ব ফান্ডে কম্পিউটার ল্যাব আছে ?</span>
-            <label class="radio-inline">
-                <input type="radio" id="own_lab_yes" name="own_lab" value="Yes" />
-                হ্যাঁ
-                </label>
-                <label class="radio-inline">
-                <input type="radio" id="own_lab_no" name="own_lab" value="No" />
-                না
-                </label>
+            <div class="form-row">
+                <div class="form-group  col-md-4">
+                    {{ Form::label('own_lab', 'প্রতিষ্ঠানের নিজেস্ব ফান্ডে কম্পিউটার ল্যাব আছে ?') }}
+                    <input name="own_lab" id="own_lab" type="checkbox"  class="toggle" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                    {{Form::hidden('hidden_own_lab',"No",["id"=>"hidden_own_lab"])}}
+                </div>
+                <div class="form-group  col-md-8">
+                    {{ Form::label('total_pc_own', 'নিজেস্ব ফান্ডে ক্রয়কৃত সক্রিয় কম্পিউটারের সংখ্যা ') }}
+                    {{ Form::selectRange('total_pc_own', 1, 200,['id'=>'total_pc_own'] )}}
+                </div>
             </div>
-            <div class="form-group">
-            {{ Form::label('total_pc_own', 'নিজেস্ব ফান্ডে ক্রয়কৃত সক্রিয় কম্পিউটারের সংখ্যা ') }}
-            {{ Form::selectRange('total_pc_own', 1, 200,['id'=>'total_pc_own'] )}}
-            </div>
-            <div class="form-group">
-            <span>ইতোপূর্বে সরকারি/বেসরকারি ভাবে ল্যাব প্রাপ্ত ?</span>
-            <label  class="radio-inline" for="labYes">
-                <input type="radio" id="labYes" name="govlab" />
-                হ্যাঁ
-            </label>
-            <label  class="radio-inline" for="labNo">
-                <input type="radio" id="labNo" name="govlab" />
-                না
-            </label>
-            </div>
-
-            <div class="form-group">
-            {{ Form::label('labs', 'প্রাপ্ত ল্যাব সমূহ') }}
-            {{ Form::select('labs[]', $labs, null, ['id' => 'labs_multiple', 'multiple' => 'multiple','disabled'=>true, 'data-placeholder'=>' একাধিক হতে পারে']) }}
-            </div>
-            <div class="form-group">
-                {{ Form::label('total_pc_gov_non_gov', 'সরকারি/বেসরকারি ভাবে প্রাপ্ত সক্রিয় কম্পিউটারের সংখ্যা') }}
-                {{ Form::selectRange('total_pc_gov_non_gov', 1, 200,['id'=>'total_pc_gov_non_gov'] )}}
+            <div class="form-row">
+                <div class="form-group  col-md-4">
+                    {{ Form::label('own_lab', 'ইতোপূর্বে সরকারি/বেসরকারি ভাবে ল্যাব প্রাপ্ত ?') }}
+                    <input name="govlab" id="govlab" type="checkbox"  class="toggle" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                    {{Form::hidden('hidden_govlab',"No",["id"=>"hidden_govlab"])}}
+                </div>
+                <div class="form-group col-md-4">
+                    {{ Form::label('labs', 'প্রাপ্ত ল্যাব সমূহ') }}
+                    {{ Form::select('labs[]', $labs, null, ['id' => 'labs_multiple', 'multiple' => 'multiple','disabled'=>true, 'data-placeholder'=>' একাধিক হতে পারে']) }}
+                </div>
+                <div class="form-group col-md-4">
+                    {{ Form::label('total_pc_gov_non_gov', 'সরকারি/বেসরকারি ভাবে প্রাপ্ত সক্রিয় কম্পিউটারের সংখ্যা') }}
+                    {{ Form::selectRange('total_pc_gov_non_gov', 1, 200,['id'=>'total_pc_gov_non_gov'] )}}
+                </div>
             </div>
 
             <div class="form-row">
@@ -371,7 +362,7 @@
 
     </script>
 
- 
+
      <script type="text/javascript">
          $(function () {
              $("#is_mpo").change(function () {
@@ -437,30 +428,30 @@
         });
     </script>
 
+     <script type="text/javascript">
+         $(document).ready(function(){
+             $("#total_pc_own").prop("disabled",true);
+         });
+         $(function () {
+             $("#own_lab").change(function () {
+
+                 if ($(this).prop("checked") == true) {
+                     $("#total_pc_own").removeAttr("disabled");
+                     $("#total_pc_own").focus();
+                 } else {
+                     $("#total_pc_own").attr("disabled", "disabled");
+                 }
+             });
+         });
+     </script>
+
     <script type="text/javascript">
      $(document).ready(function(){
-    $("#total_pc_own").prop("disabled",true);
-     });
-
-    $(function () {
-        $("input[name='own_lab']").click(function () {
-            if ($("#own_lab_yes").is(":checked")) {
-                $("#total_pc_own").removeAttr("disabled");
-                $("#total_pc_own").focus();
-            } else {
-                $("#total_pc_own").attr("disabled", "disabled");
-            }
-        });
-    });
-    </script>
-
-    <script type="text/javascript">
-     $(document).ready(function(){
-    $("#total_pc_gov_non_gov").prop("disabled",true);
+     $("#total_pc_gov_non_gov").prop("disabled",true);
      });
     $(function () {
-        $("input[name='govlab']").click(function () {
-            if ($("#labYes").is(":checked")) {
+        $("input[name='govlab']").change(function () {
+            if ($(this).prop("checked") == true) {
                 $("#labs_multiple").removeAttr("disabled");
                 $("#total_pc_gov_non_gov").removeAttr("disabled");
                 $("#labs_multiple").focus();

@@ -21,6 +21,7 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'applications', 'as' => 'applications.'], function () {
 
+    Route::get('/terms', 'ApplicationController@terms')->name('terms');
     Route::get('/apply', 'ApplicationController@create')->name('apply');
     Route::post('/store', 'ApplicationController@store')->name('store');;
 

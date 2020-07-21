@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 
 class ApplicationController extends Controller
 {
+    public function  terms(){
+        return view('applications.terms');
+    }
     public function create()
 
     {
