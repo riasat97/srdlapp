@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('homepage');
 });
 
 
@@ -23,10 +24,21 @@ Route::group(['prefix' => 'applications', 'as' => 'applications.'], function () 
 
     Route::get('/terms', 'ApplicationController@terms')->name('terms');
     Route::get('/apply', 'ApplicationController@create')->name('apply');
+    Route::get('/eiin/{eiin}', 'ApplicationController@getValuesByEiin')->name('eiin');
     Route::post('/store', 'ApplicationController@store')->name('store');;
+    Route::get('/sms', 'ApplicationController@sms')->name('sms');;
 
 });
 Auth::routes();
+
+Route::get('loginWithOtp', function () {
+    if (Auth::check()) {
+        return redirect('/applications/apply');
+    }
+    return view('auth/loginWithOtp');
+})->name('loginWithOtp');
+Route::post('loginWithOtp', 'Auth\LoginController@loginWithOtp')->name('loginWithOtp');
+Route::post('sendOtp', 'Auth\LoginController@sendOtp');
 
 Route::get('/home', 'HomeController@index')->name('home');
 

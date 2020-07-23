@@ -26,7 +26,7 @@
 <p><strong>১৪।&nbsp;</strong>কম্পিউটার ল্যাব এর জন্য পৃথক <span style="color: #ff0000;">ব্যাংক একাউন্ট</span> পরিচালনা করতে হবে।</p>
 <p><strong>১৫।&nbsp;</strong>সর্বোপরি শিক্ষা মন্ত্রণালয় কর্তৃক প্রণীত &ldquo;<a href="https://drive.google.com/file/d/1Q8VVlLZhmXjHw7zm2sy8cS2AUDMmkXwR/view?usp=sharing" target="_blank" rel="noopener">শিক্ষা প্রতিষ্ঠানে স্থাপিত কম্পিউটার ল্যাব নীতিমালা - ২০১২</a>&rdquo; অনুসরনীয় ও অনুকরণীয় বলে বিবেচিত হবে।</p>
     <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-11">
-        <a href="{{route('applications.apply')}}"><button class="btn btn-success btn-sm" type="button">
+        <a href="{{route('loginWithOtp')}}"><button class="btn btn-success btn-sm" type="button">
                 <i class="fa fa-check"></i> আমি সম্মত</button>
         </a>
     </div>
