@@ -13,7 +13,7 @@
                                 {{ session('status') }}
                             </div>
                         @endif
-                            @if (Auth::check()) 
+                            @if (Auth::check())
                             <div class="alert alert-success" role="alert">
                                 You are logged in!
                             </div>

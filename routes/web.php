@@ -24,7 +24,7 @@ Route::group(['prefix' => 'applications', 'as' => 'applications.'], function () 
 
     Route::get('/terms', 'ApplicationController@terms')->name('terms');
     Route::get('/apply', 'ApplicationController@create')->name('apply');
-    Route::get('/eiin/{eiin}', 'ApplicationController@getValuesByEiin')->name('eiin');
+    Route::get('/eiin', 'ApplicationController@getValuesByEiin')->name('eiin');
     Route::post('/store', 'ApplicationController@store')->name('store');;
     Route::get('/sms', 'ApplicationController@sms')->name('sms');;
 

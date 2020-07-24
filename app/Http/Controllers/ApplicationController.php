@@ -15,6 +15,7 @@ class ApplicationController extends Controller
     public function create()
 
     {
+
         $labs=[];
         $tag= new \Spatie\Tags\Tag;
         $tags=\Spatie\Tags\Tag::all();
@@ -31,9 +32,43 @@ class ApplicationController extends Controller
 
     public function getValuesByEiin(Request $request){
         $eiin= $request->eiin;
-        $res= Banbeis::with('banbeisFacility')
-            ->where('eiin',$eiin)->first();
-        dd($res->toArray());
+        //$res= Banbeis::with('banbeisFacility','banbeisLab')->where('eiin',$eiin)->first();
+
+        if($eiin == ''){
+            $res = Banbeis::with('banbeisFacility','banbeisLab','banbeisExtra')->limit(5)->get();
+        }else{
+            $res = Banbeis::with('banbeisFacility','banbeisLab','banbeisExtra')->where('eiin', 'like', '%' .$eiin . '%')->limit(5)->get();
+            $area= Banbeis::join('bd', function($q)
+            {
+                $q->on('bd.division_en', '=', 'banbeis.division')
+                    ->on('bd.district_en', '=', 'banbeis.district')
+                    ->on('bd.upazila_en', '=', 'banbeis.upazila');
+            })->where('banbeis.eiin',$eiin)->get(['bd.division', 'bd.district','bd.upazila']);
+        }
+
+        $response = array();
+        $areaRes= array();
+        //dd($area);
+        foreach ($area  as $ar){
+            $areaRes[]=['division'=>$ar->division,
+                'district'=> $ar->district,
+                'upazila'=>$ar->upazila];
+        }
+        //dd($areaRes);
+        foreach($res as $rs){
+            $electricity_solar=($rs->banbeisFacility->electricity=="YES")?$rs->banbeisFacility->electricity:$rs->banbeisFacility->solar;
+            $packa_semi_packa=($rs->banbeisFacility->packa=="YES" || $rs->banbeisFacility->semi_packa=="YES")?"YES":"NO";
+            $response[] = ['value' => $rs->institution,
+                'label'=>$rs->eiin,'mobile'=>$rs->banbeisExtra->mobile,
+                'ex'=>$res,
+                'area'=> $areaRes,
+                'total_boys'=>$rs->total_students-$rs->total_girls,'total_girls'=>$rs->total_girls,'total_teachers'=>$rs->total_teachers,
+                'internet_connection'=>$rs->banbeisFacility->internet,'ict_teacher'=>$rs->banbeisFacility->ict_teacher,
+                'packa_semi_packa'=>$packa_semi_packa,
+                'electricity_solar'=>$electricity_solar,'cctv'=>$rs->banbeisFacility->cc_camera,'security_guard'=>$rs->banbeisFacility->security_guard]  ;
+        }
+
+        return response()->json($response);
 
     }
 

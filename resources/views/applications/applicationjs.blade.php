@@ -51,6 +51,70 @@
     });
 </script>
 
+<!-- Script -->
+<script type="text/javascript">
+
+    $(document).ready(function(){
+
+        $( "#eiin" ).autocomplete({
+            autoFocus: true,
+            minLength: 3,
+            source: function( request, response ) {
+                var eiin = $("#eiin").val();
+                // Fetch data
+                $.ajax({
+                    url:"{{route('applications.eiin')}}",
+                    type: 'get',
+                    dataType: "json",
+                    data: {
+                        //_token: CSRF_TOKEN,
+                        eiin: request.term
+                        //eiin: eiin,
+                    },
+                    success: function( data ) {
+                        response( data );
+                        //console.log(data);
+                    }
+                });
+            },
+
+            select: function (event, ui) {
+                // Set selection
+                //alert('hi');
+                $("#upazila").empty();
+                $("#dis").empty();
+                $("#total_boys").empty();
+                $("#total_girls").empty();
+                $("#total_teachers").empty();
+
+                console.log(ui.item.ex[0].district);
+                $('#eiin').val(ui.item.label); // display the selected text
+                $('#inputInsEn').val(ui.item.value); // save selected id to input
+                $('#institution_tel').val(ui.item.mobile);
+                //$("#div").append('<option value="'+ui.item.area.division+'">'+ui.item.area.division+'</option>')
+                $("#div").val(ui.item.area[0].division);
+                $("#dis").prepend('<option value="'+ui.item.area[0].district+'">'+ui.item.area[0].district+'</option>');
+                $("#upazila").prepend('<option value="'+ui.item.area[0].upazila+'">'+ui.item.area[0].upazila+'</option>');
+
+                $("#total_boys").prepend('<option value="'+ui.item.total_boys+'">'+ui.item.total_boys+'</option>');
+                $("#total_girls").prepend('<option value="'+ui.item.total_girls+'">'+ui.item.total_girls+'</option>');
+                $("#total_teachers").prepend('<option value="'+ui.item.total_teachers+'">'+ui.item.total_teachers+'</option>');
+
+                if( ui.item.internet_connection === 'YES')$('#internet_connection').bootstrapToggle('on');
+                if( ui.item.ict_teacher === 'YES')$('#ict_teacher').bootstrapToggle('on');
+                if( ui.item.packa_semi_packa === 'YES')$('#packa_semi_packa').bootstrapToggle('on');
+                if( ui.item.electricity_solar === 'YES')$('#electricity_solar').bootstrapToggle('on');
+                if( ui.item.cctv === 'YES')$('#cctv').bootstrapToggle('on');
+                if( ui.item.security_guard === 'YES')$('#security_guard').bootstrapToggle('on');
+
+                //console.log("Hello world!");
+                return false;
+            }
+        });
+
+    });
+</script>
+
 <script type="text/javascript">
     $(function () {
         $("#institution_type").change(function () {

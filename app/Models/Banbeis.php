@@ -17,4 +17,11 @@ class Banbeis extends Model
     public function banbeisLab(){
         return $this->hasOne('App\Models\BanbeisLab','eiin','eiin');
     }
+    public function banbeisExtra(){
+        return $this->hasOne('App\Models\BanbeisExtra','eiin','eiin');
+    }
+//    public function fromBd(){
+//        return $this->hasOne('App\Models\Bd','division_en','division')->where('district_en', $this->district)
+//            ->where('upazila_en',$this->upazila);
+//    }
 }

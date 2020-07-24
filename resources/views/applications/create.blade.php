@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{ asset('fonts/material-icon/css/material-design-iconic-font.min.css') }}">
     <!-- Main css -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
@@ -77,15 +78,15 @@
             <div class="form-row">
                 <div class="form-group  col-md-4">
                     {{ Form::label('total_boys', 'মোট ছাত্র ') }}
-                    {{ Form::selectRange('total_boys', 1, 2000,25,['id'=>'total_boys'] )}}
+                    {{ Form::selectRange('total_boys', 1, 5000,25,['id'=>'total_boys'] )}}
                 </div>
                 <div class="form-group  col-md-4">
                     {{ Form::label('total_girls', 'মোট ছাত্রী') }}
-                    {{ Form::selectRange('total_girls', 1, 2000,30,['id'=>'total_girls'] )}}
+                    {{ Form::selectRange('total_girls', 1, 5000,30,['id'=>'total_girls'] )}}
                 </div>
                 <div class="form-group  col-md-4">
                     {{ Form::label('total_teachers', 'মোট শিক্ষক') }}
-                    {{ Form::selectRange('total_teachers', 1, 100,30,['id'=>'total_teachers'] )}}
+                    {{ Form::selectRange('total_teachers', 1, 500,30,['id'=>'total_teachers'] )}}
                 </div>
             </div>
 
@@ -329,6 +330,7 @@
 @section("js")
  <!-- JS -->
     <script src="{{ asset('vendor/jquery/jquery.min.js')}}"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
