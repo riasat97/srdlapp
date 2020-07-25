@@ -85,8 +85,7 @@
                 //alert('hi');
                 $("#upazila").empty();
                 $("#dis").empty();
-               // $("#management").empty();
-                //$("#student_type").empty();
+
 
                 console.log(ui.item.ex[0].district);
                 $('#eiin').val(ui.item.label); // display the selected text
@@ -103,12 +102,14 @@
 
                 $("#management").val(ui.item.management);
                 $("#student_type").val(ui.item.student_type);
-                
+
                 if( ui.item.is_mpo === 'YES')$('#is_mpo').bootstrapToggle('on');
                 $('#mpo').val(ui.item.mpo);
 
-                if( ui.item.own_lab === 'YES')$('#own_lab').bootstrapToggle('on');
-                $('#total_pc_own').val(ui.item.total_pc_own);
+                if( ui.item.own_lab === 'YES'){
+                    $('#own_lab').bootstrapToggle('on');
+                    $('#total_pc_own').val(ui.item.total_pc_own);
+                }
                 if( ui.item.govlab === 'YES')$('#govlab').bootstrapToggle('on');
                 $('#labs_multiple').val(ui.item.labs).trigger('change');
                 $('#total_pc_gov_non_gov').val(ui.item.total_pc_gov_non_gov);
