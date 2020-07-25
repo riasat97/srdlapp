@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@section("title")
+    Computer Labs
+@endsection
 @section('css')
     <!-- Font Icon -->
     <link rel="stylesheet" href="{{ asset('fonts/material-icon/css/material-design-iconic-font.min.css') }}">
@@ -23,7 +26,7 @@
                             <div class="form-row">
                                 <div class="form-group  col-md-4">
                                     {{Form::label('div', 'বিভাগ') }}
-                                    {{ Form::select('division', $divisionList,'',array('class'=>'form-control','id'=>'div','style'=>'width:350px;')) }}
+                                    {{ Form::select('division', $divisionList,session('division') ,array('class'=>'form-control','id'=>'div','style'=>'width:350px;')) }}
 
                                 </div>
                                 <div class="form-group  col-md-4">
@@ -36,14 +39,19 @@
                                     {{Form::label('upazila', 'উপজেলা') }}
                                     {{Form::select('upazila', [], '',['id'=>'upazila','class'=>'form-control','style'=>'width:350px;'])}}
                                 </div>
-                                <div class="form-group  col-md-12 ">
-                                    <button type="submit" class="btn btn-outline-primary float-right"><i class="fa fa-search"></i></button>
+                                <div class="form-group  col-md-12 float-right">
+                                    <button type="submit" class="btn btn-outline-primary "><i class="fa fa-search"></i></button>
                                 </div>
                             </div>
                             {{ Form::close() }}
 
                             {{--            data table start--}}
                             <div class="main-container" id="main-container">
+                                @if(isset($division))
+                                <span class="badge badge-primary">{{$division}}</span>
+                                <span class="badge badge-secondary">{{$district}}</span>
+                                <span class="badge badge-success">{{$upazila}}</span>
+                                @endif
                                 <div class="main-content">
                                     <table class="table table-striped table-bordered table-hover " id="lab_list" style="width:100%" >
                                         <thead>

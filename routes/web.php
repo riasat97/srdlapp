@@ -33,7 +33,7 @@ Auth::routes();
 
 Route::get('loginWithOtp', function () {
     if (Auth::check()) {
-        return redirect('/applications/apply');
+        return redirect('/applications/terms');
     }
     return view('auth/loginWithOtp');
 })->name('loginWithOtp');

@@ -38,7 +38,7 @@ class HomeController extends Controller
     }
     public function getSearchLabs(Request $request){
 
-        $labs= Banbeis::with('banbeisLab');
+        $labs= Banbeis::query();
         if($request->has('division'))
             $labs->where('division', $request->input('division'));
 
@@ -48,9 +48,16 @@ class HomeController extends Controller
         if($request->has('upazila'))
              $labs->where('upazila', $request->input('upazila'));
 
-        $labs->limit(100)->get();
-        dd($labs);
-        return redirect()->route('computerLabs', ['labs'=>$results]);
+        //$labs=$labs->limit(100)->get();
+        //dd();
+        $divisionList=[];
+        $divisions = Bd::distinct()->get("division_en")->toArray();
+        foreach ($divisions as $key=>$division)
+            $divisionList[$division['division_en']]=$division['division_en'];
+        $division=$request->get('division');
+        $district=$request->get('district');
+        $upazila=$request->get('upazila');
+        return view('computerLabs', ['division'=>$division,'district'=>$district,'upazila'=>$upazila,'labs'=>$labs->with('banbeisLab')->limit(100)->get(),'divisionList'=>$divisionList]);
     }
 
 }
