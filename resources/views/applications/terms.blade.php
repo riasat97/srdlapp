@@ -1,8 +1,7 @@
-@extends('base')
+@extends('layouts.app')
 @section('title', 'SRDL APPLICATION')
-@section('main')
-
-
+@section('content')
+    
     <div class="main">
         <div class="container terms-container">
             <div class="row">
