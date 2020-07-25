@@ -1,0 +1,244 @@
+
+.main-container {
+    box-shadow: none;
+    background: none;
+    /*font-size: 12px;*/
+}
+
+.main {
+    padding: 15px 0;
+}
+
+.steps {
+    margin-bottom: 15px;
+}
+
+.top-banner img {
+    width: inherit;
+}
+
+.top-heading h2 {
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+
+.steps {
+    padding: 15px 20px;
+    background: #efefef;
+}
+
+.main {
+    padding: 0px;
+}
+
+.form-row .form-group label {
+    /*width: inherit;*/
+    min-width: 90px;
+    text-align: left;
+    margin-right: 5px;
+}
+
+.form-row {
+    padding-left: 0px;
+}
+
+.fieldset-content {
+    padding-right: 15px;
+    padding-left: 30px;
+    height: auto;
+}
+
+body {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #222;
+    font-weight: 400;
+    font-family: 'Roboto Slab';
+    margin: 0px;
+    /*background-image: url("../images/body-bg.jpg");*/
+    background-image: url("../images/bg_main.gif");
+    background-repeat: repeat-y;
+    background-size: cover;
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+    -o-background-size: cover;
+    -ms-background-size: cover;
+    background-position: center center;
+}
+
+.terms-container {
+    box-shadow: none;
+    background: none;
+    padding-left: 120px;
+    padding-right: 120px;
+    margin-top: 15px;
+}
+
+.terms-text {
+    margin-top: 30px;
+    /*height: calc(100% - 500px);*/
+    height: 360px;
+    overflow: auto;
+    padding-bottom: 150px;
+    font-size: 11px;
+    color: #666;
+}
+
+.agree-btn {
+    padding-right: 10px;
+    margin-top: 20px;
+}
+
+.agree-btn button {
+    float: right;
+    color: #fff;
+    background-color: #312c64;
+    border-color: #312c64;
+}
+
+.login-nav-container {
+    box-shadow: none;
+    background: none;
+    padding-left: 45px;
+    padding-right: 45px;
+    height: auto;
+}
+
+a.nav-link, a.navbar-brand {
+    color: #fff !important;
+}
+
+.nav-bg {
+    background: #312c64;
+    /*background: #5a4681;*/
+    /*background: #433360;*/
+    /*background: #38c172;*/
+}
+
+.py-4 {
+    padding: 0px !important;
+}
+
+.py-4 .login-container {
+    margin-top: 105px;
+    box-shadow: none;
+    background: none;
+    padding-left: 45px;
+    padding-right: 45px;
+    height: auto;
+}
+
+.otp-btn {
+    color: #fff !important;
+}
+
+
+.fieldset-footer {
+    padding: 0px 30px;
+}
+
+fieldset {
+    height: auto;
+
+}
+
+.actions {
+    padding: 0px 60px;
+    bottom: -140px;
+    margin-bottom: 60px;
+}
+
+.select2-search__field {
+
+}
+
+#total_pc_own, #total_pc_gov_non_gov {
+    display: block;
+    width: 100%;
+    height: calc(1.6em + 0.75rem + 2px);
+    padding: 0.375rem 0.75rem;
+    font-size: 0.9rem;
+    font-weight: 400;
+    line-height: 1.6;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.select2-search__field {
+    width: auto !important;
+}
+
+.form-group .select2-container {
+    width: inherit !important;
+}
+
+.nimbus-is-editor {
+    /*overflow: hidden;*/
+}
+
+.preview-container {
+    box-shadow: none;
+    background: none;
+    padding: 0px 115px;
+}
+
+.preview-table {
+    padding-bottom: 60px;
+}
+
+.preview-table th, .preview-table th {
+    width: 50%;
+}
+
+.preview-btn {
+    float: right;
+}
+
+.otp-submit-btn {
+    color: #fff;
+    background-color: #312c64;
+    border-color: #312c64;
+}
+
+.actions ul li a {
+    color: #fff;
+    background-color: #312c64;
+    border-color: #312c64;
+}
+
+.actions ul li a:hover {
+    background-color: #5148b1;
+    border-color: #5148b1;
+}
+
+.tab_2 .form-row .form-group label {
+    min-width: 245px;
+    text-align: left;
+    margin-right: 0px;
+}
+
+
+.tab_3 .form-row .form-group label {
+    width: 300px;
+    /*min-width: 450px;*/
+    min-width: 312px;
+    text-align: left;
+    margin-right: 0px;
+}
+
+.tab_4 .form-row .form-group label {
+    /*width: 340px;*/
+    min-width: 140px;
+    text-align: left;
+    margin-right: 15px;
+}
+
+
+.tab_4 .custom-file-label {
+    width: 31% !important;
+    margin-left: 32px !important;
+}
