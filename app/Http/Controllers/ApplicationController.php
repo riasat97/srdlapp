@@ -241,4 +241,7 @@ class ApplicationController extends Controller
 
         }
     }
+        public function  applicationPreview(){
+        return view('applications.preview');
+        }
 }

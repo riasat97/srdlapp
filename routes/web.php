@@ -27,7 +27,7 @@ Route::group(['prefix' => 'applications', 'as' => 'applications.'], function () 
     Route::get('/eiin', 'ApplicationController@getValuesByEiin')->name('eiin');
     Route::post('/store', 'ApplicationController@store')->name('store');;
     Route::get('/sms', 'ApplicationController@sms')->name('sms');;
-
+    Route::get('/preview', 'ApplicationController@applicationPreview')->name('preview');
 });
 Auth::routes();
 
