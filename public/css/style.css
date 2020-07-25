@@ -108,14 +108,16 @@ body {
   font-weight: 400;
   font-family: 'Roboto Slab';
   margin: 0px;
-  background-image: url("../images/body-bg.jpg");
+  /*background-image: url("../images/body-bg.jpg");*/
+  background-image: url("../images/bg_main.gif");
   background-repeat: no-repeat;
   background-size: cover;
   -moz-background-size: cover;
   -webkit-background-size: cover;
   -o-background-size: cover;
   -ms-background-size: cover;
-  background-position: center center; }
+  background-position: center center;
+}
 
 .main {
   padding: 95px 0; }
@@ -301,13 +303,17 @@ select {
   width: 143px; }
 
 .form-row {
-  padding-left: 80px; }
+  padding-left: 80px;
+}
   .form-row .form-group label {
-    width: auto; }
+    width: auto;
+  }
   .form-row .form-group:first-child {
-    float: left; }
+    float: left;
+  }
   .form-row .form-group:last-child {
-    float: right; }
+    float: right;
+  }
 
 .form-date {
   clear: both; }
@@ -502,25 +508,31 @@ fieldset {
   margin: 0px; }
 
 .steps {
-  border-top: 1px solid #ebebeb;
-  border-bottom: 1px solid #ebebeb;
-  padding: 12px 20px; }
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  margin-top: 10px;
+  padding: 15px 10px;
+}
+
   .steps ul {
     justify-content: space-around;
     -moz-justify-content: space-around;
     -webkit-justify-content: space-around;
     -o-justify-content: space-around;
     -ms-justify-content: space-around; }
+
     .steps ul li {
-      padding-right: 80px;
-      padding-left: 0px;
-      position: relative; }
+      /*padding-right: 80px;*/
+      /*padding-left: 0px;*/
+      position: relative;
+    }
+
       .steps ul li:after {
         position: absolute;
         width: 1px;
         height: 30px;
         content: "";
-        background: #ebebeb;
+        background: #dcdcdc;
         right: 18px;
         top: 50%;
         transform: translateY(-50%);
@@ -655,7 +667,7 @@ fieldset {
   -o-justify-content: center;
   -ms-justify-content: center;
   border: 2px solid #999;
-  margin-right: 15px; }
+  margin-right: 10px; }
 
 @media screen and (max-width: 992px) {
   .container {
