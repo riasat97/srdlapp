@@ -41,7 +41,12 @@ Route::post('loginWithOtp', 'Auth\LoginController@loginWithOtp')->name('loginWit
 Route::post('sendOtp', 'Auth\LoginController@sendOtp');
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/computer_labs', 'HomeController@getComputerLabs')->name('computerLabs');
+Route::get('/bd/divisions', 'BdController@getDivisions')->name('bddivisions');
+Route::get('/bd/districts', 'BdController@getDistricts')->name('bddistricts');
+Route::get('/bd/upazilas', 'BdController@getUpazilas')->name('bdupazilas');
 
 Route::get('/divisions', 'AreaController@getDivisions')->name('divisions');
 Route::get('/districts', 'AreaController@getDistricts')->name('districts');
 Route::get('/upazilas', 'AreaController@getUpazilas')->name('upazilas');
+

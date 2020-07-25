@@ -20,7 +20,6 @@
                             @else
                                 You are not logged in!
                             @endif
-
                     </div>
                 </div>
             </div>

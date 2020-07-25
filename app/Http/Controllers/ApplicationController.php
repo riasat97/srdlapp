@@ -23,7 +23,6 @@ class ApplicationController extends Controller
         foreach ($tags as $tag) {
             $labs[$tag->name]=$tag->translate('name', 'bn');
         }
-       // dd($labs);
         $divisionList=[];
         $divisions = Area::distinct()->get("division")->toArray();
         foreach ($divisions as $key=>$division)

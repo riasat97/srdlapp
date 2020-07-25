@@ -102,7 +102,7 @@
                     {{ Form::number('mpo',null,['id'=>"mpo","disabled"=>"disabled"])}}
                 </div>
             </div>
-
+{{--            management and student type start--}}
             <div class="form-row">
                 <div class="form-group  col-md-6">
                     {{ Form::label('management', 'ম্যানেজমেন্ট') }}
@@ -113,6 +113,7 @@
                     {{Form::select('student_type', array('CO-EDUCATION JOINT' => 'কো-এডুকেশন', 'BOYS' => 'বয়েজ','GIRLS'=>'গার্লস'), null,['id'=>'student_type','class' => 'form-control'])}}
                 </div>
             </div>
+{{--            management and student type end--}}
 
         </div>
         <div class="fieldset-footer">
