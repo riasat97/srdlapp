@@ -224,7 +224,7 @@ class ApplicationController extends Controller
         $req->validate([
             'ref_documents_file' => 'mimes:csv,txt,xlx,xls,pdf|max:2048',
             'old_application_attachment' => 'mimes:csv,txt,xlx,xls,pdf|max:2048',
-            'signature' => 'mimes:csv,txt,xlx,xls,pdf|max:2048',
+            'signature' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         //$fileModel = new File;
