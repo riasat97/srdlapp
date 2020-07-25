@@ -3,10 +3,8 @@
     <!-- Font Icon -->
     <link rel="stylesheet" href="{{ asset('fonts/material-icon/css/material-design-iconic-font.min.css') }}">
     <!-- Main css -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
-    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
 @endsection
 @section('content')
     <div class="container">
@@ -21,6 +19,7 @@
                                 {{ session('status') }}
                             </div>
                         @endif
+                            {{Form::open(array('route' => 'searchLabs','method' => 'GET','id'=>'search_from','class'=>'search-form'))}}
                             <div class="form-row">
                                 <div class="form-group  col-md-4">
                                     {{Form::label('div', 'বিভাগ') }}
@@ -37,31 +36,69 @@
                                     {{Form::label('upazila', 'উপজেলা') }}
                                     {{Form::select('upazila', [], '',['id'=>'upazila','class'=>'form-control','style'=>'width:350px;'])}}
                                 </div>
+                                <div class="form-group  col-md-12 ">
+                                    <button type="submit" class="btn btn-outline-primary float-right"><i class="fa fa-search"></i></button>
+                                </div>
                             </div>
+                            {{ Form::close() }}
+
+                            {{--            data table start--}}
+                            <div class="main-container" id="main-container">
+                                <div class="main-content">
+                                    <table class="table table-striped table-bordered table-hover " id="lab_list" style="width:100%" >
+                                        <thead>
+                                        <tr>
+                                            <th>EIIN</th>
+                                            <th>institution</th>
+                                            <th>SRDL</th>
+                                            <th>BCC</th>
+                                            <th>MOE</th>
+                                            <th>DSHE</th>
+                                            <th>NGO</th>
+                                            <th>Others</th>
+                                            <th>Education Board</th>
+                                            <th>Institution Self</th>
+                                            <th>Local Government</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        @foreach($labs as $key => $lab)
+                                            <tr>
+                                                <td>{{ $lab->eiin }}</td>
+                                                <td>{{ $lab->institution }}</td>
+                                                <td>{{ $lab->banbeisLab->lab_by_srdl }}</td>
+                                                <td>{{ $lab->banbeisLab->lab_by_bcc }}</td>
+                                                <td>{{ $lab->banbeisLab->lab_by_moe }}</td>
+                                                <td>{{ $lab->banbeisLab->lab_by_dshe }}</td>
+                                                <td>{{ $lab->banbeisLab->lab_by_ngo }}</td>
+                                                <td>{{ $lab->banbeisLab->lab_by_others }}</td>
+                                                <td>{{ $lab->banbeisLab->lab_by_edu_board }}</td>
+                                                <td>{{ $lab->banbeisLab->own_lab }}</td>
+                                                <td>{{ $lab->banbeisLab->lab_by_local_gov }}</td>
+                                                <!-- we will also add show, edit, and delete buttons -->
+                                            </tr>
+                                        @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                            {{--            data table end--}}
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 @endsection
 @section("js")
     <!-- JS -->
-    <script src="{{ asset('vendor/jquery/jquery.min.js')}}"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/js/tempusdominus-bootstrap-4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="{{ asset('vendor/jquery-validation/dist/jquery.validate.min.js')}}"></script>
-    <script src="{{ asset('vendor/jquery-validation/dist/additional-methods.min.js')}}"></script>
-    <script src="{{ asset('vendor/jquery-steps/jquery.steps.min.js')}}"></script>
-    <script src="{{ asset('vendor/minimalist-picker/dobpicker.js')}}"></script>
-    <script src="{{ asset('vendor/jquery.pwstrength/jquery.pwstrength.js')}}"></script>
-    <script src="{{ asset('js/main.js')}}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
-    <script src="{{ asset('js/maximize-select2-height.min.js')}}"></script>
-    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+{{--    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>--}}
+
     <script src="https://kit.fontawesome.com/5b67dd8eb0.js" crossorigin="anonymous"></script>
 
+    <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap.min.js"></script>
     @include('bd.bdJs')
 
 @endsection

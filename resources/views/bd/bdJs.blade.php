@@ -1,5 +1,16 @@
 
 
+<script>
+    $(document).ready(function() {
+        $('#lab_list').DataTable();
+    } );
+</script>
+
+<script type="text/javascript">
+    $('#div').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
+    $('#dis').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
+    $('#upazila').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
+</script>
 <script type="text/javascript">
     $('#div').change(function(){
         $("#upazila").empty();

@@ -42,6 +42,8 @@ Route::post('sendOtp', 'Auth\LoginController@sendOtp');
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/computer_labs', 'HomeController@getComputerLabs')->name('computerLabs');
+Route::get('/search_labs', 'HomeController@getSearchLabs')->name('searchLabs');
+
 Route::get('/bd/divisions', 'BdController@getDivisions')->name('bddivisions');
 Route::get('/bd/districts', 'BdController@getDistricts')->name('bddistricts');
 Route::get('/bd/upazilas', 'BdController@getUpazilas')->name('bdupazilas');
