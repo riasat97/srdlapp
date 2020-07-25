@@ -61,6 +61,8 @@
             minLength: 3,
             source: function( request, response ) {
                 var eiin = $("#eiin").val();
+                var ins_type= $("#institution_type").val();
+                //alert(ins_type);
                 // Fetch data
                 $.ajax({
                     url:"{{route('applications.eiin')}}",
@@ -68,8 +70,8 @@
                     dataType: "json",
                     data: {
                         //_token: CSRF_TOKEN,
-                        eiin: request.term
-                        //eiin: eiin,
+                        eiin: request.term,
+                        institution_type: ins_type,
                     },
                     success: function( data ) {
                         response( data );
@@ -99,6 +101,9 @@
                 $("#total_boys").prepend('<option value="'+ui.item.total_boys+'">'+ui.item.total_boys+'</option>');
                 $("#total_girls").prepend('<option value="'+ui.item.total_girls+'">'+ui.item.total_girls+'</option>');
                 $("#total_teachers").prepend('<option value="'+ui.item.total_teachers+'">'+ui.item.total_teachers+'</option>');
+
+                if( ui.item.is_mpo === 'YES')$('#is_mpo').bootstrapToggle('on');
+                $('#mpo').val(ui.item.mpo);
 
                 if( ui.item.internet_connection === 'YES')$('#internet_connection').bootstrapToggle('on');
                 if( ui.item.ict_teacher === 'YES')$('#ict_teacher').bootstrapToggle('on');

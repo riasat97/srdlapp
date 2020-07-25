@@ -32,12 +32,13 @@ class ApplicationController extends Controller
 
     public function getValuesByEiin(Request $request){
         $eiin= $request->eiin;
+        $institution_type= $request->institution_type;
         //$res= Banbeis::with('banbeisFacility','banbeisLab')->where('eiin',$eiin)->first();
 
         if($eiin == ''){
-            $res = Banbeis::with('banbeisFacility','banbeisLab','banbeisExtra')->limit(5)->get();
+            $res = Banbeis::with('banbeisFacility','banbeisLab','banbeisExtra','banbeisMpo')->limit(5)->get();
         }else{
-            $res = Banbeis::with('banbeisFacility','banbeisLab','banbeisExtra')->where('eiin', 'like', '%' .$eiin . '%')->limit(5)->get();
+            $res = Banbeis::with('banbeisFacility','banbeisLab','banbeisExtra','banbeisMpo')->where('eiin', 'like', '%' .$eiin . '%')->limit(5)->get();
             $area= Banbeis::join('bd', function($q)
             {
                 $q->on('bd.division_en', '=', 'banbeis.division')
@@ -54,7 +55,7 @@ class ApplicationController extends Controller
                 'district'=> $ar->district,
                 'upazila'=>$ar->upazila];
         }
-        //dd($areaRes);
+
         foreach($res as $rs){
             $electricity_solar=($rs->banbeisFacility->electricity=="YES")?$rs->banbeisFacility->electricity:$rs->banbeisFacility->solar;
             $packa_semi_packa=($rs->banbeisFacility->packa=="YES" || $rs->banbeisFacility->semi_packa=="YES")?"YES":"NO";
@@ -63,6 +64,7 @@ class ApplicationController extends Controller
                 'ex'=>$res,
                 'area'=> $areaRes,
                 'total_boys'=>$rs->total_students-$rs->total_girls,'total_girls'=>$rs->total_girls,'total_teachers'=>$rs->total_teachers,
+                'is_mpo'=> $this->getIsMpo($rs),'mpo'=>$this->getMpo($rs,$institution_type),
                 'internet_connection'=>$rs->banbeisFacility->internet,'ict_teacher'=>$rs->banbeisFacility->ict_teacher,
                 'packa_semi_packa'=>$packa_semi_packa,
                 'electricity_solar'=>$electricity_solar,'cctv'=>$rs->banbeisFacility->cc_camera,'security_guard'=>$rs->banbeisFacility->security_guard]  ;
@@ -94,5 +96,16 @@ class ApplicationController extends Controller
 
 
         echo $response->getBody();
+    }
+    public function getMpo($res,$ins_type){
+         if($ins_type == "school" || $ins_type= "school and college")
+             return $res->banbeisMpo->mpo_school;
+         elseif ($ins_type == "college" ) return  $res->banbeisMpo->mpo_college;
+         else return  $res->banbeisMpo->mpo_madrasha;
+    }
+    public function getIsMpo($res){
+        if ($res->banbeisMpo->mpo_school !=""||$res->banbeisMpo->mpo_college != ""|| $res->banbeisMpo->mpo_madrasha != '')
+            return "YES";
+        else return "NO";
     }
 }

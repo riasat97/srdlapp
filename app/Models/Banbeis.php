@@ -24,4 +24,8 @@ class Banbeis extends Model
 //        return $this->hasOne('App\Models\Bd','division_en','division')->where('district_en', $this->district)
 //            ->where('upazila_en',$this->upazila);
 //    }
+   public function banbeisMpo(){
+       return $this->hasOne('App\Models\BanbeisMpo','eiin','eiin');
+
+   }
 }
