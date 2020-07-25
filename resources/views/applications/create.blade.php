@@ -129,7 +129,7 @@
             </div>
             <div class="form-row">
                 <div class="form-group  col-md-4">
-                    {{ Form::label('own_lab', 'ইতোপূর্বে সরকারি/বেসরকারি ভাবে ল্যাব প্রাপ্ত ?') }}
+                    {{ Form::label('having_labs', 'ইতোপূর্বে সরকারি/বেসরকারি ভাবে ল্যাব প্রাপ্ত ?') }}
                     <input name="govlab" id="govlab" type="checkbox"  class="toggle" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                     {{Form::hidden('hidden_govlab',"No",["id"=>"hidden_govlab"])}}
                 </div>

@@ -66,6 +66,8 @@ class ApplicationController extends Controller
                 'total_boys'=>$rs->total_students-$rs->total_girls,'total_girls'=>$rs->total_girls,'total_teachers'=>$rs->total_teachers,
                 'is_mpo'=> $this->getIsMpo($rs),'mpo'=>$this->getMpo($rs,$institution_type),
                 'internet_connection'=>$rs->banbeisFacility->internet,'ict_teacher'=>$rs->banbeisFacility->ict_teacher,
+                'own_lab'=>$rs->banbeisLab->own_lab,'total_pc_own'=>$rs->banbeisExtra->own_pc,
+                'govlab'=>$this->getHavingLab($rs),'labs'=> $this->getLabs($rs),'total_pc_gov_non_gov'=>$rs->banbeisExtra->total_lab_pc,
                 'packa_semi_packa'=>$packa_semi_packa,
                 'electricity_solar'=>$electricity_solar,'cctv'=>$rs->banbeisFacility->cc_camera,'security_guard'=>$rs->banbeisFacility->security_guard]  ;
         }
@@ -106,6 +108,39 @@ class ApplicationController extends Controller
     public function getIsMpo($res){
         if ($res->banbeisMpo->mpo_school !=""||$res->banbeisMpo->mpo_college != ""|| $res->banbeisMpo->mpo_madrasha != '')
             return "YES";
+        else return "NO";
+    }
+
+    public function getLabs($rs)
+    {
+        $labs=[];
+        if(!empty($rs->banbeisLab->lab_by_srdl))
+        $labs[]='Sheikh Russel Digital Lab';
+        if(!empty($rs->banbeisLab->lab_by_bcc))
+            $labs[]='Bangladesh Computer Council';
+        if(!empty($rs->banbeisLab->lab_by_moe))
+            $labs[]='Ministry of Education';
+        if(!empty($rs->banbeisLab->lab_by_dshe))
+            $labs[]='Directorate of Secondary and Higher Education';
+        if(!empty($rs->banbeisLab->lab_by_edu_board))
+            $labs[]='Education Board';
+        if(!empty($rs->banbeisLab->lab_by_ngo))
+            $labs[]='NGO';
+//        if(!empty($rs->banbeisLab->own_lab))
+//            $labs[]='Own Lab';
+        if(!empty($rs->banbeisLab->lab_by_local_gov))
+            $labs[]='Local Government';
+        if(!empty($rs->banbeisLab->lab_by_others))
+            $labs[]='Others';
+        return $labs;
+    }
+
+    private function getHavingLab($rs)
+    {
+        if(!empty($rs->banbeisLab->lab_by_srdl)||!empty($rs->banbeisLab->lab_by_bcc)||!empty($rs->banbeisLab->lab_by_moe)||
+            !empty($rs->banbeisLab->lab_by_dshe)||!empty($rs->banbeisLab->lab_by_edu_board)||
+            !empty($rs->banbeisLab->lab_by_ngo)||!empty($rs->banbeisLab->lab_by_local_gov)||!empty($rs->banbeisLab->lab_by_others))
+        return "YES";
         else return "NO";
     }
 }

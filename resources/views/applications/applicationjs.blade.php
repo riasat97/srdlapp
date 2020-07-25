@@ -105,6 +105,12 @@
                 if( ui.item.is_mpo === 'YES')$('#is_mpo').bootstrapToggle('on');
                 $('#mpo').val(ui.item.mpo);
 
+                if( ui.item.own_lab === 'YES')$('#own_lab').bootstrapToggle('on');
+                $('#total_pc_own').val(ui.item.total_pc_own);
+                if( ui.item.govlab === 'YES')$('#govlab').bootstrapToggle('on');
+                $('#labs_multiple').val(ui.item.labs).trigger('change');
+                $('#total_pc_gov_non_gov').val(ui.item.total_pc_gov_non_gov);
+
                 if( ui.item.internet_connection === 'YES')$('#internet_connection').bootstrapToggle('on');
                 if( ui.item.ict_teacher === 'YES')$('#ict_teacher').bootstrapToggle('on');
                 if( ui.item.packa_semi_packa === 'YES')$('#packa_semi_packa').bootstrapToggle('on');

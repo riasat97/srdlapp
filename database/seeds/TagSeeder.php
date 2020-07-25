@@ -11,39 +11,39 @@ class TagSeeder extends Seeder
      */
     public function run()
     {
-        $tag = \Spatie\Tags\Tag::findOrCreate('Sheikh Rasel Digital Lab');
+        $tag = \Spatie\Tags\Tag::findOrCreate('Sheikh Russel Digital Lab');
         $tag->setTranslation('name', 'bn', 'শেখ রাসেল ডিজিটাল ল্যাব');
-    
-        $tag->save(); 
-        
+
+        $tag->save();
+
         $tag = \Spatie\Tags\Tag::findOrCreate('Bangladesh Computer Council');
         $tag->setTranslation('name', 'bn', 'বাংলাদেশ কম্পিউটার কাউন্সিল');
-       
-        $tag->save(); 
+
+        $tag->save();
 
         $tag = \Spatie\Tags\Tag::findOrCreate('Ministry of Education');
         $tag->setTranslation('name', 'bn', 'শিক্ষা মন্ত্রণালয়');
-        $tag->save(); 
+        $tag->save();
 
         $tag = \Spatie\Tags\Tag::findOrCreate('Directorate of Secondary and Higher Education');
         $tag->setTranslation('name', 'bn', 'মাধ্যমিক ও উচ্চশিক্ষা অধিদপ্তর');
-        $tag->save(); 
+        $tag->save();
 
         $tag = \Spatie\Tags\Tag::findOrCreate('Education Board');
         $tag->setTranslation('name', 'bn', 'শিক্ষা বোর্ড');
-        $tag->save(); 
+        $tag->save();
 
         $tag = \Spatie\Tags\Tag::findOrCreate('NGO');
         $tag->setTranslation('name', 'bn', 'এনজিও');
-        $tag->save(); 
+        $tag->save();
 
         $tag = \Spatie\Tags\Tag::findOrCreate('Local Government');
         $tag->setTranslation('name', 'bn', 'স্থানীয় সরকার');
-        $tag->save(); 
+        $tag->save();
 
         $tag = \Spatie\Tags\Tag::findOrCreate('Others');
         $tag->setTranslation('name', 'bn', 'অন্যান্য');
-        $tag->save(); 
+        $tag->save();
         // DB::table('tags')->insert([
         //     ['name' => 'Sheikh Rasel Digital Lab', 'name_bn'=>'শেখ রাসেল ডিজিটাল ল্যাব'],
         //     ['name' => 'Bangladesh Computer Council', 'name_bn'=>'বাংলাদেশ কম্পিউটার কাউন্সিল'],
