@@ -103,6 +103,17 @@
                 </div>
             </div>
 
+            <div class="form-row">
+                <div class="form-group  col-md-6">
+                    {{ Form::label('management', 'ম্যানেজমেন্ট') }}
+                    {{Form::select('management', array('GOVERNMENT' => 'সরকারি', 'NON-GOVT.' => 'বেসরকারি'), null,['id'=>'management','class' => 'form-control'])}}
+                </div>
+                <div class="form-group  col-md-6">
+                    {{Form::label('student_type', 'শিক্ষার্থীর ধরণ ') }}
+                    {{Form::select('student_type', array('CO-EDUCATION JOINT' => 'কো-এডুকেশন', 'BOYS' => 'বয়েজ','GIRLS'=>'গার্লস'), null,['id'=>'student_type','class' => 'form-control'])}}
+                </div>
+            </div>
+
         </div>
         <div class="fieldset-footer">
             <span>Step 1 of 4</span>
@@ -151,7 +162,7 @@
                 </div>
                 <div class="form-group  col-md-6">
                 {{Form::label('internet_connection_type', 'ইন্টারনেট সংযোগ এর ধরন ?') }}
-                {{Form::select('internet_connection_type', array('modem' => 'মডেম', 'broadband' => 'ব্রডব্যান্ড'), null,['class' => 'form-control',"disabled"=>"true"])}}
+                {{Form::select('internet_connection_type', array('modem' => 'মডেম', 'broadband' => 'ব্রডব্যান্ড'), null,['id'=>'internet_connection_type','class' => 'form-control',"disabled"=>"true"])}}
                 </div>
             </div>
 
@@ -480,6 +491,8 @@
         $('#div').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
         $('#dis').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
         $('#upazila').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
+        $('#management').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
+        $('#student_type').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
 
      });
     </script>

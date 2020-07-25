@@ -65,6 +65,7 @@ class ApplicationController extends Controller
                 'area'=> $areaRes,
                 'total_boys'=>$rs->total_students-$rs->total_girls,'total_girls'=>$rs->total_girls,'total_teachers'=>$rs->total_teachers,
                 'is_mpo'=> $this->getIsMpo($rs),'mpo'=>$this->getMpo($rs,$institution_type),
+                'management'=>$rs->banbeisExtra->management, 'student_type'=>$rs->banbeisExtra->student_type,
                 'internet_connection'=>$rs->banbeisFacility->internet,'ict_teacher'=>$rs->banbeisFacility->ict_teacher,
                 'own_lab'=>$rs->banbeisLab->own_lab,'total_pc_own'=>$rs->banbeisExtra->own_pc,
                 'govlab'=>$this->getHavingLab($rs),'labs'=> $this->getLabs($rs),'total_pc_gov_non_gov'=>$rs->banbeisExtra->total_lab_pc,

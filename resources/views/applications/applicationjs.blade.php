@@ -85,9 +85,8 @@
                 //alert('hi');
                 $("#upazila").empty();
                 $("#dis").empty();
-                $("#total_boys").empty();
-                $("#total_girls").empty();
-                $("#total_teachers").empty();
+               // $("#management").empty();
+                //$("#student_type").empty();
 
                 console.log(ui.item.ex[0].district);
                 $('#eiin').val(ui.item.label); // display the selected text
@@ -98,10 +97,13 @@
                 $("#dis").prepend('<option value="'+ui.item.area[0].district+'">'+ui.item.area[0].district+'</option>');
                 $("#upazila").prepend('<option value="'+ui.item.area[0].upazila+'">'+ui.item.area[0].upazila+'</option>');
 
-                $("#total_boys").prepend('<option value="'+ui.item.total_boys+'">'+ui.item.total_boys+'</option>');
-                $("#total_girls").prepend('<option value="'+ui.item.total_girls+'">'+ui.item.total_girls+'</option>');
-                $("#total_teachers").prepend('<option value="'+ui.item.total_teachers+'">'+ui.item.total_teachers+'</option>');
+                $("#total_boys").val(ui.item.total_boys);
+                $("#total_girls").val(ui.item.total_girls);
+                $("#total_teachers").val(ui.item.total_teachers);
 
+                $("#management").val(ui.item.management);
+                $("#student_type").val(ui.item.student_type);
+                
                 if( ui.item.is_mpo === 'YES')$('#is_mpo').bootstrapToggle('on');
                 $('#mpo').val(ui.item.mpo);
 
