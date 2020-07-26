@@ -75,7 +75,7 @@ class LoginController extends Controller
             Auth::login($user, true);
            // User::where('mobile','=',$request->mobile)->update(['otp' => null]);
             User::where('mobile','=',$request->mobile);
-            return redirect()->route('applications.apply');
+            return redirect()->route('applications.terms');
         }
         else{
             return Redirect::back ();

@@ -116,8 +116,8 @@ class ApplicationController extends Controller
         if(!empty($request->get('reference')))$this->storeReference($request,$application);
         if(!empty($request->get('old_app')))$this->storeOldApp($request,$application);
         $this->fileUpload($request,$request->file("signature"),$application,'signature');
-        dd($application->toArray());
-        //($request->get(''))
+        //dd($application->toArray());
+        return redirect()->route('home')->with('status','আপনার আবেদনটি সফলভাবে জমা দেওয়া হয়েছে।!');
     }
 
     public function sms(){

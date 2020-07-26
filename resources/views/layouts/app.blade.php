@@ -27,7 +27,7 @@
         <nav class="navbar navbar-expand-md navbar-light nav-bg shadow-sm">
             <div class="container login-nav-container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    <i class="fa fa-home" aria-hidden="true"></i> Home
+                    <i class="fa fa-home" aria-hidden="true"></i> হোম
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -44,7 +44,7 @@
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('loginWithOtp') }}"><i class="fa fa-sign-in" aria-hidden="true"></i> {{ __('Login') }}</a>
+                                <a class="nav-link" href="{{ route('loginWithOtp') }}"><i class="fa fa-sign-in" aria-hidden="true"></i> {{ __('প্রবেশ করুন ') }}</a>
                             </li>
 {{--                            @if (Route::has('register'))--}}
 {{--                                <li class="nav-item">--}}
@@ -61,7 +61,7 @@
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        {{ __('প্রস্থান') }}
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
