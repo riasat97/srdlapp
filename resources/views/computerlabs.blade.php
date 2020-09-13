@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section("title")
-    Computer Labs
+    Computer Labs ALL OVER BD
 @endsection
 @section('css')
     <!-- Font Icon -->
@@ -14,7 +14,7 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Dashboard</div>
+                    <div class="card-header">Computer Lab Report</div>
 
                     <div class="card-body">
                         @if (session('status'))

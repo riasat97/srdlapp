@@ -19,5 +19,6 @@ class DatabaseSeeder extends Seeder
          $this->call(BanbeisExtraSeeder::class);
          $this->call(BanbeisMpoSeeder::class);
          $this->call(BdSeeder::class);
+         $this->call(BangladeshSeeder::class);
     }
 }

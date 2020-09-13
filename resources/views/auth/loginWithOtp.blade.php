@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section("title")
-    LOGIN
+    OTP LOGIN
 @endsection
 @section('content')
     <div class="container login-container">
