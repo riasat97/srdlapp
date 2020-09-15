@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Application;
 use App\Models\Area;
 use App\Models\Banbeis;
+use App\Models\Bangladesh;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 
@@ -24,7 +25,7 @@ class ApplicationController extends Controller
             $labs[$tag->name]=$tag->translate('name', 'bn');
         }
         $divisionList=[];
-        $divisions = Area::distinct()->get("division")->toArray();
+        $divisions = Bangladesh::distinct()->get("division")->toArray();
         foreach ($divisions as $key=>$division)
             $divisionList[$division['division']]=$division['division'];
         return view('applications.create',['labs'=>$labs,'divisionList'=>$divisionList]);

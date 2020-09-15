@@ -48,7 +48,9 @@ Route::get('/bd/divisions', 'BdController@getDivisions')->name('bddivisions');
 Route::get('/bd/districts', 'BdController@getDistricts')->name('bddistricts');
 Route::get('/bd/upazilas', 'BdController@getUpazilas')->name('bdupazilas');
 
-Route::get('/divisions', 'AreaController@getDivisions')->name('divisions');
-Route::get('/districts', 'AreaController@getDistricts')->name('districts');
-Route::get('/upazilas', 'AreaController@getUpazilas')->name('upazilas');
+Route::get('/divisions', 'BangladeshController@getDivisions')->name('divisions');
+Route::get('/districts', 'BangladeshController@getDistricts')->name('districts');
+Route::get('/upazilas', 'BangladeshController@getUpazilas')->name('upazilas');
+Route::get('/union_pourashava_wards', 'BangladeshController@getUnionPourashavaWards')->name('union_pourashava_wards');
+Route::get('/parliamentary_constituencies', 'BangladeshController@getParliamentaryConstituency')->name('parliamentary_constituencies');
 

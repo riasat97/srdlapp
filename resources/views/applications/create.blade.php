@@ -90,6 +90,23 @@
                                 {{Form::label('upazila', 'উপজেলা') }}
                                 {{Form::select('upazila', [], '',['id'=>'upazila','class'=>'form-control','style'=>'width:350px;'])}}
                             </div>
+
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group  col-md-4">
+                                {{Form::label('union_pourashava_ward', 'ইউনিয়ন/পৌরসভা/ওয়ার্ড ') }}
+                                {{Form::select('union_pourashava_ward', [], '',['id'=>'union_pourashava_ward','class'=>'form-control','style'=>'width:350px;'])}}
+                            </div>
+                            <div class="form-group  col-md-6">
+                                {{Form::label('seat_no', 'আসন নম্বর',array('id' => 'seat-no')) }}
+                                {{Form::label('parliamentary_constituency', 'নির্বাচনী এলাকার নাম') }}
+                                {{Form::select('parliamentary_constituency', [], '',['id'=>'parliamentary_constituency','class'=>'form-control','style'=>'width:350px;'])}}
+                            </div>
+                            <div class="form-group col-md-2" id="hidethis">
+                                {{ Form::label('is_parliamentary_constituency', 'নির্বাচনী এলাকাটি সঠিক?') }}
+                                <input name="is_parliamentary_constituency" id="is_parliamentary_constituency" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                {{Form::hidden('hidden_is_parliamentary_constituency',"No",["id"=>"hidden_is_parliamentary_constituency"])}}
+                            </div>
                         </div>
 
                         <div class="form-row">
@@ -550,6 +567,7 @@
         $('#div').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
         $('#dis').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
         $('#upazila').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
+        $('#union_pourashava_ward').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
         $('#management').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
         $('#student_type').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
 

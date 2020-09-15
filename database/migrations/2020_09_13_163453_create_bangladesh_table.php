@@ -15,13 +15,16 @@ class CreateBangladeshTable extends Migration
     {
         Schema::create('bangladesh', function (Blueprint $table) {
             $table->id();
-            $table->string('division',255)->nullable()->default('NULL');
-            $table->string('district',255)->nullable()->default('NULL');
-            $table->string('upazila',255)->nullable()->default('NULL');
-            $table->string('union_pourashava_ward',255)->nullable()->default('NULL');
+            $table->text('division')->nullable();
+            $table->text('division_en')->nullable();
+            $table->text('district')->nullable();
+            $table->text('district_en')->nullable();
+            $table->text('upazila')->nullable();
+            $table->text('upazila_en')->nullable();
+            $table->text('union_pourashava_ward')->nullable();
             $table->bigInteger('seat_no_en',false);
-            $table->string('seat_no',255)->nullable()->default('NULL');
-            $table->string('parliamentary_constituency',255)->nullable()->default('NULL');
+            $table->text('seat_no')->nullable();
+            $table->text('parliamentary_constituency')->nullable();
             $table->timestamps();
         });
     }
