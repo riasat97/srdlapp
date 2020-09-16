@@ -61,7 +61,8 @@ class BangladeshController extends Controller
             //return true;
             $parliament = Bangladesh::distinct()
             ->where("district",$request->disId)
-                ->where("upazila",$request->upazilaId)
+             //   ->where("upazila",$request->upazilaId)
+              ->orderBy('seat_no_en','asc')
                 ->get(['seat_no_en','seat_no','parliamentary_constituency']);
             return response()->json(['parliament'=>$parliament]);
         }
@@ -72,12 +73,7 @@ class BangladeshController extends Controller
             ->first(['seat_no_en','seat_no','parliamentary_constituency']);
         return response()->json(['parliament'=>$parliament]);
     }
-    public function getSeatNumbers(Request $request){
-        $parliament = Bangladesh::
-        where("parliamentary_constituency",$request->parliamentaryConstituencyId)
-            ->first(['seat_no_en','seat_no']);
-        return response()->json(['parliament'=>$parliament]);
-    }
+
 
 
     /**
