@@ -15,7 +15,7 @@ class CreateApplicationsTable extends Migration
     {
         Schema::create('applications', function (Blueprint $table) {
             $table->id();
-            $table->enum("institution_type",['primary','school','college','school and college', 'madrasha','technical','gov_university','others'])->nullable();
+            $table->enum("institution_type",['primary','school','college','school and college', 'madrasha','technical','university','gov_training','gov_rel_ins','others'])->nullable();
             $table->text("eiin");
             $table->text("institution_bn");
             $table->text("institution");

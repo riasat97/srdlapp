@@ -38,12 +38,16 @@
                 <fieldset class="tab_1">
                     <div class="fieldset-content">
                         <div class="form-row">
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-4">
+                                <label for="">কম্পিউটার ল্যাবের ধরণ</label>
+                                {{Form::select('lab_type', array('srdl'=>'শেখ রাসেল ডিজিটাল ল্যাব','sof' => 'স্কুল অফ ফিউচার'), 'শেখ রাসেল ডিজিটাল ল্যাব',['class'=>'form-control', 'id'=>'lab_type',])}}
+                            </div>
+                            <div class="form-group col-md-4">
                                 <label for="">প্রতিষ্ঠানের ধরন</label>
-                                {{Form::select('institution_type', array('primary'=>'প্রাইমারি','school' => 'স্কুল', 'college' => 'কলেজ', 'school and college'=> "স্কুল ও কলেজ", 'madrasha'=> "মাদ্রাসা",'technical'=>"টেকনিক্যাল",'gov_university'=>"সরকারি বিশ্ববিদ্যালয়",'others'=>"অন্যান্য"), 'স্কুল',['class'=>'form-control', 'id'=>'institution_type',])}}
+                                {{Form::select('institution_type', array('primary'=>'প্রাইমারি','school' => 'স্কুল', 'college' => 'কলেজ', 'school and college'=> "স্কুল ও কলেজ", 'madrasha'=> "মাদ্রাসা",'technical'=>"টেকনিক্যাল",'university'=>'বিশ্ববিদ্যালয়','gov_training'=>"সরকারি ট্রেনিং সেন্টার",'gov_rel_ins'=>"শিক্ষা সংশ্লিষ্ট সরকারি প্রতিষ্ঠান",'others'=>"অন্যান্য"), 'স্কুল',['class'=>'form-control', 'id'=>'institution_type',])}}
                             </div>
 
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-4">
                                 <label for="">EIIN নম্বর</label>
                                 {{ Form::number('eiin',null,['class'=>'form-control', 'id'=>"eiin","disabled"=>"disabled"])}}
                             </div>
@@ -74,31 +78,36 @@
                         </div>
 
                         <div class="form-row">
-                            <div class="form-group  col-md-4">
+                            <div class="form-group  col-md-6">
                                 {{Form::label('div', 'বিভাগ') }}
                                 {{ Form::select('division', $divisionList,'',array('class'=>'form-control','id'=>'div','style'=>'width:350px;')) }}
                             </div>
 
-                            <div class="form-group  col-md-4">
+                            <div class="form-group  col-md-6">
                                 {{Form::label('dis', 'জেলা') }}
                                 {{Form::select('district', [], '',['id'=>'dis','class'=>'form-control','style'=>'width:350px;'])}}
                                 {{--                        <select name="district" id="dis" class="form-control" style="width:350px">--}}
                                 {{--                        </select>--}}
                             </div>
-
-                            <div class="form-group  col-md-4">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group  col-md-6">
                                 {{Form::label('upazila', 'উপজেলা') }}
                                 {{Form::select('upazila', [], '',['id'=>'upazila','class'=>'form-control','style'=>'width:350px;'])}}
                             </div>
-
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group  col-md-4">
+                            <div class="form-group  col-md-6">
                                 {{Form::label('union_pourashava_ward', 'ইউনিয়ন/পৌরসভা/ওয়ার্ড ') }}
                                 {{Form::select('union_pourashava_ward', [], '',['id'=>'union_pourashava_ward','class'=>'form-control','style'=>'width:350px;'])}}
                             </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group  col-md-4">
+                                {{Form::label('seat_type', 'সংসদীয় আসনের ধরণ') }}
+                                {{Form::select('seat_type', ['সাধারণ'=>'সাধারণ', 'সংরক্ষিত মহিলা আসন'=>'সংরক্ষিত মহিলা আসন'], '',['id'=>'seat_type','class'=>'form-control'])}}
+                            </div>
+
                             <div class="form-group  col-md-6">
-                                {{Form::label('seat_no', 'আসন নম্বর',array('id' => 'seat-no')) }}
+                                {{Form::label('seat_no', 'সংসদীয় আসন নং',array('id' => 'seat-no')) }}
                                 {{Form::label('parliamentary_constituency', 'নির্বাচনী এলাকার নাম') }}
                                 {{Form::select('parliamentary_constituency', [], '',['id'=>'parliamentary_constituency','class'=>'form-control','style'=>'width:350px;'])}}
                             </div>
@@ -112,17 +121,20 @@
                         <div class="form-row">
                             <div class="form-group  col-md-4">
                                 {{ Form::label('total_boys', 'মোট ছাত্র ') }}
-                                {{ Form::selectRange('total_boys', 1, 5000,25,['class'=>'form-control', 'id'=>'total_boys'] )}}
+{{--                                {{ Form::selectRange('total_boys', 1, 5000,25,['class'=>'form-control', 'id'=>'total_boys'] )}}--}}
+                                {{ Form::number('total_boys', 0,['class'=>'form-control', 'id'=>'total_boys'] )}}
                             </div>
 
                             <div class="form-group  col-md-4">
                                 {{ Form::label('total_girls', 'মোট ছাত্রী') }}
-                                {{ Form::selectRange('total_girls', 1, 5000,30,['class'=>'form-control', 'id'=>'total_girls'] )}}
+{{--                                {{ Form::selectRange('total_girls', 1, 5000,30,['class'=>'form-control', 'id'=>'total_girls'] )}}--}}
+                                {{ Form::number('total_girls', 0,['class'=>'form-control', 'id'=>'total_girls'] )}}
                             </div>
 
                             <div class="form-group  col-md-4">
                                 {{ Form::label('total_teachers', 'মোট শিক্ষক') }}
-                                {{ Form::selectRange('total_teachers', 1, 500,30,['class'=>'form-control', 'id'=>'total_teachers'] )}}
+{{--                                {{ Form::selectRange('total_teachers', 1, 500,30,['class'=>'form-control', 'id'=>'total_teachers'] )}}--}}
+                                {{ Form::number('total_teachers', 0,['class'=>'form-control', 'id'=>'total_teachers'] )}}
                             </div>
                         </div>
 
@@ -166,18 +178,18 @@
 
                 <fieldset class="tab_2">
                     <div class="fieldset-content">
-                        <div class="form-row">
-                            <div class="form-group  col-md-5">
-                                {{ Form::label('own_lab', 'প্রতিষ্ঠানের নিজেস্ব ফান্ডে কম্পিউটার ল্যাব আছে ?') }}
-                                <input name="own_lab" id="own_lab" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
-                                {{Form::hidden('hidden_own_lab',"No",["id"=>"hidden_own_lab"])}}
-                            </div>
+{{--                        <div class="form-row">--}}
+{{--                            <div class="form-group  col-md-5">--}}
+{{--                                {{ Form::label('own_lab', 'প্রতিষ্ঠানের নিজেস্ব ফান্ডে কম্পিউটার ল্যাব আছে ?') }}--}}
+{{--                                <input name="own_lab" id="own_lab" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">--}}
+{{--                                {{Form::hidden('hidden_own_lab',"No",["id"=>"hidden_own_lab"])}}--}}
+{{--                            </div>--}}
 
-                            <div class="form-group  col-md-7">
-                                {{ Form::label('total_pc_own', 'নিজেস্ব ফান্ডে ক্রয়কৃত সক্রিয় কম্পিউটারের সংখ্যা ') }}
-                                {{ Form::selectRange('total_pc_own', 1, 200,['class'=>'form-control', 'id'=>'total_pc_own'] )}}
-                            </div>
-                        </div>
+{{--                            <div class="form-group  col-md-7">--}}
+{{--                                {{ Form::label('total_pc_own', 'নিজেস্ব ফান্ডে ক্রয়কৃত সক্রিয় কম্পিউটারের সংখ্যা ') }}--}}
+{{--                                {{ Form::selectRange('total_pc_own', 1, 200,['class'=>'form-control', 'id'=>'total_pc_own'] )}}--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
 
                         <div class="form-row">
                             <div class="form-group  col-md-5">
@@ -212,6 +224,11 @@
 
                         <div class="form-row">
                             <div class="form-group  col-md-5">
+                                {{ Form::label('ict_edu', 'আইসিটি শিক্ষার সুযোগ সুবিধা আছে?') }}
+                                <input name="ict_edu" id="ict_edu" type="checkbox"  data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                {{Form::hidden('hidden_ict_edu',"No",["id"=>"hidden_ict_edu"])}}
+                            </div>
+                            <div class="form-group  col-md-5">
                                 {{ Form::label('ict_teacher', 'আইসিটি শিক্ষক আছে ?') }}
                                 <input name="ict_teacher" id="ict_teacher" type="checkbox"  data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_ict_teacher',"No",["id"=>"hidden_ict_teacher"])}}
@@ -233,57 +250,61 @@
                     <div class="fieldset-content">
                         <div class="form-row">
                             <div class="form-group  col-md-6">
-                                {{ Form::label('22_feet_by_18_feet', 'কম্পিউটার ল্যাব স্থাপনের জন্য ২২ফুট দৈর্ঘ্য ১৮ ফুট প্রস্থ বিশিষ্ট কক্ষ আছে ?') }}
-                                <input name="22_feet_by_18_feet" id="22_feet_by_18_feet" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
-                                {{Form::hidden('hidden_22_feet_by_18_feet',"No",["id"=>"hidden_22_feet_by_18_feet"])}}
-                            </div>
-
-                            <div class="form-group  col-md-6">
-                                {{ Form::label('packa_semi_packa', 'ভবনের ধরণ পাকা/অর্ধপাকা?') }}
+                                {{ Form::label('packa_semi_packa', 'ল্যাব স্থাপনের জন্য উপযুক্ত অবকাঠামো আছে?') }}
                                 <input name="packa_semi_packa" id="packa_semi_packa" type="checkbox" data-width="50"  class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_packa_semi_packa',"No",["id"=>"hidden_packa_semi_packa"])}}
                             </div>
-
                             <div class="form-group  col-md-6">
-                                {{ Form::label('boundary_wall', 'সীমানা প্রাচীর আছে?') }}
-                                <input name="boundary_wall" id="boundary_wall" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
-                                {{Form::hidden('hidden_boundary_wall',"No",["id"=>"hidden_boundary_wall"])}}
-                                {{Form::hidden('hidden_',"No",["id"=>""])}}
+                                {{ Form::label('22_feet_by_18_feet', 'অন্তত ১৭টি টেবিল ও ৩২জন ছাত্রের বসার মত সুপরিসর কক্ষ আছে?') }}
+                                <input name="22_feet_by_18_feet" id="22_feet_by_18_feet" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                {{Form::hidden('hidden_22_feet_by_18_feet',"No",["id"=>"hidden_22_feet_by_18_feet"])}}
                             </div>
+                        </div>
+                        <div class="form-row">
+{{--                                {{ Form::label('boundary_wall', 'সীমানা প্রাচীর আছে?') }}--}}
+{{--                                <input name="boundary_wall" id="boundary_wall" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">--}}
+{{--                                {{Form::hidden('hidden_boundary_wall',"No",["id"=>"hidden_boundary_wall"])}}--}}
+{{--                                {{Form::hidden('hidden_',"No",["id"=>""])}}--}}
 
                             <div class="form-group  col-md-6">
-                                {{ Form::label('electricity_solar', 'বিদ্যুৎ/সোলার সংযোগ আছে ?') }}
+                                {{ Form::label('electricity_solar', 'নিরবিচ্ছিন্ন বিদ্যুৎ/সোলার সরবরাহ আছে ?') }}
                                 <input name="electricity_solar" id="electricity_solar" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_electricity_solar',"No",["id"=>"hidden_electricity_solar"])}}
                             </div>
 
-                            <div class="form-group  col-md-6">
-                                {{ Form::label('cctv', 'সিসি ক্যামেরা আছে ?') }}
-                                <input name="cctv" id="cctv" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
-                                {{Form::hidden('hidden_cctv',"No",["id"=>"hidden_cctv"])}}
-                            </div>
+{{--                            <div class="form-group  col-md-6">--}}
+{{--                                {{ Form::label('cctv', 'সিসি ক্যামেরা আছে ?') }}--}}
+{{--                                <input name="cctv" id="cctv" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">--}}
+{{--                                {{Form::hidden('hidden_cctv',"No",["id"=>"hidden_cctv"])}}--}}
+{{--                            </div>--}}
 
                             <div class="form-group  col-md-6">
-                                {{ Form::label('security_guard', 'নিরাপত্তারক্ষী আছে ?') }}
+                                {{ Form::label('security_guard', 'ল্যাবের নিরাপত্তার জন্য উপযুক্ত পরিবেশ আছে?') }}
                                 <input name="security_guard" id="security_guard" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_security_guard',"No",["id"=>"hidden_security_guard"])}}
                             </div>
 
-                            <div class="form-group col-md-6">
-                                {{ Form::label('night_guard', 'নৈশ প্রহরী আছে ?') }}
-                                <input name="night_guard" id="night_guard" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
-                                {{Form::hidden('hidden_night_guard',"No",["id"=>"hidden_night_guard"])}}
-                            </div>
+{{--                            <div class="form-group col-md-6">--}}
+{{--                                {{ Form::label('night_guard', 'নৈশ প্রহরী আছে ?') }}--}}
+{{--                                <input name="night_guard" id="night_guard" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">--}}
+{{--                                {{Form::hidden('hidden_night_guard',"No",["id"=>"hidden_night_guard"])}}--}}
+{{--                            </div>--}}
                         </div>
 
                         <div class="form-row col-md-12">
                             <div class="form-group shadow-textarea">
-                                <label for="about_institution">আপনার প্রতিষ্ঠান সম্পর্কে লিখুন </label>
+                                <label for="about_institution">আপনার প্রতিষ্ঠান সম্পর্কিত অন্যান্য তথ্য </label>
                                 <textarea class="form-control z-depth-1" id="about_institution" rows="5" placeholder="আপনার প্রতিষ্ঠানের বিভিন্ন সুযোগ সুবিধা, কম্পিউটার ল্যাব কেন প্রয়োজন ইত্যাদি সম্পর্কে লিখুন..."></textarea>
                             </div>
                         </div>
+                        <div class="form-row  col-md-12">
+                            <div class="form-group ">
+                                {{ Form::label('good_result', 'প্রতিষ্ঠানটি ভালো ফলাফলকারী (বিশেষ করে ইংরেজি, গণিত এবং বিজ্ঞান বিষয়ে)?') }}
+                                <input name="good_result" id="good_result" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                {{Form::hidden('hidden_good_result',"No",["id"=>"hidden_good_result"])}}
+                            </div>
+                        </div>
                     </div>
-
                     <div class="fieldset-footer">
                         <span>Step 3 of 4</span>
                     </div>
@@ -451,6 +472,35 @@
 
     </script>
 
+    {{--LAB TYPE SELECTION--}}
+     <script type="text/javascript">
+         $(function () {
+             $("#lab_type").change(function () {
+
+                 var res= {
+                     "primary": "প্রাইমারি",
+                     "school": "স্কুল",
+                     "college": "কলেজ",
+                     "school and college": "স্কুল ও কলেজ",
+                     "madrasha": "মাদ্রাসা",
+                     "technical": "টেকনিক্যাল",
+                     "gov_university": "সরকারি বিশ্ববিদ্যালয়",
+                     "others": "অন্যান্য"
+                 };
+                 console.log($("#lab_type").val());
+                 if ($(this).val() == "sof") {
+                     $("#institution_type").empty();
+                         $("#institution_type").append('<option value="school">স্কুল</option>');
+                         $("#institution_type").append('<option value="school and college">স্কুল ও কলেজ</option>');
+                 } else {
+                     $("#institution_type").empty();
+                     $.each(res,function(key,value){
+                         $("#institution_type").append('<option value="'+key+'">'+value+'</option>');
+                     });
+                 }
+             });
+         });
+     </script>
 
      <script type="text/javascript">
          $(function () {

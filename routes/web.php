@@ -22,6 +22,7 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'applications', 'as' => 'applications.'], function () {
 
+    Route::get('/', 'ApplicationController@index')->name('index');
     Route::get('/terms', 'ApplicationController@terms')->name('terms');
     Route::get('/apply', 'ApplicationController@create')->name('apply');
     Route::get('/eiin', 'ApplicationController@getValuesByEiin')->name('eiin');
@@ -40,7 +41,7 @@ Route::get('loginWithOtp', function () {
 Route::post('loginWithOtp', 'Auth\LoginController@loginWithOtp')->name('loginWithOtp');
 Route::post('sendOtp', 'Auth\LoginController@sendOtp');
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home1', 'HomeController1@index')->name('home1');
 Route::get('/computer_labs', 'HomeController@getComputerLabs')->name('computerLabs');
 Route::get('/search_labs', 'HomeController@getSearchLabs')->name('searchLabs');
 
@@ -53,4 +54,15 @@ Route::get('/districts', 'BangladeshController@getDistricts')->name('districts')
 Route::get('/upazilas', 'BangladeshController@getUpazilas')->name('upazilas');
 Route::get('/union_pourashava_wards', 'BangladeshController@getUnionPourashavaWards')->name('union_pourashava_wards');
 Route::get('/parliamentary_constituencies', 'BangladeshController@getParliamentaryConstituency')->name('parliamentary_constituencies');
+Route::get('/reserved_seats', 'BangladeshController@getReservedSeats')->name('reserved_seats');
 
+
+
+Auth::routes(['verify' => true]);
+
+Route::get('/home', 'HomeController@index')->middleware('verified');
+Route::get('/test', 'TestController@test');
+
+
+Route::resource('roles', 'RoleController');
+Route::resource('permissions', 'PermissionController');

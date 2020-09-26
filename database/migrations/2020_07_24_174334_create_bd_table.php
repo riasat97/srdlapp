@@ -21,6 +21,9 @@ class CreateBdTable extends Migration
             $table->string('district',255)->nullable()->default('NULL');
             $table->string('upazila_en',255);
             $table->string('upazila',255)->nullable()->default('NULL');
+            $table->text('parliamentary_constituency')->nullable();
+            $table->text('seat_no')->nullable();
+            $table->bigInteger('seat_no_en',false);
             $table->string('division_lat',255)->nullable()->default('NULL');
             $table->string('division_long',255)->nullable()->default('NULL');
             $table->string('district_lat',255)->nullable()->default('NULL');

@@ -33,13 +33,13 @@ class TagSeeder extends Seeder
         $tag->setTranslation('name', 'bn', 'শিক্ষা বোর্ড');
         $tag->save();
 
-        $tag = \Spatie\Tags\Tag::findOrCreate('NGO');
-        $tag->setTranslation('name', 'bn', 'এনজিও');
-        $tag->save();
+//        $tag = \Spatie\Tags\Tag::findOrCreate('NGO');
+//        $tag->setTranslation('name', 'bn', 'এনজিও');
+//        $tag->save();
 
-        $tag = \Spatie\Tags\Tag::findOrCreate('Local Government');
-        $tag->setTranslation('name', 'bn', 'স্থানীয় সরকার');
-        $tag->save();
+//        $tag = \Spatie\Tags\Tag::findOrCreate('Local Government');
+//        $tag->setTranslation('name', 'bn', 'স্থানীয় সরকার');
+//        $tag->save();
 
         $tag = \Spatie\Tags\Tag::findOrCreate('Others');
         $tag->setTranslation('name', 'bn', 'অন্যান্য');

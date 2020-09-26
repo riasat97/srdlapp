@@ -1,11 +1,10 @@
 
-
 <script type="text/javascript">
     $('#div').change(function(){
         $("#upazila").empty();
         $("#union_pourashava_ward").empty();
         $("#parliamentary_constituency").empty();
-        $("#seat-no").text('আসন নম্বর:');
+        $("#seat-no").text('সংসদীয় আসন নং:');
         $("#hidethis").show();
         var divID = $(this).val();
         if(divID){
@@ -41,6 +40,8 @@
                 success:function(res){
                     if(res){
                         $("#upazila").empty();
+                        $("#union_pourashava_ward").empty();
+                        $("#parliamentary_constituency").empty();
                         $('#upazila').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
                         $.each(res['upazilas'],function(key,value){
                             $("#upazila").append('<option value="'+key+'">'+value+'</option>');
@@ -57,7 +58,11 @@
 
     });
     $('#upazila').on('change',function(){
-        var upazilaID = $(this).val();
+
+        getUnionPourshavaWardWithtParlimentaryConstituencies();
+    });
+    function getUnionPourshavaWardWithtParlimentaryConstituencies(){
+        var upazilaID = $('#upazila').val();
         var disID = $('#dis').val();
         $("#hidethis").show();
         if(upazilaID){
@@ -72,8 +77,12 @@
                         $.each(res['union_pourashava_wards'],function(key,value){
                             $("#union_pourashava_ward").append('<option value="'+key+'">'+value+'</option>');
                         });
-                        //$("#seat-no").text('আসন নম্বর:'+res['parliament'].seat_no);
-                        //$("#parliamentary_constituency").append('<option value="'+res['parliament'].seat_no_en+'">'+res['parliament'].parliamentary_constituency+'</option>');
+
+                        $("#seat-no").text('সংসদীয় আসন নং:');
+                        $('#parliamentary_constituency').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
+                        $.each(res['parliament'],function(key,value){
+                            $("#parliamentary_constituency").append('<option value="'+value.seat_no+'">'+value.parliamentary_constituency+'</option>');
+                        });
 
                     }else{
                         $("#union_pourashava_ward").empty();
@@ -85,14 +94,20 @@
             $("#union_pourashava_ward").empty();
             $("#parliamentary_constituency").empty();
         }
+    }
+
+    $('#union_pourashava_ward').on('change',function(){
+
+        getParlimentaryConstituencies();
+
 
     });
-    $('#union_pourashava_ward').on('change',function(){
-        var unionPourashavaWardID = $(this).val();
+    function getParlimentaryConstituencies() {
+        var unionPourashavaWardID = $('#union_pourashava_ward').val();
         var upazilaID = $("#upazila").val();
         var disID = $('#dis').val();
         $("#hidethis").show();
-        //alert(unionPourashavaWardID);
+
         if(unionPourashavaWardID){
             $.ajax({
                 type:"GET",
@@ -100,10 +115,10 @@
                 success:function(res){
                     if(res){
                         $("#parliamentary_constituency").empty();
-                        $("#seat-no").text('আসন নম্বর:'+res['parliament'].seat_no);
-                      //  $('#parliamentary_constituency').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
+                        $("#seat-no").text('সংসদীয় আসন নং:'+res['parliament'].seat_no);
+                        //  $('#parliamentary_constituency').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
                         $("#parliamentary_constituency").append('<option value="'+res['parliament'].seat_no_en+'">'+res['parliament'].parliamentary_constituency+'</option>');
-                        $("#parliamentary_constituency").attr("disabled", "disabled");
+                        //$("#parliamentary_constituency").attr("disabled", "disabled");
                         $('#is_parliamentary_constituency').bootstrapToggle('on');
                     }else{
                         $("#union_pourashava_ward").empty();
@@ -115,8 +130,8 @@
             $("#union_pourashava_ward").empty();
             $("#parliamentary_constituency").empty();
         }
+    }
 
-    });
     $('#is_parliamentary_constituency').on('change',function(){
 
         if ($(this).prop("checked") == false) {
@@ -132,15 +147,12 @@
                     success:function(res){
                         if(res){
                             $("#parliamentary_constituency").empty();
-                            $("#seat-no").text('আসন নম্বর:');
+                            $("#seat-no").text('সংসদীয় আসন নং:');
                             $('#parliamentary_constituency').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
                             $.each(res['parliament'],function(key,value){
-                                //$("#union_pourashava_ward").append('<option value="'+key+'">'+value+'</option>');
-                               // console.log(value);
                                 $("#parliamentary_constituency").append('<option value="'+value.seat_no+'">'+value.parliamentary_constituency+'</option>');
                             });
-                            //$("#parliamentary_constituency").attr("disabled", "disabled");
-                            //$('#is_parliamentary_constituency').bootstrapToggle('on');
+
                         }else{
                             $("#union_pourashava_ward").empty();
                             $("#parliamentary_constituency").empty();
@@ -152,13 +164,49 @@
                 $("#parliamentary_constituency").empty();
             }
         } else {
-            $("#parliamentary_constituency").attr("disabled", "disabled");
+           // $("#parliamentary_constituency").attr("disabled", "disabled");
         }
     });
     $('#parliamentary_constituency').on('change',function(){
         var parliamentaryConstituencyID = $(this).val();
-        $("#seat-no").text('আসন নম্বর:'+parliamentaryConstituencyID);
-        $("#hidethis").hide();
+        $("#seat-no").text('সংসদীয় আসন নং:'+parliamentaryConstituencyID);
+        $('#is_parliamentary_constituency').bootstrapToggle('on');
+        //$("#hidethis").hide();
+    });
+
+    $('#seat_type').on('change',function(){
+        var seatTypeID = $(this).val();
+        if(seatTypeID == "সংরক্ষিত মহিলা আসন"){
+            $("#parliamentary_constituency").removeAttr("disabled");
+            $("#parliamentary_constituency").focus();
+            $.ajax({
+                type:"GET",
+                url:"{{url('reserved_seats')}}",
+                success:function(res){
+                    if(res){
+                        //$("#parliamentary_constituency").empty();
+                        $("#seat-no").text('সংসদীয় আসন নং:');
+                        $('#parliamentary_constituency').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
+                        $.each(res['reserved_seats'],function(key,value){
+                            $("#parliamentary_constituency").append('<option value="'+value.seat_no+'">'+value.parliamentary_constituency+'</option>');
+                            $("#hidethis").hide();
+                        });
+
+                    }else{
+                        $("#union_pourashava_ward").empty();
+                        $("#parliamentary_constituency").empty();
+                    }
+                }
+            });
+        }
+        else {
+            var unionPourashavaWardID = $('#union_pourashava_ward').val();
+            if(unionPourashavaWardID){
+                getParlimentaryConstituencies();
+            }
+            getUnionPourshavaWardWithtParlimentaryConstituencies();
+        }
+
     });
 
 </script>
@@ -204,10 +252,11 @@
                 $('#inputInsEn').val(ui.item.value); // save selected id to input
                 $('#institution_tel').val(ui.item.mobile);
                 //$("#div").append('<option value="'+ui.item.area.division+'">'+ui.item.area.division+'</option>')
-                $("#div").val(ui.item.area[0].division);
-                $("#dis").prepend('<option value="'+ui.item.area[0].district+'">'+ui.item.area[0].district+'</option>');
-                $("#upazila").prepend('<option value="'+ui.item.area[0].upazila+'">'+ui.item.area[0].upazila+'</option>');
-
+                $("#div").val(ui.item.area.division);
+                $("#dis").prepend('<option value="'+ui.item.area.district+'">'+ui.item.area.district+'</option>');
+                $.each(ui.item.area.upazilas,function(key,value){
+                $("#upazila").prepend('<option value="'+key+'">'+value+'</option>');
+                });
                 $("#total_boys").val(ui.item.total_boys);
                 $("#total_girls").val(ui.item.total_girls);
                 $("#total_teachers").val(ui.item.total_teachers);

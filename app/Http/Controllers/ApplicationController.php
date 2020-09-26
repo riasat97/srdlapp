@@ -8,9 +8,27 @@ use App\Models\Banbeis;
 use App\Models\Bangladesh;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class ApplicationController extends Controller
 {
+    public function index(Request $request)
+    {
+       if ($request->ajax()) {
+            $data = Application::latest()->get();
+           // dd($data);
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $btn = '<a href="javascript:    void(0)" class="edit btn btn-success btn-sm">Edit</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+       }
+
+        return view('applications.index');
+    }
     public function  terms(){
         return view('applications.terms');
     }
@@ -50,20 +68,27 @@ class ApplicationController extends Controller
 
         $response = array();
         $areaRes= array();
-        //dd($res);
+        //dd($area->toArray());
+        $upazila=$area[0]['upazila'];
+        $upazilas= Bangladesh::
+        where("district",$area[0]['district'])
+            ->orderByRaw("FIELD(upazila , '$upazila') Desc")
+            ->pluck('upazila','upazila');
+        //dd($upazilas);
         foreach ($area  as $ar){
             $areaRes[]=['division'=>$ar->division,
-                'district'=> $ar->district,
-                'upazila'=>$ar->upazila];
+                'district'=> $ar->district
+                //'upazila'=>$ar->upazila
+            ];
         }
-
+        $area=array_merge($areaRes[0],['upazilas'=>$upazilas->toArray()]);
         foreach($res as $rs){
             $electricity_solar=($rs->banbeisFacility->electricity=="YES")?$rs->banbeisFacility->electricity:$rs->banbeisFacility->solar;
             $packa_semi_packa=($rs->banbeisFacility->packa=="YES" || $rs->banbeisFacility->semi_packa=="YES")?"YES":"NO";
             $response[] = ['value' => $rs->institution,
                 'label'=>$rs->eiin,'mobile'=>!empty($rs->banbeisExtra->mobile)?$rs->banbeisExtra->mobile:'',
                 'ex'=>$res,
-                'area'=> $areaRes,
+                'area'=> $area,
                 'total_boys'=>$rs->total_students-$rs->total_girls,'total_girls'=>$rs->total_girls,'total_teachers'=>$rs->total_teachers,
                 'is_mpo'=> $this->getIsMpo($rs),'mpo'=>$this->getMpo($rs,$institution_type),
                 'management'=>$rs->banbeisExtra->management, 'student_type'=>$rs->banbeisExtra->student_type,
@@ -77,7 +102,6 @@ class ApplicationController extends Controller
         return response()->json($response);
 
     }
-
 
     public function store(Request $request)
     {
@@ -118,7 +142,7 @@ class ApplicationController extends Controller
         if(!empty($request->get('old_app')))$this->storeOldApp($request,$application);
         $this->fileUpload($request,$request->file("signature"),$application,'signature');
         //dd($application->toArray());
-        return redirect()->route('home')->with('status','আপনার আবেদনটি সফলভাবে জমা দেওয়া হয়েছে।!');
+        return redirect()->route('home1')->with('status','আপনার আবেদনটি সফলভাবে জমা দেওয়া হয়েছে।!');
     }
 
     public function sms(){
