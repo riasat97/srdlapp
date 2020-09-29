@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Application;
-use App\Models\Area;
 use App\Models\Banbeis;
 use App\Models\Bangladesh;
 use GuzzleHttp\Client;
@@ -32,9 +31,7 @@ class ApplicationController extends Controller
     public function  terms(){
         return view('applications.terms');
     }
-    public function create()
-
-    {
+    public function create(){
 
         $labs=[];
         $tag= new \Spatie\Tags\Tag;
@@ -52,51 +49,56 @@ class ApplicationController extends Controller
     public function getValuesByEiin(Request $request){
         $eiin= $request->eiin;
         $institution_type= $request->institution_type;
+        //dd($request->all());
         //$res= Banbeis::with('banbeisFacility','banbeisLab')->where('eiin',$eiin)->first();
 
         if($eiin == ''){
             $res = Banbeis::with('banbeisFacility','banbeisLab','banbeisExtra','banbeisMpo')->limit(5)->get();
         }else{
             $res = Banbeis::with('banbeisFacility','banbeisLab','banbeisExtra','banbeisMpo')->where('eiin', 'like', '%' .$eiin . '%')->limit(5)->get();
-            $area= Banbeis::join('bd', function($q)
-            {
-                $q->on('bd.division_en', '=', 'banbeis.division')
-                    ->on('bd.district_en', '=', 'banbeis.district')
-                    ->on('bd.upazila_en', '=', 'banbeis.upazila');
-            })->where('banbeis.eiin',$eiin)->get(['bd.division', 'bd.district','bd.upazila']);
+//            $area= Banbeis::join('bd', function($q)
+//            {
+//                $q->on('bd.division_en', '=', 'banbeis.division')
+//                    ->on('bd.district_en', '=', 'banbeis.district')
+//                    ->on('bd.upazila_en', '=', 'banbeis.upazila');
+//            })->where('banbeis.eiin',$eiin)->get(['bd.division', 'bd.district','bd.upazila']);
         }
 
         $response = array();
-        $areaRes= array();
+        //$areaRes= array();
         //dd($area->toArray());
-        $upazila=$area[0]['upazila'];
-        $upazilas= Bangladesh::
-        where("district",$area[0]['district'])
-            ->orderByRaw("FIELD(upazila , '$upazila') Desc")
-            ->pluck('upazila','upazila');
-        //dd($upazilas);
-        foreach ($area  as $ar){
-            $areaRes[]=['division'=>$ar->division,
-                'district'=> $ar->district
-                //'upazila'=>$ar->upazila
-            ];
-        }
-        $area=array_merge($areaRes[0],['upazilas'=>$upazilas->toArray()]);
+
+//        foreach ($area  as $ar){
+//            $areaRes[]=['division'=>$ar->division,
+//                'district'=> $ar->district
+//                //'upazila'=>$ar->upazila
+//            ];
+//        }
+//        if(!empty($area)){
+//            $upazila=$area[0]['upazila'];
+//            $upazilas= Bangladesh::
+//            where("district",$area[0]['district'])
+//                ->orderByRaw("FIELD(upazila , '$upazila') Desc")
+//                ->pluck('upazila','upazila');
+//            //dd($upazilas);
+//            $areaRes=array_merge($areaRes[0],['upazilas'=>$upazilas->toArray()]);
+//        }
+
         foreach($res as $rs){
-            $electricity_solar=($rs->banbeisFacility->electricity=="YES")?$rs->banbeisFacility->electricity:$rs->banbeisFacility->solar;
-            $packa_semi_packa=($rs->banbeisFacility->packa=="YES" || $rs->banbeisFacility->semi_packa=="YES")?"YES":"NO";
+           // $electricity_solar=($rs->banbeisFacility->electricity=="YES")?$rs->banbeisFacility->electricity:$rs->banbeisFacility->solar;
+            //$packa_semi_packa=($rs->banbeisFacility->packa=="YES" || $rs->banbeisFacility->semi_packa=="YES")?"YES":"NO";
             $response[] = ['value' => $rs->institution,
                 'label'=>$rs->eiin,'mobile'=>!empty($rs->banbeisExtra->mobile)?$rs->banbeisExtra->mobile:'',
                 'ex'=>$res,
-                'area'=> $area,
+                //'area'=> $areaRes,
                 'total_boys'=>$rs->total_students-$rs->total_girls,'total_girls'=>$rs->total_girls,'total_teachers'=>$rs->total_teachers,
                 'is_mpo'=> $this->getIsMpo($rs),'mpo'=>$this->getMpo($rs,$institution_type),
                 'management'=>$rs->banbeisExtra->management, 'student_type'=>$rs->banbeisExtra->student_type,
                 'internet_connection'=>$rs->banbeisFacility->internet,'ict_teacher'=>$rs->banbeisFacility->ict_teacher,
-                'own_lab'=>$rs->banbeisLab->own_lab,'total_pc_own'=>$rs->banbeisExtra->own_pc,
-                'govlab'=>$this->getHavingLab($rs),'labs'=> $this->getLabs($rs),'total_pc_gov_non_gov'=>$rs->banbeisExtra->total_lab_pc,
-                'packa_semi_packa'=>$packa_semi_packa,
-                'electricity_solar'=>$electricity_solar,'cctv'=>$rs->banbeisFacility->cc_camera,'security_guard'=>$rs->banbeisFacility->security_guard]  ;
+                //'own_lab'=>$rs->banbeisLab->own_lab,'total_pc_own'=>$rs->banbeisExtra->own_pc,
+                'govlab'=>$this->getHavingLab($rs),'labs'=> $this->getLabs($rs)];//'total_pc_gov_non_gov'=>$rs->banbeisExtra->total_lab_pc,
+                //'packa_semi_packa'=>$packa_semi_packa,
+                //'electricity_solar'=>$electricity_solar,'cctv'=>$rs->banbeisFacility->cc_camera,'security_guard'=>$rs->banbeisFacility->security_guard]  ;
         }
 
         return response()->json($response);
@@ -107,40 +109,54 @@ class ApplicationController extends Controller
     {
         //dd($request->all());
         $application = Application::create([
+            'lab_type' => $request->get('lab_type'),
             'institution_type' => $request->get('institution_type'),
-            'eiin' => $request->get('eiin'),
             'institution_bn' => $request->get('institution_bn'),
-            'institution' => $request->get('institution'),
-            'institution_email' => $request->get('institution_email'),
-            'institution_tel' => $request->get('institution_tel'),
             'division' => $request->get('division'),
             'district' => $request->get('district'),
             'upazila' => $request->get('upazila'),
-            'total_boys' => $request->get('total_boys'),
-            'total_girls' => $request->get('total_girls'),
-            'total_teachers' => $request->get('total_teachers'),
-            'management' => $request->get('management'),
-            'student_type' => $request->get('student_type'),
-            'mpo' => !empty($request->get('mpo'))?$request->get('mpo'):null,
-            'own_lab' => !empty($request->get('own_lab'))?'YES':null,
-            'total_pc_own' => !empty($request->get('total_pc_own'))?$request->get('total_pc_own'):0,
-            'total_pc_gov_non_gov' => !empty($request->get('total_pc_gov_non_gov'))?$request->get('total_pc_gov_non_gov'):0,
-            'internet_connection' => !empty($request->get('internet_connection'))?'YES':null,
-            'internet_connection_type' => !empty($request->get('internet_connection_type'))?$request->get('internet_connection_type'):null,
-            'ict_teacher' => !empty($request->get('ict_teacher'))?'YES':null,
-            'electricity_solar' => !empty($request->get('electricity_solar'))?'YES':null,
-            'hidden_22_feet_by_18_feet' => !empty($request->get('hidden_22_feet_by_18_feet'))?'YES':null,
-            'packa_semi_packa' => !empty($request->get('packa_semi_packa'))?'YES':null,
-            'boundary_wall' => !empty($request->get('boundary_wall'))?'YES':null,
-            'cctv' => !empty($request->get('cctv'))?'YES':null,
-            'security_guard' => !empty($request->get('security_guard'))?'YES':null,
-            'night_guard' => !empty($request->get('night_guard'))?'YES':null,
-            'about_institution' => !empty($request->get('about_institution'))?$request->get('about_institution'):null,
+            'union_pourashava_ward' => !empty($request->get('union_pourashava_ward'))?$request->get('union_pourashava_ward'):'',
+            'seat_type' => $request->get('seat_type'),
+            'seat_no' => !empty($request->get('parliamentary_constituency'))?$request->get('parliamentary_constituency'):'',
+            'is_parliamentary_constituency_ok' => (!empty($request->get('is_parliamentary_constituency_ok'))&&!empty($request->get('parliamentary_constituency')))?"YES":"",
+            'listed_by_deo' => !empty($request->get('listed_by_deo'))?"YES":"NO",
+            'member_name' => !empty($request->get('member_name'))?$request->get('member_name'):'',
         ]);
+        if(($request->get('hidden_is_parliamentary_constituency_ok')=="NO") && !empty($request->get('parliamentary_constituency'))){
+            $application->is_parliamentary_constituency_ok= "NO";
+        }
+        if($request->hasFile('list_attachment_file')){
+            $application= $this->fileUpload($request,$request->file("list_attachment_file"),$application,'list_attachment_file');
+        }
+        //exit;
+        if(empty($request->get('listed_by_deo'))){
+        $application->eiin= !empty($request->get('eiin'))?$request->get('eiin'):'';
+        $application->institution= !empty($request->get('institution'))?$request->get('institution'):'';
+        $application->institution_email= !empty($request->get('institution_email'))?$request->get('institution_email'):'';
+        $application->institution_tel= !empty($request->get('institution_tel'))?$request->get('institution_tel'):'';
+        $application->total_boys= !empty($request->get('total_boys'))?$request->get('total_boys'):0;
+        $application->total_girls= !empty($request->get('total_girls'))?$request->get('total_girls'):0;
+        $application->total_teachers= !empty($request->get('total_teachers'))?$request->get('total_teachers'):0;
+        $application->management= !empty($request->get('management'))?$request->get('management'):'';
+        $application->student_type= !empty($request->get('student_type'))?$request->get('student_type'):'';
+        $application->mpo= !empty($request->get('mpo'))?$request->get('mpo'):'';
+        $application->internet_connection= !empty($request->get('internet_connection'))?"YES":'';
+        $application->internet_connection_type= !empty($request->get('internet_connection_type'))?$request->get('internet_connection_type'):'';
+        $application->ict_edu= !empty($request->get('ict_edu'))?"YES":'';
+        $application->ict_teacher= !empty($request->get('ict_teacher'))?"YES":'';
+
         $this->storeLabs($request,$application);
+        $application->proper_infrastructure= !empty($request->get('proper_infrastructure'))?"YES":null;
+        $application->proper_room= !empty($request->get('proper_room'))?"YES":null;
+        $application->electricity_solar= !empty($request->get('electricity_solar'))?"YES":null;
+        $application->proper_security= !empty($request->get('proper_security'))?"YES":null;
+        $application->good_result= !empty($request->get('good_result'))?"YES":null;
+        $application->about_institution= !empty($request->get('about_institution'))?$request->get('about_institution'):'';
+
         if(!empty($request->get('reference')))$this->storeReference($request,$application);
         if(!empty($request->get('old_app')))$this->storeOldApp($request,$application);
-        $this->fileUpload($request,$request->file("signature"),$application,'signature');
+        }
+        $application->save();
         //dd($application->toArray());
         return redirect()->route('home1')->with('status','আপনার আবেদনটি সফলভাবে জমা দেওয়া হয়েছে।!');
     }
@@ -233,7 +249,7 @@ class ApplicationController extends Controller
         $application->ref_designation=!empty($request->get('ref_designation'))?$request->get('ref_designation'):null;
         $application->ref_office=!empty($request->get('ref_office'))?$request->get('ref_office'):null;
         //dd($request->toArray());
-        //if(!empty($request->get("ref_documents_file")))
+        if(!empty($request->hasFile("ref_documents_file")))
         $this->fileUpload($request,$request->file("ref_documents_file"),$application,'ref_documents_file');
 
     }
@@ -241,30 +257,25 @@ class ApplicationController extends Controller
     private function storeOldApp(Request $request, $application)
     {
         $application->old_application_date=!empty($request->get('old_application_date'))?$request->get('old_application_date'):null;
+        if(!empty($request->hasFile("old_application_attachment")))
         $this->fileUpload($request,$request->file("old_application_attachment"),$application,'old_application_attachment');
     }
     public function fileUpload(Request $req,$file,$application,$ex){
-       // dd('hi');
+       //dd('in fileUpload');
         $req->validate([
             'ref_documents_file' => 'mimes:csv,txt,xlx,xls,pdf|max:2048',
             'old_application_attachment' => 'mimes:csv,txt,xlx,xls,pdf|max:2048',
-            'signature' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'list_attachment_file' => 'mimes:jpeg,pdf,png,jpg,gif,svg|max:2048',
         ]);
 
-        //$fileModel = new File;
-        //dd($file);
-        if($req->file()) {
             $fileName = time().'_'.$file->getClientOriginalName();
             //dd($fileName);
             $filePath = $req->file($ex)->storeAs('uploads', $fileName, 'public');
 
-
             $application->$ex = time().'_'.$file->getClientOriginalName();
             $appFilePath= $ex."_path";
             $application->$appFilePath = '/storage/' . $filePath;
-            $application->save();
-
-        }
+            return $application;
     }
         public function  applicationPreview(){
         return view('applications.preview');

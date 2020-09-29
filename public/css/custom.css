@@ -210,6 +210,19 @@ fieldset {
     border-color: #312c64;
 }
 
+.submitbtn {
+    position: absolute;
+    bottom: 14px;
+    //width: 100%;
+    /* text-align: right; */
+    padding: 0 20px;
+    /* margin: 0 15px; */
+    right: 0;
+    color: #fff;
+    background-color: #312c64;
+    border-color: #312c64;
+}
+
 .actions ul li a:hover {
     background-color: #5148b1;
     border-color: #5148b1;

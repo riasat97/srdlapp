@@ -774,7 +774,7 @@ fieldset {
   .toggle.off {
       border-color: rgba(0, 0, 0, .25);
   }
-  
+
   .toggle-handle {
       background-color: white;
       border: thin rgba(0, 0, 0, .25) solid;

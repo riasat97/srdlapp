@@ -15,8 +15,9 @@ class CreateApplicationsTable extends Migration
     {
         Schema::create('applications', function (Blueprint $table) {
             $table->id();
+            $table->enum('lab_type',['srdl','sof']);
             $table->enum("institution_type",['primary','school','college','school and college', 'madrasha','technical','university','gov_training','gov_rel_ins','others'])->nullable();
-            $table->text("eiin");
+            $table->bigInteger("eiin");
             $table->text("institution_bn");
             $table->text("institution");
             $table->text("institution_email");
@@ -24,38 +25,43 @@ class CreateApplicationsTable extends Migration
             $table->text("division");
             $table->text("district");
             $table->text("upazila");
+            $table->text("union_pourashava_ward");
+            $table->enum('seat_type',['general','reserved']);
+            $table->text("seat_no");
+            $table->enum("is_parliamentary_constituency_ok", ['YES', 'NO'])->nullable();
+            $table->enum("listed_by_deo", ['YES', 'NO'])->nullable();
+            $table->text("member_name")->nullable();
+            $table->string('list_attachment_file')->nullable();
+            $table->string('list_attachment_file_path')->nullable();
+
             $table->text("mpo")->nullable();
-            $table->text("total_girls");
-            $table->text("total_boys");
-            $table->text("total_teachers");
+            $table->bigInteger("total_girls");
+            $table->bigInteger("total_boys");
+            $table->bigInteger("total_teachers");
+            $table->enum("management",['GOVERNMENT','NON-GOVT.'])->nullable();
+            $table->enum("student_type",['CO-EDUCATION JOINT','GIRLS','BOYS'])->nullable();
 
             $table->enum('lab_by_srdl', ['YES', 'NO'])->nullable();
             $table->enum('lab_by_bcc', ['YES', 'NO'])->nullable();
             $table->enum('lab_by_moe', ['YES', 'NO'])->nullable();
             $table->enum('lab_by_dshe', ['YES', 'NO'])->nullable();
             $table->enum('lab_by_edu_board', ['YES', 'NO'])->nullable();
-            $table->enum('lab_by_ngo', ['YES', 'NO'])->nullable();
-            $table->enum('own_lab', ['YES', 'NO'])->nullable();
-            $table->enum('lab_by_local_gov', ['YES', 'NO'])->nullable();
+//            $table->enum('lab_by_ngo', ['YES', 'NO'])->nullable();
+//            $table->enum('own_lab', ['YES', 'NO'])->nullable();
+//            $table->enum('lab_by_local_gov', ['YES', 'NO'])->nullable();
             $table->enum('lab_by_others', ['YES', 'NO'])->nullable();
-
-            $table->integer('total_pc_own')->default(0);
-            $table->integer('total_pc_gov_non_gov')->default(0);
-            $table->enum("management",['GOVERNMENT','NON-GOVT.'])->nullable();
-            $table->enum("student_type",['CO-EDUCATION JOINT','GIRLS','BOYS'])->nullable();
 
             $table->enum('internet_connection', ['YES', 'NO'])->nullable();
             $table->enum('internet_connection_type', ['broadband', 'modem'])->nullable();
+            $table->enum('ict_edu', ['YES', 'NO'])->nullable();
             $table->enum('ict_teacher', ['YES', 'NO'])->nullable();
 
             $table->enum('electricity_solar', ['YES', 'NO'])->nullable();
-            $table->enum('hidden_22_feet_by_18_feet', ['YES', 'NO'])->nullable();
-            $table->enum('packa_semi_packa', ['YES', 'NO'])->nullable();
-            $table->enum('boundary_wall', ['YES', 'NO'])->nullable();
+            $table->enum('proper_room', ['YES', 'NO'])->nullable();
+            $table->enum('proper_infrastructure', ['YES', 'NO'])->nullable();
+            $table->enum('proper_security', ['YES', 'NO'])->nullable();
 
-            $table->enum('cctv', ['YES', 'NO'])->nullable();
-            $table->enum('security_guard', ['YES', 'NO'])->nullable();
-            $table->enum('night_guard', ['YES', 'NO'])->nullable();
+            $table->enum('good_result', ['YES', 'NO'])->nullable();
             $table->longText('about_institution')->nullable();
 
             $table->string('ref_type')->nullable();
@@ -68,8 +74,6 @@ class CreateApplicationsTable extends Migration
             $table->timestamp('old_application_date')->nullable();
             $table->string('old_application_attachment')->nullable();
             $table->string('old_application_attachment_path')->nullable();
-            $table->string('signature')->nullable();
-            $table->string('signature_path')->nullable();
 
             $table->timestamps();
         });
