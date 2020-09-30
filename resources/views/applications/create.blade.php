@@ -150,50 +150,89 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group  col-md-4">
+                                <div class="form-group  col-md-6">
                                     {{ Form::label('total_boys', 'মোট ছাত্র ') }}
     {{--                                {{ Form::selectRange('total_boys', 1, 5000,25,['class'=>'form-control', 'id'=>'total_boys'] )}}--}}
                                     {{ Form::number('total_boys', 0,['class'=>'form-control', 'id'=>'total_boys'] )}}
                                 </div>
 
-                                <div class="form-group  col-md-4">
+                                <div class="form-group  col-md-6">
                                     {{ Form::label('total_girls', 'মোট ছাত্রী') }}
     {{--                                {{ Form::selectRange('total_girls', 1, 5000,30,['class'=>'form-control', 'id'=>'total_girls'] )}}--}}
                                     {{ Form::number('total_girls', 0,['class'=>'form-control', 'id'=>'total_girls'] )}}
                                 </div>
 
-                                <div class="form-group  col-md-4">
-                                    {{ Form::label('total_teachers', 'মোট শিক্ষক') }}
-    {{--                                {{ Form::selectRange('total_teachers', 1, 500,30,['class'=>'form-control', 'id'=>'total_teachers'] )}}--}}
-                                    {{ Form::number('total_teachers', 0,['class'=>'form-control', 'id'=>'total_teachers'] )}}
-                                </div>
+{{--                                <div class="form-group  col-md-4">--}}
+{{--                                    {{ Form::label('total_teachers', 'মোট শিক্ষক') }}--}}
+{{--    --}}{{--                                {{ Form::selectRange('total_teachers', 1, 500,30,['class'=>'form-control', 'id'=>'total_teachers'] )}}--}}
+{{--                                    {{ Form::number('total_teachers', 0,['class'=>'form-control', 'id'=>'total_teachers'] )}}--}}
+{{--                                </div>--}}
                             </div>
 
                             <div class="form-row">
-                                <div class="form-group col-md-4">
-                                    {{ Form::label('is_mpo', 'MPO ভুক্ত কিনা ?') }}
+                                <div class="form-group col-md-6">
+                                    {{ Form::label('is_mpo', 'MPO ভুক্ত কিনা ?', array('class' => 'awesome')) }}
                                     <input name="is_mpo" id="is_mpo" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                     {{Form::hidden('hidden_is_mpo',"No",["id"=>"hidden_is_mpo"])}}
                                 </div>
 
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-6">
                                     {{ Form::label('mpo', 'MPO কোড ') }}
                                     {{ Form::number('mpo',null,['class'=>'form-control', 'id'=>"mpo","disabled"=>"disabled"])}}
                                 </div>
                             </div>
 
-                            {{--management and student type start--}}
                             <div class="form-row">
-                                <div class="form-group  col-md-6">
-                                    {{ Form::label('management', 'ম্যানেজমেন্ট') }}
-                                    {{Form::select('management', array('GOVERNMENT' => 'সরকারি', 'NON-GOVT.' => 'বেসরকারি'), null,['id'=>'management','class' => 'form-control'])}}
+                                <div class="form-group col-md-6">
+                                    {{ Form::label('internet_connection', 'ইন্টারনেট সংযোগ আছে ?', array('class' => 'awesome')) }}
+                                    <input name="internet_connection" id="internet_connection" type="checkbox"  data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                    {{Form::hidden('hidden_internet_connection',"No",["id"=>"hidden_internet_connection"])}}
                                 </div>
 
-                                <div class="form-group  col-md-6">
-                                    {{Form::label('student_type', 'শিক্ষার্থীর ধরণ ') }}
-                                    {{Form::select('student_type', array('CO-EDUCATION JOINT' => 'কো-এডুকেশন', 'BOYS' => 'বয়েজ','GIRLS'=>'গার্লস'), null,['id'=>'student_type','class' => 'form-control'])}}
+                                <div class="form-group col-md-6">
+                                    {{Form::label('internet_connection_type', 'ইন্টারনেট সংযোগের ধরন ?') }}
+                                    {{Form::select('internet_connection_type', array('modem' => 'মডেম', 'broadband' => 'ব্রডব্যান্ড'), null,['class'=>'form-control', 'id'=>'internet_connection_type','class' => 'form-control',"disabled"=>"true"])}}
                                 </div>
                             </div>
+
+                            <div class="form-row">
+                                <div class="form-group  col-md-6">
+                                    {{ Form::label('ict_edu', 'আইসিটি শিক্ষার সুযোগ সুবিধা আছে?', array('class' => 'awesome')) }}
+                                    <input name="ict_edu" id="ict_edu" type="checkbox"  data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                    {{Form::hidden('hidden_ict_edu',"No",["id"=>"hidden_ict_edu"])}}
+                                </div>
+                                <div class="form-group  col-md-6">
+                                    {{ Form::label('ict_teacher', 'আইসিটি শিক্ষক আছে ?') }}
+                                    <input name="ict_teacher" id="ict_teacher" type="checkbox"  data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                    {{Form::hidden('hidden_ict_teacher',"No",["id"=>"hidden_ict_teacher"])}}
+                                </div>
+                            </div>
+
+                            <div class="form-row  col-md-12">
+                                <div class="form-group ">
+                                    {{ Form::label('good_result', 'প্রতিষ্ঠানটি ভালো ফলাফলকারী (বিশেষ করে ইংরেজি, গণিত এবং বিজ্ঞান বিষয়ে)?', array('class' => 'awesome')) }}
+                                    <input name="good_result" id="good_result" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                    {{Form::hidden('hidden_good_result',"No",["id"=>"hidden_good_result"])}}
+                                </div>
+                            </div>
+                            <div class="form-row col-md-12">
+                                <div class="form-group shadow-textarea">
+                                    <label class="awesome" for="about_institution">প্রতিষ্ঠানটি সম্পর্কে আপনার মন্তব্য</label>
+                                    <textarea class="form-control z-depth-1" id="about_institution" name="about_institution" rows="5" placeholder=""></textarea>
+                                </div>
+                            </div>
+                            {{--management and student type start--}}
+{{--                            <div class="form-row">--}}
+{{--                                <div class="form-group  col-md-6">--}}
+{{--                                    {{ Form::label('management', 'ম্যানেজমেন্ট') }}--}}
+{{--                                    {{Form::select('management', array('GOVERNMENT' => 'সরকারি', 'NON-GOVT.' => 'বেসরকারি'), null,['id'=>'management','class' => 'form-control'])}}--}}
+{{--                                </div>--}}
+
+{{--                                <div class="form-group  col-md-6">--}}
+{{--                                    {{Form::label('student_type', 'শিক্ষার্থীর ধরণ ') }}--}}
+{{--                                    {{Form::select('student_type', array('CO-EDUCATION JOINT' => 'কো-এডুকেশন', 'BOYS' => 'বয়েজ','GIRLS'=>'গার্লস'), null,['id'=>'student_type','class' => 'form-control'])}}--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
                         </div>
                         {{--management and student type end--}}
                     </div>
@@ -201,17 +240,17 @@
                         <button class="submitbtn btn btn-primary" type="submit">Submit</button>
                     </div>
                     <div class="fieldset-footer">
-                        <span>Step 1 of 4</span>
+                        <span>Step 1 of 3</span>
                     </div>
                 </fieldset>
 
 
-                <h3 class="step">
-                    <span class="title_text">কম্পিউটার ল্যাব ও কম্পিউটারের সংখ্যা</span>
-                </h3>
+{{--                <h3 class="step">--}}
+{{--                    <span class="title_text">কম্পিউটার ল্যাব </span>--}}
+{{--                </h3>--}}
 
-                <fieldset class="tab_2">
-                    <div class="fieldset-content">
+{{--                <fieldset class="tab_2">--}}
+{{--                    <div class="fieldset-content">--}}
 {{--                        <div class="form-row">--}}
 {{--                            <div class="form-group  col-md-5">--}}
 {{--                                {{ Form::label('own_lab', 'প্রতিষ্ঠানের নিজেস্ব ফান্ডে কম্পিউটার ল্যাব আছে ?') }}--}}
@@ -225,63 +264,59 @@
 {{--                            </div>--}}
 {{--                        </div>--}}
 
-                        <div class="form-row">
-                            <div class="form-group  col-md-5">
-                                {{ Form::label('having_labs', 'ইতোপূর্বে সরকারি/বেসরকারি ভাবে ল্যাব প্রাপ্ত ?') }}
-                                <input name="govlab" id="govlab" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
-                                {{Form::hidden('hidden_govlab',"No",["id"=>"hidden_govlab"])}}
-                            </div>
+{{--                        <div class="form-row">--}}
+{{--                            <div class="form-group  col-md-5">--}}
+{{--                                {{ Form::label('having_labs', 'ইতোপূর্বে সরকারি/বেসরকারি ভাবে ল্যাব প্রাপ্ত ?') }}--}}
+{{--                                <input name="govlab" id="govlab" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">--}}
+{{--                                {{Form::hidden('hidden_govlab',"No",["id"=>"hidden_govlab"])}}--}}
+{{--                            </div>--}}
 
 {{--                            <div class="form-group col-md-7">--}}
 {{--                                {{ Form::label('total_pc_gov_non_gov', 'সরকারি/বেসরকারি ভাবে প্রাপ্ত সক্রিয় কম্পিউটারের সংখ্যা') }}--}}
 {{--                                {{ Form::selectRange('total_pc_gov_non_gov', 1, 200,['class'=>'form-control', 'id'=>'total_pc_gov_non_gov'] )}}--}}
 {{--                            </div>--}}
 
-                            <div class="form-group col-md-7">
-                                {{ Form::label('labs', 'প্রাপ্ত ল্যাব সমূহ') }}
-                                {{ Form::select('labs[]', $labs, null, ['class'=>'form-control', 'id' => 'labs_multiple', 'multiple' => 'multiple','disabled'=>true, 'data-placeholder'=>' একাধিক হতে পারে']) }}
-                            </div>
-                        </div>
+{{--                            <div class="form-group col-md-7">--}}
+{{--                                {{ Form::label('labs', 'প্রাপ্ত ল্যাব সমূহ') }}--}}
+{{--                                {{ Form::select('labs[]', $labs, null, ['class'=>'form-control', 'id' => 'labs_multiple', 'multiple' => 'multiple','disabled'=>true, 'data-placeholder'=>' একাধিক হতে পারে']) }}--}}
+{{--                            </div>--}}
 
-                        <div class="form-row">
-                            <div class="form-group col-md-5">
-                                {{ Form::label('internet_connection', 'ইন্টারনেট সংযোগ আছে ?') }}
-                                <input name="internet_connection" id="internet_connection" type="checkbox"  class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
-                                {{Form::hidden('hidden_internet_connection',"No",["id"=>"hidden_internet_connection"])}}
-                            </div>
+{{--                        </div>--}}
 
-                            <div class="form-group col-md-7">
-                                {{Form::label('internet_connection_type', 'ইন্টারনেট সংযোগ এর ধরন ?') }}
-                                {{Form::select('internet_connection_type', array('modem' => 'মডেম', 'broadband' => 'ব্রডব্যান্ড'), null,['class'=>'form-control', 'id'=>'internet_connection_type','class' => 'form-control',"disabled"=>"true"])}}
-                            </div>
-                        </div>
 
-                        <div class="form-row">
-                            <div class="form-group  col-md-5">
-                                {{ Form::label('ict_edu', 'আইসিটি শিক্ষার সুযোগ সুবিধা আছে?') }}
-                                <input name="ict_edu" id="ict_edu" type="checkbox"  data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
-                                {{Form::hidden('hidden_ict_edu',"No",["id"=>"hidden_ict_edu"])}}
-                            </div>
-                            <div class="form-group  col-md-7">
-                                {{ Form::label('ict_teacher', 'আইসিটি শিক্ষক আছে ?') }}
-                                <input name="ict_teacher" id="ict_teacher" type="checkbox"  data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
-                                {{Form::hidden('hidden_ict_teacher',"No",["id"=>"hidden_ict_teacher"])}}
-                            </div>
-                        </div>
-                    </div>
+{{--                    </div>--}}
 
-                    <div class="fieldset-footer">
-                        <span>Step 2 of 4</span>
-                    </div>
-                </fieldset>
+{{--                    <div class="fieldset-footer">--}}
+{{--                        <span>Step 2 of 4</span>--}}
+{{--                    </div>--}}
+{{--                </fieldset>--}}
 
 
                 <h3 class="step">
                     <span class="title_text">যন্ত্রপাতি/সরঞ্জাম ও অন্যান্য সুবিধা</span>
                 </h3>
 
-                <fieldset class="tab_3">
+                <fieldset class="tab_2">
                     <div class="fieldset-content">
+                        <div class="form-row">
+                            <div class="form-group  col-md-6">
+                                {{ Form::label('having_labs', 'ইতোপূর্বে সরকারি/বেসরকারি ভাবে ল্যাব প্রাপ্ত ?', array('class' => 'nothing')) }}
+                                <input name="govlab" id="govlab" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                {{Form::hidden('hidden_govlab',"No",["id"=>"hidden_govlab"])}}
+                            </div>
+
+                            {{--                            <div class="form-group col-md-7">--}}
+                            {{--                                {{ Form::label('total_pc_gov_non_gov', 'সরকারি/বেসরকারি ভাবে প্রাপ্ত সক্রিয় কম্পিউটারের সংখ্যা') }}--}}
+                            {{--                                {{ Form::selectRange('total_pc_gov_non_gov', 1, 200,['class'=>'form-control', 'id'=>'total_pc_gov_non_gov'] )}}--}}
+                            {{--                            </div>--}}
+
+                            <div class="form-group col-md-6">
+                                {{ Form::label('labs', 'প্রাপ্ত ল্যাব সমূহ', array('class' => 'nothing')) }}
+{{--                                <span>প্রাপ্ত ল্যাব সমূহ</span>--}}
+                                {{ Form::select('labs[]', $labs, null, ['class'=>'form-control', 'id' => 'labs_multiple', 'multiple' => 'multiple','disabled'=>true, 'data-placeholder'=>' একাধিক হতে পারে']) }}
+                            </div>
+
+                        </div>
                         <div class="form-row">
                             <div class="form-group  col-md-6">
                                 {{ Form::label('proper_infrastructure', 'ল্যাব স্থাপনের জন্য উপযুক্ত অবকাঠামো আছে?') }}
@@ -324,22 +359,23 @@
 {{--                                {{Form::hidden('hidden_night_guard',"No",["id"=>"hidden_night_guard"])}}--}}
 {{--                            </div>--}}
                         </div>
-                        <div class="form-row  col-md-12">
-                            <div class="form-group ">
-                                {{ Form::label('good_result', 'প্রতিষ্ঠানটি ভালো ফলাফলকারী (বিশেষ করে ইংরেজি, গণিত এবং বিজ্ঞান বিষয়ে)?') }}
-                                <input name="good_result" id="good_result" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
-                                {{Form::hidden('hidden_good_result',"No",["id"=>"hidden_good_result"])}}
+
+                        <div class="form-row">
+                            <div class="form-group  col-md-6">
+                                {{ Form::label('lab_maintenance', 'ল্যাবে সরবরাহকৃত আইটি ও অন্যান্য সরঞ্জামের রক্ষণাবেক্ষণ এবং ল্যাব পরিচালনা ও সংরক্ষণে প্রতিশ্ৰুতি সম্পন্ন শিক্ষা প্রতিষ্ঠান ?') }}
+                                <input name="lab_maintenance" id="lab_maintenance" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                {{Form::hidden('hidden_lab_maintenance',"No",["id"=>"hidden_lab_maintenance"])}}
+                            </div>
+                            <div class="form-group  col-md-6">
+                                {{ Form::label('lab_prepared', 'ল্যাবের জন্য নির্ধারিত কক্ষটিতে যন্ত্রপাতি এবং আসবাবপত্র সরবরাহের পূর্বে ল্যাব কক্ষের সুরক্ষা ও নিরাপত্তা বৃদ্ধির জন্য উক্ত কক্ষের দরজা, জানালাসমূহ সুগঠিত রাখতে প্রস্তুত?') }}
+                                <input name="lab_prepared" id="lab_prepared" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                {{Form::hidden('hidden_lab_prepared',"No",["id"=>"hidden_lab_prepared"])}}
                             </div>
                         </div>
-                        <div class="form-row col-md-12">
-                            <div class="form-group shadow-textarea">
-                                <label for="about_institution">প্রতিষ্ঠানটি সম্পর্কে আপনার মন্তব্য</label>
-                                <textarea class="form-control z-depth-1" id="about_institution" name="about_institution" rows="5" placeholder=""></textarea>
-                            </div>
-                        </div>
+
                     </div>
                     <div class="fieldset-footer">
-                        <span>Step 3 of 4</span>
+                        <span>Step 2 of 3</span>
                     </div>
                 </fieldset>
 
@@ -348,7 +384,7 @@
                     <span class="title_text">বিবিধ </span>
                 </h3>
 
-                <fieldset class="tab_4">
+                <fieldset class="tab_3">
                     <div class="fieldset-content">
                         <div class="form-row">
                             <div class="form-group col-md-6">
@@ -458,7 +494,7 @@
                     </div>
 
                     <div class="fieldset-footer">
-                        <span>Step 4 of 4</span>
+                        <span>Step 3 of 3</span>
                     </div>
                 </fieldset>
                 {{ Form::close() }}

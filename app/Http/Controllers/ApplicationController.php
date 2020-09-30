@@ -136,9 +136,9 @@ class ApplicationController extends Controller
         $application->institution_tel= !empty($request->get('institution_tel'))?$request->get('institution_tel'):'';
         $application->total_boys= !empty($request->get('total_boys'))?$request->get('total_boys'):0;
         $application->total_girls= !empty($request->get('total_girls'))?$request->get('total_girls'):0;
-        $application->total_teachers= !empty($request->get('total_teachers'))?$request->get('total_teachers'):0;
-        $application->management= !empty($request->get('management'))?$request->get('management'):'';
-        $application->student_type= !empty($request->get('student_type'))?$request->get('student_type'):'';
+        //$application->total_teachers= !empty($request->get('total_teachers'))?$request->get('total_teachers'):0;
+        //$application->management= !empty($request->get('management'))?$request->get('management'):'';
+        //$application->student_type= !empty($request->get('student_type'))?$request->get('student_type'):'';
         $application->mpo= !empty($request->get('mpo'))?$request->get('mpo'):'';
         $application->internet_connection= !empty($request->get('internet_connection'))?"YES":'';
         $application->internet_connection_type= !empty($request->get('internet_connection_type'))?$request->get('internet_connection_type'):'';
@@ -152,7 +152,8 @@ class ApplicationController extends Controller
         $application->proper_security= !empty($request->get('proper_security'))?"YES":null;
         $application->good_result= !empty($request->get('good_result'))?"YES":null;
         $application->about_institution= !empty($request->get('about_institution'))?$request->get('about_institution'):'';
-
+        $application->lab_maintenance= !empty($request->get('lab_maintenance'))?"YES":null;
+        $application->lab_prepared= !empty($request->get('lab_prepared'))?"YES":null;
         if(!empty($request->get('reference')))$this->storeReference($request,$application);
         if(!empty($request->get('old_app')))$this->storeOldApp($request,$application);
         }

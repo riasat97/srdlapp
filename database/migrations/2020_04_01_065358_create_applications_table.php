@@ -25,9 +25,9 @@ class CreateApplicationsTable extends Migration
             $table->text("division");
             $table->text("district");
             $table->text("upazila");
-            $table->text("union_pourashava_ward");
+            $table->text("union_pourashava_ward")->nullable();
             $table->enum('seat_type',['general','reserved']);
-            $table->text("seat_no");
+            $table->text("seat_no")->nullable();
             $table->enum("is_parliamentary_constituency_ok", ['YES', 'NO'])->nullable();
             $table->enum("listed_by_deo", ['YES', 'NO'])->nullable();
             $table->text("member_name")->nullable();
@@ -37,9 +37,9 @@ class CreateApplicationsTable extends Migration
             $table->text("mpo")->nullable();
             $table->bigInteger("total_girls");
             $table->bigInteger("total_boys");
-            $table->bigInteger("total_teachers");
-            $table->enum("management",['GOVERNMENT','NON-GOVT.'])->nullable();
-            $table->enum("student_type",['CO-EDUCATION JOINT','GIRLS','BOYS'])->nullable();
+            //$table->bigInteger("total_teachers");
+            //$table->enum("management",['GOVERNMENT','NON-GOVT.'])->nullable();
+            //$table->enum("student_type",['CO-EDUCATION JOINT','GIRLS','BOYS'])->nullable();
 
             $table->enum('lab_by_srdl', ['YES', 'NO'])->nullable();
             $table->enum('lab_by_bcc', ['YES', 'NO'])->nullable();
@@ -55,14 +55,15 @@ class CreateApplicationsTable extends Migration
             $table->enum('internet_connection_type', ['broadband', 'modem'])->nullable();
             $table->enum('ict_edu', ['YES', 'NO'])->nullable();
             $table->enum('ict_teacher', ['YES', 'NO'])->nullable();
+            $table->enum('good_result', ['YES', 'NO'])->nullable();
+            $table->longText('about_institution')->nullable();
 
             $table->enum('electricity_solar', ['YES', 'NO'])->nullable();
             $table->enum('proper_room', ['YES', 'NO'])->nullable();
             $table->enum('proper_infrastructure', ['YES', 'NO'])->nullable();
             $table->enum('proper_security', ['YES', 'NO'])->nullable();
-
-            $table->enum('good_result', ['YES', 'NO'])->nullable();
-            $table->longText('about_institution')->nullable();
+            $table->enum('lab_maintenance', ['YES', 'NO'])->nullable();
+            $table->enum('lab_prepared', ['YES', 'NO'])->nullable();
 
             $table->string('ref_type')->nullable();
             $table->string('ref_name')->nullable();
