@@ -45,8 +45,24 @@
             return form.valid();
         },
         onFinished: function(event, currentIndex) {
-            alert('Sumited');
-            $("#signup-form").submit();
+           // alert('Sumited');
+            swal({
+                title: "Are you sure?",
+                text: "",
+                icon: "warning",
+                buttons: true,
+                dangerMode: false,
+            })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        swal("Thank you! Your Application has been submitted Successfully!", {
+                            icon: "success",
+                        });
+                        $("#signup-form").submit();
+                    } else {
+                        swal("Continue to fill out.......!");
+                    }
+                });
         },
         // onInit : function (event, currentIndex) {
         //     event.append('demo');
@@ -81,7 +97,7 @@
     $('#button').click(function () {
         $("input[type='file']").trigger('click');
     })
-    
+
     $("input[type='file']").change(function () {
         $('#val').text(this.value.replace(/C:\\fakepath\\/i, ''))
     })

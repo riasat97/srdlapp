@@ -58,7 +58,7 @@
                 <input type="text" class="form-control" name="username" value="{{ old('username') }}" placeholder="User Name">
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
 
-                @if ($errors->has('usernae'))
+                @if ($errors->has('username'))
                     <span class="help-block">
                         <strong>{{ $errors->first('username') }}</strong>
                     </span>
