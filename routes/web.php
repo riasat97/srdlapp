@@ -29,6 +29,7 @@ Route::group(['prefix' => 'applications', 'as' => 'applications.'], function () 
     Route::post('/store', 'ApplicationController@store')->name('store');;
     Route::get('/sms', 'ApplicationController@sms')->name('sms');;
     Route::get('/preview', 'ApplicationController@applicationPreview')->name('preview');
+    Route::post('/update/{application}', 'ApplicationController@update')->name('update');
 });
 Auth::routes();
 

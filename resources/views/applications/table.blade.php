@@ -1,5 +1,4 @@
 <div class="container mt-5">
-    <h2 class="mb-4">SRDL Applications</h2>
     <table class="table table-bordered yajra-datatable">
         <thead>
         <tr>

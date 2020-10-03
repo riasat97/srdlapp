@@ -18,18 +18,19 @@ class ApplicationController extends Controller
 {
     public function index(Request $request)
     {
-       if ($request->ajax()) {
+        if ($request->ajax()) {
             $data = Application::latest()->get();
-           // dd($data);
+            // dd($data);
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->addColumn('action', function($row){
-                    $btn = '<a href="javascript:    void(0)" class="edit btn btn-success btn-sm">Edit</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
+                ->addColumn('action', function ($row) {
+                    $btn = "<a href='javascript:void(0)' data-application='" . json_encode($row) . "' class='edit btn btn-success btn-sm'>Edit</a>
+                            <a href='javascript:void(0)' class='delete btn btn-danger btn-sm'>Delete</a>";
                     return $btn;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
-       }
+        }
 
         return view('applications.index');
     }
@@ -91,7 +92,7 @@ class ApplicationController extends Controller
 //        }
 
         foreach($res as $rs){
-           // $electricity_solar=($rs->banbeisFacility->electricity=="YES")?$rs->banbeisFacility->electricity:$rs->banbeisFacility->solar;
+            // $electricity_solar=($rs->banbeisFacility->electricity=="YES")?$rs->banbeisFacility->electricity:$rs->banbeisFacility->solar;
             //$packa_semi_packa=($rs->banbeisFacility->packa=="YES" || $rs->banbeisFacility->semi_packa=="YES")?"YES":"NO";
             $response[] = ['value' => $rs->institution,
                 'label'=>$rs->eiin,'mobile'=>!empty($rs->banbeisExtra->mobile)?$rs->banbeisExtra->mobile:'',
@@ -103,8 +104,8 @@ class ApplicationController extends Controller
                 'internet_connection'=>$rs->banbeisFacility->internet,'ict_teacher'=>$rs->banbeisFacility->ict_teacher,
                 //'own_lab'=>$rs->banbeisLab->own_lab,'total_pc_own'=>$rs->banbeisExtra->own_pc,
                 'govlab'=>$this->getHavingLab($rs),'labs'=> $this->getLabs($rs)];//'total_pc_gov_non_gov'=>$rs->banbeisExtra->total_lab_pc,
-                //'packa_semi_packa'=>$packa_semi_packa,
-                //'electricity_solar'=>$electricity_solar,'cctv'=>$rs->banbeisFacility->cc_camera,'security_guard'=>$rs->banbeisFacility->security_guard]  ;
+            //'packa_semi_packa'=>$packa_semi_packa,
+            //'electricity_solar'=>$electricity_solar,'cctv'=>$rs->banbeisFacility->cc_camera,'security_guard'=>$rs->banbeisFacility->security_guard]  ;
         }
 
         return response()->json($response);
@@ -141,29 +142,29 @@ class ApplicationController extends Controller
         }
         //exit;
         if(empty($request->get('listed_by_deo'))){
-        $profile= new ApplicationProfile();
+            $profile= new ApplicationProfile();
             $profile->eiin= !empty($request->get('eiin'))?$request->get('eiin'):'';
             $profile->institution= !empty($request->get('institution'))?$request->get('institution'):'';
             $profile->institution_email= !empty($request->get('institution_email'))?$request->get('institution_email'):'';
             $profile->institution_tel= !empty($request->get('institution_tel'))?$request->get('institution_tel'):'';
             $profile->total_boys= !empty($request->get('total_boys'))?$request->get('total_boys'):0;
             $profile->total_girls= !empty($request->get('total_girls'))?$request->get('total_girls'):0;
-        //$application->total_teachers= !empty($request->get('total_teachers'))?$request->get('total_teachers'):0;
-        //$application->management= !empty($request->get('management'))?$request->get('management'):'';
-        //$application->student_type= !empty($request->get('student_type'))?$request->get('student_type'):'';
+            //$application->total_teachers= !empty($request->get('total_teachers'))?$request->get('total_teachers'):0;
+            //$application->management= !empty($request->get('management'))?$request->get('management'):'';
+            //$application->student_type= !empty($request->get('student_type'))?$request->get('student_type'):'';
             $profile->mpo= !empty($request->get('mpo'))?$request->get('mpo'):'';
             $profile->internet_connection= !empty($request->get('internet_connection'))?"YES":'';
             $profile->internet_connection_type= !empty($request->get('internet_connection_type'))?$request->get('internet_connection_type'):'';
             $profile->ict_teacher= !empty($request->get('ict_teacher'))?"YES":'';
             $profile->good_result= !empty($request->get('good_result'))?"YES":null;
             $profile->about_institution= !empty($request->get('about_institution'))?$request->get('about_institution'):'';
-        $application->profile()->save($profile);
+            $application->profile()->save($profile);
             if(!empty($request->get('labs'))){
-            $applicationlabs= new ApplicationLab();
-            $applicationlabs=$this->storeLabs($request->get('labs'),$applicationlabs);
-            $application->lab()->save($applicationlabs);
-        }
-        $verified= new ApplicationVerification();
+                $applicationlabs= new ApplicationLab();
+                $applicationlabs=$this->storeLabs($request->get('labs'),$applicationlabs);
+                $application->lab()->save($applicationlabs);
+            }
+            $verified= new ApplicationVerification();
             $verified->proper_infrastructure= !empty($request->get('proper_infrastructure'))?"YES":null;
             $verified->proper_room= !empty($request->get('proper_room'))?"YES":null;
             $verified->electricity_solar= !empty($request->get('electricity_solar'))?"YES":null;
@@ -175,7 +176,7 @@ class ApplicationController extends Controller
             $verified->is_eiin= !empty($request->get('is_eiin'))?"YES":'';
             $verified->is_mpo= !empty($request->get('is_mpo'))?"YES":'';
             $verified->is_broadband= !empty($request->get('is_broadband'))?"YES":'';
-         $application->verification()->save($verified);
+            $application->verification()->save($verified);
             if(!empty($request->get('reference'))){
                 $attachment=$this->storeReference($request,$attachment);
                 $application->attachment()->save($attachment);
@@ -208,10 +209,10 @@ class ApplicationController extends Controller
         echo $response->getBody();
     }
     public function getMpo($res,$ins_type){
-         if($ins_type == "school" || $ins_type= "school and college")
-             return $res->banbeisMpo->mpo_school;
-         elseif ($ins_type == "college" ) return  $res->banbeisMpo->mpo_college;
-         else return  $res->banbeisMpo->mpo_madrasha;
+        if($ins_type == "school" || $ins_type= "school and college")
+            return $res->banbeisMpo->mpo_school;
+        elseif ($ins_type == "college" ) return  $res->banbeisMpo->mpo_college;
+        else return  $res->banbeisMpo->mpo_madrasha;
     }
     public function getIsMpo($res){
         if ($res->banbeisMpo->mpo_school !=""||$res->banbeisMpo->mpo_college != ""|| $res->banbeisMpo->mpo_madrasha != '')
@@ -223,7 +224,7 @@ class ApplicationController extends Controller
     {
         $labs=[];
         if(!empty($rs->banbeisLab->lab_by_srdl))
-        $labs[]='Sheikh Russel Digital Lab';
+            $labs[]='Sheikh Russel Digital Lab';
         if(!empty($rs->banbeisLab->lab_by_bcc))
             $labs[]='Bangladesh Computer Council';
         if(!empty($rs->banbeisLab->lab_by_moe))
@@ -248,22 +249,22 @@ class ApplicationController extends Controller
         if(!empty($rs->banbeisLab->lab_by_srdl)||!empty($rs->banbeisLab->lab_by_bcc)||!empty($rs->banbeisLab->lab_by_moe)||
             !empty($rs->banbeisLab->lab_by_dshe)||!empty($rs->banbeisLab->lab_by_edu_board)||
             !empty($rs->banbeisLab->lab_by_ngo)||!empty($rs->banbeisLab->lab_by_local_gov)||!empty($rs->banbeisLab->lab_by_others))
-        return "YES";
+            return "YES";
         else return "NO";
     }
 
     private function storeLabs( $labs,$applicationlabs)
     {
-            foreach ($labs as $lab){
-                if($lab== "Sheikh Russel Digital Lab") $applicationlabs->lab_by_srdl= "YES";
-                if($lab== "Bangladesh Computer Council") $applicationlabs->lab_by_bcc= "YES";
-                if($lab== "Ministry of Education") $applicationlabs->lab_by_moe= "YES";
-                if($lab== "Directorate of Secondary and Higher Education") $applicationlabs->lab_by_dshe= "YES";
-                if($lab== "Education Board") $applicationlabs->lab_by_edu_board= "YES";
-                if($lab== "NGO") $applicationlabs->lab_by_ngo= "YES";
-                if($lab== "Local Government") $applicationlabs->lab_by_local_gov= "YES";
-                if($lab== "Others") $applicationlabs->lab_by_others= "YES";
-            }
+        foreach ($labs as $lab){
+            if($lab== "Sheikh Russel Digital Lab") $applicationlabs->lab_by_srdl= "YES";
+            if($lab== "Bangladesh Computer Council") $applicationlabs->lab_by_bcc= "YES";
+            if($lab== "Ministry of Education") $applicationlabs->lab_by_moe= "YES";
+            if($lab== "Directorate of Secondary and Higher Education") $applicationlabs->lab_by_dshe= "YES";
+            if($lab== "Education Board") $applicationlabs->lab_by_edu_board= "YES";
+            if($lab== "NGO") $applicationlabs->lab_by_ngo= "YES";
+            if($lab== "Local Government") $applicationlabs->lab_by_local_gov= "YES";
+            if($lab== "Others") $applicationlabs->lab_by_others= "YES";
+        }
         return $applicationlabs;
     }
 
@@ -275,7 +276,7 @@ class ApplicationController extends Controller
         $attachment->ref_office=!empty($request->get('ref_office'))?$request->get('ref_office'):null;
         //dd($request->toArray());
         if(!empty($request->hasFile("ref_documents_file")))
-        return $this->fileUpload($request,$request->file("ref_documents_file"),$attachment,'ref_documents_file');
+            return $this->fileUpload($request,$request->file("ref_documents_file"),$attachment,'ref_documents_file');
         return  $attachment;
 
     }
@@ -284,43 +285,61 @@ class ApplicationController extends Controller
     {
         $attachment->old_application_date=!empty($request->get('old_application_date'))?$request->get('old_application_date'):null;
         if(!empty($request->hasFile("old_application_attachment")))
-        return $this->fileUpload($request,$request->file("old_application_attachment"),$attachment,'old_application_attachment');
+            return $this->fileUpload($request,$request->file("old_application_attachment"),$attachment,'old_application_attachment');
         return $attachment;
     }
     public function fileUpload(Request $req,$file,$attachment,$ex){
-       //dd('in fileUpload');
+        //dd('in fileUpload');
         $req->validate([
             'ref_documents_file' => 'mimes:csv,txt,xlx,xls,pdf|max:2048',
             'old_application_attachment' => 'mimes:csv,txt,xlx,xls,pdf|max:2048',
             'list_attachment_file' => 'mimes:jpeg,pdf,png,jpg,gif,svg|max:2048',
         ]);
 
-            $fileName = time().'_'.$file->getClientOriginalName();
-            //dd($fileName);
-            $filePath = $req->file($ex)->storeAs('uploads', $fileName, 'public');
+        $fileName = time().'_'.$file->getClientOriginalName();
+        //dd($fileName);
+        $filePath = $req->file($ex)->storeAs('uploads', $fileName, 'public');
 
-            $attachment->$ex = time().'_'.$file->getClientOriginalName();
-            $appFilePath= $ex."_path";
-            $attachment->$appFilePath = '/storage/' . $filePath;
-            return $attachment;
+        $attachment->$ex = time().'_'.$file->getClientOriginalName();
+        $appFilePath= $ex."_path";
+        $attachment->$appFilePath = '/storage/' . $filePath;
+        return $attachment;
     }
-        public function  applicationPreview(){
+    public function  applicationPreview(){
         return view('applications.preview');
-        }
+    }
 
     private function getSeatNo($parliamentary_constituency){
-         //dd($parliamentary_constituency);
-         $bd=Bangladesh::where('parliamentary_constituency',$parliamentary_constituency)->first();
-         if(!empty($bd))
-         return $bd->seat_no;
-         else{
-             $reserved_seats=ReservedSeats();
-             foreach ($reserved_seats as $key=>$reserved_seat){
-                 if($reserved_seat['parliamentary_constituency']== $parliamentary_constituency){
-                     return $reserved_seat['seat_no'];
-                 }
-             }
-             return "";
-         }
+        //dd($parliamentary_constituency);
+        $bd=Bangladesh::where('parliamentary_constituency',$parliamentary_constituency)->first();
+        if(!empty($bd))
+            return $bd->seat_no;
+        else{
+            $reserved_seats=ReservedSeats();
+            foreach ($reserved_seats as $key=>$reserved_seat){
+                if($reserved_seat['parliamentary_constituency']== $parliamentary_constituency){
+                    return $reserved_seat['seat_no'];
+                }
+            }
+            return "";
+        }
+    }
+    public function update(Application $application, Request $request)
+    {
+        $application->eiin = $request->eiin;
+        $application->institution = $request->institution;
+        $application->institution_email = $request->institution_email;
+        $application->institution_tel = $request->institution_tel;
+        $application->total_boys = $request->total_boys;
+        $application->total_girls = $request->total_girls;
+        $application->mpo = isset($request->is_mpo) && $request->mpo ? $request->mpo : '';
+        $application->internet_connection = isset($request->internet_connection) ? 'YES' : 'NO';
+        $application->internet_connection_type = $request->internet_connection_type;
+        $application->ict_edu = isset($request->ict_edu) ? 'YES' : 'NO' ;
+        $application->ict_teacher = isset($request->ict_teacher) ? 'YES' : 'NO' ;
+        $application->good_result = isset($request->good_result) ? 'YES' : 'NO' ;
+        $application->about_institution = $request->about_institution;
+        $application->save();
+
     }
 }
