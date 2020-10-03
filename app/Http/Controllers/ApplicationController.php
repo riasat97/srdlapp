@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateApplicationRequest;
 use App\Models\Application;
+use App\Models\ApplicationAttachment;
+use App\Models\ApplicationLab;
+use App\Models\ApplicationProfile;
+use App\Models\ApplicationVerification;
 use App\Models\Banbeis;
 use App\Models\Bangladesh;
 use GuzzleHttp\Client;
@@ -43,6 +48,7 @@ class ApplicationController extends Controller
         $divisions = Bangladesh::distinct()->get("division")->toArray();
         foreach ($divisions as $key=>$division)
             $divisionList[$division['division']]=$division['division'];
+        $divisionList=array_merge(['-1' => 'নির্বাচন করুন'], $divisionList);
         return view('applications.create',['labs'=>$labs,'divisionList'=>$divisionList]);
     }
 
@@ -105,7 +111,7 @@ class ApplicationController extends Controller
 
     }
 
-    public function store(Request $request)
+    public function store(CreateApplicationRequest $request)
     {
         //dd($request->all());
         $application = Application::create([
@@ -117,49 +123,71 @@ class ApplicationController extends Controller
             'upazila' => $request->get('upazila'),
             'union_pourashava_ward' => !empty($request->get('union_pourashava_ward'))?$request->get('union_pourashava_ward'):'',
             'seat_type' => $request->get('seat_type'),
-            'seat_no' => !empty($request->get('parliamentary_constituency'))?$request->get('parliamentary_constituency'):'',
+            'parliamentary_constituency' => !empty($request->get('parliamentary_constituency'))?$request->get('parliamentary_constituency'):'',
+            'seat_no' => !empty($request->get('parliamentary_constituency'))?$this->getSeatNo($request->get('parliamentary_constituency')):'',
             'is_parliamentary_constituency_ok' => (!empty($request->get('is_parliamentary_constituency_ok'))&&!empty($request->get('parliamentary_constituency')))?"YES":"",
             'listed_by_deo' => !empty($request->get('listed_by_deo'))?"YES":"NO",
-            'member_name' => !empty($request->get('member_name'))?$request->get('member_name'):'',
+
         ]);
         if(($request->get('hidden_is_parliamentary_constituency_ok')=="NO") && !empty($request->get('parliamentary_constituency'))){
             $application->is_parliamentary_constituency_ok= "NO";
         }
+        $attachment= new ApplicationAttachment();
+
         if($request->hasFile('list_attachment_file')){
-            $application= $this->fileUpload($request,$request->file("list_attachment_file"),$application,'list_attachment_file');
+            $attachment->member_name= !empty($request->get('member_name'))?$request->get('member_name'):'';
+            $attachment=$this->fileUpload($request,$request->file("list_attachment_file"),$attachment,'list_attachment_file');
+            $application->attachment()->save($attachment);
         }
         //exit;
         if(empty($request->get('listed_by_deo'))){
-        $application->eiin= !empty($request->get('eiin'))?$request->get('eiin'):'';
-        $application->institution= !empty($request->get('institution'))?$request->get('institution'):'';
-        $application->institution_email= !empty($request->get('institution_email'))?$request->get('institution_email'):'';
-        $application->institution_tel= !empty($request->get('institution_tel'))?$request->get('institution_tel'):'';
-        $application->total_boys= !empty($request->get('total_boys'))?$request->get('total_boys'):0;
-        $application->total_girls= !empty($request->get('total_girls'))?$request->get('total_girls'):0;
+        $profile= new ApplicationProfile();
+            $profile->eiin= !empty($request->get('eiin'))?$request->get('eiin'):'';
+            $profile->institution= !empty($request->get('institution'))?$request->get('institution'):'';
+            $profile->institution_email= !empty($request->get('institution_email'))?$request->get('institution_email'):'';
+            $profile->institution_tel= !empty($request->get('institution_tel'))?$request->get('institution_tel'):'';
+            $profile->total_boys= !empty($request->get('total_boys'))?$request->get('total_boys'):0;
+            $profile->total_girls= !empty($request->get('total_girls'))?$request->get('total_girls'):0;
         //$application->total_teachers= !empty($request->get('total_teachers'))?$request->get('total_teachers'):0;
         //$application->management= !empty($request->get('management'))?$request->get('management'):'';
         //$application->student_type= !empty($request->get('student_type'))?$request->get('student_type'):'';
-        $application->mpo= !empty($request->get('mpo'))?$request->get('mpo'):'';
-        $application->internet_connection= !empty($request->get('internet_connection'))?"YES":'';
-        $application->internet_connection_type= !empty($request->get('internet_connection_type'))?$request->get('internet_connection_type'):'';
-        $application->ict_edu= !empty($request->get('ict_edu'))?"YES":'';
-        $application->ict_teacher= !empty($request->get('ict_teacher'))?"YES":'';
-
-        $this->storeLabs($request,$application);
-        $application->proper_infrastructure= !empty($request->get('proper_infrastructure'))?"YES":null;
-        $application->proper_room= !empty($request->get('proper_room'))?"YES":null;
-        $application->electricity_solar= !empty($request->get('electricity_solar'))?"YES":null;
-        $application->proper_security= !empty($request->get('proper_security'))?"YES":null;
-        $application->good_result= !empty($request->get('good_result'))?"YES":null;
-        $application->about_institution= !empty($request->get('about_institution'))?$request->get('about_institution'):'';
-        $application->lab_maintenance= !empty($request->get('lab_maintenance'))?"YES":null;
-        $application->lab_prepared= !empty($request->get('lab_prepared'))?"YES":null;
-        if(!empty($request->get('reference')))$this->storeReference($request,$application);
-        if(!empty($request->get('old_app')))$this->storeOldApp($request,$application);
+            $profile->mpo= !empty($request->get('mpo'))?$request->get('mpo'):'';
+            $profile->internet_connection= !empty($request->get('internet_connection'))?"YES":'';
+            $profile->internet_connection_type= !empty($request->get('internet_connection_type'))?$request->get('internet_connection_type'):'';
+            $profile->ict_teacher= !empty($request->get('ict_teacher'))?"YES":'';
+            $profile->good_result= !empty($request->get('good_result'))?"YES":null;
+            $profile->about_institution= !empty($request->get('about_institution'))?$request->get('about_institution'):'';
+        $application->profile()->save($profile);
+            if(!empty($request->get('labs'))){
+            $applicationlabs= new ApplicationLab();
+            $applicationlabs=$this->storeLabs($request->get('labs'),$applicationlabs);
+            $application->lab()->save($applicationlabs);
+        }
+        $verified= new ApplicationVerification();
+            $verified->proper_infrastructure= !empty($request->get('proper_infrastructure'))?"YES":null;
+            $verified->proper_room= !empty($request->get('proper_room'))?"YES":null;
+            $verified->electricity_solar= !empty($request->get('electricity_solar'))?"YES":null;
+            $verified->proper_security= !empty($request->get('proper_security'))?"YES":null;
+            $verified->lab_maintenance= !empty($request->get('lab_maintenance'))?"YES":null;
+            $verified->lab_prepared= !empty($request->get('lab_prepared'))?"YES":null;
+            $verified->ict_edu= !empty($request->get('ict_edu'))?"YES":'';
+            $verified->has_ict_teacher= !empty($request->get('has_ict_teacher'))?"YES":'';
+            $verified->is_eiin= !empty($request->get('is_eiin'))?"YES":'';
+            $verified->is_mpo= !empty($request->get('is_mpo'))?"YES":'';
+            $verified->is_broadband= !empty($request->get('is_broadband'))?"YES":'';
+         $application->verification()->save($verified);
+            if(!empty($request->get('reference'))){
+                $attachment=$this->storeReference($request,$attachment);
+                $application->attachment()->save($attachment);
+            }
+            if(!empty($request->get('old_app'))){
+                $attachment=$this->storeOldApp($request,$attachment);
+                $application->attachment()->save($attachment);
+            }
         }
         $application->save();
         //dd($application->toArray());
-        return redirect()->route('home1')->with('status','আপনার আবেদনটি সফলভাবে জমা দেওয়া হয়েছে।!');
+        return redirect()->route('applications.index')->with('status','আপনার আবেদনটি সফলভাবে জমা দেওয়া হয়েছে।!');
     }
 
     public function sms(){
@@ -224,44 +252,42 @@ class ApplicationController extends Controller
         else return "NO";
     }
 
-    private function storeLabs(Request $request,$application)
+    private function storeLabs( $labs,$applicationlabs)
     {
-        $labs=$request->get('labs');
-        if(!empty($labs)){
             foreach ($labs as $lab){
-                if($lab== "Sheikh Russel Digital Lab") $application->lab_by_srdl= "YES";
-                if($lab== "Bangladesh Computer Council") $application->lab_by_bcc= "YES";
-                if($lab== "Ministry of Education") $application->lab_by_moe= "YES";
-                if($lab== "Directorate of Secondary and Higher Education") $application->lab_by_dshe= "YES";
-                if($lab== "Education Board") $application->lab_by_edu_board= "YES";
-                if($lab== "NGO") $application->lab_by_ngo= "YES";
-                if($lab== "Local Government") $application->lab_by_local_gov= "YES";
-                if($lab== "Others") $application->lab_by_others= "YES";
+                if($lab== "Sheikh Russel Digital Lab") $applicationlabs->lab_by_srdl= "YES";
+                if($lab== "Bangladesh Computer Council") $applicationlabs->lab_by_bcc= "YES";
+                if($lab== "Ministry of Education") $applicationlabs->lab_by_moe= "YES";
+                if($lab== "Directorate of Secondary and Higher Education") $applicationlabs->lab_by_dshe= "YES";
+                if($lab== "Education Board") $applicationlabs->lab_by_edu_board= "YES";
+                if($lab== "NGO") $applicationlabs->lab_by_ngo= "YES";
+                if($lab== "Local Government") $applicationlabs->lab_by_local_gov= "YES";
+                if($lab== "Others") $applicationlabs->lab_by_others= "YES";
             }
-        }
-        $application->save();
-
+        return $applicationlabs;
     }
 
-    private function storeReference(Request $request, $application)
+    private function storeReference(Request $request, $attachment)
     {
-        $application->ref_type=!empty($request->get('ref_type'))?$request->get('ref_type'):null;
-        $application->ref_name=!empty($request->get('ref_name'))?$request->get('ref_name'):null;
-        $application->ref_designation=!empty($request->get('ref_designation'))?$request->get('ref_designation'):null;
-        $application->ref_office=!empty($request->get('ref_office'))?$request->get('ref_office'):null;
+        $attachment->ref_type=!empty($request->get('ref_type'))?$request->get('ref_type'):null;
+        $attachment->ref_name=!empty($request->get('ref_name'))?$request->get('ref_name'):null;
+        $attachment->ref_designation=!empty($request->get('ref_designation'))?$request->get('ref_designation'):null;
+        $attachment->ref_office=!empty($request->get('ref_office'))?$request->get('ref_office'):null;
         //dd($request->toArray());
         if(!empty($request->hasFile("ref_documents_file")))
-        $this->fileUpload($request,$request->file("ref_documents_file"),$application,'ref_documents_file');
+        return $this->fileUpload($request,$request->file("ref_documents_file"),$attachment,'ref_documents_file');
+        return  $attachment;
 
     }
 
-    private function storeOldApp(Request $request, $application)
+    private function storeOldApp(Request $request, $attachment)
     {
-        $application->old_application_date=!empty($request->get('old_application_date'))?$request->get('old_application_date'):null;
+        $attachment->old_application_date=!empty($request->get('old_application_date'))?$request->get('old_application_date'):null;
         if(!empty($request->hasFile("old_application_attachment")))
-        $this->fileUpload($request,$request->file("old_application_attachment"),$application,'old_application_attachment');
+        return $this->fileUpload($request,$request->file("old_application_attachment"),$attachment,'old_application_attachment');
+        return $attachment;
     }
-    public function fileUpload(Request $req,$file,$application,$ex){
+    public function fileUpload(Request $req,$file,$attachment,$ex){
        //dd('in fileUpload');
         $req->validate([
             'ref_documents_file' => 'mimes:csv,txt,xlx,xls,pdf|max:2048',
@@ -273,12 +299,28 @@ class ApplicationController extends Controller
             //dd($fileName);
             $filePath = $req->file($ex)->storeAs('uploads', $fileName, 'public');
 
-            $application->$ex = time().'_'.$file->getClientOriginalName();
+            $attachment->$ex = time().'_'.$file->getClientOriginalName();
             $appFilePath= $ex."_path";
-            $application->$appFilePath = '/storage/' . $filePath;
-            return $application;
+            $attachment->$appFilePath = '/storage/' . $filePath;
+            return $attachment;
     }
         public function  applicationPreview(){
         return view('applications.preview');
         }
+
+    private function getSeatNo($parliamentary_constituency){
+         //dd($parliamentary_constituency);
+         $bd=Bangladesh::where('parliamentary_constituency',$parliamentary_constituency)->first();
+         if(!empty($bd))
+         return $bd->seat_no;
+         else{
+             $reserved_seats=ReservedSeats();
+             foreach ($reserved_seats as $key=>$reserved_seat){
+                 if($reserved_seat['parliamentary_constituency']== $parliamentary_constituency){
+                     return $reserved_seat['seat_no'];
+                 }
+             }
+             return "";
+         }
+    }
 }

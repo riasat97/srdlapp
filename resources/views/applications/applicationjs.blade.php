@@ -82,7 +82,7 @@
                         $("#seat-no").text('সংসদীয় আসন নং:');
                         $('#parliamentary_constituency').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
                         $.each(res['parliament'],function(key,value){
-                            $("#parliamentary_constituency").append('<option value="'+value.seat_no+'">'+value.parliamentary_constituency+'</option>');
+                            $("#parliamentary_constituency").append('<option value="'+value.parliamentary_constituency+'">'+value.parliamentary_constituency+'</option>');
                         });
 
                     }else{
@@ -118,7 +118,7 @@
                         $("#parliamentary_constituency").empty();
                         $("#seat-no").text('সংসদীয় আসন নং:'+res['parliament'].seat_no);
                         //$('#parliamentary_constituency').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
-                        $("#parliamentary_constituency").append('<option value="'+res['parliament'].seat_no+'">'+res['parliament'].parliamentary_constituency+'</option>');
+                        $("#parliamentary_constituency").append('<option value="'+res['parliament'].parliamentary_constituency+'">'+res['parliament'].parliamentary_constituency+'</option>');
                         //$("#is_parliamentary_constituency_ok").removeAttr("disabled", "disabled");
                         $('#is_parliamentary_constituency_ok').bootstrapToggle('on');
                     }else{
@@ -151,7 +151,7 @@
                             $("#seat-no").text('সংসদীয় আসন নং:');
                             $('#parliamentary_constituency').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
                             $.each(res['parliament'],function(key,value){
-                                $("#parliamentary_constituency").append('<option value="'+value.seat_no+'">'+value.parliamentary_constituency+'</option>');
+                                $("#parliamentary_constituency").append('<option value="'+value.parliamentary_constituency+'">'+value.parliamentary_constituency+'</option>');
                             });
                             $("#is_parliamentary_constituency_ok").attr("disabled", "disabled");
                             $("#hidethis").hide();
@@ -190,7 +190,7 @@
                         $("#seat-no").text('সংসদীয় আসন নং:');
                         $('#parliamentary_constituency').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
                         $.each(res['reserved_seats'],function(key,value){
-                            $("#parliamentary_constituency").append('<option value="'+value.seat_no+'">'+value.parliamentary_constituency+'</option>');
+                            $("#parliamentary_constituency").append('<option value="'+value.parliamentary_constituency+'">'+value.parliamentary_constituency+'</option>');
                             $("#is_parliamentary_constituency_ok").removeAttr("disabled");
                             $('#is_parliamentary_constituency_ok').bootstrapToggle('on');
                             $("#hidethis").hide();

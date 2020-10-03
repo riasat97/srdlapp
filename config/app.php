@@ -177,7 +177,7 @@ return [
         'Collective\Html\HtmlServiceProvider',
         Spatie\Permission\PermissionServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
-
+        browner12\helpers\HelperServiceProvider::class,
 
     ],
 

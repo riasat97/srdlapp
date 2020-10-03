@@ -268,3 +268,7 @@ fieldset {
     width: 31% !important;
     margin-left: 32px !important;
 }
+
+.sof{
+    display: none;
+}

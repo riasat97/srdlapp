@@ -39,3 +39,9 @@ class CreateBangladeshTable extends Migration
         Schema::dropIfExists('bangladesh');
     }
 }
+
+//SELECT DISTINCT seat_no_en,parliamentary_constituency FROM `bangladesh` WHERE parliamentary_constituency like '%\t' \r \n
+//https://stackoverflow.com/questions/17044316/mysql-removing-trailing-linebreaks-from-a-column
+//https://stackoverflow.com/questions/6858143/how-to-remove-leading-and-trailing-whitespace-in-a-mysql-field
+//UPDATE FOO set FIELD2 = TRIM(Replace(Replace(Replace(FIELD2,'\t',''),'\n',''),'\r',''));
+//SELECT DISTINCT seat_no,parliamentary_constituency FROM `bangladesh` WHERE  (parliamentary_constituency REGEXP '(^[[:space:]]|[[:space:]]$)') order by seat_no_en
