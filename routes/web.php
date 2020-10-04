@@ -56,6 +56,7 @@ Route::get('/upazilas', 'BangladeshController@getUpazilas')->name('upazilas');
 Route::get('/union_pourashava_wards', 'BangladeshController@getUnionPourashavaWards')->name('union_pourashava_wards');
 Route::get('/parliamentary_constituencies', 'BangladeshController@getParliamentaryConstituency')->name('parliamentary_constituencies');
 Route::get('/reserved_seats', 'BangladeshController@getReservedSeats')->name('reserved_seats');
+Route::get('/seat_no', 'BangladeshController@getSeatNo')->name('seat_no');
 
 
 

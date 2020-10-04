@@ -27,8 +27,6 @@ class CreateApplicationsTable extends Migration
             $table->text("parliamentary_constituency")->nullable();
             $table->enum("is_parliamentary_constituency_ok", ['YES', 'NO'])->nullable();
             $table->enum("listed_by_deo", ['YES', 'NO'])->nullable();
-
-
             $table->timestamps();
         });
     }

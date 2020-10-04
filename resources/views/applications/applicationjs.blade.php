@@ -117,6 +117,7 @@
                     if(res){
                         $("#parliamentary_constituency").empty();
                         $("#seat-no").text('সংসদীয় আসন নং:'+res['parliament'].seat_no);
+                        $("#hiddent_seat_no").val(res['parliament'].seat_no);
                         //$('#parliamentary_constituency').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
                         $("#parliamentary_constituency").append('<option value="'+res['parliament'].parliamentary_constituency+'">'+res['parliament'].parliamentary_constituency+'</option>');
                         //$("#is_parliamentary_constituency_ok").removeAttr("disabled", "disabled");
@@ -171,9 +172,19 @@
     });
     $('#parliamentary_constituency').on('change',function(){
         var parliamentaryConstituencyID = $(this).val();
-        $("#seat-no").text('সংসদীয় আসন নং:'+parliamentaryConstituencyID);
-        //$("#is_parliamentary_constituency_ok").removeAttr("disabled");
-        //$("#hidethis").hide();
+        $.ajax({
+            type:"GET",
+            url:"{{url('seat_no')}}?parliamentary_constituency="+parliamentaryConstituencyID,
+            success:function(res){
+                if(res){
+                $("#seat-no").text('সংসদীয় আসন নং:'+res);
+                //$("#hiddent_seat_no").val(res);
+                $('input[name="seat_no"]').val(res);
+                //$("#is_parliamentary_constituency_ok").removeAttr("disabled");
+                //$("#hidethis").hide();
+                }
+            }
+        });
     });
 
     $('#seat_type').on('change',function(){

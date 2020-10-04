@@ -150,4 +150,20 @@ class BangladeshController extends Controller
         $reservedSeats= ReservedSeats();
         return response()->json(['reserved_seats'=>$reservedSeats]);
     }
+    public function getSeatNo(Request $request){
+        $parliamentary_constituency= $request->get('parliamentary_constituency');
+        //dd($parliamentary_constituency);
+        $bd=Bangladesh::where('parliamentary_constituency',$parliamentary_constituency)->first();
+        if(!empty($bd))
+            return $bd->seat_no;
+        else{
+            $reserved_seats=ReservedSeats();
+            foreach ($reserved_seats as $key=>$reserved_seat){
+                if($reserved_seat['parliamentary_constituency']== $parliamentary_constituency){
+                    return $reserved_seat['seat_no'];
+                }
+            }
+            return "";
+        }
+    }
 }

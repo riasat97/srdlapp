@@ -93,7 +93,9 @@
                                 {{Form::select('seat_type', ['general'=>'সাধারণ', 'reserved'=>'সংরক্ষিত মহিলা আসন'], old('seat_type'),['id'=>'seat_type','class'=>'form-control'])}}
                             </div>
                             <div class="form-group  col-md-2">
-                                {{Form::label('seat_no', 'সংসদীয় আসন নং '.old('parliamentary_constituency'),array('id' => 'seat-no')) }}
+                                {{Form::label('seat_no', 'সংসদীয় আসন নং:'.old('seat_no'),array('id' => 'seat-no')) }}
+{{--                                {{Form::hidden('seat_no',old('seat_no'),["id"=>"hidden_seat_no"])}}--}}
+                                <input type="hidden" name="seat_no" value="{{ old('seat_no') }}" id="hidden_seat_no">
                             </div>
 
                             <div class="form-group  col-md-4">
