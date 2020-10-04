@@ -270,5 +270,5 @@ fieldset {
 }
 
 .sof{
-    display: none;
+    display: none !important;
 }

@@ -371,31 +371,32 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group  col-md-6 ">
-                                {{ Form::label('ict_edu', 'আইসিটি শিক্ষার সুযোগ সুবিধা আছে?', array('class' => 'awesome')) }}
+                                {{ Form::label('ict_edu', 'আইসিটি শিক্ষার সুযোগ সুবিধা আছে?') }}
                                 <input name="ict_edu" id="ict_edu" type="checkbox"  data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_ict_edu',"NO",["id"=>"hidden_ict_edu"])}}
                             </div>
-                            <div class="form-group  col-md-6 sof">
-                                {{ Form::label('has_ict_teacher', 'আইসিটি শিক্ষক আছে ?') }}
-                                <input name="has_ict_teacher" id="has_ict_teacher" type="checkbox"  data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
-                                {{Form::hidden('hidden_has_ict_teacher',"NO",["id"=>"hidden_has_ict_teacher"])}}
-                            </div>
+
                         </div>
                         <div class="form-row sof">
                             <div class="form-group  col-md-6">
-                                {{ Form::label('is_eiin', 'EIIN নম্বর আছে?', array('class' => 'awesome')) }}
+                                {{ Form::label('is_eiin', 'EIIN নম্বর আছে?') }}
                                 <input name="is_eiin" id="is_eiin" type="checkbox"  data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_is_eiin',"NO",["id"=>"hidden_is_eiin"])}}
                             </div>
                             <div class="form-group col-md-6 is_mpo">
-                                {{ Form::label('is_mpo', 'MPO ভুক্ত কিনা ?', array('class' => 'awesome')) }}
+                                {{ Form::label('is_mpo', 'MPO ভুক্ত কিনা ?') }}
                                 <input name="is_mpo" id="is_mpo" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_is_mpo',"NO",["id"=>"hidden_is_mpo"])}}
                             </div>
                         </div>
                         <div class="form-row sof">
                             <div class="form-group  col-md-6">
-                                {{ Form::label('is_broadband', 'ব্রডব্যান্ড ইন্টারনেট সংযোগ আছে ?', array('class' => 'awesome')) }}
+                                {{ Form::label('has_ict_teacher', 'আইসিটি শিক্ষক আছে ?') }}
+                                <input name="has_ict_teacher" id="has_ict_teacher" type="checkbox"  data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                {{Form::hidden('hidden_has_ict_teacher',"NO",["id"=>"hidden_has_ict_teacher"])}}
+                            </div>
+                            <div class="form-group  col-md-6 " >
+                                {{ Form::label('is_broadband', 'ব্রডব্যান্ড ইন্টারনেট সংযোগ আছে ?') }}
                                 <input name="is_broadband" id="is_broadband" type="checkbox"  data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_is_broadband',"NO",["id"=>"hidden_is_broadband"])}}
                             </div>
