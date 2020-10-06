@@ -12,6 +12,9 @@ use App\Models\Banbeis;
 use App\Models\Bangladesh;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
 class ApplicationController extends Controller
@@ -21,10 +24,13 @@ class ApplicationController extends Controller
         if ($request->ajax()) {
             $data = Application::latest()->get();
             // dd($data);
+            $user= Auth::user();
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->addColumn('action', function ($row) {
-                    $btn = "<a href='javascript:void(0)' data-application='" . json_encode($row) . "' class='edit btn btn-success btn-sm'>Edit</a>
+                ->addColumn('action', function ($row)use ($user) {
+                    //dd($row->id);
+                    if($user->hasRole('super admin'))$btn="<a href='".route("applications.edit",$row->id)."' target=\"_blank\" class='super-admin-edit btn btn-info btn-sm'>App Edit</a> "; else $btn="";
+                    $btn = $btn."<a href='javascript:void(0)' data-application='" . json_encode($row) . "' class='edit btn btn-success btn-sm'>Edit</a>
                             <a href='javascript:void(0)' class='delete btn btn-danger btn-sm'>Delete</a>";
                     return $btn;
                 })
@@ -103,7 +109,7 @@ class ApplicationController extends Controller
                 'management'=>$rs->banbeisExtra->management, 'student_type'=>$rs->banbeisExtra->student_type,
                 'internet_connection'=>$rs->banbeisFacility->internet,'ict_teacher'=>$rs->banbeisFacility->ict_teacher,
                 //'own_lab'=>$rs->banbeisLab->own_lab,'total_pc_own'=>$rs->banbeisExtra->own_pc,
-                'govlab'=>$this->getHavingLab($rs),'labs'=> $this->getLabs($rs)];//'total_pc_gov_non_gov'=>$rs->banbeisExtra->total_lab_pc,
+                'govlab'=>$this->getHavingLab($rs),'labs'=> $this->getLabs($rs,'banbeisLab')];//'total_pc_gov_non_gov'=>$rs->banbeisExtra->total_lab_pc,
             //'packa_semi_packa'=>$packa_semi_packa,
             //'electricity_solar'=>$electricity_solar,'cctv'=>$rs->banbeisFacility->cc_camera,'security_guard'=>$rs->banbeisFacility->security_guard]  ;
         }
@@ -112,8 +118,7 @@ class ApplicationController extends Controller
 
     }
 
-    public function store(CreateApplicationRequest $request)
-    {
+    public function store(CreateApplicationRequest $request){
         //dd($request->all());
         $application = Application::create([
             'lab_type' => $request->get('lab_type'),
@@ -165,6 +170,7 @@ class ApplicationController extends Controller
                 $application->lab()->save($applicationlabs);
             }
             $verified= new ApplicationVerification();
+            $verified->govlab= !empty($request->get('govlab'))?"YES":null;
             $verified->proper_infrastructure= !empty($request->get('proper_infrastructure'))?"YES":null;
             $verified->proper_room= !empty($request->get('proper_room'))?"YES":null;
             $verified->electricity_solar= !empty($request->get('electricity_solar'))?"YES":null;
@@ -191,6 +197,43 @@ class ApplicationController extends Controller
         return redirect()->route('applications.index')->with('status','আপনার আবেদনটি সফলভাবে জমা দেওয়া হয়েছে।!');
     }
 
+    public function displayPdf($id,$path){
+        $application= Application::where('id',$id)->with('attachment')->first();
+        if(!empty($application->attachment->$path)){
+            //$file =  base_path().'/public/uploads/documents/'.$application;
+            $fileName =  $application->attachment->$path;
+            $file=Storage::path($fileName);
+
+           if (file_exists($file)){
+
+                $ext =File::extension($file);
+                //dd($ext);
+                if($ext=='pdf'){
+                    $content_types='application/pdf';
+                }elseif ($ext=='doc') {
+                    $content_types='application/msword';
+                }elseif ($ext=='docx') {
+                    $content_types='application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+                }elseif ($ext=='xls') {
+                    $content_types='application/vnd.ms-excel';
+                }elseif ($ext=='xlsx') {
+                    $content_types='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+                }elseif ($ext=='txt') {
+                    $content_types='application/octet-stream';
+                }
+
+                return response(file_get_contents($file),200)
+                    ->header('Content-Type',$content_types);
+
+            }else{
+               abort(404);
+               //exit('Requested file does not exist on our server!');
+            }
+
+        }else{
+            abort(404);
+        }
+    }
     public function sms(){
         $client = new Client(['base_uri' => 'https://api.mobireach.com.bd/SendTextMessage']);
 
@@ -220,31 +263,31 @@ class ApplicationController extends Controller
         else return "NO";
     }
 
-    public function getLabs($rs)
+    public function getLabs($rs,$rel)
     {
         $labs=[];
-        if(!empty($rs->banbeisLab->lab_by_srdl))
+        if(!empty($rs->$rel->lab_by_srdl))
             $labs[]='Sheikh Russel Digital Lab';
-        if(!empty($rs->banbeisLab->lab_by_bcc))
+        if(!empty($rs->$rel->lab_by_bcc))
             $labs[]='Bangladesh Computer Council';
-        if(!empty($rs->banbeisLab->lab_by_moe))
+        if(!empty($rs->$rel->lab_by_moe))
             $labs[]='Ministry of Education';
-        if(!empty($rs->banbeisLab->lab_by_dshe))
+        if(!empty($rs->$rel->lab_by_dshe))
             $labs[]='Directorate of Secondary and Higher Education';
-        if(!empty($rs->banbeisLab->lab_by_edu_board))
+        if(!empty($rs->$rel->lab_by_edu_board))
             $labs[]='Education Board';
-        if(!empty($rs->banbeisLab->lab_by_ngo))
+        if(!empty($rs->$rel->lab_by_ngo))
             $labs[]='NGO';
 //        if(!empty($rs->banbeisLab->own_lab))
 //            $labs[]='Own Lab';
-        if(!empty($rs->banbeisLab->lab_by_local_gov))
+        if(!empty($rs->$rel->lab_by_local_gov))
             $labs[]='Local Government';
-        if(!empty($rs->banbeisLab->lab_by_others))
+        if(!empty($rs->$rel->lab_by_others))
             $labs[]='Others';
         return $labs;
     }
 
-    private function getHavingLab($rs)
+    protected function getHavingLab($rs)
     {
         if(!empty($rs->banbeisLab->lab_by_srdl)||!empty($rs->banbeisLab->lab_by_bcc)||!empty($rs->banbeisLab->lab_by_moe)||
             !empty($rs->banbeisLab->lab_by_dshe)||!empty($rs->banbeisLab->lab_by_edu_board)||
@@ -253,7 +296,7 @@ class ApplicationController extends Controller
         else return "NO";
     }
 
-    private function storeLabs( $labs,$applicationlabs)
+    protected function storeLabs( $labs,$applicationlabs)
     {
         foreach ($labs as $lab){
             if($lab== "Sheikh Russel Digital Lab") $applicationlabs->lab_by_srdl= "YES";
@@ -268,7 +311,7 @@ class ApplicationController extends Controller
         return $applicationlabs;
     }
 
-    private function storeReference(Request $request, $attachment)
+    protected function storeReference(Request $request, $attachment)
     {
         $attachment->ref_type=!empty($request->get('ref_type'))?$request->get('ref_type'):null;
         $attachment->ref_name=!empty($request->get('ref_name'))?$request->get('ref_name'):null;
@@ -281,7 +324,7 @@ class ApplicationController extends Controller
 
     }
 
-    private function storeOldApp(Request $request, $attachment)
+    protected function storeOldApp(Request $request, $attachment)
     {
         $attachment->old_application_date=!empty($request->get('old_application_date'))?$request->get('old_application_date'):null;
         if(!empty($request->hasFile("old_application_attachment")))
@@ -289,27 +332,21 @@ class ApplicationController extends Controller
         return $attachment;
     }
     public function fileUpload(Request $req,$file,$attachment,$ex){
-        //dd('in fileUpload');
-        $req->validate([
-            'ref_documents_file' => 'mimes:csv,txt,xlx,xls,pdf|max:2048',
-            'old_application_attachment' => 'mimes:csv,txt,xlx,xls,pdf|max:2048',
-            'list_attachment_file' => 'mimes:jpeg,pdf,png,jpg,gif,svg|max:2048',
-        ]);
-
-        $fileName = time().'_'.$file->getClientOriginalName();
-        //dd($fileName);
-        $filePath = $req->file($ex)->storeAs('uploads', $fileName, 'public');
-
-        $attachment->$ex = time().'_'.$file->getClientOriginalName();
         $appFilePath= $ex."_path";
-        $attachment->$appFilePath = '/storage/' . $filePath;
+        if(!empty($attachment->$appFilePath) &&!filter_var($attachment->$appFilePath, FILTER_VALIDATE_URL) ){
+            Storage::delete($attachment->$appFilePath);
+        }
+        $fileName = time().'_'.$file->getClientOriginalName();
+        $filePath = $req->file($ex)->storeAs('uploads', $fileName, 'public');
+        $attachment->$ex = time().'_'.$file->getClientOriginalName();
+        $attachment->$appFilePath = $filePath;
         return $attachment;
     }
     public function  applicationPreview(){
         return view('applications.preview');
     }
 
-    private function getSeatNo($parliamentary_constituency){
+    protected function getSeatNo($parliamentary_constituency){
         //dd($parliamentary_constituency);
         $bd=Bangladesh::where('parliamentary_constituency',$parliamentary_constituency)->first();
         if(!empty($bd))

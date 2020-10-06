@@ -41,6 +41,10 @@ class CreateApplicationRequest extends FormRequest
             'ict_teacher' => Rule::requiredIf($request->get('lab_type') == 'sof'),
             'internet_connection' => Rule::requiredIf($request->get('lab_type') == 'sof'),
             'internet_connection_type' => Rule::requiredIf($request->get('lab_type') == 'sof' && $request->get('internet_connection_type') != 'broadband'),
+
+            'ref_documents_file' => 'mimes:pdf|max:2048',
+            'old_application_attachment' => 'mimes:pdf|max:2048',
+            'list_attachment_file' => 'mimes:pdf|max:2048',
         ];
     }
     public function messages()

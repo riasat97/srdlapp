@@ -20,24 +20,28 @@ Route::get('/', function () {
 
 
 
-Route::group(['prefix' => 'applications', 'as' => 'applications.'], function () {
+Route::group(['prefix' => 'applications', 'as' => 'applications.','middleware' => 'auth'], function () {
 
     Route::get('/', 'ApplicationController@index')->name('index');
     Route::get('/terms', 'ApplicationController@terms')->name('terms');
     Route::get('/apply', 'ApplicationController@create')->name('apply');
     Route::get('/eiin', 'ApplicationController@getValuesByEiin')->name('eiin');
     Route::post('/store', 'ApplicationController@store')->name('store');;
+    Route::get('{application}/edit', 'ApplicationUpdateController@edit')->name('edit');
+    Route::put('{application}', 'ApplicationUpdateController@updates')->name('updates');
+    Route::get('{id}/attachment/{path}', 'ApplicationController@displayPdf')->name('displayPdf');
     Route::get('/sms', 'ApplicationController@sms')->name('sms');;
     Route::get('/preview', 'ApplicationController@applicationPreview')->name('preview');
     Route::post('/update/{application}', 'ApplicationController@update')->name('update');
+
 });
 Auth::routes();
 
 Route::get('loginWithOtp', function () {
     if (Auth::check()) {
-        return redirect('/applications/apply');
+        return redirect('/applications');
     }
-    return view('auth/loginWithOtp');
+    return view('auth/login');
 })->name('loginWithOtp');
 Route::post('loginWithOtp', 'Auth\LoginController@loginWithOtp')->name('loginWithOtp');
 Route::post('sendOtp', 'Auth\LoginController@sendOtp');

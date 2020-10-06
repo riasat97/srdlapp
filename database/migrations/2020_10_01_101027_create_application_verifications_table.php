@@ -16,7 +16,7 @@ class CreateApplicationVerificationsTable extends Migration
         Schema::create('application_verifications', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('application_verification_id');
-
+            $table->enum('govlab', ['YES', 'NO'])->nullable();
             $table->enum('proper_infrastructure', ['YES', 'NO'])->nullable();
             $table->enum('ict_edu', ['YES', 'NO'])->nullable();
             $table->enum('electricity_solar', ['YES', 'NO'])->nullable();

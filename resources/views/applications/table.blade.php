@@ -2,11 +2,11 @@
     <table class="table table-bordered yajra-datatable">
         <thead>
         <tr>
-            <th>No</th>
-            <th>division</th>
-            <th>district</th>
-            <th>upazila</th>
-            <th>institution</th>
+            <th>ক্রম</th>
+            <th>বিভাগ</th>
+            <th>জেলা</th>
+            <th>উপজেলা</th>
+            <th>শিক্ষা প্রতিষ্ঠান</th>
             <th>Action</th>
         </tr>
         </thead>

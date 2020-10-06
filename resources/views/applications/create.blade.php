@@ -48,7 +48,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="">কম্পিউটার ল্যাবের ধরণ</label>
-                                {{Form::select('lab_type', array('srdl'=>'শেখ রাসেল ডিজিটাল ল্যাব','sof' => 'স্কুল অফ ফিউচার'), 'শেখ রাসেল ডিজিটাল ল্যাব',['class'=>'form-control', 'id'=>'lab_type',])}}
+                                {{Form::select('lab_type', array('srdl'=>'শেখ রাসেল ডিজিটাল ল্যাব','sof' => 'স্কুল অফ ফিউচার'), old('lab_type'),['class'=>'form-control', 'id'=>'lab_type',])}}
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="">প্রতিষ্ঠানের ধরন</label>
@@ -236,7 +236,7 @@
                         {{--management and student type end--}}
                     </div>
                     <div class="form-group col-md-12" style="display: none" id="submit">
-                        <button class="submitbtn btn btn-primary" type="submit">Submit</button>
+                        <button class="submitbtn btn btn-primary" id="submitbtn"type="submit">Submit</button>
                     </div>
                     <div class="fieldset-footer">
                         <span>Step 1 of 3</span>
@@ -432,7 +432,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 {{ Form::label('ref_type', 'সুপারিশকারীর পরিচয়') }}
-                                {{ Form::select('ref_type',array('public_representative' => 'জন প্রতিনিধি', 'govt_emp' => 'সরকারি কর্মকর্তা',"famous_personel"=>"প্রখ্যাত ব্যক্তিত্ব","others"=>"অন্যান্য "), null,['class' => 'form-control',"disabled"=>"true"]) }}
+                                {{ Form::select('ref_type',array('public_representative' => 'মাননীয় সংসদ সদস্য', 'gov_emp' => 'সরকারি কর্মকর্তা',"famous_person"=>"প্রখ্যাত ব্যক্তিত্ব","others"=>"অন্যান্য "), null,['class' => 'form-control',"disabled"=>"true"]) }}
                             </div>
 
                             <div class="form-group  col-md-6">
@@ -471,10 +471,8 @@
                                 {{ Form::label('old_app', 'পূর্বে ডাক যোগে/সরাসরি আবেদন করেছেন?') }}
                                 <input name="old_app" id="old_app" type="checkbox"  class="toggle form-control" data-width="50" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                             </div>
-
-                            <div class="form-group col-md-6">
-                                {{ Form::label('old_application_date', 'পূর্বে করা আবেদনের তারিখ') }}
-                                        <!-- {{ Form::text('old_application_date', null, ['class' => 'form-control', 'id'=>'old_application_date',"disabled"=>"true"]) }} -->
+                            <div class="form-group col-md-4">
+                                {{ Form::label('old_application_date', 'আবেদনের তারিখ') }}
                                 <div class="input-group date" id="old_application_date" data-target-input="nearest">
                                     <input type="text" width="100%" name="old_application_date" class="form-control datetimepicker-input" data-target="#old_application_date" disabled/>
                                     <div class="input-group-append" data-target="#old_application_date" data-toggle="datetimepicker">
@@ -571,7 +569,32 @@
         });
 
     </script>
+    <script type="text/javascript">
 
+        $(document).ready(function(){
+            $("#submitbtn").click(function(e){
+                //$("#myForm").submit(); // Submit the form
+                e.preventDefault();
+                swal({
+                    title: "Are you sure?",
+                    text: "",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: false,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            swal("Thank you! Your Application has been submitted!", {
+                                icon: "success",
+                            });
+                            $("#signup-form").submit();
+                        } else {
+                            swal("Continue to fill out.......!");
+                        }
+                    });
+            });
+        });
+    </script>
     {{--LAB TYPE SELECTION--}}
      <script type="text/javascript">
          $(function () {
@@ -778,6 +801,14 @@
              });
          </script>
      @endif
+     @if(!empty(old('listed_by_deo')))
+         <script type="text/javascript">
+             $(function () {
+                 $('#listed_by_deo').bootstrapToggle('on');
+                 //$("#labs_multiple").removeAttr("disabled");
+             });
+         </script>
+     @endif
     <script type="text/javascript">
      $(document).ready(function(){
      $("#total_pc_gov_non_gov").prop("disabled",true);
@@ -804,7 +835,7 @@
         //$('#total_pc_own').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
         //$('#total_pc_gov_non_gov').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
         //$('#internet_connection_type').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
-        $('#ref_type').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
+        //$('#ref_type').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
        // $('#div').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
        // $('#dis').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
         //$('#upazila').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');

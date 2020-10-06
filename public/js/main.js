@@ -55,7 +55,7 @@
             })
                 .then((willDelete) => {
                     if (willDelete) {
-                        swal("Thank you! Your Application has been submitted Successfully!", {
+                        swal("Thank you! Your Application has been submitted!", {
                             icon: "success",
                         });
                         $("#signup-form").submit();
