@@ -26,9 +26,29 @@
 
         @include('flash::message')
 
-        <div class="clearfix"></div>
+        <div class="clearfix">
+        </div>
         <div class="box box-primary">
             <div class="box-body">
+                <div class="form-row">
+                    <div class="form-group  col-md-3">
+                        {{Form::label('div', 'বিভাগ') }}
+                        {{ Form::select('division', $divisionList,old('division'),array('class'=>'form-control','id'=>'div')) }}
+                    </div>
+                    <div class="form-group  col-md-3">
+                        {{Form::label('dis', 'জেলা') }}
+                        {{Form::select('district', [old('district')=>old('district')], old('district'),['id'=>'dis','class'=>'form-control'])}}
+                        {{--                        <select name="district" id="dis" class="form-control" style="width:350px">--}}
+                        {{--                        </select>--}}
+                    </div>
+                    <div class="form-group  col-md-3">
+                        {{Form::label('parliamentary_constituency', 'নির্বাচনী এলাকা') }}
+                        {{Form::select('parliamentary_constituency', [old('parliamentary_constituency')=>old('parliamentary_constituency')], old('parliamentary_constituency'),['id'=>'parliamentary_constituency','class'=>'form-control'])}}
+                        <button class="btn btn-lg btn-success pull-right" id="searchbtn" style="margin-top: 3px;" type="submit">Search</button>
+                    </div>
+
+                </div>
+
                 @include('applications.table')
             </div>
         </div>
@@ -44,10 +64,36 @@
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
     <script src="{{ asset('js/iziToast.min.js') }}"></script>
-
+    @include('applications.application-searchjs')
     <script type="text/javascript">
-        $(function () {
 
+        $('#searchbtn').click(function (e) {
+            $('.yajra-datatable').DataTable().clear().destroy();
+            var divID = ($('#div').val())?$('#div').val():'';
+            var disID = ($('#dis').val())?$('#dis').val():'';
+            var parliamentaryConstituencyID = ($('#parliamentary_constituency').val())?$('#parliamentary_constituency').val():'';
+
+            var table = $('.yajra-datatable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('applications.index') }}?divId="+divID+"&disId="+disID+"&parliamentaryConstituencyId="+parliamentaryConstituencyID,
+                columns: [
+                    {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                    {data: 'division', name: 'division'},
+                    {data: 'district', name: 'district'},
+                    {data: 'upazila', name: 'upazila'},
+                    {data: 'institution_bn', name: 'institution_bn'},
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: true,
+                        searchable: true
+                    },
+                ]
+            });
+
+        });
+        $(function () {
             var table = $('.yajra-datatable').DataTable({
                 processing: true,
                 serverSide: true,
@@ -57,7 +103,7 @@
                     {data: 'division', name: 'division'},
                     {data: 'district', name: 'district'},
                     {data: 'upazila', name: 'upazila'},
-                    {data: 'institution_bn', name: 'institution'},
+                    {data: 'institution_bn', name: 'institution_bn'},
                     {
                         data: 'action',
                         name: 'action',

@@ -15,10 +15,13 @@ use Illuminate\Support\Facades\Route;
 */
 //COMPOSER_MEMORY_LIMIT=-1
 Route::get('/', function () {
-    return view('homepage');
+    if (Auth::check()) {
+        return redirect('/applications');
+    }
+    return view('auth/login');
 });
 
-
+Auth::routes();
 
 Route::group(['prefix' => 'applications', 'as' => 'applications.','middleware' => 'auth'], function () {
 
@@ -35,14 +38,15 @@ Route::group(['prefix' => 'applications', 'as' => 'applications.','middleware' =
     Route::post('/update/{application}', 'ApplicationController@update')->name('update');
 
 });
-Auth::routes();
 
-Route::get('loginWithOtp', function () {
-    if (Auth::check()) {
-        return redirect('/applications');
-    }
-    return view('auth/login');
-})->name('loginWithOtp');
+
+//Route::get('loginWithOtp', function () {
+//    if (Auth::check()) {
+//        return redirect('/applications');
+//    }
+//    return view('auth/login');
+//})->name('loginWithOtp');
+
 Route::post('loginWithOtp', 'Auth\LoginController@loginWithOtp')->name('loginWithOtp');
 Route::post('sendOtp', 'Auth\LoginController@sendOtp');
 
@@ -72,3 +76,7 @@ Route::get('/test', 'TestController@test');
 
 Route::resource('roles', 'RoleController');
 Route::resource('permissions', 'PermissionController');
+Route::resource('references', 'ReferenceController');
+
+
+Route::resource('referenceDesignations', 'ReferenceDesignationController');

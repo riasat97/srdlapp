@@ -33,7 +33,7 @@ class LoginController extends Controller
      * @var string
      */
     //protected $redirectTo = RouteServiceProvider::HOME;
-    protected $redirectTo = 'applications/apply';
+    protected $redirectTo = 'applications';
 
     /**
      * Create a new controller instance.

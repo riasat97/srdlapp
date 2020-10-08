@@ -21,9 +21,11 @@ class ApplicationController extends Controller
 {
     public function index(Request $request)
     {
+
         if ($request->ajax()) {
-            $data = Application::latest()->get();
-            // dd($data);
+            //dd($request->all());
+            $data=$this->getAppData($request);
+            //dd($data);
             $user= Auth::user();
             return Datatables::of($data)
                 ->addIndexColumn()
@@ -37,8 +39,33 @@ class ApplicationController extends Controller
                 ->rawColumns(['action'])
                 ->make(true);
         }
+        $divisionList=[];
+        $divisions = Bangladesh::distinct()->get("division")->toArray();
+        foreach ($divisions as $key=>$division)
+            $divisionList[$division['division']]=$division['division'];
+        $divisionList=array_merge(['-1' => 'নির্বাচন করুন'], $divisionList);
 
-        return view('applications.index');
+        return view('applications.index',['divisionList'=>$divisionList]);
+    }
+    protected function getAppData(Request $request)
+    {
+        //dd($request->all());
+        $data = Application::query();
+        if (!empty($request->get('divId'))|| !empty($request->get('disId')) || !empty($request->get('parliamentaryConstituencyId'))) {
+            if (!empty($request->get('divId'))) {
+                $data->where('division', $request->get('divId'));
+            }
+
+            if (!empty($request->get('disId'))) {
+                $data->where('district', $request->get('disId'));
+            }
+            if (!empty($request->get('parliamentaryConstituencyId'))) {
+                $data->where('parliamentary_constituency', $request->get('parliamentaryConstituencyId'));
+            }
+           // dd($data->get()->toArray());
+            return $data->latest('id')->get();
+        }
+        return $data->latest('id')->get();
     }
     public function  terms(){
         return view('applications.terms');
@@ -150,6 +177,7 @@ class ApplicationController extends Controller
             $profile= new ApplicationProfile();
             $profile->eiin= !empty($request->get('eiin'))?$request->get('eiin'):'';
             $profile->institution= !empty($request->get('institution'))?$request->get('institution'):'';
+            $profile->head_name= !empty($request->get('head_name'))?$request->get('head_name'):'';
             $profile->institution_email= !empty($request->get('institution_email'))?$request->get('institution_email'):'';
             $profile->institution_tel= !empty($request->get('institution_tel'))?$request->get('institution_tel'):'';
             $profile->total_boys= !empty($request->get('total_boys'))?$request->get('total_boys'):0;
@@ -196,7 +224,13 @@ class ApplicationController extends Controller
         //dd($application->toArray());
         return redirect()->route('applications.index')->with('status','আপনার আবেদনটি সফলভাবে জমা দেওয়া হয়েছে।!');
     }
+    public function getMemberName($member_name,$request)
+    {
+        if(!empty($request->get('seat_no'))){
+            $seat_no= $request->get('seat_no');
 
+        }
+    }
     public function displayPdf($id,$path){
         $application= Application::where('id',$id)->with('attachment')->first();
         if(!empty($application->attachment->$path)){
@@ -379,4 +413,8 @@ class ApplicationController extends Controller
         $application->save();
 
     }
+
+
+
+
 }

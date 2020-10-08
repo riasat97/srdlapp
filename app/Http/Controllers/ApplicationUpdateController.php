@@ -66,6 +66,7 @@ class ApplicationUpdateController extends ApplicationController
             $profile= $application->profile;
             $profile->eiin= !empty($request->get('eiin'))?$request->get('eiin'):'';
             $profile->institution= !empty($request->get('institution'))?$request->get('institution'):'';
+            $profile->head_name= !empty($request->get('head_name'))?$request->get('head_name'):'';
             $profile->institution_email= !empty($request->get('institution_email'))?$request->get('institution_email'):'';
             $profile->institution_tel= !empty($request->get('institution_tel'))?$request->get('institution_tel'):'';
             $profile->total_boys= !empty($request->get('total_boys'))?$request->get('total_boys'):0;

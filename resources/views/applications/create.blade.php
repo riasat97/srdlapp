@@ -62,7 +62,6 @@
                                 <input type="text" class="form-control" id="inputInsBn" name="institution_bn" value="{{ old('institution_bn') }}" placeholder="বাংলাতে">
                             </div>
                         </div>
-
                         <div class="form-row">
 
                             <div class="form-group  col-md-6">
@@ -116,7 +115,7 @@
                             </div>
                             <div class="form-group  col-md-6 member_name" style="display: none">
                                 {{ Form::label('member_name', 'মাননীয় সংসদ সদস্যের নাম') }}
-                                {{ Form::text('member_name',old('member_name'),['class'=>'form-control','placeholder'=>'']) }}
+                                {{ Form::text('member_name',old('member_name'),['id'=>'member_name','class'=>'form-control','placeholder'=>'']) }}
                             </div>
                         </div>
                         <div class="form-row list_attachment" style="display: none">
@@ -152,6 +151,12 @@
                                 <div class="form-group col-md-12">
                                     <label for="">শিক্ষা প্রতিষ্ঠানের নাম</label>
                                     <input type="text" class="form-control" id="inputInsEn" name="institution" value="{{ old('institution') }}" placeholder="ইংরেজিতে">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="">প্রতিষ্ঠান প্রধানের নাম</label>
+                                    <input type="text" class="form-control" id="head_name" name="head_name" value="{{ old('head_name') }}" placeholder="">
                                 </div>
                             </div>
                             <div class="form-row">

@@ -18,6 +18,7 @@ class CreateApplicationProfilesTable extends Migration
             $table->unsignedBigInteger('application_profile_id');
             $table->bigInteger("eiin");
             $table->text("institution");
+            $table->text("head_name");
             $table->text("institution_tel");
             $table->text("institution_email");
             $table->text("mpo")->nullable();

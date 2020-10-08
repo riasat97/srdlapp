@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Application;
 use App\Models\Area;
 use App\Models\Bangladesh;
 use App\Models\Bd;
@@ -80,6 +81,7 @@ class BangladeshController extends Controller
         return response()->json(['parliament'=>$parliament]);
     }
 
+
     /**
      * Show the form for creating a new resource.
      *
@@ -154,16 +156,21 @@ class BangladeshController extends Controller
         $parliamentary_constituency= $request->get('parliamentary_constituency');
         //dd($parliamentary_constituency);
         $bd=Bangladesh::where('parliamentary_constituency',$parliamentary_constituency)->first();
-        if(!empty($bd))
-            return $bd->seat_no;
+        $application=Application::where('parliamentary_constituency',$parliamentary_constituency)->first();
+        if(!empty($bd)){
+            $member_name=(!empty($application->attachment->member_name))? $application->attachment->member_name:'';
+            return ['seat_no'=>$bd->seat_no,'member_name'=>$member_name];
+        }
         else{
             $reserved_seats=ReservedSeats();
             foreach ($reserved_seats as $key=>$reserved_seat){
                 if($reserved_seat['parliamentary_constituency']== $parliamentary_constituency){
-                    return $reserved_seat['seat_no'];
+                    $application=Application::where('parliamentary_constituency',$reserved_seat['parliamentary_constituency'])->first();
+                    $member_name=(!empty($application->attachment->member_name))? $application->attachment->member_name:'';
+                    return ['seat_no'=>$reserved_seat['seat_no'],'member_name'=>$member_name];
                 }
             }
-            return "";
+            return ['seat_no'=>'','member_name'=>''];
         }
     }
 }

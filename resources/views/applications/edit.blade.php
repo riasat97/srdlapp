@@ -62,7 +62,6 @@
                                 <input type="text" class="form-control" id="inputInsBn" name="institution_bn" value="{{ $application->institution_bn }}" placeholder="বাংলাতে">
                             </div>
                         </div>
-
                         <div class="form-row">
 
                             <div class="form-group  col-md-6">
@@ -165,6 +164,12 @@
                                 <div class="form-group col-md-12">
                                     <label for="">শিক্ষা প্রতিষ্ঠানের নাম</label>
                                     <input type="text" class="form-control" id="inputInsEn" name="institution" value="{{ $application->profile->institution ?? "" }}" placeholder="ইংরেজিতে">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label for="">শ্রতিষ্ঠান প্রধানের নাম</label>
+                                    <input type="text" class="form-control" id="head_name" name="head_name" value="{{ $application->profile->head ?? "" }}" placeholder="বাংলাতে">
                                 </div>
                             </div>
                             <div class="form-row">
