@@ -180,6 +180,7 @@ return [
         Yajra\DataTables\DataTablesServiceProvider::class,
         browner12\helpers\HelperServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        Yajra\DataTables\ButtonsServiceProvider::class,
 
     ],
 

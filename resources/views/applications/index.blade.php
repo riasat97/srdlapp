@@ -17,9 +17,11 @@
 @section('content')
     <section class="content-header">
         <h1 class="pull-left">SRDL Applications</h1>
+        @if(Auth::user()->hasRole(['super admin']))
         <h1 class="pull-right">
             <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{{ route('applications.apply') }}">Add New</a>
         </h1>
+        @endif
     </section>
     <div class="content">
         <div class="clearfix"></div>
@@ -31,6 +33,7 @@
         <div class="box box-primary">
             <div class="box-body">
                 <div class="form-row">
+                    @if(Auth::user()->hasRole(['super admin']))
                     <div class="form-group  col-md-3">
                         {{Form::label('div', 'বিভাগ') }}
                         {{ Form::select('division', $divisionList,old('division'),array('class'=>'form-control','id'=>'div')) }}
@@ -41,12 +44,21 @@
                         {{--                        <select name="district" id="dis" class="form-control" style="width:350px">--}}
                         {{--                        </select>--}}
                     </div>
+                    @endif
+                    @if(Auth::user()->hasRole(['super admin']))
                     <div class="form-group  col-md-3">
                         {{Form::label('parliamentary_constituency', 'নির্বাচনী এলাকা') }}
                         {{Form::select('parliamentary_constituency', [old('parliamentary_constituency')=>old('parliamentary_constituency')], old('parliamentary_constituency'),['id'=>'parliamentary_constituency','class'=>'form-control'])}}
                         <button class="btn btn-lg btn-success pull-right" id="searchbtn" style="margin-top: 3px;" type="submit">Search</button>
                     </div>
-
+                    @endif
+                    @if(Auth::user()->hasRole(['district admin','upazila admin']))
+                        <div class="form-group  col-md-3">
+                            {{Form::label('parliamentary_constituency', 'নির্বাচনী এলাকা') }}
+                            {{Form::select('parliamentary_constituency', $parliamentaryConstituencyList, null,['id'=>'parliamentary_constituency','class'=>'form-control'])}}
+                            <button class="btn btn-lg btn-success pull-right" id="searchbtn" style="margin-top: 3px;" type="submit">Search</button>
+                        </div>
+                    @endif
                 </div>
 
                 @include('applications.table')
@@ -64,54 +76,78 @@
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
     <script src="{{ asset('js/iziToast.min.js') }}"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.0.3/css/buttons.dataTables.min.css">
+    <script src="https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min.js"></script>
+    <script src="/vendor/datatables/buttons.server-side.js"></script>
     @include('applications.application-searchjs')
+
     <script type="text/javascript">
 
-        $('#searchbtn').click(function (e) {
-            $('.yajra-datatable').DataTable().clear().destroy();
-            var divID = ($('#div').val())?$('#div').val():'';
-            var disID = ($('#dis').val())?$('#dis').val():'';
-            var parliamentaryConstituencyID = ($('#parliamentary_constituency').val())?$('#parliamentary_constituency').val():'';
-
-            var table = $('.yajra-datatable').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: "{{ route('applications.index') }}?divId="+divID+"&disId="+disID+"&parliamentaryConstituencyId="+parliamentaryConstituencyID,
-                columns: [
-                    {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                    {data: 'division', name: 'division'},
-                    {data: 'district', name: 'district'},
-                    {data: 'upazila', name: 'upazila'},
-                    {data: 'institution_bn', name: 'institution_bn'},
-                    {
-                        data: 'action',
-                        name: 'action',
-                        orderable: true,
-                        searchable: true
-                    },
-                ]
-            });
-
-        });
         $(function () {
-            var table = $('.yajra-datatable').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: "{{ route('applications.index') }}",
-                columns: [
-                    {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-                    {data: 'division', name: 'division'},
-                    {data: 'district', name: 'district'},
-                    {data: 'upazila', name: 'upazila'},
-                    {data: 'institution_bn', name: 'institution_bn'},
-                    {
-                        data: 'action',
-                        name: 'action',
-                        orderable: true,
-                        searchable: true
+               // $('.yajra-datatable').DataTable().clear().destroy();
+                var table = $('.yajra-datatable').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: {
+                        url: "{{ route('applications.index') }}",
+                        data: function (d) {
+                            d.divId = ($('#div').val()) ? $('#div').val() : '',
+                            d.disId = ($('#dis').val()) ? $('#dis').val() : '',
+                            d.parliamentaryConstituencyId = ($('#parliamentary_constituency').val()) ? $('#parliamentary_constituency').val() : ''
+                        }
                     },
-                ]
+                    columns: [
+                        {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                        {data: 'division', name: 'division'},
+                        {data: 'district', name: 'district'},
+                        {data: 'upazila', name: 'upazila'},
+                        {data: 'institution_bn', name: 'institution_bn'},
+                        {
+                            className: 'details-control',
+                            data: 'action',
+                            name: 'action',
+                            orderable: true,
+                            searchable: true
+                        },
+                    ],
+
+                });
+            $('#searchbtn').click(function (e) {
+                table.draw();
             });
+
+            $('.yajra-datatable tbody').on('click', 'td.details-control', function () {
+                var tr = $(this).closest('tr');
+                var row = table.row( tr );
+
+                if ( row.child.isShown() ) {
+                    // This row is already open - close it
+                    row.child.hide();
+                    tr.removeClass('shown');
+                }
+                else {
+                    // Open this row
+                    row.child( template(row.data()) ).show();
+                    tr.addClass('shown');
+                }
+            });
+            function template ( d ) {
+                // `d` is the original data object for the row
+                return '<table class="table">'+
+                    '<tr>'+
+                    '<td>নির্বাচনী এলাকা :</td>'+
+                    '<td>'+d.seat_no+' '+d.parliamentary_constituency+'</td>'+
+                    '</tr>'+
+                    '<tr>'+
+                    '<td>মাননীয় সংসদ সদস্যের নাম:</td>'+
+                    '<td>'+d.attachment.member_name+'</td>'+
+                    '</tr>'+
+                    '<tr>'+
+                    '<td>ল্যাবের ধরণ</td>'+
+                    '<td>'+d.lab_type+'</td>'+
+                    '</tr>'+
+                    '</table>';
+            }
 
             $(document).on('click','.edit',function () {
                 var application = $(this).data('application')

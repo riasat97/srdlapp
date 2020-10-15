@@ -14,16 +14,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 //COMPOSER_MEMORY_LIMIT=-1
+//https://stackoverflow.com/questions/29893859/laravel-5-login-redirect-to-a-subdomain
+//https://laravel-news.com/laravel-auth-redirection
+//https://stackoverflow.com/questions/52583886/post-request-in-laravel-error-419-sorry-your-session-419-your-page-has-exp
+
 Route::get('/', function () {
     if (Auth::check()) {
-        return redirect('/applications');
+        return redirect('/admin/applications');
     }
     return view('auth/login');
 });
 
 Auth::routes();
 
-Route::group(['prefix' => 'applications', 'as' => 'applications.','middleware' => 'auth'], function () {
+Route::group(['prefix' => 'admin/applications', 'as' => 'applications.','middleware' => 'auth'], function () {
 
     Route::get('/', 'ApplicationController@index')->name('index');
     Route::get('/terms', 'ApplicationController@terms')->name('terms');
@@ -36,8 +40,28 @@ Route::group(['prefix' => 'applications', 'as' => 'applications.','middleware' =
     Route::get('/sms', 'ApplicationController@sms')->name('sms');;
     Route::get('/preview', 'ApplicationController@applicationPreview')->name('preview');
     Route::post('/update/{application}', 'ApplicationController@update')->name('update');
-
 });
+
+//Route::domain('{subdomain}.'. env('APP_URL', 'srdl.gov.bd'))->group(function () {
+//
+//    Route::get('/test', 'TestController@test');
+//
+//    Route::group(['prefix' => 'admin/applications', 'as' => 'applications.','middleware' => 'auth'], function () {
+//
+//        Route::get('/', 'ApplicationController@index')->name('index');
+//        Route::get('/terms', 'ApplicationController@terms')->name('terms');
+//        Route::get('/apply', 'ApplicationController@create')->name('apply');
+//        Route::get('/eiin', 'ApplicationController@getValuesByEiin')->name('eiin');
+//        Route::post('/store', 'ApplicationController@store')->name('store');;
+//        Route::get('{application}/edit', 'ApplicationUpdateController@edit')->name('edit');
+//        Route::put('{application}', 'ApplicationUpdateController@updates')->name('updates');
+//        Route::get('{id}/attachment/{path}', 'ApplicationController@displayPdf')->name('displayPdf');
+//        Route::get('/sms', 'ApplicationController@sms')->name('sms');;
+//        Route::get('/preview', 'ApplicationController@applicationPreview')->name('preview');
+//        Route::post('/update/{application}', 'ApplicationController@update')->name('update');
+//    });
+//
+//});
 
 
 //Route::get('loginWithOtp', function () {
@@ -66,17 +90,13 @@ Route::get('/parliamentary_constituencies', 'BangladeshController@getParliamenta
 Route::get('/reserved_seats', 'BangladeshController@getReservedSeats')->name('reserved_seats');
 Route::get('/seat_no', 'BangladeshController@getSeatNo')->name('seat_no');
 
-
-
 Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->middleware('verified');
-Route::get('/test', 'TestController@test');
 
-
+Route::group(['prefix' => 'admin', 'as' => '','middleware' => 'auth'], function () {
 Route::resource('roles', 'RoleController');
 Route::resource('permissions', 'PermissionController');
 Route::resource('references', 'ReferenceController');
-
-
 Route::resource('referenceDesignations', 'ReferenceDesignationController');
+});

@@ -36,7 +36,7 @@
                 </div>
             @endif
             <div class="col-md-12 application-form">
-                {{Form::open(array('route' => 'applications.store','method' => 'post','id'=>'signup-form','class'=>'signup-form','files' => true))}}
+                {{Form::open(array('route' => ['applications.store'],'method' => 'post','id'=>'signup-form','class'=>'signup-form','files' => true))}}
                 @csrf
 
                 <h3>
@@ -437,7 +437,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 {{ Form::label('ref_type', 'সুপারিশকারীর পরিচয়') }}
-                                {{ Form::select('ref_type',array('public_representative' => 'মাননীয় সংসদ সদস্য', 'gov_emp' => 'সরকারি কর্মকর্তা',"famous_person"=>"প্রখ্যাত ব্যক্তিত্ব","others"=>"অন্যান্য "), null,['class' => 'form-control',"disabled"=>"true"]) }}
+                                {{ Form::select('ref_type',array('public_representative' => 'মাননীয় সংসদ সদস্য','political_party'=>'রাজনৈতিক দল', 'gov_emp' => 'সরকারি কর্মকর্তা',"famous_person"=>"প্রখ্যাত ব্যক্তিত্ব","others"=>"অন্যান্য "), null,['class' => 'form-control',"disabled"=>"true"]) }}
                             </div>
 
                             <div class="form-group  col-md-6">

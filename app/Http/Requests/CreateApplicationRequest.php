@@ -42,9 +42,9 @@ class CreateApplicationRequest extends FormRequest
             //'internet_connection' => Rule::requiredIf($request->get('lab_type') == 'sof'),
             //'internet_connection_type' => Rule::requiredIf($request->get('lab_type') == 'sof' && $request->get('internet_connection_type') != 'broadband'),
 
-            'ref_documents_file' => 'mimes:pdf|max:2048',
-            'old_application_attachment' => 'mimes:pdf|max:2048',
-            'list_attachment_file' => 'mimes:pdf|max:2048',
+            'ref_documents_file' => 'mimes:pdf|max:4000',
+            'old_application_attachment' => 'mimes:pdf|max:4000',
+            'list_attachment_file' => 'mimes:pdf|max:4000',
         ];
     }
     public function messages()

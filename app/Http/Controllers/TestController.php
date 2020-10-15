@@ -10,8 +10,9 @@ use Spatie\Permission\Models\Role;
 class TestController extends Controller
 {
 
-    public function test(){
+    public function test($subdomain){
 
+        dd($subdomain);
         //dd(Auth::user()->hasPermissionTo('new application'));
 //        $role= Role::where('name','super admin')->first();
 //        $newApp= Permission::where('name','new application')->first();

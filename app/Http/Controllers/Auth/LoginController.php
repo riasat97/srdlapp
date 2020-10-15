@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Bangladesh;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use GuzzleHttp\Client;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
@@ -33,7 +35,7 @@ class LoginController extends Controller
      * @var string
      */
     //protected $redirectTo = RouteServiceProvider::HOME;
-    protected $redirectTo = 'applications';
+    protected $redirectTo = 'admin/applications';
 
     /**
      * Create a new controller instance.
@@ -47,6 +49,41 @@ class LoginController extends Controller
     public function username()
     {
         return 'username';
+    }
+    public function redirectPath()
+    {
+        if (method_exists($this, 'redirectTo')) {
+            return $this->redirectTo();
+        }
+
+        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/home';
+    }
+
+    public function redirectTo()
+    {
+        $user=Auth::user();
+        $url =  env('APP_URL', 'srdl.gov.bd');
+        $scheme = parse_url($url, PHP_URL_SCHEME);
+        $host = parse_url($url, PHP_URL_HOST);
+        //return $scheme.'://'.$subDomain.'.'.$host.$this->redirectTo;
+        //dd('hi');
+        if (App::environment('local')) {
+            return $this->redirectTo;
+        }
+        if($user->hasRole('super admin')){
+            $subDomain=$user->username;
+            return $scheme.'://'.$subDomain.'.'.$host.'/'.$this->redirectTo;
+        }
+        if($user->hasRole('district admin')){
+            $subDomain=explode('_',$user->username)[0];
+            return $scheme.'://'.$subDomain.'.'.$host.'/'.$this->redirectTo;
+        }
+        if($user->hasRole('upazila admin')){
+            $subSubDomain=explode('_',$user->username)[0];
+            $subDomain=explode('_',$user->username)[1];
+            return $scheme.'://'.$subSubDomain.'.'.$subDomain.'.'.$host.'/'.$this->redirectTo;
+        }
+
     }
 
 //    public function login(Request $request)
@@ -72,19 +109,19 @@ class LoginController extends Controller
 //        return redirect()->route('apply');
 //    }
 
-    public function loginWithOtp(Request $request){
-        Log::info($request);
-        $user  = User::where([['mobile','=',request('mobile')],['otp','=',request('otp')]])->first();
-        if( $user){
-            Auth::login($user, true);
-           // User::where('mobile','=',$request->mobile)->update(['otp' => null]);
-            User::where('mobile','=',$request->mobile);
-            return redirect()->route('applications.terms');
-        }
-        else{
-            return Redirect::back ();
-        }
-    }
+//    public function loginWithOtp(Request $request){
+//        Log::info($request);
+//        $user  = User::where([['mobile','=',request('mobile')],['otp','=',request('otp')]])->first();
+//        if( $user){
+//            Auth::login($user, true);
+//           // User::where('mobile','=',$request->mobile)->update(['otp' => null]);
+//            User::where('mobile','=',$request->mobile);
+//            return redirect()->route('applications.terms');
+//        }
+//        else{
+//            return Redirect::back ();
+//        }
+//    }
     public function sendOtp(Request $request){
 
         $mobile= $request->mobile;

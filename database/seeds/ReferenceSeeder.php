@@ -15,6 +15,9 @@ class ReferenceSeeder extends Seeder
         $member=Reference::create(
             ['ref_type'=>'মাননীয় সংসদ সদস্য']
         );
+        $political_party=Reference::create(
+            ['ref_type'=>'রাজনৈতিক দল']
+        );
         $gov_officer=Reference::create(
             ['ref_type'=>'সরকারি কর্মকর্তা']
         );
@@ -24,5 +27,19 @@ class ReferenceSeeder extends Seeder
         $others=Reference::create(
             ['ref_type'=>'অন্যান্য']
         );
+//        $member->referenceDesignations()->createMany([
+//            [
+//                'ref_designation' => 'প্রধানমন্ত্রী',
+//            ],
+//            [
+//                'ref_designation' => 'মন্ত্রী',
+//            ],
+//            [
+//                'ref_designation' => 'প্রতিমন্ত্রী',
+//            ],
+//            [
+//                'ref_designation' => 'উপমন্ত্রী',
+//            ],
+//        ]);
     }
 }

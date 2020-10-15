@@ -51,5 +51,10 @@ class Reference extends Model
         'updated_at' => 'nullable'
     ];
 
+    public function referenceDesignations()
+    {
+        return $this->hasOne('App\Models\ReferenceDesignation','reference_id');
+    }
+
 
 }

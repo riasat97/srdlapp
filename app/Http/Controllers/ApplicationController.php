@@ -22,6 +22,7 @@ class ApplicationController extends Controller
     public function index(Request $request)
     {
 
+        //dd($subdomain);
         if ($request->ajax()) {
             //dd($request->all());
             $data=$this->getAppData($request);
@@ -44,8 +45,9 @@ class ApplicationController extends Controller
         foreach ($divisions as $key=>$division)
             $divisionList[$division['division']]=$division['division'];
         $divisionList=array_merge(['-1' => 'নির্বাচন করুন'], $divisionList);
-
-        return view('applications.index',['divisionList'=>$divisionList]);
+        $parliamentaryConstituencyList= $this->getParliamentaryConstituency($request);
+        //dd($parliamentaryConstituencyList->toArray());
+        return view('applications.index',['divisionList'=>$divisionList,'parliamentaryConstituencyList'=>$parliamentaryConstituencyList]);
     }
     protected function getAppData(Request $request)
     {
@@ -63,10 +65,25 @@ class ApplicationController extends Controller
                 $data->where('parliamentary_constituency', $request->get('parliamentaryConstituencyId'));
             }
            // dd($data->get()->toArray());
-            return $data->latest('id')->get();
+            return $data->with('attachment')->latest('id')->get();
         }
-        return $data->latest('id')->get();
+        return $data->with('attachment')->permitted(null)->latest('id')->get();
     }
+    public function getParliamentaryConstituency(Request $request)
+    {
+        // dd($request->all());
+        $user=Auth::user();
+        if($user->hasRole(['district admin','upazila admin'])){
+            $parliament = Bangladesh::permitted(null)
+                ->groupBy('parliamentary_constituency')
+                ->orderBy('seat_no_en','asc')
+                ->pluck('parliamentary_constituency','parliamentary_constituency');
+            $parliament=array_merge(['-1' => 'নির্বাচন করুন'], $parliament->toArray());
+            return $parliament;
+        }
+        return [];
+    }
+
     public function  terms(){
         return view('applications.terms');
     }

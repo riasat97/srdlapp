@@ -16,8 +16,8 @@ class CreateReferenceDesignationsTable extends Migration
     {
         Schema::create('reference_designations', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('ref_designation');
             $table->integer('reference_id')->unsigned();
+            $table->string('ref_designation');
             $table->timestamps();
             //$table->softDeletes();
         });
