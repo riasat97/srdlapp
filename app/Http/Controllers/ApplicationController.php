@@ -60,7 +60,9 @@ class ApplicationController extends Controller
             $divisionList[$division['division']]=$division['division'];
         $divisionList=array_merge(['-1' => 'নির্বাচন করুন'], $divisionList);
         $parliamentaryConstituencyList= $this->getParliamentaryConstituency($request);
-        return view('applications.index',['divisionList'=>$divisionList,'parliamentaryConstituencyList'=>$parliamentaryConstituencyList]);
+        $upazilas= $this->getUpazilas($request);
+        return view('applications.index',['divisionList'=>$divisionList,
+            'parliamentaryConstituencyList'=>$parliamentaryConstituencyList,'upazilas'=>$upazilas]);
     }
     protected function getAppData(Request $request)
     {
@@ -118,6 +120,20 @@ class ApplicationController extends Controller
                 ->pluck('parliamentary_constituency','parliamentary_constituency');
             $parliament=array_merge(['-1' => 'নির্বাচন করুন'], $parliament->toArray());
             return $parliament;
+        }
+        return [];
+    }
+    public function getUpazilas(Request $request)
+    {
+        // dd($request->all());
+        $user=Auth::user();
+        if($user->hasRole(['district admin'])){
+            $upazilas = Bangladesh::permitted(null)
+                ->groupBy('upazila')
+                ->orderBy('upazila','asc')
+                ->pluck('upazila','upazila');
+            $upazilas=array_merge(['-1' => 'নির্বাচন করুন'], $upazilas->toArray());
+            return $upazilas;
         }
         return [];
     }

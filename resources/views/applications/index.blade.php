@@ -57,20 +57,28 @@
                             {{Form::select('parliamentary_constituency', ['0'=>'সকল'], old('parliamentary_constituency'),['id'=>'parliamentary_constituency','class'=>'form-control'])}}
                         </div>
                     @endif
-                    @if(Auth::user()->hasRole(['district admin','upazila admin']))
-                        <div class="form-group  col-md-3">
-                            {{Form::label('parliamentary_constituency', 'নির্বাচনী এলাকা') }}
-                            {{Form::select('parliamentary_constituency', $parliamentaryConstituencyList, null,['id'=>'parliamentary_constituency','class'=>'form-control'])}}
-                            {{--<button class="btn btn-lg btn-success pull-right" id="searchbtn" style="margin-top: 3px;" type="submit">Search</button>--}}
-                        </div>
-                    @endif
-                    @if(Auth::user()->hasRole(['super admin','district admin','upazila admin']))
+{{--                    @if(Auth::user()->hasRole(['district admin']))--}}
+{{--                        <div class="form-group  col-md-3">--}}
+{{--                            {{Form::label('parliamentary_constituency', 'নির্বাচনী এলাকা') }}--}}
+{{--                            {{Form::select('parliamentary_constituency', $parliamentaryConstituencyList, null,['id'=>'parliamentary_constituency','class'=>'form-control'])}}--}}
+{{--                            --}}{{--<button class="btn btn-lg btn-success pull-right" id="searchbtn" style="margin-top: 3px;" type="submit">Search</button>--}}
+{{--                        </div>--}}
+{{--                    @endif--}}
+                    @if(Auth::user()->hasRole(['super admin']))
                         <div class="form-group  col-md-2">
                             {{Form::label('upazila', 'উপজেলা') }}
                             {{Form::select('upazila', ['0'=>'সকল'], old('upazila'),['id'=>'upazila','class'=>'form-control'])}}
                         </div>
                     @endif
-                    @if(Auth::user()->hasRole(['super admin','district admin','upazila admin']))
+
+                    @if(Auth::user()->hasRole(['district admin']))
+                        <div class="form-group  col-md-2">
+                            {{Form::label('upazila', 'উপজেলা') }}
+                            {{Form::select('upazila', $upazilas, null,['id'=>'upazila','class'=>'form-control upazila-default'])}}
+                        </div>
+                    @endif
+
+                    @if(Auth::user()->hasRole(['super admin']))
                             <div class="form-group  col-md-2">
                                 {{Form::label('union_pourashava_ward', 'ইউনিয়ন/পৌরসভা ') }}
                                 {{Form::select('union_pourashava_ward', ['0'=>'সকল'], old('union_pourashava_ward'),['id'=>'union_pourashava_ward','class'=>'form-control'])}}
@@ -78,7 +86,7 @@
                     @endif
                 </div>
                 <div class="form-row">
-                    @if(Auth::user()->hasRole(['super admin','district admin','upazila admin']))
+                    @if(Auth::user()->hasRole(['super admin']))
                         <div class="form-group col-md-2">
                             <label for="">কম্পিউটার ল্যাবের ধরণ</label>
                             {{Form::select('lab_type', array('0'=>'সকল ','srdl'=>'শেখ রাসেল ডিজিটাল ল্যাব','sof' => 'স্কুল অফ ফিউচার'), old('lab_type'),['class'=>'form-control', 'id'=>'lab_type',])}}
@@ -90,7 +98,7 @@
                             {{Form::select('application_type', array('0'=>'সকল ','listed_by_deo' => 'ডিও', 'ref' => 'অন্যান্য রেফারেন্স'), old('application_type'),['class'=>'form-control', 'id'=>'application_type',])}}
                         </div>
                     @endif
-                    @if(Auth::user()->hasRole(['super admin','district admin','upazila admin']))
+                    @if(Auth::user()->hasRole(['super admin','district admin']))
                         <div class="form-group col-md-3">
                             <button class="btn btn-lg btn-success searchbtn"  value="submitted" id="searchbtn" type="submit">অনুসন্ধান</button>
                         </div>
@@ -377,4 +385,13 @@
             });
         });
     </script>
+
+    @if(Auth::user()->hasRole(['district admin']))
+        <script type="text/javascript">
+            $(function () {
+                $('select.upazila-default option:first').attr('disabled', true);
+            });
+        </script>
+    @endif
+
 @endpush
