@@ -16,7 +16,10 @@ class ApplicationUpdateController extends ApplicationController
     public function edit($id){
 
         $application= Application::where('id',$id)->with('attachment','lab','verification','profile')->first();
+        $listAttachmentFile= $this->getListAttachmentFile($application);
+        $listAttachmentFilePathType=$this->getListAttachmentFilePathType($application);
         //dd($application->toArray());
+
         $labs=[];
         $tag= new \Spatie\Tags\Tag;
         $tags=\Spatie\Tags\Tag::all();
@@ -29,7 +32,9 @@ class ApplicationUpdateController extends ApplicationController
             $divisionList[$division['division']]=$division['division'];
         $divisionList=array_merge(['-1' => 'নির্বাচন করুন'], $divisionList);
         //dd(filter_var($application->attachment->list_attachment_file_path, FILTER_VALIDATE_URL));
-        return view('applications.edit',['application'=>$application,'labs'=>$labs,'selectedLabs'=>$this->getLabs($application,'lab'),'divisionList'=>$divisionList]);
+        return view('applications.edit',['application'=>$application,'listAttachmentFile'=>$listAttachmentFile,
+            'listAttachmentFilePathType'=>$listAttachmentFilePathType,
+            'labs'=>$labs,'selectedLabs'=>$this->getLabs($application,'lab'),'divisionList'=>$divisionList]);
     }
     public function updates($id,CreateApplicationRequest $request){
         //dd($request->all());
@@ -112,5 +117,40 @@ class ApplicationUpdateController extends ApplicationController
         $application->save();
         //dd($application->toArray());
         return redirect()->route('applications.index')->with('status','আপনার আবেদনটি সফলভাবে জমা দেওয়া হয়েছে।!');
+    }
+    public function getListAttachmentFile(Application $application)
+    {
+        $list_attachment_file=$this->getListAttachmentFileIfNotExists($application->attachment);
+        if(!empty($list_attachment_file)){
+            if(filter_var($list_attachment_file->list_attachment_file_path, FILTER_VALIDATE_URL))
+                return $list_attachment_file->list_attachment_file_path;
+            elseif(!empty($list_attachment_file->list_attachment_file_path))
+                return route('applications.displayPdf',['id' => $list_attachment_file->application_attachment_id,'path'=>'list_attachment_file_path']);
+        }
+        return  null;
+    }
+    private function getListAttachmentFileIfNotExists(ApplicationAttachment $attachment)
+    {
+
+        if($attachment->application->listed_by_deo =="YES" && empty($attachment->list_attachment_file_path)){
+            $seat_no=$attachment->application->seat_no;
+            $list_attachment_file=$attachment->whereNotNull('list_attachment_file_path')->whereHas('application', function ($query) use($seat_no) {
+                $query->where('seat_no', $seat_no);
+            })->first();
+            //dd($list_attachment_file);
+            return  $list_attachment_file;
+        }
+        return null;
+    }
+    public function getListAttachmentFilePathType(Application $application)
+    {
+        $list_attachment_file=$this->getListAttachmentFileIfNotExists($application->attachment);
+        if(!empty($list_attachment_file)){
+            if(filter_var($list_attachment_file->list_attachment_file_path, FILTER_VALIDATE_URL))
+                return "প্রেরিত তালিকাটি দেখুন- google drive" ;
+            elseif(!empty($list_attachment_file->list_attachment_file_path))
+                return "প্রেরিত তালিকাটি দেখুন- local drive";
+        }
+        return  null;
     }
 }

@@ -42,9 +42,17 @@ class BangladeshController extends Controller
 
     public function getUpazilas(Request $request)
     {
-        $upazilas = Bangladesh::
-        where("district",$request->disId)
-            ->pluck('upazila','upazila');
+        if(!empty($request->disId)){
+            $upazilas = Bangladesh::
+            where("district",$request->disId)
+                ->pluck('upazila','upazila');
+        }
+        if(!empty($request->parliamentary_constituency)){ // get all upazilas when parliamentary_constituency =0
+            $upazilas = Bangladesh::
+            where("parliamentary_constituency",$request->parliamentary_constituency)
+                ->groupBy('upazila')
+                ->pluck('upazila','upazila');
+        }
         return response()->json(['upazilas'=>$upazilas]);
     }
     public function getUnionPourashavaWards(Request $request)
@@ -64,21 +72,26 @@ class BangladeshController extends Controller
     public function getParliamentaryConstituency(Request $request)
     {
        // dd($request->all());
+        $upazilas=[];
+        if(!empty($request->disId)){
+            $upazilas = Bangladesh::
+            where("district",$request->disId)
+                ->pluck('upazila','upazila');
+        }
         if(empty($request->unionPourashavaWardId)){
-            //return true;
             $parliament = Bangladesh::distinct()
             ->where("district",$request->disId)
              //   ->where("upazila",$request->upazilaId)
               ->orderBy('seat_no_en','asc')
                 ->get(['seat_no_en','seat_no','parliamentary_constituency']);
-            return response()->json(['parliament'=>$parliament]);
+            return response()->json(['parliament'=>$parliament,'upazilas'=>$upazilas]);
         }
         $parliament = Bangladesh::
         where("district",$request->disId)
             ->where("upazila",$request->upazilaId)
             -> where("union_pourashava_ward",$request->unionPourashavaWardId)
             ->first(['seat_no_en','seat_no','parliamentary_constituency']);
-        return response()->json(['parliament'=>$parliament]);
+        return response()->json(['parliament'=>$parliament,'upazilas'=>$upazilas]);
     }
 
 
@@ -173,4 +186,5 @@ class BangladeshController extends Controller
             return ['seat_no'=>'','member_name'=>''];
         }
     }
+
 }

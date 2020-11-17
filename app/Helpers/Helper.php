@@ -18,6 +18,9 @@ if (!function_exists('ReservedSeats')) {
     function institution_type(){
         return array('school' => 'স্কুল', 'college' => 'কলেজ', 'school and college'=> "স্কুল ও কলেজ", 'madrasha'=> "মাদ্রাসা",'technical'=>"টেকনিক্যাল",'primary'=>'প্রাইমারি','university'=>'বিশ্ববিদ্যালয়','gov_training'=>"সরকারি ট্রেনিং সেন্টার",'gov_rel_ins'=>"শিক্ষা সংশ্লিষ্ট সরকারি প্রতিষ্ঠান",'others'=>"অন্যান্য");
     }
+    function ref_type(){
+        return array('public_representative' => 'মাননীয় সংসদ সদস্য','political_party'=>'রাজনৈতিক দল', 'gov_emp' => 'সরকারি কর্মকর্তা',"famous_person"=>"প্রখ্যাত ব্যক্তিত্ব","others"=>"অন্যান্য ");
+    }
     function ReservedSeats()
     {
         return $reservedSeats=array(

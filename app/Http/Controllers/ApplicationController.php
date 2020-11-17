@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\ApplicationsDataTable;
 use App\Http\Requests\CreateApplicationRequest;
 use App\Models\Application;
 use App\Models\ApplicationAttachment;
@@ -12,6 +13,7 @@ use App\Models\Banbeis;
 use App\Models\Bangladesh;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -19,22 +21,34 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ApplicationController extends Controller
 {
+    public function application(ApplicationsDataTable $dataTable,Request $request)
+    {
+        $divisionList=[];
+        $divisions = Bangladesh::distinct()->get("division")->toArray();
+        foreach ($divisions as $key=>$division)
+            $divisionList[$division['division']]=$division['division'];
+        $divisionList=array_merge(['-1' => 'নির্বাচন করুন'], $divisionList);
+        $parliamentaryConstituencyList= $this->getParliamentaryConstituency($request);
+        return $dataTable->render('applications.application',['divisionList'=>$divisionList,'parliamentaryConstituencyList'=>$parliamentaryConstituencyList]);
+    }
     public function index(Request $request)
     {
 
-        //dd($subdomain);
         if ($request->ajax()) {
             //dd($request->all());
             $data=$this->getAppData($request);
-            //dd($data);
             $user= Auth::user();
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row)use ($user) {
                     //dd($row->id);
-                    if($user->hasRole('super admin'))$btn="<a href='".route("applications.edit",$row->id)."' target=\"_blank\" class='super-admin-edit btn btn-info btn-sm'>App Edit</a> "; else $btn="";
-                    $btn = $btn."<a href='javascript:void(0)' data-application='" . json_encode($row) . "' class='edit btn btn-success btn-sm'>Edit</a>
-                            <a href='javascript:void(0)' class='delete btn btn-danger btn-sm'>Delete</a>";
+                    $btn="";
+                    if($user->hasRole('super admin'))
+                    $btn="<a href='".route("applications.edit",$row->id)."' target=\"_blank\" class='super-admin-edit btn btn-info btn-sm'>App Edit</a> ";
+                    if (App::environment('local')) {
+                    $btn=$btn."<a href='javascript:void(0)' data-application='" . json_encode($row) . "' class='edit btn btn-success btn-sm'>Edit</a>";
+                    }
+                    $btn = $btn." <a href='javascript:void(0)' class='delete btn btn-warning btn-sm'>Details</a>";
                     return $btn;
                 })
                 ->rawColumns(['action'])
@@ -46,14 +60,13 @@ class ApplicationController extends Controller
             $divisionList[$division['division']]=$division['division'];
         $divisionList=array_merge(['-1' => 'নির্বাচন করুন'], $divisionList);
         $parliamentaryConstituencyList= $this->getParliamentaryConstituency($request);
-        //dd($parliamentaryConstituencyList->toArray());
         return view('applications.index',['divisionList'=>$divisionList,'parliamentaryConstituencyList'=>$parliamentaryConstituencyList]);
     }
     protected function getAppData(Request $request)
     {
         //dd($request->all());
         $data = Application::query();
-        if (!empty($request->get('divId'))|| !empty($request->get('disId')) || !empty($request->get('parliamentaryConstituencyId'))) {
+        if (!empty($request->get('filter'))) {
             if (!empty($request->get('divId'))) {
                 $data->where('division', $request->get('divId'));
             }
@@ -61,13 +74,38 @@ class ApplicationController extends Controller
             if (!empty($request->get('disId'))) {
                 $data->where('district', $request->get('disId'));
             }
+            if (!empty($request->get('seat_type'))) {
+                $seatType=$request->get('seat_type');
+                if($seatType=="reserved")
+                $data->whereLike('parliamentary_constituency', 'মহিলা আসন');
+                else if ($seatType=="general")
+                $data->whereNotLike('parliamentary_constituency', 'মহিলা আসন');
+            }
             if (!empty($request->get('parliamentaryConstituencyId'))) {
                 $data->where('parliamentary_constituency', $request->get('parliamentaryConstituencyId'));
             }
-           // dd($data->get()->toArray());
-            return $data->with('attachment')->latest('id')->get();
+            if (!empty($request->get('upazilaId'))) {
+                $data->where('upazila', $request->get('upazilaId'));
+            }
+            if (!empty($request->get('unionPourashavaWardId'))) {
+                $data->orWhere('union_pourashava_ward', $request->get('unionPourashavaWardId'));
+            }
+            if (!empty($request->get('lab_type'))) {
+                $data->where('lab_type', $request->get('lab_type'));
+            }
+            if (!empty($request->get('application_type'))) {
+                $applicationType= $request->get('application_type');
+                if($applicationType=='listed_by_deo')
+                $data->where('listed_by_deo', "YES");
+                else if($applicationType=='ref')
+                $data->where('listed_by_deo', "NO");
+            }
+            // dd($data->get()->toArray());
+            return $data->with('attachment')->orderByRaw(" division,district,seat_no asc, FIELD(lab_type , 'sof') DESC,upazila ASC")->get();
+            //return $this->applyScopes($data);
         }
         return $data->with('attachment')->permitted(null)->latest('id')->get();
+        //return $this->applyScopes($data);
     }
     public function getParliamentaryConstituency(Request $request)
     {

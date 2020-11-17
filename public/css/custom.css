@@ -268,7 +268,16 @@ fieldset {
     width: 31% !important;
     margin-left: 32px !important;
 }
-
-.sof{
-    display: none !important;
+.searchbtn{
+    margin-top:24px;
+    width: 162px !important;
+    height:37px !important;
 }
+/*.sof{*/
+/*    display: none !important;*/
+/*}*/
+/*div.dataTables_wrapper {*/
+/*    width: 800px;*/
+/*    margin: 0 auto;*/
+/*}*/
+/*.dataTables_scrollHeadInner, .table{ width:100%!important; }*/

@@ -619,6 +619,7 @@
                  };
                  console.log($("#lab_type").val());
                  if ($(this).val() == "sof") {
+
                      $("#institution_type").empty();
                      $("#institution_type").append('<option value="school">স্কুল</option>');
                      $("#institution_type").append('<option value="school and college">স্কুল ও কলেজ</option>');
@@ -635,13 +636,12 @@
          });
      </script>
      <script type="text/javascript">
+
          $(function () {
                  if ($("#lab_type").val() == "sof") {
-
                      $(".sof").show();
 
                  } else {
-
                      $(".sof").hide();
                  }
          });

@@ -138,14 +138,13 @@
                             {{--</div>--}}
                         </div>
                         <div class="form-row">
-                            @if(!empty($application->attachment->list_attachment_file_path))
+                            @if(!empty($application->attachment->list_attachment_file))
                                 <div class="form-group col-md-6">
-                                    @if(filter_var($application->attachment->list_attachment_file_path, FILTER_VALIDATE_URL))
-                                        <a href="{{ $application->attachment->list_attachment_file_path }}" target="_blank"> প্রেরিত তালিকাটি দেখুন- google drive</a>
-                                    @elseif(!empty($application->attachment->list_attachment_file_path))
-                                        <a href="{{ route('applications.displayPdf',['id' => $application->id,'path'=>'list_attachment_file_path']) }}" target="_blank"> প্রেরিত তালিকাটি দেখুন- local drive</a>
-
-                                    @endif
+                                    <a href="{{ $application->attachment->list_attachment_file }}" target="_blank"> {{ $application->attachment->list_attachment_file_path_type }}</a>
+                                </div>
+                            @elseif(!empty($listAttachmentFile))
+                                <div class="form-group col-md-6">
+                                    <a href="{{ $listAttachmentFile }}" target="_blank"> {{ $listAttachmentFilePathType }}</a>
                                 </div>
                             @endif
                         </div>
@@ -168,7 +167,7 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-12">
-                                    <label for="">শ্রতিষ্ঠান প্রধানের নাম</label>
+                                    <label for="">প্রতিষ্ঠান প্রধানের নাম</label>
                                     <input type="text" class="form-control" id="head_name" name="head_name" value="{{ $application->profile->head ?? "" }}" placeholder="বাংলাতে">
                                 </div>
                             </div>
@@ -486,11 +485,7 @@
                         <div class="form-row">
                             @if(!empty($application->attachment->ref_documents_file_path))
                                 <div class="form-group col-md-6">
-                                    @if(filter_var($application->attachment->ref_documents_file_path, FILTER_VALIDATE_URL))
-                                        <a href="{{ $application->attachment->ref_documents_file_path }}" target="_blank"> সুপারিশ সম্পর্কিত ডকুমেন্টসটি দেখুন- google drive</a>
-                                    @elseif(!empty($application->attachment->ref_documents_file_path))
-                                        <a href="{{ route('applications.displayPdf',['id' => $application->id,'path'=>'ref_documents_file_path']) }}" target="_blank"> সুপারিশ সম্পর্কিত ডকুমেন্টসটি দেখুন- local drive</a>
-                                    @endif
+                                    <a href="{{ $application->attachment->ref_documents_file }}" target="_blank"> {{ $application->attachment->ref_documents_file_path_type }}</a>
                                 </div>
                             @endif
                         </div>

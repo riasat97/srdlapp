@@ -181,7 +181,8 @@ return [
         browner12\helpers\HelperServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Yajra\DataTables\ButtonsServiceProvider::class,
-
+        niklasravnsborg\LaravelPdf\PdfServiceProvider::class
+        //Barryvdh\DomPDF\ServiceProvider::class,
     ],
 
     /*
@@ -238,6 +239,8 @@ return [
         'Flash'     => Laracasts\Flash\Flash::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'PDF' => niklasravnsborg\LaravelPdf\Facades\Pdf::class
+        //'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
 ];

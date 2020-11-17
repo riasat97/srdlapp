@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+//git diff --name-only 7a2b7bc 3ff7532
+//git log --oneline
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -30,6 +32,7 @@ Auth::routes();
 Route::group(['prefix' => 'admin/applications', 'as' => 'applications.','middleware' => 'auth'], function () {
 
     Route::get('/', 'ApplicationController@index')->name('index');
+    Route::get('/app', 'ApplicationController@application')->name('application');
     Route::get('/terms', 'ApplicationController@terms')->name('terms');
     Route::get('/apply', 'ApplicationController@create')->name('apply');
     Route::get('/eiin', 'ApplicationController@getValuesByEiin')->name('eiin');
@@ -100,3 +103,4 @@ Route::resource('permissions', 'PermissionController');
 Route::resource('references', 'ReferenceController');
 Route::resource('referenceDesignations', 'ReferenceDesignationController');
 });
+Route::get('generate-pdf','TestController@generatePDF');
