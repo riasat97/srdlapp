@@ -46,13 +46,17 @@
                 <fieldset class="tab_1">
                     <div class="fieldset-content">
                         <div class="form-row">
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-4">
                                 <label for="">কম্পিউটার ল্যাবের ধরণ</label>
                                 {{Form::select('lab_type', array('srdl'=>'শেখ রাসেল ডিজিটাল ল্যাব','sof' => 'স্কুল অফ ফিউচার'), old('lab_type'),['class'=>'form-control', 'id'=>'lab_type',])}}
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="form-group col-md-4">
                                 <label for="">প্রতিষ্ঠানের ধরন</label>
-                                {{Form::select('institution_type', array('school' => 'স্কুল', 'college' => 'কলেজ', 'school and college'=> "স্কুল ও কলেজ", 'madrasha'=> "মাদ্রাসা",'technical'=>"টেকনিক্যাল",'primary'=>'প্রাইমারি','university'=>'বিশ্ববিদ্যালয়','gov_training'=>"সরকারি ট্রেনিং সেন্টার",'gov_rel_ins'=>"শিক্ষা সংশ্লিষ্ট সরকারি প্রতিষ্ঠান",'others'=>"অন্যান্য"), old('institution_type'),['class'=>'form-control', 'id'=>'institution_type',])}}
+                                {{Form::select('institution_type', array('general'=> "সাধারণ", 'madrasha'=> "মাদ্রাসা",'technical'=>"টেকনিক্যাল",'gov_training'=>"সরকারি ট্রেনিং সেন্টার",'gov_rel_ins'=>"শিক্ষা সংশ্লিষ্ট সরকারি প্রতিষ্ঠান",'others'=>"অন্যান্য"), old('institution_type'),['class'=>'form-control', 'id'=>'institution_type',])}}
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="">প্রতিষ্ঠানের ধরন</label>
+                                {{Form::select('institution_level', array('primary'=>'প্রাইমারি বা সমপর্যায়','school' => 'স্কুল', 'college' => 'কলেজ', 'school and college'=> "স্কুল ও কলেজ", 'madrasha'=> "মাদ্রাসা",'technical'=>"টেকনিক্যাল",'university'=>'বিশ্ববিদ্যালয়','gov_training'=>"সরকারি ট্রেনিং সেন্টার",'gov_rel_ins'=>"শিক্ষা সংশ্লিষ্ট সরকারি প্রতিষ্ঠান",'others'=>"অন্যান্য"), old('institution_type'),['class'=>'form-control', 'id'=>'institution_type',])}}
                             </div>
                         </div>
 
@@ -619,10 +623,11 @@
                  };
                  console.log($("#lab_type").val());
                  if ($(this).val() == "sof") {
-
                      $("#institution_type").empty();
                      $("#institution_type").append('<option value="school">স্কুল</option>');
                      $("#institution_type").append('<option value="school and college">স্কুল ও কলেজ</option>');
+                     $("#institution_type").append('<option value="school and college">মাদ্রাসা</option>');
+                     $("#institution_type").append('<option value="school and college">টেকনিক্যাল</option>');
                      $(".sof").show();
 
                  } else {

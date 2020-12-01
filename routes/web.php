@@ -94,7 +94,7 @@ Route::get('/reserved_seats', 'BangladeshController@getReservedSeats')->name('re
 Route::get('/seat_no', 'BangladeshController@getSeatNo')->name('seat_no');
 
 Auth::routes(['verify' => true]);
-
+Route::get('/dashboard', 'DashboardController@index');
 Route::get('/home', 'HomeController@index')->middleware('verified');
 
 Route::group(['prefix' => 'admin', 'as' => '','middleware' => 'auth'], function () {

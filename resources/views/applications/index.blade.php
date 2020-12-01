@@ -141,6 +141,7 @@
                 var table = $('.yajra-datatable').DataTable({
                     processing: true,
                     serverSide: true,
+                    "pageLength": 15,
                     //scrollX:  true,
                     "sScrollX": "100%",
                     "bScrollCollapse": true,
