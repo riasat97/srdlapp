@@ -18,7 +18,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="four col-md-3">
-                            <div class="counter-box "> <i class="fas fa-envelope"></i> <span class="counter">2147</span>
+                            <div class="counter-box "> <i class="fas fa-envelope"></i> <span class="counter" id="seats">2147</span>
                                 <p>৩৫০টি সংসদীয় আসনের মধ্যে
                                     ল্যাবের তালিকা পাঠানো আসন সংখ্যা </p>
                             </div>
@@ -97,10 +97,11 @@
     </script>
 
     <script>
-        var x = document.getElementsByClassName("counter");
+        var x = document.getElementById("seats").innerText;
         var num = new Number(x).toLocaleString("bn-BD");
-        x.innerHTML(num);
-        document.write(num);
+        alert(num);
+        //$("#seats").text(num);
+        document.getElementById("seats").innerText =num;
 
     </script>
 
