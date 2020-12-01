@@ -18,7 +18,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="four col-md-3">
-                            <div class="counter-box "> <i class="fas fa-envelope"></i> <span class="counter" id="seats">2147</span>
+                            <div class="counter-box "> <i class="fas fa-envelope"></i> <span class="counter">4232</span>
                                 <p>৩৫০টি সংসদীয় আসনের মধ্যে
                                     ল্যাবের তালিকা পাঠানো আসন সংখ্যা </p>
                             </div>
@@ -78,31 +78,20 @@
 @endsection
 
 @push('scripts')
-    <script>
-        $(document).ready(function() {
+    <script src="web-theme/js/plugins/jquery.matchHeight.js"></script>
+    <!-- ##### All Javascript Script ##### -->
 
-            $('.counter').each(function () {
-                $(this).prop('Counter',0).animate({
-                    Counter: $(this).text()
-                }, {
-                    duration: 4000,
-                    easing: 'swing',
-                    step: function (now) {
-                        $(this).text(Math.ceil(now));
-                    }
-                });
-            });
+    <!-- Popper js -->
+    <script src="web-theme/js/bootstrap/popper.min.js"></script>
+    <!-- Bootstrap js -->
+    {{--    <script src="web-theme/js/bootstrap/bootstrap.min.js"></script>--}}
+    <!-- LazyLoad js -->
+    <script src="web-theme/js/plugins/lazyload.js"></script>
+    <!-- All Plugins js -->
+    <script src="web-theme/js/plugins/plugins.js"></script>
+    <!-- Active js -->
+    <script src="web-theme/js/actived6c3d6c3.js?v=3.3"></script>
 
-        });
-    </script>
 
-    <script>
-        var x = document.getElementById("seats").innerText;
-        var num = new Number(x).toLocaleString("bn-BD");
-        alert(num);
-        //$("#seats").text(num);
-        document.getElementById("seats").innerText =num;
-
-    </script>
 
 @endpush
