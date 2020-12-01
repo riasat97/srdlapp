@@ -60,7 +60,7 @@
 }
 
 .counter-box i {
-    font-size: 48px;
+    font-size: 36px;
     margin: 0 0 15px;
     color: #b5b5b5;
 }
@@ -77,6 +77,10 @@
 .col-box {
     padding-right: 10px;
     padding-left: 10px;
+}
+
+.counter {
+    font-size: 28px;
 }
 
 
