@@ -11,12 +11,12 @@
             </div>
             <div class="pull-left info">
                 @if (Auth::guest())
-                <p>SRDL</p>
+                <p>শেখ রাসেল ডিজিটাল ল্যাব স্থাপন প্রকল্প</p>
                 @else
                     <p>{{ Auth::user()->name}}</p>
                 @endif
                 <!-- Status -->
-                <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+                <a href="#"><i class="fa fa-circle text-success"></i> অনলাইন</a>
             </div>
         </div>
 

@@ -40,3 +40,52 @@
 .counter-box.colored .counter {
     color: #fff
 }
+
+
+
+/***************** New Styles *********************/
+
+.dashboard-container {
+    margin-top: 20px;
+}
+
+.dashboard-row {
+    margin-bottom: 20px;
+}
+
+.counter-box {
+    background: #f2f2f2;
+    padding: 30px 20px;
+    height: 236px;
+}
+
+.counter-box i {
+    font-size: 36px;
+    margin: 0 0 15px;
+    color: #b5b5b5;
+}
+
+.counter-box p {
+    font-size: 16px;
+    color: #6b6969;
+}
+
+.counter-box .counter {
+    color: #555;
+}
+
+.col-box {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.counter {
+    font-size: 28px;
+}
+
+
+@media (min-width: 1200px){
+    .dashboard-container {
+        width: 100% !important;
+    }
+}

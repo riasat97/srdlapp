@@ -35,7 +35,7 @@ class LoginController extends Controller
      * @var string
      */
     //protected $redirectTo = RouteServiceProvider::HOME;
-    protected $redirectTo = 'admin/applications';
+    protected $redirectTo = 'dashboard';
 
     /**
      * Create a new controller instance.
@@ -56,7 +56,7 @@ class LoginController extends Controller
             return $this->redirectTo();
         }
 
-        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/home';
+        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/dashboard';
     }
 
     public function redirectTo()

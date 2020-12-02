@@ -22,11 +22,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     if (Auth::check()) {
-        return redirect('/admin/applications');
+        return redirect('/dashboard');
     }
     return view('auth/login');
 });
-
+Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 Auth::routes();
 
 Route::group(['prefix' => 'admin/applications', 'as' => 'applications.','middleware' => 'auth'], function () {
@@ -94,7 +94,6 @@ Route::get('/reserved_seats', 'BangladeshController@getReservedSeats')->name('re
 Route::get('/seat_no', 'BangladeshController@getSeatNo')->name('seat_no');
 
 Auth::routes(['verify' => true]);
-Route::get('/dashboard', 'DashboardController@index');
 Route::get('/home', 'HomeController@index')->middleware('verified');
 
 Route::group(['prefix' => 'admin', 'as' => '','middleware' => 'auth'], function () {
@@ -102,5 +101,8 @@ Route::resource('roles', 'RoleController');
 Route::resource('permissions', 'PermissionController');
 Route::resource('references', 'ReferenceController');
 Route::resource('referenceDesignations', 'ReferenceDesignationController');
+Route::get('change-password', 'ChangePasswordController@index')->name('changePassword');
+Route::post('change-password', 'ChangePasswordController@store')->name('change.password');
 });
 Route::get('generate-pdf','TestController@generatePDF');
+

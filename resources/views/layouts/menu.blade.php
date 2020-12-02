@@ -1,23 +1,28 @@
 
-<li class="active">
-    <a href="{{ route('applications.index') }}"><i class="fa fa-edit"></i><span>Applications</span></a>
+<li class="{{ Request::is('dashboard*') ? 'active' : '' }}">
+    <a href="{{ route('dashboard') }}"><i class="fas fa-tachometer-alt"></i><span> ড্যাশবোর্ড </span></a>
+</li>
+<li class="{{ Request::is('admin/applications*') ? 'active' : '' }}">
+    <a href="{{ route('applications.index') }}"><i class="fas fa-envelope"></i><span> ল্যাবের আবেদন</span></a>
 </li>
     @if(Auth::user()->hasRole(['super admin']))
-    <li class="{{ Request::is('roles*') ? 'active' : '' }}">
-        <a href="{{ route('roles.index') }}"><i class="fa fa-edit"></i><span>Roles</span></a>
-    </li>
-
-
-<li class="{{ Request::is('permissions*') ? 'active' : '' }}">
-    <a href="{{ route('permissions.index') }}"><i class="fa fa-edit"></i><span>Permissions</span></a>
+<li class="{{ Request::is('admin/roles*') ? 'active' : '' }}">
+    <a href="{{ route('roles.index') }}"><i class="fas fa-user-tag"></i><span> ভূমিকা নির্ধারণ</span></a>
 </li>
 
-<li class="{{ Request::is('references*') ? 'active' : '' }}">
-    <a href="{{ route('references.index') }}"><i class="fa fa-edit"></i><span>References</span></a>
+<li class="{{ Request::is('admin/permissions*') ? 'active' : '' }}">
+    <a href="{{ route('permissions.index') }}"><i class="fas fa-key"></i><span> অনুমতি প্রদান</span></a>
 </li>
 
-<li class="{{ Request::is('referenceDesignations*') ? 'active' : '' }}">
-    <a href="{{ route('referenceDesignations.index') }}"><i class="fa fa-edit"></i><span>Reference Designations</span></a>
+<li class="{{ Request::is('admin/references*') ? 'active' : '' }}">
+    <a href="{{ route('references.index') }}"><i class="fas fa-th-large"></i><span> রেফারেন্স ধরণ তৈরি</span></a>
+</li>
+
+<li class="{{ Request::is('admin/referenceDesignations*') ? 'active' : '' }}">
+    <a href="{{ route('referenceDesignations.index') }}"><i class="fas fa-square"></i><span> রেফারেন্সের পদবী নির্ধারণ</span></a>
 </li>
 
     @endif
+<li class="{{ Request::is('admin/change-password*') ? 'active' : '' }}">
+    <a href="{{ route('changePassword') }}"><i class="fas fa-lock"></i> <span> পাসওয়ার্ড পরিবর্তন</span></a>
+</li>

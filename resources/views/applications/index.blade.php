@@ -16,10 +16,10 @@
 @endsection
 @section('content')
     <section class="content-header">
-        <h1 class="pull-left">SRDL Applications</h1>
+        <h1 class="pull-left"><i class="fas fa-mail-bulk"></i> শেখ রাসেল ডিজিটাল ল্যাব/ স্কুল অফ ফিউচারের জন্য প্রাপ্ত আবেদনসমূহ</h1><br>
         @if(Auth::user()->hasRole(['super admin']))
         <h1 class="pull-right">
-            <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{{ route('applications.apply') }}">Add New</a>
+            <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{{ route('applications.apply') }}"><i class="fas fa-plus-circle"></i> নতুন আবেদন</a>
         </h1>
         @endif
     </section>
@@ -100,7 +100,7 @@
                     @endif
                     @if(Auth::user()->hasRole(['super admin','district admin']))
                         <div class="form-group col-md-3">
-                            <button class="btn btn-lg btn-success searchbtn"  value="submitted" id="searchbtn" type="submit">অনুসন্ধান</button>
+                            <button class="btn btn-lg btn-success searchbtn"  value="submitted" id="searchbtn" type="submit"><i class="fas fa-search"></i> অনুসন্ধান</button>
                         </div>
                     @endif
                 </div>
@@ -141,7 +141,7 @@
                 var table = $('.yajra-datatable').DataTable({
                     processing: true,
                     serverSide: true,
-                    "pageLength": 15,
+                    "pageLength": 25,
                     //scrollX:  true,
                     "sScrollX": "100%",
                     "bScrollCollapse": true,

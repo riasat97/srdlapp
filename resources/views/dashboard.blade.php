@@ -4,8 +4,9 @@
 @endsection
 @section('content')
     <section class="content-header">
-        <h1 class="pull-left">সংক্ষিপ্ত তথ্য</h1>
+        <h1 class="pull-left"><i class="fas fa-envelope-open-text"></i> সংক্ষিপ্ত তথ্য</h1> <br>
     </section>
+
     <div class="content">
         <div class="clearfix"></div>
 
@@ -15,53 +16,54 @@
         <div class="box box-primary">
             <div class="box-body">
 
-                <div class="container">
-                    <div class="row">
-                        <div class="four col-md-3">
-                            <div class="counter-box "> <i class="fas fa-envelope"></i> <span class="counter">4232</span>
+                <div class="container dashboard-container">
+                    <div class="row dashboard-row">
+                        <div class="four col-md-3 col-box">
+                            <div class="counter-box "> <i class="fas fa-envelope"></i> <span class="counter" id="seats">{{$deo_app_seat_count}}</span>
                                 <p>৩৫০টি সংসদীয় আসনের মধ্যে
                                     ল্যাবের তালিকা পাঠানো আসন সংখ্যা </p>
                             </div>
                         </div>
-                        <div class="four col-md-3">
-                            <div class="counter-box"> <i class="fas fa-envelope-open"></i> <span class="counter">3275</span>
-                                <p>৩৫০টি সংসদীয় আসনে
+                        <div class="four col-md-3 col-box">
+                            <div class="counter-box"> <i class="fas fa-envelope-open"></i> <span class="counter">{{$deo_app_seat_total}}</span>
+                                <p>৩৫০টি সংসদীয় আসন থেকে অদ্যাবধি
                                     প্রাপ্ত আবেদন সংখ্যা </p>
                             </div>
                         </div>
-                        <div class="four col-md-3">
-                            <div class="counter-box"> <i class="fas fa-inbox"></i> <span class="counter">289</span>
+                        <div class="four col-md-3 col-box">
+                            <div class="counter-box"> <i class="fas fa-inbox"></i> <span class="counter">{{$deo_app_reserved_seat_count}}</span>
                                 <p>৫০টি সংরক্ষিত মহিলা আসনের মধ্যে
                                     ল্যাবের তালিকা পাঠানো আসন সংখ্যা</p>
                             </div>
                         </div>
-                        <div class="four col-md-3">
-                            <div class="counter-box"> <i class="fas fa-envelope-open"></i> <span class="counter">1563</span>
-                                <p>৫০টি সংরক্ষিত মহিলা আসনে
+                        <div class="four col-md-3 col-box">
+                            <div class="counter-box"> <i class="fas fa-envelope-open"></i> <span class="counter">{{$deo_app_reserved_seat_total}}</span>
+                                <p>৫০টি সংরক্ষিত মহিলা আসন থেকে অদ্যাবধি
                                     প্রাপ্ত আবেদন সংখ্যা </p>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="four col-md-3">
-                            <div class="counter-box "> <i class="fas fa-robot"></i> <span class="counter">2147</span>
+
+                    <div class="row dashboard-row">
+                        <div class="four col-md-3 col-box">
+                            <div class="counter-box "> <i class="fas fa-robot"></i> <span class="counter">{{$sof_total}}</span>
                                 <p>৩০০টি স্কুল অফ ফিউচারের জন্য
                                     প্রাপ্ত আবেদন সংখ্যা </p>
                             </div>
                         </div>
-                        <div class="four col-md-3">
-                            <div class="counter-box"> <i class="fas fa-file-alt"></i><span class="counter">3275</span>
-                                <p>অন্যান্য রেফারেন্সের মাধ্যমে
+                        <div class="four col-md-3 col-box">
+                            <div class="counter-box"> <i class="fas fa-file-alt"></i><span class="counter">{{$other_ref}}</span>
+                                <p>অন্যান্য রেফারেন্স থেকে
                                     প্রাপ্ত আবেদন সংখ্যা </p>
                             </div>
                         </div>
-                        <div class="four col-md-3">
-                            <div class="counter-box"> <i class="fas fa-clipboard-list"></i><span class="counter">289</span>
-                                <p>মাননীয় এমপি মহোদয়ের মাধ্যমে ল্যাবের জন্য তালিকা গ্রহণ সম্পন্ন হওয়া জেলার সংখ্যা </p>
+                        <div class="four col-md-3 col-box">
+                            <div class="counter-box"> <i class="fas fa-clipboard-list"></i><span class="counter">9</span>
+                                <p>৬৪টি জেলার মধ্যে ডিও এর মাধ্যমে ল্যাবের তালিকা গ্রহণ সম্পন্ন হওয়া জেলার সংখ্যা</p>
                             </div>
                         </div>
-                        <div class="four col-md-3">
-                            <div class="counter-box"> <i class="fas fa-mail-bulk"></i> <span class="counter">1563</span>
+                        <div class="four col-md-3 col-box">
+                            <div class="counter-box"> <i class="fas fa-mail-bulk"></i> <span class="counter">{{$total_app}}</span>
                                 <p>মোট প্রাপ্ত
                                     আবেদন সংখ্যা </p>
                             </div>

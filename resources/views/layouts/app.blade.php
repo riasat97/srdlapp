@@ -44,7 +44,7 @@
         <header class="main-header">
 
             <!-- Logo -->
-            <a href="#" class="logo">
+            <a href="{{ route('dashboard') }}" class="logo">
                 <b>SRDL</b>
             </a>
 
