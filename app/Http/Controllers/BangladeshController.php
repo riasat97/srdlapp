@@ -78,6 +78,7 @@ class BangladeshController extends Controller
             where("district",$request->disId)
                 ->pluck('upazila','upazila');
         }
+
         if(empty($request->unionPourashavaWardId)){
             $parliament = Bangladesh::distinct()
             ->where("district",$request->disId)

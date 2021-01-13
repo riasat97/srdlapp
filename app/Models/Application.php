@@ -17,7 +17,7 @@ class Application extends Model
     }
     public function getInstitutionTypeAttribute($value)
     {
-        $InstitutionTypeArr= institution_type();
+        $InstitutionTypeArr= ins_type();
         return $InstitutionTypeArr[$value];
     }
     public function getConstituencyAttribute()

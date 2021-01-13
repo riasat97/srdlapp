@@ -1,6 +1,7 @@
 
 <script type="text/javascript">
     $('#div').change(function(){
+        $('#union_others').hide();
         $("#upazila").empty();
         $("#union_pourashava_ward").empty();
         $("#parliamentary_constituency").empty();
@@ -39,6 +40,7 @@
                 url:"{{url('upazilas')}}?disId="+disID,
                 success:function(res){
                     if(res){
+                        $('#union_others').hide();
                         $("#upazila").empty();
                         $("#union_pourashava_ward").empty();
                         $("#parliamentary_constituency").empty();
@@ -64,20 +66,22 @@
     function getUnionPourshavaWardWithtParlimentaryConstituencies(){
         var upazilaID = $('#upazila').val();
         var disID = $('#dis').val();
-       // $("#hidethis").hide();
-        $('#is_parliamentary_constituency_ok').bootstrapToggle('on');
+        //$("#hidethis").hide();
+        //$('#is_parliamentary_constituency_ok').bootstrapToggle('on');
         if(upazilaID){
             $.ajax({
                 type:"GET",
                 url:"{{url('union_pourashava_wards')}}?upazilaId="+upazilaID+"&disId="+disID,
                 success:function(res){
                     if(res){
+                        $('#union_others').hide();
                         $("#union_pourashava_ward").empty();
                         $("#parliamentary_constituency").empty();
                         $('#union_pourashava_ward').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
                         $.each(res['union_pourashava_wards'],function(key,value){
                             $("#union_pourashava_ward").append('<option value="'+key+'">'+value+'</option>');
                         });
+                        $('#union_pourashava_ward').append('<option value="অন্যান্য">অন্যান্য </option>');
 
                         $("#seat-no").text('সংসদীয় আসন নং:');
                         $('#parliamentary_constituency').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
@@ -98,17 +102,30 @@
     }
 
     $('#union_pourashava_ward').on('change',function(){
-
+        var unionPourashavaWardID = $('#union_pourashava_ward').val();
+        if(unionPourashavaWardID !="অন্যান্য"){
         getParlimentaryConstituencies();
 
+            $('#union_others').val('');
+            $('#union_others').hide();
+            $("#hidethis").show();
+            $('#is_parliamentary_constituency_ok').bootstrapToggle('on');
+        }else{
+            othersSelected();
+        }
 
     });
+    function othersSelected() {
+        //var unionPourashavaWardID = $('#union_pourashava_ward').val();
+        $('#union_others').show();
+        getParliamentaryConstituencyIfnotOk();
+    }
     function getParlimentaryConstituencies() {
         var unionPourashavaWardID = $('#union_pourashava_ward').val();
         var upazilaID = $("#upazila").val();
         var disID = $('#dis').val();
-        $("#hidethis").show();
-        $('#is_parliamentary_constituency_ok').bootstrapToggle('on');
+        //$("#hidethis").show();
+        //$('#is_parliamentary_constituency_ok').bootstrapToggle('on');
         if(unionPourashavaWardID){
             $.ajax({
                 type:"GET",
@@ -121,7 +138,8 @@
                         //$('#parliamentary_constituency').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
                         $("#parliamentary_constituency").append('<option value="'+res['parliament'].parliamentary_constituency+'">'+res['parliament'].parliamentary_constituency+'</option>');
                         //$("#is_parliamentary_constituency_ok").removeAttr("disabled", "disabled");
-                        $('#is_parliamentary_constituency_ok').bootstrapToggle('on');
+                        $("#hidethis").show();
+                        //$('#is_parliamentary_constituency_ok').bootstrapToggle('on');
                     }else{
                         $("#union_pourashava_ward").empty();
                         $("#parliamentary_constituency").empty();
@@ -135,8 +153,12 @@
     }
 
     $('#is_parliamentary_constituency_ok').on('change',function(){
+        if ($("#is_parliamentary_constituency_ok").prop("checked") == false ) {
+            getParliamentaryConstituencyIfnotOk();
+        }
+    });
+    function getParliamentaryConstituencyIfnotOk(){
 
-        if ($(this).prop("checked") == false) {
             $("#parliamentary_constituency").removeAttr("disabled");
             $("#parliamentary_constituency").focus();
             //var unionPourashavaWardID = $(this).val();
@@ -154,7 +176,7 @@
                             $.each(res['parliament'],function(key,value){
                                 $("#parliamentary_constituency").append('<option value="'+value.parliamentary_constituency+'">'+value.parliamentary_constituency+'</option>');
                             });
-                            $("#is_parliamentary_constituency_ok").attr("disabled", "disabled");
+                            //$("#is_parliamentary_constituency_ok").attr("disabled", "disabled");
                             $("#hidethis").hide();
                         }else{
                             $("#union_pourashava_ward").empty();
@@ -166,10 +188,8 @@
                 $("#union_pourashava_ward").empty();
                 $("#parliamentary_constituency").empty();
             }
-        } else {
-           // $("#parliamentary_constituency").attr("disabled", "disabled");
-        }
-    });
+
+    }
     $('#parliamentary_constituency').on('change',function(){
         var parliamentaryConstituencyID = $(this).val();
         //for edit application
@@ -208,7 +228,7 @@
                         $('#parliamentary_constituency').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
                         $.each(res['reserved_seats'],function(key,value){
                             $("#parliamentary_constituency").append('<option value="'+value.parliamentary_constituency+'">'+value.parliamentary_constituency+'</option>');
-                            $("#is_parliamentary_constituency_ok").removeAttr("disabled");
+                            //$("#is_parliamentary_constituency_ok").removeAttr("disabled");
                             $('#is_parliamentary_constituency_ok').bootstrapToggle('on');
                             $("#hidethis").hide();
                         });

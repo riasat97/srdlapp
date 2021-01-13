@@ -1,4 +1,5 @@
 /* @extend display-flex; */
+/* @extend display-flex; */
 display-flex, .form-group, .form-select, .form-radio, .form-textarea, .form-date, .form-radio-item, .form-flex, .form-date-item .select-icon, .form-date-item .select-icon i, #val, #button, .steps ul, .actions ul, .actions ul li a, .title, .number {
   display: flex;
   display: -webkit-flex; }

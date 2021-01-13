@@ -281,3 +281,7 @@ fieldset {
 /*    margin: 0 auto;*/
 /*}*/
 /*.dataTables_scrollHeadInner, .table{ width:100%!important; }*/
+.required:after {
+    content:" *";
+    color: red;
+}

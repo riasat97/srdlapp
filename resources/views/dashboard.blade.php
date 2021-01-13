@@ -3,6 +3,7 @@
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 @endsection
 @section('content')
+    {{$deo_app_seat_count}}
     <section class="content-header">
         <h1 class="pull-left"><i class="fas fa-envelope-open-text"></i> সংক্ষিপ্ত তথ্য</h1> <br>
     </section>
@@ -20,13 +21,13 @@
                     <div class="row dashboard-row">
                         <div class="four col-md-3 col-box">
                             <div class="counter-box "> <i class="fas fa-envelope"></i> <span class="counter" id="seats">{{$deo_app_seat_count}}</span>
-                                <p>৩৫০টি সংসদীয় আসনের মধ্যে
+                                <p>৩০০টি সংসদীয় আসনের মধ্যে
                                     ল্যাবের তালিকা পাঠানো আসন সংখ্যা </p>
                             </div>
                         </div>
                         <div class="four col-md-3 col-box">
                             <div class="counter-box"> <i class="fas fa-envelope-open"></i> <span class="counter">{{$deo_app_seat_total}}</span>
-                                <p>৩৫০টি সংসদীয় আসন থেকে অদ্যাবধি
+                                <p>৩০০টি সংসদীয় আসন থেকে অদ্যাবধি
                                     প্রাপ্ত আবেদন সংখ্যা </p>
                             </div>
                         </div>
@@ -93,7 +94,4 @@
     <script src="web-theme/js/plugins/plugins.js"></script>
     <!-- Active js -->
     <script src="web-theme/js/actived6c3d6c3.js?v=3.3"></script>
-
-
-
 @endpush

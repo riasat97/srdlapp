@@ -28,7 +28,6 @@ class CreateApplicationVerificationsTable extends Migration
             $table->enum('is_eiin', ['YES', 'NO'])->nullable();
             $table->enum('is_mpo', ['YES', 'NO'])->nullable();
             $table->enum('is_broadband', ['YES', 'NO'])->nullable();
-            $table->enum('has_ict_teacher', ['YES', 'NO'])->nullable();
 
             $table->timestamps();
         });

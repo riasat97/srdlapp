@@ -59,13 +59,12 @@ class ApplicationUpdateController extends ApplicationController
         if(($request->get('hidden_is_parliamentary_constituency_ok')=="NO") && !empty($request->get('parliamentary_constituency'))){
             $application->is_parliamentary_constituency_ok= "NO";
         }
-        $attachment= $application->attachment;
-
+        $attachment= (!empty($application->attachment))?$application->attachment : new ApplicationAttachment();
+        $attachment->member_name= !empty($request->get('member_name'))?$request->get('member_name'):'';
         if($request->hasFile('list_attachment_file')){
-            $attachment->member_name= !empty($request->get('member_name'))?$request->get('member_name'):'';
             $attachment=$this->fileUpload($request,$request->file("list_attachment_file"),$attachment,'list_attachment_file');
-            $application->attachment()->save($attachment);
         }
+        $application->attachment()->save($attachment);
         //exit;
         if($request->get('hidden_listed_by_deo')=="NO"){
             $profile= $application->profile;
@@ -120,6 +119,8 @@ class ApplicationUpdateController extends ApplicationController
     }
     public function getListAttachmentFile(Application $application)
     {
+        $list_attachment_file=null;
+        if(!empty($application->attachment))
         $list_attachment_file=$this->getListAttachmentFileIfNotExists($application->attachment);
         if(!empty($list_attachment_file)){
             if(filter_var($list_attachment_file->list_attachment_file_path, FILTER_VALIDATE_URL))
@@ -144,6 +145,8 @@ class ApplicationUpdateController extends ApplicationController
     }
     public function getListAttachmentFilePathType(Application $application)
     {
+        $list_attachment_file=null;
+        if(!empty($application->attachment))
         $list_attachment_file=$this->getListAttachmentFileIfNotExists($application->attachment);
         if(!empty($list_attachment_file)){
             if(filter_var($list_attachment_file->list_attachment_file_path, FILTER_VALIDATE_URL))

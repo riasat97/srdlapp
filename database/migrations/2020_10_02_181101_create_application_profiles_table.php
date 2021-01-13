@@ -22,11 +22,11 @@ class CreateApplicationProfilesTable extends Migration
             $table->text("institution_tel");
             $table->text("institution_email");
             $table->text("mpo")->nullable();
-            $table->enum('internet_connection', ['YES', 'NO'])->nullable();
-            $table->enum('internet_connection_type', ['broadband', 'modem'])->nullable();
-            $table->enum('ict_teacher', ['YES', 'NO'])->nullable();
-            $table->enum('good_result', ['YES', 'NO'])->nullable();
-            $table->longText('about_institution')->nullable();
+//            $table->enum('internet_connection', ['YES', 'NO'])->nullable();
+//            $table->enum('internet_connection_type', ['broadband', 'modem'])->nullable();
+//            $table->enum('ict_teacher', ['YES', 'NO'])->nullable();
+//            $table->enum('good_result', ['YES', 'NO'])->nullable();
+//            $table->longText('about_institution')->nullable();
             $table->bigInteger("total_girls");
             $table->bigInteger("total_boys");
             //$table->bigInteger("total_teachers");

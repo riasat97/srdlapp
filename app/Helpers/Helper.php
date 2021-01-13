@@ -18,6 +18,12 @@ if (!function_exists('ReservedSeats')) {
     function institution_type(){
         return array('school' => 'স্কুল', 'college' => 'কলেজ', 'school and college'=> "স্কুল ও কলেজ", 'madrasha'=> "মাদ্রাসা",'technical'=>"টেকনিক্যাল",'primary'=>'প্রাইমারি','university'=>'বিশ্ববিদ্যালয়','gov_training'=>"সরকারি ট্রেনিং সেন্টার",'gov_rel_ins'=>"শিক্ষা সংশ্লিষ্ট সরকারি প্রতিষ্ঠান",'others'=>"অন্যান্য");
     }
+    function ins_type(){
+        return array(""=>"",'general'=> "সাধারণ", 'madrasha'=> "মাদ্রাসা",'technical'=>"টেকনিক্যাল",'gov_training'=>"সরকারি ট্রেনিং সেন্টার",'gov_rel_ins'=>"শিক্ষা সংশ্লিষ্ট সরকারি প্রতিষ্ঠান",'others'=>"অন্যান্য");
+    }
+    function ins_level(){
+        return array('primary'=>'প্রাইমারি বা সমপর্যায়','junior_secondary' => 'নিম্ন মাধ্যমিক বা সমপর্যায়', 'secondary' => 'মাধ্যমিক বা সমপর্যায়','higher_secondary'=> "উচ্চমাধ্যমিক বা সমপর্যায়", "secondary_and_higher"=>"মাধ্যমিক ও উচ্চমাধ্যমিক বা সমপর্যায়","graduation"=>"স্নাতক বা সমপর্যায়","diploma"=>"ডিপ্লোমা বা সমপর্যায়",'others'=>"অন্যান্য");
+    }
     function ref_type(){
         return array('public_representative' => 'মাননীয় সংসদ সদস্য','political_party'=>'রাজনৈতিক দল', 'gov_emp' => 'সরকারি কর্মকর্তা',"famous_person"=>"প্রখ্যাত ব্যক্তিত্ব","others"=>"অন্যান্য ");
     }
@@ -75,5 +81,9 @@ if (!function_exists('ReservedSeats')) {
             48 => array('seat_no_en' => '349', 'seat_no' => '৩৪৯', 'parliamentary_constituency' => 'মহিলা আসন-৪৯'),
             49 => array('seat_no_en' => '350', 'seat_no' => '৩৫০', 'parliamentary_constituency' => 'মহিলা আসন-৫০'),
         );
+    }
+    function direction(){
+        return ['-1' => 'নির্বাচন করুন','east'=>'পূর্ব','west'=>'পশ্চিম','north'=>'উত্তর','south'=>'দক্ষিণ','north_east'=>'উত্তর-পূর্ব','north_west'=>'উত্তর-পশ্চিম',
+            'south_east'=>'দক্ষিণ-পূর্ব','south_west'=>'দক্ষিণ-পশ্চিম'];
     }
 }

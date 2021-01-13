@@ -222,7 +222,7 @@
                             '</tr>'+
                             '<tr>'+
                             '<td>মাননীয় সংসদ সদস্যের নাম:</td>'+
-                            '<td>'+d.attachment.member_name+'</td>'+
+                            '<td>'+$.isEmptyObject(d.attachment)?'':d.attachment.member_name+'</td>'+
                             '</tr>'+
                             '<tr>'+
                             '<td>প্রেরিত তালিকার স্ক্যান কপি (পিডিএফ): </td>'+

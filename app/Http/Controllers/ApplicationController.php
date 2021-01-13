@@ -13,6 +13,7 @@ use App\Models\Banbeis;
 use App\Models\Bangladesh;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -154,7 +155,13 @@ class ApplicationController extends Controller
         foreach ($divisions as $key=>$division)
             $divisionList[$division['division']]=$division['division'];
         $divisionList=array_merge(['-1' => 'নির্বাচন করুন'], $divisionList);
-        return view('applications.create',['labs'=>$labs,'divisionList'=>$divisionList]);
+        $ins_type= array_merge(['-1' => 'নির্বাচন করুন'], Arr::except(ins_type(),[""]));
+        $ins_level= Arr::only(ins_level(), array('primary','junior_secondary','secondary','higher_secondary','secondary_and_higher',"graduation","others"));
+        $ins_type_sof= array_merge(['-1' => 'নির্বাচন করুন'], Arr::only($ins_type, array('general', 'madrasha', 'technical')));
+        $ins_level_sof= $array = Arr::only(ins_level(), array('secondary', 'secondary_and_higher'));
+        $ins_level_technical= $array = Arr::only(ins_level(), array('junior_secondary','secondary','higher_secondary','secondary_and_higher',"diploma","others"));
+        return view('applications.create',['labs'=>$labs,'divisionList'=>$divisionList,
+            "ins_type"=>$ins_type,"ins_level"=>$ins_level,"ins_type_sof"=>$ins_type_sof,"ins_level_sof"=>$ins_level_sof,"ins_level_technical"=>$ins_level_technical]);
     }
 
     public function getValuesByEiin(Request $request){
@@ -220,8 +227,9 @@ class ApplicationController extends Controller
         //dd($request->all());
         $application = Application::create([
             'lab_type' => $request->get('lab_type'),
-            'institution_type' => $request->get('institution_type'),
             'institution_bn' => $request->get('institution_bn'),
+            'institution_type' => $request->get('institution_type'),
+            'institution_level' => $request->get('institution_level'),
             'division' => $request->get('division'),
             'district' => $request->get('district'),
             'upazila' => $request->get('upazila'),
@@ -237,35 +245,46 @@ class ApplicationController extends Controller
             $application->is_parliamentary_constituency_ok= "NO";
         }
         $attachment= new ApplicationAttachment();
-
-        if($request->hasFile('list_attachment_file')){
+        if( !empty($request->get('listed_by_deo')) && $request->hasFile('list_attachment_file')){
             $attachment->member_name= !empty($request->get('member_name'))?$request->get('member_name'):'';
             $attachment=$this->fileUpload($request,$request->file("list_attachment_file"),$attachment,'list_attachment_file');
             $application->attachment()->save($attachment);
         }
-        //exit;
+
         if(empty($request->get('listed_by_deo'))){
             $profile= new ApplicationProfile();
             $profile->eiin= !empty($request->get('eiin'))?$request->get('eiin'):'';
+            $profile->institution_corrected= (!empty($request->get('is_institution_bn_correction_needed'))&&!empty($request->get('institution_corrected')))?$request->get('institution_corrected'):'';
             $profile->institution= !empty($request->get('institution'))?$request->get('institution'):'';
+            $profile->union_others= (!empty($request->get('union_pourashava_ward')=="others")&&!empty($request->get('union_others')))?$request->get('union_others'):'';
+            $profile->ward= !empty($request->get('ward'))?$request->get('ward'):'';
+            $profile->village_road= !empty($request->get('village_road'))?$request->get('village_road'):'';
+            $profile->post_office= !empty($request->get('post_office'))?$request->get('post_office'):'';
+            $profile->post_code= !empty($request->get('post_code'))?$request->get('post_code'):'';
+            $profile->distance_from_upazila_complex= !empty($request->get('distance_from_upazila_complex'))?$request->get('distance_from_upazila_complex'):'';
+            $profile->direction= !empty($request->get('direction'))?$request->get('direction'):'';
+            $profile->proper_road= !empty($request->get('proper_road'))?$request->get('proper_road'):'';
+            $profile->latitude= !empty($request->get('latitude'))?$request->get('latitude'):'';
+            $profile->longitude= !empty($request->get('longitude'))?$request->get('longitude'):'';
+
             $profile->head_name= !empty($request->get('head_name'))?$request->get('head_name'):'';
             $profile->institution_email= !empty($request->get('institution_email'))?$request->get('institution_email'):'';
             $profile->institution_tel= !empty($request->get('institution_tel'))?$request->get('institution_tel'):'';
+            $profile->alt_name= !empty($request->get('alt_name'))?$request->get('alt_name'):'';
+            $profile->alt_tel= !empty($request->get('alt_tel'))?$request->get('alt_tel'):'';
+            $profile->alt_email= !empty($request->get('alt_email'))?$request->get('alt_email'):'';
+
+            $profile->mpo= !empty($request->get('mpo'))?$request->get('mpo'):'';
             $profile->total_boys= !empty($request->get('total_boys'))?$request->get('total_boys'):0;
             $profile->total_girls= !empty($request->get('total_girls'))?$request->get('total_girls'):0;
             //$application->total_teachers= !empty($request->get('total_teachers'))?$request->get('total_teachers'):0;
             //$application->management= !empty($request->get('management'))?$request->get('management'):'';
             //$application->student_type= !empty($request->get('student_type'))?$request->get('student_type'):'';
-            $profile->mpo= !empty($request->get('mpo'))?$request->get('mpo'):'';
-            $profile->internet_connection= !empty($request->get('internet_connection'))?"YES":'';
-            $profile->internet_connection_type= !empty($request->get('internet_connection_type'))?$request->get('internet_connection_type'):'';
-            $profile->ict_teacher= !empty($request->get('ict_teacher'))?"YES":'';
-            $profile->good_result= !empty($request->get('good_result'))?"YES":null;
-            $profile->about_institution= !empty($request->get('about_institution'))?$request->get('about_institution'):'';
             $application->profile()->save($profile);
             if(!empty($request->get('labs'))){
                 $applicationlabs= new ApplicationLab();
                 $applicationlabs=$this->storeLabs($request->get('labs'),$applicationlabs);
+                $applicationlabs->lab_others_title= (in_array("Others",$request->get('labs'))&&!empty($request->get('lab_others_title')))?$request->get('lab_others_title'):'';
                 $application->lab()->save($applicationlabs);
             }
             $verified= new ApplicationVerification();
@@ -276,12 +295,24 @@ class ApplicationController extends Controller
             $verified->proper_security= !empty($request->get('proper_security'))?"YES":null;
             $verified->lab_maintenance= !empty($request->get('lab_maintenance'))?"YES":null;
             $verified->lab_prepared= !empty($request->get('lab_prepared'))?"YES":null;
-            $verified->ict_edu= !empty($request->get('ict_edu'))?"YES":'';
+
+            $verified->internet_connection= !empty($request->get('internet_connection'))?"YES":'';
+            $verified->internet_connection_type= !empty($request->get('internet_connection_type'))?$request->get('internet_connection_type'):'';
+            $verified->good_result= !empty($request->get('good_result'))?"YES":null;
+            $verified->about_institution= !empty($request->get('about_institution'))?$request->get('about_institution'):'';
             $verified->has_ict_teacher= !empty($request->get('has_ict_teacher'))?"YES":'';
-            $verified->is_eiin= !empty($request->get('is_eiin'))?"YES":'';
-            $verified->is_mpo= !empty($request->get('is_mpo'))?"YES":'';
-            $verified->is_broadband= !empty($request->get('is_broadband'))?"YES":'';
+
+            $verified->app_upazila_verified= !empty($request->get('app_upazila_verified'))?"YES":'';
+            $verified->app_district_verified= !empty($request->get('app_district_verified'))?"YES":'';
+            $verified->app_duplicate= !empty($request->get('app_duplicate'))?"YES":'';
+//            $verified->is_eiin= !empty($request->get('is_eiin'))?"YES":'';
+//            $verified->is_mpo= !empty($request->get('is_mpo'))?"YES":'';
+//            $verified->is_broadband= !empty($request->get('is_broadband'))?"YES":'';
             $application->verification()->save($verified);
+            if(!empty($request->hasFile('verification_report_file'))){
+                $attachment=$this->storeVerificationReport($request,$attachment);
+                $application->attachment()->save($attachment);
+            }
             if(!empty($request->get('reference'))){
                 $attachment=$this->storeReference($request,$attachment);
                 $application->attachment()->save($attachment);
@@ -414,6 +445,15 @@ class ApplicationController extends Controller
             if($lab== "Others") $applicationlabs->lab_by_others= "YES";
         }
         return $applicationlabs;
+    }
+
+    protected function storeVerificationReport(Request $request, $attachment)
+    {
+
+        if(!empty($request->hasFile("verification_report_file")))
+            return $this->fileUpload($request,$request->file("verification_report_file"),$attachment,'verification_report_file');
+        return  $attachment;
+
     }
 
     protected function storeReference(Request $request, $attachment)

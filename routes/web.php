@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 //git diff --name-only 7a2b7bc 3ff7532
 //git log --oneline
+// add to google webmaster and others
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,7 +28,7 @@ Route::get('/', function () {
     return view('auth/login');
 });
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
-Auth::routes();
+Auth::routes(['register' => false, 'verify' => true]);
 
 Route::group(['prefix' => 'admin/applications', 'as' => 'applications.','middleware' => 'auth'], function () {
 
@@ -93,8 +94,9 @@ Route::get('/parliamentary_constituencies', 'BangladeshController@getParliamenta
 Route::get('/reserved_seats', 'BangladeshController@getReservedSeats')->name('reserved_seats');
 Route::get('/seat_no', 'BangladeshController@getSeatNo')->name('seat_no');
 
-Auth::routes(['verify' => true]);
+
 Route::get('/home', 'HomeController@index')->middleware('verified');
+Route::get('/test', 'TestController@test');
 
 Route::group(['prefix' => 'admin', 'as' => '','middleware' => 'auth'], function () {
 Route::resource('roles', 'RoleController');
