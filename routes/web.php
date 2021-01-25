@@ -42,7 +42,7 @@ Route::group(['prefix' => 'admin/applications', 'as' => 'applications.','middlew
     Route::put('{application}', 'ApplicationUpdateController@updates')->name('updates');
     Route::get('{id}/attachment/{path}', 'ApplicationController@displayPdf')->name('displayPdf');
     Route::get('/sms', 'ApplicationController@sms')->name('sms');;
-    Route::get('/preview', 'ApplicationController@applicationPreview')->name('preview');
+    Route::get('/{application}', 'ApplicationController@show')->name('show');
     Route::post('/update/{application}', 'ApplicationController@update')->name('update');
 });
 

@@ -45,6 +45,7 @@ class BangladeshController extends Controller
         if(!empty($request->disId)){
             $upazilas = Bangladesh::
             where("district",$request->disId)
+                ->groupBy('upazila')
                 ->pluck('upazila','upazila');
         }
         if(!empty($request->parliamentary_constituency)){ // get all upazilas when parliamentary_constituency =0

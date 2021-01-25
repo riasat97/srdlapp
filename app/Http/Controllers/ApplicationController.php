@@ -46,9 +46,10 @@ class ApplicationController extends Controller
                     $btn="";
                     if($user->hasRole('super admin'))
                     $btn="<a href='".route("applications.edit",$row->id)."' target=\"_blank\" class='super-admin-edit btn btn-info btn-sm'>App Edit</a> ";
-                    if (App::environment('local')) {
-                    $btn=$btn."<a href='javascript:void(0)' data-application='" . json_encode($row) . "' class='edit btn btn-success btn-sm'>Edit</a>";
-                    }
+//                    if (App::environment('local')) {
+//                    $btn=$btn."<a href='javascript:void(0)' data-application='" . json_encode($row) . "' class='edit btn btn-success btn-sm'>Edit</a>";
+//                    }
+                    $btn=$btn." <a href='javascript:void(0)' data-id='" . $row->id . "' class='view btn btn-success btn-sm'>View</a>";
                     $btn = $btn." <a href='javascript:void(0)' class='delete btn btn-warning btn-sm'>Details</a>";
                     return $btn;
                 })
@@ -156,10 +157,10 @@ class ApplicationController extends Controller
             $divisionList[$division['division']]=$division['division'];
         $divisionList=array_merge(['-1' => 'নির্বাচন করুন'], $divisionList);
         $ins_type= array_merge(['-1' => 'নির্বাচন করুন'], Arr::except(ins_type(),[""]));
-        $ins_level= Arr::only(ins_level(), array('primary','junior_secondary','secondary','higher_secondary','secondary_and_higher',"graduation","others"));
+        $ins_level= array_merge(['-1' => 'নির্বাচন করুন'], Arr::only(ins_level(), array('primary','junior_secondary','secondary','higher_secondary','secondary_and_higher',"graduation","others")));
         $ins_type_sof= array_merge(['-1' => 'নির্বাচন করুন'], Arr::only($ins_type, array('general', 'madrasha', 'technical')));
-        $ins_level_sof= $array = Arr::only(ins_level(), array('secondary', 'secondary_and_higher'));
-        $ins_level_technical= $array = Arr::only(ins_level(), array('junior_secondary','secondary','higher_secondary','secondary_and_higher',"diploma","others"));
+        $ins_level_sof= $array = array_merge(['-1' => 'নির্বাচন করুন'],Arr::only(ins_level(), array('secondary', 'secondary_and_higher')));
+        $ins_level_technical= $array = array_merge(['-1' => 'নির্বাচন করুন'],Arr::only(ins_level(), array('junior_secondary','secondary','higher_secondary','secondary_and_higher',"diploma","others")));
         return view('applications.create',['labs'=>$labs,'divisionList'=>$divisionList,
             "ins_type"=>$ins_type,"ins_level"=>$ins_level,"ins_type_sof"=>$ins_type_sof,"ins_level_sof"=>$ins_level_sof,"ins_level_technical"=>$ins_level_technical]);
     }
@@ -239,7 +240,6 @@ class ApplicationController extends Controller
             'seat_no' => !empty($request->get('parliamentary_constituency'))?$this->getSeatNo($request->get('parliamentary_constituency')):'',
             'is_parliamentary_constituency_ok' => (!empty($request->get('is_parliamentary_constituency_ok'))&&!empty($request->get('parliamentary_constituency')))?"YES":"",
             'listed_by_deo' => !empty($request->get('listed_by_deo'))?"YES":"NO",
-
         ]);
         if(($request->get('hidden_is_parliamentary_constituency_ok')=="NO") && !empty($request->get('parliamentary_constituency'))){
             $application->is_parliamentary_constituency_ok= "NO";
@@ -251,19 +251,18 @@ class ApplicationController extends Controller
             $application->attachment()->save($attachment);
         }
 
-        if(empty($request->get('listed_by_deo'))){
-            $profile= new ApplicationProfile();
+        $profile= new ApplicationProfile();
             $profile->eiin= !empty($request->get('eiin'))?$request->get('eiin'):'';
             $profile->institution_corrected= (!empty($request->get('is_institution_bn_correction_needed'))&&!empty($request->get('institution_corrected')))?$request->get('institution_corrected'):'';
             $profile->institution= !empty($request->get('institution'))?$request->get('institution'):'';
-            $profile->union_others= (!empty($request->get('union_pourashava_ward')=="others")&&!empty($request->get('union_others')))?$request->get('union_others'):'';
+            $profile->union_others= (!empty($request->get('union_pourashava_ward')=="অন্যান্য")&&!empty($request->get('union_others')))?$request->get('union_others'):'';
             $profile->ward= !empty($request->get('ward'))?$request->get('ward'):'';
             $profile->village_road= !empty($request->get('village_road'))?$request->get('village_road'):'';
             $profile->post_office= !empty($request->get('post_office'))?$request->get('post_office'):'';
             $profile->post_code= !empty($request->get('post_code'))?$request->get('post_code'):'';
             $profile->distance_from_upazila_complex= !empty($request->get('distance_from_upazila_complex'))?$request->get('distance_from_upazila_complex'):'';
             $profile->direction= !empty($request->get('direction'))?$request->get('direction'):'';
-            $profile->proper_road= !empty($request->get('proper_road'))?$request->get('proper_road'):'';
+            $profile->proper_road= !empty($request->get('proper_road'))?"YES":'';
             $profile->latitude= !empty($request->get('latitude'))?$request->get('latitude'):'';
             $profile->longitude= !empty($request->get('longitude'))?$request->get('longitude'):'';
 
@@ -280,14 +279,14 @@ class ApplicationController extends Controller
             //$application->total_teachers= !empty($request->get('total_teachers'))?$request->get('total_teachers'):0;
             //$application->management= !empty($request->get('management'))?$request->get('management'):'';
             //$application->student_type= !empty($request->get('student_type'))?$request->get('student_type'):'';
-            $application->profile()->save($profile);
-            if(!empty($request->get('labs'))){
+        $application->profile()->save($profile);
+        if(!empty($request->get('labs'))){
                 $applicationlabs= new ApplicationLab();
                 $applicationlabs=$this->storeLabs($request->get('labs'),$applicationlabs);
                 $applicationlabs->lab_others_title= (in_array("Others",$request->get('labs'))&&!empty($request->get('lab_others_title')))?$request->get('lab_others_title'):'';
                 $application->lab()->save($applicationlabs);
-            }
-            $verified= new ApplicationVerification();
+        }
+        $verified= new ApplicationVerification();
             $verified->govlab= !empty($request->get('govlab'))?"YES":null;
             $verified->proper_infrastructure= !empty($request->get('proper_infrastructure'))?"YES":null;
             $verified->proper_room= !empty($request->get('proper_room'))?"YES":null;
@@ -308,19 +307,18 @@ class ApplicationController extends Controller
 //            $verified->is_eiin= !empty($request->get('is_eiin'))?"YES":'';
 //            $verified->is_mpo= !empty($request->get('is_mpo'))?"YES":'';
 //            $verified->is_broadband= !empty($request->get('is_broadband'))?"YES":'';
-            $application->verification()->save($verified);
-            if(!empty($request->hasFile('verification_report_file'))){
-                $attachment=$this->storeVerificationReport($request,$attachment);
-                $application->attachment()->save($attachment);
-            }
-            if(!empty($request->get('reference'))){
-                $attachment=$this->storeReference($request,$attachment);
-                $application->attachment()->save($attachment);
-            }
-            if(!empty($request->get('old_app'))){
-                $attachment=$this->storeOldApp($request,$attachment);
-                $application->attachment()->save($attachment);
-            }
+        $application->verification()->save($verified);
+        if(!empty($request->hasFile('verification_report_file'))){
+            $attachment=$this->storeVerificationReport($request,$attachment);
+            $application->attachment()->save($attachment);
+        }
+        if(empty($request->get('listed_by_deo'))&&!empty($request->get('reference'))){
+            $attachment=$this->storeReference($request,$attachment);
+            $application->attachment()->save($attachment);
+        }
+        if(!empty($request->get('old_app'))){
+            $attachment=$this->storeOldApp($request,$attachment);
+            $application->attachment()->save($attachment);
         }
         $application->save();
         //dd($application->toArray());
@@ -435,25 +433,21 @@ class ApplicationController extends Controller
     protected function storeLabs( $labs,$applicationlabs)
     {
         foreach ($labs as $lab){
-            if($lab== "Sheikh Russel Digital Lab") $applicationlabs->lab_by_srdl= "YES";
-            if($lab== "Bangladesh Computer Council") $applicationlabs->lab_by_bcc= "YES";
-            if($lab== "Ministry of Education") $applicationlabs->lab_by_moe= "YES";
-            if($lab== "Directorate of Secondary and Higher Education") $applicationlabs->lab_by_dshe= "YES";
-            if($lab== "Education Board") $applicationlabs->lab_by_edu_board= "YES";
-            if($lab== "NGO") $applicationlabs->lab_by_ngo= "YES";
-            if($lab== "Local Government") $applicationlabs->lab_by_local_gov= "YES";
-            if($lab== "Others") $applicationlabs->lab_by_others= "YES";
+            if($lab == "Sheikh Russel Digital Lab")$applicationlabs->lab_by_srdl= "YES";
+            if($lab== "Bangladesh Computer Council")$applicationlabs->lab_by_bcc= "YES";
+            if($lab== "Ministry of Education")$applicationlabs->lab_by_moe= "YES";
+            if($lab== "Directorate of Secondary and Higher Education")$applicationlabs->lab_by_dshe= "YES";
+            if($lab== "Education Board")$applicationlabs->lab_by_edu_board= "YES";
+            if($lab== "Others")$applicationlabs->lab_by_others= "YES";
         }
         return $applicationlabs;
     }
 
     protected function storeVerificationReport(Request $request, $attachment)
     {
-
         if(!empty($request->hasFile("verification_report_file")))
             return $this->fileUpload($request,$request->file("verification_report_file"),$attachment,'verification_report_file');
         return  $attachment;
-
     }
 
     protected function storeReference(Request $request, $attachment)
@@ -487,8 +481,28 @@ class ApplicationController extends Controller
         $attachment->$appFilePath = $filePath;
         return $attachment;
     }
-    public function  applicationPreview(){
-        return view('applications.preview');
+    public function  show($id){
+        $application=Application::where('id',$id)->with('attachment','lab','verification','profile')->first();
+        $labs=[];
+        $tag= new \Spatie\Tags\Tag;
+        $tags=\Spatie\Tags\Tag::all();
+        foreach ($tags as $tag) {
+            $labs[$tag->name]=$tag->translate('name', 'bn');
+        }
+        $selectedLabs=$this->getLabs($application,'lab');
+        $listAttachmentFile= $this->getListAttachmentFile($application);
+        $listAttachmentFilePathType=$this->getListAttachmentFilePathType($application);
+        $ins_type= Arr::except(ins_type(),[""]);
+        $ins_level= Arr::only(ins_level(), array('primary','junior_secondary','secondary','higher_secondary','secondary_and_higher',"graduation","others"));
+        $ins_type_sof= Arr::only($ins_type, array('general', 'madrasha', 'technical'));
+        $ins_level_sof= $array = Arr::only(ins_level(), array('secondary', 'secondary_and_higher'));
+        $ins_level_technical= $array = Arr::only(ins_level(), array('junior_secondary','secondary','higher_secondary','secondary_and_higher',"diploma","others"));
+        return view('applications.show-application',['application'=>$application,"ins_type"=>$ins_type,"ins_level"=>$ins_level,
+            "ins_type_sof"=>$ins_type_sof,"ins_level_sof"=>$ins_level_sof,
+            "ins_level_technical"=>$ins_level_technical,'labs'=>$labs,'selectedLabs'=>$selectedLabs,
+            'listAttachmentFile'=>$listAttachmentFile,'listAttachmentFilePathType'=>$listAttachmentFilePathType,]);
+        //return response()->json($application);
+        //return view('applications.preview');
     }
 
     protected function getSeatNo($parliamentary_constituency){
@@ -525,7 +539,48 @@ class ApplicationController extends Controller
 
     }
 
+    public function getListAttachmentFilePathType(Application $application)
+    {
+        $list_attachment= !empty($application->attachment->list_attachment_file_path)?$application->attachment:null;
+        if(empty($application->attachment->list_attachment_file_path))
+            $list_attachment=$this->getListAttachmentFileIfNotExists($application);
+        if(!empty($list_attachment)){
+            if(filter_var($list_attachment->list_attachment_file_path, FILTER_VALIDATE_URL))
+                return "প্রেরিত তালিকাটি দেখুন- google drive" ;
+            elseif(!empty($list_attachment->list_attachment_file_path))
+                return "প্রেরিত তালিকাটি দেখুন- local drive";
+        }
+        return  null;
+    }
+    public function getListAttachmentFile(Application $application)
+    {
+        $list_attachment= !empty($application->attachment->list_attachment_file_path)?$application->attachment:null;
+        if(empty($application->attachment->list_attachment_file_path)){
+            $list_attachment=$this->getListAttachmentFileIfNotExists($application);
+        }
+        if(!empty($list_attachment)){
+            if(filter_var($list_attachment->list_attachment_file_path, FILTER_VALIDATE_URL))
+                return $list_attachment->list_attachment_file_path;
+            elseif(!empty($list_attachment->list_attachment_file_path))
+                return route('applications.displayPdf',['id' => $list_attachment->application_attachment_id,'path'=>'list_attachment_file_path']);
+        }
+        return  null;
+    }
+    private function getListAttachmentFileIfNotExists(Application $application)
+    {
 
+        if($application->listed_by_deo !="YES" )
+            return null;
+        $app=Application::where('seat_no',$application->seat_no)->whereHas('attachment', function ($query) {
+            $query->whereNotNull('list_attachment_file_path');
+        })->first();
+        return  !empty($app)?$app->attachment:null;
+
+//            $list_attachment_file=$attachment->whereNotNull('list_attachment_file_path')->whereHas('application', function ($query) use($seat_no) {
+//                $query->where('seat_no', $seat_no);
+//            })->first();
+        //dd($app->toArray());
+    }
 
 
 }

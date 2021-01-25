@@ -20,6 +20,11 @@ class Application extends Model
         $InstitutionTypeArr= ins_type();
         return $InstitutionTypeArr[$value];
     }
+    public function getInstitutionLevelAttribute($value)
+    {
+        $InstitutionLevelArr= ins_level();
+        return $InstitutionLevelArr[$value];
+    }
     public function getConstituencyAttribute()
     {
          return "{$this->seat_no} {$this->parliamentary_constituency}";

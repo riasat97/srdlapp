@@ -118,6 +118,7 @@
         </div>
     </div>
     @include('applications.edit-modal')
+    @include('applications.show-modal')
 @endsection
 
 @push('scripts')
@@ -181,7 +182,7 @@
                         },
                     ],
                     "fnRowCallback": function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-                        console.log(aData["lab_type"]);
+                        //console.log(aData["lab_type"]);
                         if (aData["lab_type"] == "স্কুল অফ ফিউচার") {
                             $('td', nRow).css('background-color', 'Cornsilk');
                         }
@@ -213,8 +214,10 @@
             });
             function template ( d ) {
                 // `d` is the original data object for the row
-                if(d.attachment.member_name){
+                if(d.listed_by_deo=="YES"){
+                    var member_name=$.isEmptyObject(d.attachment)?'':d.attachment.member_name;
                     if(d.attachment.list_attachment_file){
+                        //($.isEmptyObject(d.attachment));
                         return '<table class="table">'+
                             '<tr>'+
                             '<td>নির্বাচনী এলাকা :</td>'+
@@ -222,7 +225,7 @@
                             '</tr>'+
                             '<tr>'+
                             '<td>মাননীয় সংসদ সদস্যের নাম:</td>'+
-                            '<td>'+$.isEmptyObject(d.attachment)?'':d.attachment.member_name+'</td>'+
+                            '<td>'+ member_name +'</td>'+
                             '</tr>'+
                             '<tr>'+
                             '<td>প্রেরিত তালিকার স্ক্যান কপি (পিডিএফ): </td>'+
@@ -234,6 +237,7 @@
                             '</tr>'+
                             '</table>';
                     }
+                    else
                     return '<table class="table">'+
                         '<tr>'+
                         '<td>নির্বাচনী এলাকা :</td>'+
@@ -241,7 +245,7 @@
                         '</tr>'+
                         '<tr>'+
                         '<td>মাননীয় সংসদ সদস্যের নাম:</td>'+
-                        '<td>'+d.attachment.member_name+'</td>'+
+                        '<td>'+member_name+'</td>'+
                         '</tr>'+
                         '<tr>'+
                         '<td>ল্যাবের ধরণ</td>'+
@@ -280,8 +284,24 @@
                         '</table>';
             }
 
+            $('body').on('click', '.view', function () {
+                var app_id = $(this).data('id');
+                $.get("{{ route('applications.show', '') }}" +'/' + app_id, function (data) {
+                    console.log(data);
+                    $('.modal-title').html("শেখ রাসেল ডিজিটাল ল্যাব/ স্কুল অফ ফিউচারের জন্য প্রাপ্ত আবেদন");
+                    $('.modal-body').html(data);
+                    $('.btn-primary').val("verify");
+                    $('#showApplicationModal .toggle').bootstrapToggle();
+                    $('#showApplicationModal').modal('show');
+                    //$('#product_id').val(data.id);
+                    //$('#name').val(data.name);
+                    //$('#detail').val(data.detail);
+                })
+            });
+
             $(document).on('click','.edit',function () {
-                var application = $(this).data('application')
+                var application = $(this).data('application');
+                console.log(application);
                 if(application){
                     $('#applicationInstituteNameInEditModal').html(application.institution)
 
@@ -319,6 +339,9 @@
 
             $('#editApplicationModal').on('hidden.bs.modal', function () {
                 $('#editApplicationModal .toggle').bootstrapToggle('destroy');
+            })
+            $('#showApplicationModal').on('hidden.bs.modal', function () {
+                $('#showApplicationModal .toggle').bootstrapToggle('destroy');
             })
 
             $('.toggle').change(function(){

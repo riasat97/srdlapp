@@ -28,7 +28,7 @@ class CreateApplicationRequest extends FormRequest
         //dd($request->get('union_others'));
         //dd($request->all());
         //dd(gettype($request->get('institution')));
-        return [
+        $rules= [
             'lab_type' => 'required| min:2',
             'institution_type' => 'required| min:2',
             'institution_bn' => 'required',
@@ -46,8 +46,17 @@ class CreateApplicationRequest extends FormRequest
             //'internet_connection_type' => Rule::requiredIf($request->get('lab_type') == 'sof' && $request->get('internet_connection_type') != 'broadband'),
             'ref_documents_file' => 'mimes:pdf|max:4000',
             'old_application_attachment' => 'mimes:pdf|max:4000',
-            'list_attachment_file' => 'required_if:listed_by_deo,on|mimes:pdf|max:4000',
         ];
+        if ($request->isMethod('post')) {
+            $list_attachment_file= ['list_attachment_file' => 'required_if:listed_by_deo,on|mimes:pdf|max:4000'];
+            $rules= array_merge($rules,$list_attachment_file);
+        }
+        elseif($request->hasFile('list_attachment_file')){
+            $list_attachment_file= ['list_attachment_file' => 'required_if:listed_by_deo,on|mimes:pdf|max:4000'];
+            $rules= array_merge($rules,$list_attachment_file);
+        }
+        return $rules;
+
     }
     public function messages()
     {

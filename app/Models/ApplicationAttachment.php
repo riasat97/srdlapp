@@ -10,7 +10,7 @@ class ApplicationAttachment extends Model
         'old_application_date',
     ];
     protected $guarded = [];
-    protected $appends = ['list_attachment_file_path_type','ref_documents_file_path_type'];
+    protected $appends = ['list_attachment_file_path_type','ref_documents_file_path_type','verification_report_file_path_type'];
     protected $table = 'application_attachments';
 
     public function getRefTypeAttribute($value)
@@ -80,6 +80,24 @@ class ApplicationAttachment extends Model
             if(filter_var($this->attributes['ref_documents_file_path'], FILTER_VALIDATE_URL))
                 return "পসুপারিশ সম্পর্কিত ডকুমেন্টসটি দেখুন- google drive" ;
             elseif(!empty($this->attributes['ref_documents_file_path']))
+                return "সুপারিশ সম্পর্কিত ডকুমেন্টসটি দেখুন- local drive";
+        }
+    }
+    public function getVerificationReportFileAttribute($value)
+    {
+        if(!empty($this->attributes['verification_report_file_path'])){
+            if(filter_var($this->attributes['verification_report_file_path'], FILTER_VALIDATE_URL))
+                return $this->attributes['verification_report_file_path'];
+            elseif(!empty($this->attributes['verification_report_file_path']))
+                return route('applications.displayPdf',['id' => $this->attributes['application_attachment_id'],'path'=>'verification_report_file_path']);
+        }
+    }
+    public function getVerificationReportFilePathTypeAttribute($value)
+    {
+        if(!empty($this->attributes['verification_report_file_path'])){
+            if(filter_var($this->attributes['verification_report_file_path'], FILTER_VALIDATE_URL))
+                return "পসুপারিশ সম্পর্কিত ডকুমেন্টসটি দেখুন- google drive" ;
+            elseif(!empty($this->attributes['verification_report_file_path']))
                 return "সুপারিশ সম্পর্কিত ডকুমেন্টসটি দেখুন- local drive";
         }
     }
