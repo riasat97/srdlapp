@@ -11,6 +11,12 @@
 </div>
 
 <div class="form-row">
+    <div class="form-group col-md-12">
+        <h4 class="callout callout-info">শিক্ষা প্রতিষ্ঠানের বিবরণ</h4>
+    </div>
+</div>
+
+<div class="form-row">
     <div class="form-group col-md-6">
         {{ Form::label('ins_bn', 'শিক্ষা প্রতিষ্ঠানের নাম:') }}
         {{ $application->institution_bn }}
@@ -122,11 +128,10 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-xs-12">
-        <div class="center-block well" style="width: 240px">
-            <span>প্রতিষ্ঠানের ঠিকানা</span>
-        </div>
+
+<div class="form-row">
+    <div class="form-group col-md-12">
+        <h4 class="callout callout-danger">প্রতিষ্ঠানের ঠিকানা</h4>
     </div>
 </div>
 
@@ -202,11 +207,10 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-xs-12">
-        <div class="center-block well" style="width: 240px">
-            <span>উপযুক্ততা যাচাই</span>
-        </div>
+
+<div class="form-row">
+    <div class="form-group col-md-12">
+        <h4 class="callout callout-warning">উপযুক্ততা যাচাই</h4>
     </div>
 </div>
 
@@ -374,13 +378,13 @@
 </div>
 
 @if(Auth::user()->hasRole(['super admin']))
-<div class="row">
-    <div class="col-xs-12">
-        <div class="center-block well" style="width: 240px">
-            <span>আবেদনের ধরণ (ডিও/ অন্যান্য সুপারিশ)</span>
+
+    <div class="form-row">
+        <div class="form-group col-md-12">
+            <h4 class="callout callout-success">আবেদনের ধরণ (ডিও/ অন্যান্য সুপারিশ)</h4>
         </div>
     </div>
-</div>
+
     <div class="form-row">
         <div class="form-group">
             {{ Form::label('listed_by_deo', 'আধা-সরকারি পত্রের (৪২৫/৪২৬) প্রেক্ষিতে তালিকা ভুক্ত?') }}
@@ -449,4 +453,12 @@
             </div>
         </div>
         @endif
+    <div class="form-row verification_report_file" >
+        <div class="form-group">
+            {{ Form::label('verification_report_file', 'উপজেলা থেকে প্রেরিত প্রতিষ্ঠানটির পরিদর্শন প্রতিবেদনের স্ক্যান কপি (পিডিএফ):') }}
+        @if(!empty($application->attachment->verification_report_file))
+            <a href="{{ $application->attachment->verification_report_file }}" target="_blank"> {{ $application->attachment->verification_report_file_path_type }}</a>
+        @endif
+        </div>
+    </div>
 @endif
