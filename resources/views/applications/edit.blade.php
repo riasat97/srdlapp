@@ -58,7 +58,7 @@
                             </div>
                             <div class="form-group col-md-3" style="">
                                 {{ Form::label('is_institution_bn_correction_needed', 'প্রতিষ্ঠানটির নামটির সংশোধন প্রয়োজন?') }}
-                                <input name="is_institution_bn_correction_needed" @if(!empty($application->profile->institution_corrected))checked @endif id="is_institution_bn_correction_needed" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                <input name="is_institution_bn_correction_needed" @if(!empty($application->profile->institution_corrected)&& $application->profile->institution_corrected=="YES")checked @endif id="is_institution_bn_correction_needed" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_is_institution_bn_correction_needed',"No",["id"=>"hidden_is_institution_bn_correction_needed"])}}
                             </div>
                         </div>
@@ -70,9 +70,13 @@
                         </div>
 
                         <div class="form-row">
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-8">
                                 <label for="">শিক্ষা প্রতিষ্ঠানের নাম (ENGLISH)</label>
                                 <input type="text" class="form-control" id="inputInsEn" name="institution" value="{{ $application->profile->institution ?? "" }}" placeholder="ইংরেজিতে">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="">ম্যানেজমেন্ট</label>
+                                {{Form::select('management', array_merge(['0' => 'নির্বাচন করুন'],management()), $application->profile->management ?? 0,['class'=>'form-control', 'id'=>'management'])}}
                             </div>
                         </div>
                         @if($application->lab_type== lab_type()["srdl"])
@@ -106,6 +110,7 @@
                         </div>
                         @endif
                         <div class="form-row">
+
                             <div class="form-group col-md-6">
                                 <label for="">EIIN নম্বর</label>
                                 {{ Form::number('eiin', $application->profile->eiin ?? "",['class'=>'form-control', 'id'=>"eiin"])}}
@@ -206,15 +211,15 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group  col-md-4">
+                            <div class="form-group  col-md-6">
                                 {{Form::label('distance_from_upazila_complex', 'উপজেলা পরিষদ হতে দূরত্ব (কিলোমিটার)') }}
                                 {{Form::number('distance_from_upazila_complex', $application->profile->distance_from_upazila_complex??"",['id'=>'distance_from_upazila_complex','class'=>'form-control','style'=>''])}}
                             </div>
-                            <div class="form-group  col-md-4">
-                                {{Form::label('direction', 'দিক') }}
-                                {{Form::select('direction',direction(),$application->profile->direction??"",['id'=>'direction','class'=>'form-control','style'=>''])}}
-                            </div>
-                            <div class="form-group  col-md-4">
+{{--                            <div class="form-group  col-md-4">--}}
+{{--                                {{Form::label('direction', 'দিক') }}--}}
+{{--                                {{Form::select('direction',direction(),$application->profile->direction??"",['id'=>'direction','class'=>'form-control','style'=>''])}}--}}
+{{--                            </div>--}}
+                            <div class="form-group  col-md-6">
                                 {{Form::label('proper_road', 'প্রতিষ্ঠানটি পর্যন্ত যান চলাচলের মতো রাস্তা আছে কিনা?') }}
                                 <input name="proper_road" @if(!empty($application->profile->proper_road) && $application->profile->proper_road=="YES" ) checked @endif id="proper_road" type="checkbox"  data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_proper_road',"NO",["id"=>"hidden_proper_road"])}}
@@ -636,7 +641,7 @@
     <script src="https://kit.fontawesome.com/5b67dd8eb0.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-    @if(!empty($application->profile->institution_corrected))
+    @if(!empty($application->profile->institution_corrected) && $application->profile->institution_corrected=="YES")
         <script type="text/javascript">
             $(function () {
                 $(".institution_corrected").show();

@@ -6,6 +6,11 @@
     <a href="{{ route('applications.index') }}"><i class="fas fa-envelope"></i><span> ল্যাবের আবেদন</span></a>
 </li>
     @if(Auth::user()->hasRole(['super admin']))
+
+<li class="{{ Request::is('admin/users*') ? 'active' : '' }}">
+    <a href="{{ route('users.index') }}"><i class="fa fa-edit"></i><span>ইউজার ম্যানেজমেন্ট </span></a>
+</li>
+
 <li class="{{ Request::is('admin/roles*') ? 'active' : '' }}">
     <a href="{{ route('roles.index') }}"><i class="fas fa-user-tag"></i><span> ভূমিকা নির্ধারণ</span></a>
 </li>
@@ -22,7 +27,10 @@
     <a href="{{ route('referenceDesignations.index') }}"><i class="fas fa-square"></i><span> রেফারেন্সের পদবী নির্ধারণ</span></a>
 </li>
 
+
     @endif
 <li class="{{ Request::is('admin/change-password*') ? 'active' : '' }}">
     <a href="{{ route('changePassword') }}"><i class="fas fa-lock"></i> <span> পাসওয়ার্ড পরিবর্তন</span></a>
 </li>
+
+

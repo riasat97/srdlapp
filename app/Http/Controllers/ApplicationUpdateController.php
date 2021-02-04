@@ -90,7 +90,8 @@ class ApplicationUpdateController extends ApplicationController
         //if($request->get('hidden_listed_by_deo')=="NO"){
         $profile= (!empty($application->profile))?$application->profile : new ApplicationProfile();
             $profile->eiin= !empty($request->get('eiin'))?$request->get('eiin'):'';
-            $profile->institution_corrected= (!empty($request->get('is_institution_bn_correction_needed'))&&!empty($request->get('institution_corrected')))?$request->get('institution_corrected'):'';
+            $profile->management= !empty($request->get('management'))?$request->get('management'):'';
+            $profile->institution_corrected= (!empty($request->get('is_institution_bn_correction_needed'))&&!empty($request->get('institution_corrected')))?$request->get('institution_corrected'):'NO';
             $profile->institution= !empty($request->get('institution'))?$request->get('institution'):'';
             $profile->union_others= (!empty($request->get('union_pourashava_ward')=="অন্যান্য")&&!empty($request->get('union_others')))?$request->get('union_others'):'';
             $profile->ward= !empty($request->get('ward'))?$request->get('ward'):'';
@@ -98,8 +99,8 @@ class ApplicationUpdateController extends ApplicationController
             $profile->post_office= !empty($request->get('post_office'))?$request->get('post_office'):'';
             $profile->post_code= !empty($request->get('post_code'))?$request->get('post_code'):'';
             $profile->distance_from_upazila_complex= !empty($request->get('distance_from_upazila_complex'))?$request->get('distance_from_upazila_complex'):'';
-            $profile->direction= !empty($request->get('direction'))?$request->get('direction'):'';
-            $profile->proper_road= !empty($request->get('proper_road'))?"YES":'';
+            //$profile->direction= !empty($request->get('direction'))?$request->get('direction'):'';
+            $profile->proper_road= !empty($request->get('proper_road'))?"YES":"NO";
             $profile->latitude= !empty($request->get('latitude'))?$request->get('latitude'):'';
             $profile->longitude= !empty($request->get('longitude'))?$request->get('longitude'):'';
             $profile->head_name= !empty($request->get('head_name'))?$request->get('head_name'):'';
@@ -120,23 +121,23 @@ class ApplicationUpdateController extends ApplicationController
         $application->lab()->save($applicationlabs);
 
         $verified= (!empty($application->verification))?$application->verification : new ApplicationVerification();
-            $verified->govlab= (!empty($request->get('govlab'))&&!empty($request->get('labs')))?"YES":null;
-            $verified->proper_infrastructure= !empty($request->get('proper_infrastructure'))?"YES":null;
-            $verified->proper_room= !empty($request->get('proper_room'))?"YES":null;
-            $verified->electricity_solar= !empty($request->get('electricity_solar'))?"YES":null;
-            $verified->proper_security= !empty($request->get('proper_security'))?"YES":null;
-            $verified->lab_maintenance= !empty($request->get('lab_maintenance'))?"YES":null;
-            $verified->lab_prepared= !empty($request->get('lab_prepared'))?"YES":null;
+            $verified->govlab= (!empty($request->get('govlab'))&&!empty($request->get('labs')))?"YES":"NO";
+            $verified->proper_infrastructure= !empty($request->get('proper_infrastructure'))?"YES":"NO";
+            $verified->proper_room= !empty($request->get('proper_room'))?"YES":"NO";
+            $verified->electricity_solar= !empty($request->get('electricity_solar'))?"YES":"NO";
+            $verified->proper_security= !empty($request->get('proper_security'))?"YES":"NO";
+            $verified->lab_maintenance= !empty($request->get('lab_maintenance'))?"YES":"NO";
+            $verified->lab_prepared= !empty($request->get('lab_prepared'))?"YES":"NO";
 
-            $verified->internet_connection= !empty($request->get('internet_connection'))?"YES":'';
+            $verified->internet_connection= !empty($request->get('internet_connection'))?"YES":"NO";
             $verified->internet_connection_type= !empty($request->get('internet_connection_type'))?$request->get('internet_connection_type'):'';
-            $verified->good_result= !empty($request->get('good_result'))?"YES":null;
+            $verified->good_result= !empty($request->get('good_result'))?"YES":"NO";
             $verified->about_institution= !empty($request->get('about_institution'))?$request->get('about_institution'):'';
-            $verified->has_ict_teacher= !empty($request->get('has_ict_teacher'))?"YES":'';
+            $verified->has_ict_teacher= !empty($request->get('has_ict_teacher'))?"YES":"NO";
 
-            $verified->app_upazila_verified= !empty($request->get('app_upazila_verified'))?"YES":'';
-            $verified->app_district_verified= !empty($request->get('app_district_verified'))?"YES":'';
-            $verified->app_duplicate= !empty($request->get('app_duplicate'))?"YES":'';
+            $verified->app_upazila_verified= !empty($request->get('app_upazila_verified'))?"YES":"NO";
+            $verified->app_district_verified= !empty($request->get('app_district_verified'))?"YES":"NO";
+            $verified->app_duplicate= !empty($request->get('app_duplicate'))?"YES":"NO";
         $application->verification()->save($verified);
 
         if(!empty($request->hasFile('verification_report_file'))){

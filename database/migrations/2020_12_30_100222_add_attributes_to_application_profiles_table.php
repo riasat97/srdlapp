@@ -15,7 +15,8 @@ class AddAttributesToApplicationProfilesTable extends Migration
     {
         Schema::table('application_profiles', function (Blueprint $table) {
 
-            $table->string("institution_corrected")->nullable()->after('eiin');
+            $table->string('management')->nullable()->after('eiin');
+            $table->string("institution_corrected")->nullable()->after('management');
             $table->string("union_others")->nullable()->after('institution');
             $table->string("ward")->nullable()->after('union_others');
             $table->text("village_road")->nullable()->after('ward');
@@ -41,9 +42,9 @@ class AddAttributesToApplicationProfilesTable extends Migration
     public function down()
     {
         Schema::table('application_profiles', function (Blueprint $table) {
-            $table->dropColumn("alt_name");
-            $table->dropColumn("alt_tel");
-            $table->dropColumn("alt_email");
+
+            $table->dropColumn('management');
+            $table->dropColumn('institution_corrected');
             $table->dropColumn("union_others");
             $table->dropColumn("ward");
             $table->dropColumn("village_road");
@@ -54,6 +55,10 @@ class AddAttributesToApplicationProfilesTable extends Migration
             $table->dropColumn("proper_road");
             $table->dropColumn("latitude");
             $table->dropColumn("longitude");
+
+            $table->dropColumn("alt_name");
+            $table->dropColumn("alt_tel");
+            $table->dropColumn("alt_email");
         });
     }
 }

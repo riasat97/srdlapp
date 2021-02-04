@@ -52,11 +52,11 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-md-9">
+                            <div class="form-group col-md-8">
                                 <label class="" for="">শিক্ষা প্রতিষ্ঠানের নাম</label>
                                 <input type="text" class="form-control" id="inputInsBn" name="institution_bn" value="{{ old('institution_bn') }}" placeholder="বাংলাতে">
                             </div>
-                            <div class="form-group col-md-3" style="">
+                            <div class="form-group col-md-4" style="">
                                 {{ Form::label('is_institution_bn_correction_needed', 'প্রতিষ্ঠানটির নামটির সংশোধন প্রয়োজন?') }}
                                 <input name="is_institution_bn_correction_needed" id="is_institution_bn_correction_needed" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_is_institution_bn_correction_needed',"No",["id"=>"hidden_is_institution_bn_correction_needed"])}}
@@ -69,9 +69,13 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-md-12">
+                            <div class="form-group col-md-8">
                                 <label for="">শিক্ষা প্রতিষ্ঠানের নাম (ENGLISH)</label>
                                 <input type="text" class="form-control" id="inputInsEn" name="institution" value="{{ old('institution') }}" placeholder="ইংরেজিতে">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="">ম্যানেজমেন্ট</label>
+                                {{Form::select('management', array_merge(['0' => 'নির্বাচন করুন'],management()), old('management'),['class'=>'form-control', 'id'=>'management'])}}
                             </div>
                         </div>
                         <div class="form-row">
@@ -85,6 +89,7 @@
                             </div>
                         </div>
                         <div class="form-row">
+
                             <div class="form-group col-md-6">
                                 <label for="">EIIN নম্বর</label>
                                 {{ Form::number('eiin',null,['class'=>'form-control', 'id'=>"eiin"])}}
@@ -193,15 +198,15 @@
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group  col-md-4">
+                            <div class="form-group  col-md-6">
                                 {{Form::label('distance_from_upazila_complex', 'উপজেলা পরিষদ হতে দূরত্ব (কিলোমিটার)') }}
                                 {{Form::number('distance_from_upazila_complex', old('distance_from_upazila_complex'),['id'=>'distance_from_upazila_complex','class'=>'form-control','style'=>''])}}
                             </div>
-                            <div class="form-group  col-md-4">
+                           {{-- <div class="form-group  col-md-4">
                                 {{Form::label('direction', 'দিক') }}
                                 {{Form::select('direction',direction(),old('direction'),['id'=>'direction','class'=>'form-control','style'=>''])}}
-                            </div>
-                            <div class="form-group  col-md-4">
+                            </div>--}}
+                            <div class="form-group  col-md-6">
                                 {{Form::label('proper_road', 'প্রতিষ্ঠানটি পর্যন্ত যান চলাচলের মতো রাস্তা আছে কিনা?') }}
                                 <input name="proper_road" id="proper_road" type="checkbox"  data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_proper_road',"NO",["id"=>"hidden_proper_road"])}}
@@ -369,10 +374,6 @@
                         </div>
 
                         <div class="form-row">
-{{--                                {{ Form::label('boundary_wall', 'সীমানা প্রাচীর আছে?') }}--}}
-{{--                                <input name="boundary_wall" id="boundary_wall" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">--}}
-{{--                                {{Form::hidden('hidden_boundary_wall',"NO",["id"=>"hidden_boundary_wall"])}}--}}
-{{--                                {{Form::hidden('hidden_',"NO",["id"=>""])}}--}}
                             <div class="form-group  col-md-6">
                                 {{ Form::label('good_result', 'প্রতিষ্ঠানটি ভালো ফলাফলকারী (বিশেষ করে ইংরেজি, গণিত এবং বিজ্ঞান বিষয়ে)?', array('class' => 'awesome')) }}
                                 <input name="good_result" id="good_result" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">

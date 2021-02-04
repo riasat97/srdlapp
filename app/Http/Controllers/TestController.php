@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Application;
+use Illuminate\Support\Arr;
 use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
-class TestController extends Controller
+class TestController extends ApplicationController
 {
 
     public function test($subdomain){
@@ -25,28 +26,27 @@ class TestController extends Controller
     }
     public function generatePDF()
     {
-        $deo_app_seat_count= Application::where("listed_by_deo","YES")->whereNotLike('parliamentary_constituency', 'মহিলা আসন')->groupBy('seat_no')->get()->count();
-        //dd($deo_app_seat_count);
-        $deo_app_seat_total= Application::where("listed_by_deo","YES")->whereNotLike('parliamentary_constituency', 'মহিলা আসন')->count();
-        $deo_app_reserved_seat_count= Application::where("listed_by_deo","YES")->whereLike('parliamentary_constituency', 'মহিলা আসন')->groupBy('seat_no')->get()->count();
-        $deo_app_reserved_seat_total= Application::where("listed_by_deo","YES")->whereLike('parliamentary_constituency', 'মহিলা আসন')->count();
-        $sof_total= Application::where("listed_by_deo","YES")->where("lab_type","sof")->groupBy('seat_no')->get()->count();
-        $other_ref= Application::where("listed_by_deo","NO")->count();
-        $total_app= Application::count();
+        $application=Application::where('id',1012)->with('attachment','lab','verification','profile')->first();
+        $labs=[];
+        $tag= new \Spatie\Tags\Tag;
+        $tags=\Spatie\Tags\Tag::all();
+        foreach ($tags as $tag) {
+            $labs[$tag->name]=$tag->translate('name', 'bn');
+        }
+        $selectedLabs=$this->getLabs($application,'lab');
+        $listAttachmentFile= $this->getListAttachmentFile($application);
+        $listAttachmentFilePathType=$this->getListAttachmentFilePathType($application);
+        $ins_type= Arr::except(ins_type(),[""]);
+        $ins_level= Arr::only(ins_level(), array('primary','junior_secondary','secondary','higher_secondary','secondary_and_higher',"graduation","others"));
+        $ins_type_sof= Arr::only($ins_type, array('general', 'madrasha', 'technical'));
+        $ins_level_sof= $array = Arr::only(ins_level(), array('secondary', 'secondary_and_higher'));
+        $ins_level_technical= $array = Arr::only(ins_level(), array('junior_secondary','secondary','higher_secondary','secondary_and_higher',"diploma","others"));
         //dd($deo_app_seat_count);
         //dd(storage_path('fonts/'));
-        $data = [
-            'title' => 'আর্থিক প্রতিষ্ঠান বিভাগ ',
-            'heading' => 'আর্থিক প্রতিষ্ঠান বিভাগ',
-            'content' => 'দুর্যোগ ব্যবস্থাপনা ও ত্রাণ মন্ত্রণালয়  ঠিকানা ',
-            'deo_app_seat_count'=>$deo_app_seat_count,
-            'deo_app_seat_total'=>$deo_app_seat_total,
-            'deo_app_reserved_seat_count'=>$deo_app_reserved_seat_count,
-            'deo_app_reserved_seat_total'=>$deo_app_reserved_seat_total,
-            'sof_total'=>$sof_total,
-            'other_ref'=>$other_ref,
-            'total_app'=>$total_app,
-            ];
+        $data = ['application'=>$application,"ins_type"=>$ins_type,"ins_level"=>$ins_level,
+                "ins_type_sof"=>$ins_type_sof,"ins_level_sof"=>$ins_level_sof,
+                "ins_level_technical"=>$ins_level_technical,'labs'=>$labs,'selectedLabs'=>$selectedLabs,
+                'listAttachmentFile'=>$listAttachmentFile,'listAttachmentFilePathType'=>$listAttachmentFilePathType];
         //$pdf = \App::make('dompdf.wrapper');
         //$pdf->setOptions(['dpi' => 150, 'defaultFont' => 'Nikosh']);
         $pdf = PDF::loadView('applications.generate-pdf', $data);

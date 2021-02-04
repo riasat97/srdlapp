@@ -27,9 +27,18 @@
     </div>
 </div>
 <div class="form-row">
-    <div class="form-group" >
+    <div class="form-group col-md-6" >
         {{ Form::label('ins_en', 'শিক্ষা প্রতিষ্ঠানের নাম (ENGLISH):') }}
         {{ $application->profile->institution ?? "" }}
+    </div>
+    <div class="form-group col-md-6">
+        {{ Form::label('management', 'ম্যানেজমেন্ট:') }}
+        <label class="checkbox-inline">
+            <input type="checkbox" value="" @if(!empty($application->profile->management)&& $application->profile->management=="public")checked @endif disabled>সরকারি
+        </label>
+        <label class="checkbox-inline">
+            <input type="checkbox" value=""  @if(!empty($application->profile->management)&& $application->profile->management=="private")checked @endif disabled>বেসরকারি
+        </label>
     </div>
 </div>
 
@@ -206,7 +215,6 @@
         {{ $application->parliamentary_constituency??"" }}
     </div>
 </div>
-
 
 <div class="form-row">
     <div class="form-group col-md-12">

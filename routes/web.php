@@ -105,6 +105,15 @@ Route::resource('references', 'ReferenceController');
 Route::resource('referenceDesignations', 'ReferenceDesignationController');
 Route::get('change-password', 'ChangePasswordController@index')->name('changePassword');
 Route::post('change-password', 'ChangePasswordController@store')->name('change.password');
+Route::resource('users', 'UserController');
 });
 Route::get('generate-pdf','TestController@generatePDF');
+
+
+
+
+
+
+
+
 

@@ -3,7 +3,6 @@
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 @endsection
 @section('content')
-    {{$deo_app_seat_count}}
     <section class="content-header">
         <h1 class="pull-left"><i class="fas fa-envelope-open-text"></i> সংক্ষিপ্ত তথ্য</h1> <br>
     </section>

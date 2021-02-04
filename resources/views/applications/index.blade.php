@@ -382,33 +382,6 @@
         });
     </script>
 
-    <script type="text/javascript">
-        $(function () {
-            $("#is_mpo").change(function () {
-
-                if ($(this).prop("checked") == true) {
-                    $("#mpo").removeAttr("disabled");
-                    $("#mpo").focus();
-                } else {
-                    $("#mpo").attr("disabled", "disabled");
-                }
-            });
-        });
-    </script>
-
-    <script type="text/javascript">
-        $(function () {
-            $("#internet_connection").change(function () {
-
-                if ($(this).prop("checked") == true) {
-                    $("#internet_connection_type").removeAttr("disabled");
-                    $("#internet_connection_type").focus();
-                } else {
-                    $("#internet_connection_type").attr("disabled", "disabled");
-                }
-            });
-        });
-    </script>
 
     @if(Auth::user()->hasRole(['district admin']))
         <script type="text/javascript">

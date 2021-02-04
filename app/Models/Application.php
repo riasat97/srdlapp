@@ -15,6 +15,7 @@ class Application extends Model
         $labTypeArr= lab_type();
         return $labTypeArr[$value];
     }
+
     public function getInstitutionTypeAttribute($value)
     {
         $InstitutionTypeArr= ins_type();
