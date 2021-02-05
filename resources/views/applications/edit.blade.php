@@ -347,6 +347,12 @@
                                 </div>
                             @endif
                         </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12">
+                                {{ Form::label('verification', 'উপযুক্ততা যাচাই করুন') }}
+                                <input name="verification" id="verification" type="checkbox"  class="toggle form-control" data-width="50" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                            </div>
+                        </div>
                     @endif
                     </div>
 {{--                    @if(Auth::user()->hasRole(['super admin']))--}}
@@ -367,60 +373,60 @@
                         <div class="form-row">
                             <div class="form-group  col-md-6">
                                 {{ Form::label('having_labs', 'ইতোপূর্বে সরকারি ল্যাব প্রাপ্ত ?', array('class' => 'nothing')) }}
-                                <input name="govlab" id="govlab" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                <input name="govlab" id="govlab" type="checkbox" data-width="50" class="toggle form-control verification-content" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_govlab',"NO",["id"=>"hidden_govlab"])}}
                             </div>
                             <div class="form-group col-md-6">
                                 {{ Form::label('labs', 'প্রাপ্ত ল্যাব সমূহ', array('class' => 'nothing')) }}
                                 {{--                                <span>প্রাপ্ত ল্যাব সমূহ</span>--}}
-                                {{ Form::select('labs[]', $labs, null, ['class'=>'form-control', 'id' => 'labs_multiple', 'multiple' => 'multiple','disabled'=>true, 'data-placeholder'=>' একাধিক হতে পারে']) }}
-                                {{Form::text('lab_others_title',$application->lab->lab_others_title??"",['id'=>'lab_others_title','class'=>'form-control','style'=>''])}}
+                                {{ Form::select('labs[]', $labs, null, ['class'=>'form-control verification-content', 'id' => 'labs_multiple', 'multiple' => 'multiple','disabled'=>true, 'data-placeholder'=>' একাধিক হতে পারে']) }}
+                                {{Form::text('lab_others_title',$application->lab->lab_others_title??"",['id'=>'lab_others_title','class'=>'form-control verification-content','style'=>''])}}
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group  col-md-6">
                                 {{ Form::label('proper_infrastructure', 'উপযুক্ত অবকাঠামো এবং আইসিটি শিক্ষার সুযোগ, সুবিধা আছে কিনা? ') }}
-                                <input name="proper_infrastructure" @if(!empty($application->verification->proper_infrastructure) && $application->verification->proper_infrastructure=="YES" ) checked @endif id="proper_infrastructure" type="checkbox" data-width="50"  class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                <input name="proper_infrastructure" @if(!empty($application->verification->proper_infrastructure) && $application->verification->proper_infrastructure=="YES" ) checked @endif id="proper_infrastructure" type="checkbox" data-width="50"  class="toggle form-control verification-content" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_proper_infrastructure',"NO",["id"=>"hidden_proper_infrastructure"])}}
                             </div>
                             <div class="form-group  col-md-6">
                                 {{ Form::label('electricity_solar', 'নিরবিচ্ছিন্ন বিদ্যুৎ/সোলার সরবরাহ আছে ?') }}
-                                <input name="electricity_solar" @if(!empty($application->verification->electricity_solar) && $application->verification->electricity_solar=="YES" ) checked @endif id="electricity_solar" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                <input name="electricity_solar" @if(!empty($application->verification->electricity_solar) && $application->verification->electricity_solar=="YES" ) checked @endif id="electricity_solar" type="checkbox" data-width="50" class="toggle form-control verification-content" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_electricity_solar',"NO",["id"=>"hidden_electricity_solar"])}}
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 {{ Form::label('internet_connection', 'ইন্টারনেট সংযোগ আছে ?', array('class' => 'awesome')) }}
-                                <input name="internet_connection" @if(!empty($application->verification->internet_connection) && $application->verification->internet_connection=="YES" ) checked @endif id="internet_connection" type="checkbox"  data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                <input name="internet_connection" @if(!empty($application->verification->internet_connection) && $application->verification->internet_connection=="YES" ) checked @endif id="internet_connection" type="checkbox"  data-width="50" class="toggle form-control verification-content" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_internet_connection',"NO",["id"=>"hidden_internet_connection"])}}
                             </div>
                             <div class="form-group col-md-6">
                                 {{Form::label('internet_connection_type', 'ইন্টারনেট সংযোগের ধরন ?', array('class' => 'nothing')) }}
-                                {{Form::select('internet_connection_type', array('0' => 'নির্বাচন করুন','modem' => 'মডেম', 'broadband' => 'ব্রডব্যান্ড'), $application->verification->internet_connection_type ?? null,['class'=>'form-control', 'id'=>'internet_connection_type','class' => 'form-control',"disabled"=>"true"])}}
+                                {{Form::select('internet_connection_type', array('0' => 'নির্বাচন করুন','modem' => 'মডেম', 'broadband' => 'ব্রডব্যান্ড'), $application->verification->internet_connection_type ?? null,['class'=>'form-control', 'id'=>'internet_connection_type','class' => 'form-control verification-content',"disabled"=>"true"])}}
                             </div>
                         </div>
                         <div class="form-row ">
                             <div class="form-group  col-md-6">
                                 {{ Form::label('good_result', 'প্রতিষ্ঠানটি ভালো ফলাফলকারী (বিশেষ করে ইংরেজি, গণিত এবং বিজ্ঞান বিষয়ে)?', array('class' => 'awesome')) }}
-                                <input name="good_result" @if(!empty($application->verification->good_result) && $application->verification->good_result=="YES" ) checked @endif  id="good_result" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                <input name="good_result" @if(!empty($application->verification->good_result) && $application->verification->good_result=="YES" ) checked @endif  id="good_result" type="checkbox" data-width="50" class="toggle form-control verification-content" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_good_result',"NO",["id"=>"hidden_good_result"])}}
                             </div>
                             <div class="form-group  col-md-6">
                                 {{ Form::label('proper_room', 'অন্তত ১৭টি টেবিল ও ৩২জন ছাত্রের বসার মত সুপরিসর কক্ষ আছে?') }}
-                                <input name="proper_room" @if(!empty($application->verification->proper_room) && $application->verification->proper_room=="YES" ) checked @endif id="proper_room" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                <input name="proper_room" @if(!empty($application->verification->proper_room) && $application->verification->proper_room=="YES" ) checked @endif id="proper_room" type="checkbox" data-width="50" class="toggle form-control verification-content" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_proper_room',"NO",["id"=>"hidden_proper_room"])}}
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group  col-md-6">
                                 {{ Form::label('has_ict_teacher', 'আইসিটি শিক্ষক আছে ?') }}
-                                <input name="has_ict_teacher" @if(!empty($application->verification->has_ict_teacher) && $application->verification->has_ict_teacher=="YES" ) checked @endif id="ict_teacher" type="checkbox"  data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                <input name="has_ict_teacher" @if(!empty($application->verification->has_ict_teacher) && $application->verification->has_ict_teacher=="YES" ) checked @endif id="ict_teacher" type="checkbox"  data-width="50" class="toggle form-control verification-content" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_has_ict_teacher',"NO",["id"=>"hidden_has_ict_teacher"])}}
                             </div>
                             <div class="form-group  col-md-6">
                                 {{ Form::label('proper_security', 'ল্যাবের নিরাপত্তার জন্য উপযুক্ত পরিবেশ আছে?') }}
-                                <input name="proper_security" @if(!empty($application->verification->proper_security) && $application->verification->proper_security=="YES" ) checked @endif id="proper_security" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                <input name="proper_security" @if(!empty($application->verification->proper_security) && $application->verification->proper_security=="YES" ) checked @endif id="proper_security" type="checkbox" data-width="50" class="toggle form-control verification-content" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_proper_security',"NO",["id"=>"hidden_proper_security"])}}
                             </div>
                         </div>
@@ -428,32 +434,32 @@
                         <div class="form-row">
                             <div class="form-group  col-md-6">
                                 {{ Form::label('lab_maintenance', 'ল্যাবে সরবরাহকৃত আইটি ও অন্যান্য সরঞ্জামের রক্ষণাবেক্ষণ এবং ল্যাব পরিচালনা ও সংরক্ষণে প্রতিশ্ৰুতি সম্পন্ন শিক্ষা প্রতিষ্ঠান ?') }}
-                                <input name="lab_maintenance" @if(!empty($application->verification->lab_maintenance) && $application->verification->lab_maintenance=="YES" ) checked @endif id="lab_maintenance" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                <input name="lab_maintenance" @if(!empty($application->verification->lab_maintenance) && $application->verification->lab_maintenance=="YES" ) checked @endif id="lab_maintenance" type="checkbox" data-width="50" class="toggle form-control verification-content" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_lab_maintenance',"NO",["id"=>"hidden_lab_maintenance"])}}
                             </div>
                             <div class="form-group  col-md-6" >
                                 {{ Form::label('lab_prepared', 'ল্যাবের জন্য নির্ধারিত কক্ষটিতে যন্ত্রপাতি এবং আসবাবপত্র সরবরাহের পূর্বে ল্যাব কক্ষের সুরক্ষা ও নিরাপত্তা বৃদ্ধির জন্য উক্ত কক্ষের দরজা, জানালাসমূহ সুগঠিত রাখতে প্রস্তুত?') }}
-                                <input name="lab_prepared" @if(!empty($application->verification->lab_prepared) && $application->verification->lab_prepared=="YES" ) checked @endif id="lab_prepared" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                <input name="lab_prepared" @if(!empty($application->verification->lab_prepared) && $application->verification->lab_prepared=="YES" ) checked @endif id="lab_prepared" type="checkbox" data-width="50" class="toggle form-control verification-content" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_lab_prepared',"NO",["id"=>"hidden_lab_prepared"])}}
                             </div>
                         </div>
                         <div class="form-row col-md-12">
                             <div class="form-group shadow-textarea">
                                 <label class="awesome" for="about_institution">প্রতিষ্ঠানটি সম্পর্কে আপনার মন্তব্য</label>
-                                <textarea class="form-control z-depth-1" id="about_institution" name="about_institution" rows="5" placeholder="">{{ $application->verification->about_institution ?? old("about_institution") }}</textarea>
+                                <textarea class="form-control z-depth-1 verification-content" id="about_institution" name="about_institution" rows="5" placeholder="">{{ $application->verification->about_institution ?? old("about_institution") }}</textarea>
                             </div>
                         </div>
 
                         <div class="form-row verify">
                             <div class="form-group  col-md-6 ">
                                 {{ Form::label('upazila_verified','',["id"=>"upazila_verified_lb"])}}
-                                <input name="app_upazila_verified" @if(!empty($application->verification->app_upazila_verified) && $application->verification->app_upazila_verified=="YES" ) checked @endif id="app_upazila_verified" type="checkbox"  data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                <input name="app_upazila_verified" @if(!empty($application->verification->app_upazila_verified) && $application->verification->app_upazila_verified=="YES" ) checked @endif id="app_upazila_verified" type="checkbox"  data-width="50" class="toggle form-control verification-content" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_upazila_verified',"NO",["id"=>"hidden_upazila_verified"])}}
                             </div>
 
                             <div class="form-group  col-md-6 ">
                                 {{ Form::label('district_verified', '',["id"=>"district_verified_lb"])}}
-                                <input name="app_district_verified" @if(!empty($application->verification->app_district_verified) && $application->verification->app_district_verified=="YES" ) checked @endif  id="app_district_verified" type="checkbox"  data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                <input name="app_district_verified" @if(!empty($application->verification->app_district_verified) && $application->verification->app_district_verified=="YES" ) checked @endif  id="app_district_verified" type="checkbox"  data-width="50" class="toggle form-control verification-content" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_district_verified',"NO",["id"=>"hidden_district_verified"])}}
                             </div>
                         </div>
@@ -463,7 +469,7 @@
                             </div>
                             <div class="form-group col-md-6">
                                 <div class="verification_report_file">
-                                    <input type="file" name="verification_report_file"  class="custom-file-input" id="verification_report_file">
+                                    <input type="file" name="verification_report_file"  class="custom-file-input verification-content" id="verification_report_file">
                                     <label class="custom-file-label" for="verification_report_file"></label>
                                 </div>
                             </div>
@@ -920,6 +926,22 @@
             });
         });
     </script>
+    @if(Auth::user()->hasRole(['super admin']))
+        <script type="text/javascript">
+            $(function () {
+                $(".verification-content").attr("disabled", "disabled");
+
+                $("#verification").change(function () {
+
+                    if ($(this).prop("checked") == true) {
+                        $(".verification-content").removeAttr("disabled");
+                    } else {
+                        $(".verification-content").attr("disabled", "disabled");
+                    }
+                });
+            });
+        </script>
+    @endif
     @if(Auth::user()->hasRole(['super admin']))
         <script type="text/javascript">
             $(function () {

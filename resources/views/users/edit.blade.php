@@ -7,11 +7,12 @@
         </h1>
    </section>
    <div class="content">
+       @include('flash::message')
        @include('adminlte-templates::common.errors')
        <div class="box box-primary">
            <div class="box-body">
                <div class="row">
-                   {!! Form::model($user, ['route' => ['users.update', $user->id], 'method' => 'patch']) !!}
+                   {!! Form::open(['route' => ['users.update', $user->id], 'method' => 'patch']) !!}
 
                         @include('users.fields')
 

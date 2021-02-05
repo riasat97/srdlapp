@@ -5,9 +5,12 @@
 <li class="{{ Request::is('admin/applications*') ? 'active' : '' }}">
     <a href="{{ route('applications.index') }}"><i class="fas fa-envelope"></i><span> ল্যাবের আবেদন</span></a>
 </li>
+<li class="{{ Request::routeIs('users.edit') ? 'active' : '' }}">
+    <a href="{{ route('users.edit',['id'=>Auth::user()->id]) }}"><i class="far fa-id-badge"></i> <span>  প্রোফাইল</span></a>
+</li>
     @if(Auth::user()->hasRole(['super admin']))
 
-<li class="{{ Request::is('admin/users*') ? 'active' : '' }}">
+<li class="{{ Request::routeIs('users*') ? 'active' : '' }}">
     <a href="{{ route('users.index') }}"><i class="fa fa-edit"></i><span>ইউজার ম্যানেজমেন্ট </span></a>
 </li>
 

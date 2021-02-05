@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Repositories\UserRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Response;
 
@@ -74,7 +75,7 @@ class UserController extends AppBaseController
     /**
      * Display the specified User.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -94,52 +95,57 @@ class UserController extends AppBaseController
     /**
      * Show the form for editing the specified User.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
     public function edit($id)
     {
-        $user = $this->userRepository->find($id);
+        if (Auth::user()->hasRole(['super admin']))
+            $user = $this->userRepository->find($id);
+        elseif (Auth::user()->id == $id)
+            $user = $this->userRepository->find($id);
+        else  return abort(404);
 
         if (empty($user)) {
             Flash::error('User not found');
 
             return redirect(route('users.index'));
         }
-
-        return view('users.edit')->with('user', $user);
+        $designation_selected= $this->getSelectedDesignation($user);
+        $name = $this->getName($user);
+        $email= $this->getEmail($user);
+        return view('users.edit',['user'=>$user,'name'=>$name,'email'=>$email,'designation_selected'=>$designation_selected]);
     }
 
     /**
      * Update the specified User in storage.
      *
-     * @param  int              $id
+     * @param int $id
      * @param UpdateUserRequest $request
      *
      * @return Response
      */
     public function update($id, UpdateUserRequest $request)
     {
-        $user = $this->userRepository->find($id);
-
-        if (empty($user)) {
-            Flash::error('User not found');
-
+        //dd($request->all());
+        if (Auth::user()->hasRole(['super admin'])){
+            $user = $this->userRepository->update($request->all(), $id);
+            Flash::success('User updated successfully.');
             return redirect(route('users.index'));
         }
-
-        $user = $this->userRepository->update($request->all(), $id);
-
-        Flash::success('User updated successfully.');
-
-        return redirect(route('users.index'));
+        elseif (Auth::user()->id == $id){
+            $user = $this->userRepository->update($request->all(), $id);
+            Flash::success('User updated successfully.');
+            return redirect(route('users.edit',['id'=>$id]));
+        }
+        else  return abort(404);
     }
 
     /**
      * Remove the specified User from storage.
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return Response
      */
@@ -158,5 +164,41 @@ class UserController extends AppBaseController
         Flash::success('User deleted successfully.');
 
         return redirect(route('users.index'));
+    }
+
+    private function getName(User $user)
+    {
+        $name_parts = explode(" ", $user->name);
+        if (Auth::user()->hasROle(['district admin'])) {
+            if (count(explode(" ",$user->name)) == 3)
+                $name = strtolower($name_parts[0]) . "_" . strtolower($name_parts[2]);
+            return (!empty($name)&&$name == $user->username) ? "" : $user->name;
+        }
+        if (Auth::user()->hasROle(['upazila admin'])) {
+            if (count($user->name) == 3)
+                $name = strtolower($name_parts[0]) . explode("_", $user->username)[1] . "_" . strtolower($name_parts[2]);
+            return ($name == $user->username) ? "" : $user->name;
+        }
+            return $user->name;
+    }
+    private function getEmail(User $user)
+    {
+        if(empty($user->email)) return '';
+        $email_parts = explode("@", $user->email);
+        $email_match = '@'.strtolower($email_parts[1]);
+        return (!empty($email_match)&&$email_match == '@mail.com') ? "" : $user->email;
+    }
+
+    private function getSelectedDesignation(User $user)
+    {
+        if(!empty($user)&&$user->designation)
+            return $user->designation;
+        if (Auth::user()->hasROle(['district admin'])) {
+            return 'dc';
+        }
+        if (Auth::user()->hasROle(['upazila admin'])) {
+            return 'uno';
+        }
+        return 0;
     }
 }

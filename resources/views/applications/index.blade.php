@@ -196,7 +196,7 @@
             });
 
           //  $(".yajra-datatable").css({"width":"100%"});
-
+            @if(Auth::user()->hasRole(['super admin']))
             $('.yajra-datatable tbody').on('click', 'td.details-control', function () {
                 var tr = $(this).closest('tr');
                 var row = table.row( tr );
@@ -212,6 +212,7 @@
                     tr.addClass('shown');
                 }
             });
+            @endif
             function template ( d ) {
                 // `d` is the original data object for the row
                 if(d.listed_by_deo=="YES"){
