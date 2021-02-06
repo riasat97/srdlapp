@@ -1,472 +1,567 @@
-<div class="form-row">
-    <div class="form-group">
-        {{ Form::label('lab_type', 'কম্পিউটার ল্যাবের ধরণ:') }}
-        <label class="checkbox-inline">
-            <input type="checkbox" value="" @if(getResult(lab_type(),$application->lab_type)=="srdl")checked @endif disabled>শেখ রাসেল ডিজিটাল ল্যাব
-        </label>
-        <label class="checkbox-inline">
-            <input type="checkbox" value=""  @if(getResult(lab_type(),$application->lab_type)=="sof")checked @endif disabled>স্কুল অফ ফিউচার
-        </label>
-    </div>
-</div>
+<div class="container">
+    <div class="row">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="">
+            <tbody>
+                <tr class="">
+                    <td width="55%" height="100" align="right" valign="middle" class="text-center">
+                        <img src="{{asset('images/srdl-logo.jpg')}}" alt="logo" class="img-responsive" style="height: 55px;padding-bottom: 0px; margin-bottom: 0px;">
+                    </td>
+                    <td width="45%" height="100" align="right" valign="middle" class="text-center">
+                        <img src="{{asset('images/Mujib Borsho.png')}}" alt="logo" class="img-responsive" style="height: 40px;">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-<div class="form-row">
-    <div class="form-group col-md-12">
-        <h4 class="callout callout-info">শিক্ষা প্রতিষ্ঠানের বিবরণ</h4>
-    </div>
-</div>
 
-<div class="form-row">
-    <div class="form-group col-md-6">
-        {{ Form::label('ins_bn', 'শিক্ষা প্রতিষ্ঠানের নাম:') }}
-        {{ $application->institution_bn }}
-    </div>
-    <div class="form-group col-md-6">
-        {{ Form::label('is_institution_bn_correction_needed', 'সংশোধিত শিক্ষা প্রতিষ্ঠানের নাম:') }}
-        {{ $application->profile->institution_corrected??"" }}
-    </div>
-</div>
-<div class="form-row">
-    <div class="form-group col-md-6" >
-        {{ Form::label('ins_en', 'শিক্ষা প্রতিষ্ঠানের নাম (ENGLISH):') }}
-        {{ $application->profile->institution ?? "" }}
-    </div>
-    <div class="form-group col-md-6">
-        {{ Form::label('management', 'ম্যানেজমেন্ট:') }}
-        <label class="checkbox-inline">
-            <input type="checkbox" value="" @if(!empty($application->profile->management)&& $application->profile->management=="public")checked @endif disabled>সরকারি
-        </label>
-        <label class="checkbox-inline">
-            <input type="checkbox" value=""  @if(!empty($application->profile->management)&& $application->profile->management=="private")checked @endif disabled>বেসরকারি
-        </label>
-    </div>
-</div>
 
-<div class="form-row">
-    @if($application->lab_type==lab_type()['srdl'])
-    <div class="form-group col-md-6">
-        <label for="">প্রতিষ্ঠানের ধরন</label>
-            @foreach($ins_type as $instyp)
-            <label class="checkbox-inline">
-                <input type="checkbox" value=""  @if($application->institution_type ==$instyp)checked @endif disabled>{{$instyp}}
-            </label>
-            @endforeach
+        {{--<div class="logo">--}}
+            {{--<div class="left-logo" style="float: left; display: inline-block;">--}}
+                {{--<img src="{{asset('images/digital-bd-logo.jpg')}}" alt="logo" class="img-responsive"  style="height: 40px; float: left;">--}}
+                {{--<img src="{{asset('images/ictd-logo.jpg')}}" alt="logo" class="img-responsive" style="height: 40px; float: left;">--}}
+                {{--<img src="{{asset('images/doict-logo.jpeg')}}" alt="logo" class="img-responsive" style="height: 40px; float: left;">--}}
+                {{--<img src="{{asset('images/srdl-logo.jpg')}}" alt="logo" class="img-responsive" style="height: 50px; text-align: center; padding-left: 50px;">--}}
+                {{--<img src="{{asset('images/Mujib Borsho.png')}}" alt="logo" class="img-responsive" style="height: 40px; float: right;">--}}
+            {{--</div>--}}
+        {{--</div>--}}
     </div>
-    <div class="form-group col-md-6">
-        <label for="">প্রতিষ্ঠানের স্তর</label>
-            @if($application->institution_type== ins_type()['technical'])
-                    @foreach($ins_level_technical as $inslvl)
-                        <label class="checkbox-inline">
-                            <input type="checkbox" value=""  @if($application->institution_level ==$inslvl)checked @endif disabled>{{$inslvl}}
-                        </label>
-                    @endforeach
-            @else
-                    @foreach($ins_level as $inslvl)
-                        <label class="checkbox-inline">
-                            <input type="checkbox" value=""  @if($application->institution_level ==$inslvl)checked @endif disabled>{{$inslvl}}
-                        </label>
-                    @endforeach
-            @endif
-    </div>
-    @else
-        <div class="form-group col-md-6">
-            <label for="">প্রতিষ্ঠানের ধরন</label>
-        @foreach($ins_type_sof as $instyp)
-                <label class="checkbox-inline">
-                    <input type="checkbox" value=""  @if($application->institution_type ==$instyp)checked @endif disabled>{{$instyp}}
-                </label>
-        @endforeach
+
+
+    <div class="row main-content" style="">
+        <div class="heading">
+            <h3 class="heading-text">
+                প্রাথমিকভাবে শেখ রাসেল ডিজিটাল ল্যাব/ স্কুল অফ ফিউচারের উপযুক্ততা যাচাইয়ের জন্য শিক্ষা প্রতিষ্ঠান নির্বাচন সংশ্লিষ্ট প্রতিবেদন
+            </h3>
         </div>
-        <div class="form-group col-md-6">
-            <label for="">প্রতিষ্ঠানের স্তর</label>
-            @foreach($ins_level_sof as $inslvl)
-                <label class="checkbox-inline">
-                    <input type="checkbox" value=""  @if($application->institution_level ==$inslvl)checked @endif disabled>{{$inslvl}}
-                </label>
-            @endforeach
-        </div>
-    @endif
-</div>
 
-<div class="form-row">
-    <div class="form-group col-md-6">
-        <label for="">EIIN নম্বর:</label>
-        {{$application->profile->eiin ?? ""}}
-    </div>
-    <div class="form-group col-md-6">
-        {{ Form::label('mpo', 'MPO কোড:') }}
-        {{$application->profile->mpo ?? ""}}
-    </div>
-</div>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table1">
+            <tbody>
+                <tr>
+                    <th colspan="2" class="block-heading">কম্পিউটার ল্যাবের ধরণ</th>
+                </tr>
 
-<div class="form-row">
-    <div class="form-group  col-md-6">
-        {{ Form::label('total_boys', 'মোট ছাত্র:') }}
-        {{$application->profile->total_boys ?? 0}}
-    </div>
-    <div class="form-group  col-md-6">
-        {{ Form::label('total_girls', 'মোট ছাত্রী:') }}
-        {{$application->profile->total_girls ?? 0}}
-    </div>
-</div>
+                <tr class="lab-type-box">
+                    <td width="50%" height="50" align="center" valign="middle" class="text-center">
+                        @if(getResult(lab_type(),$application->lab_type)=="srdl")
+                            <img src="{{asset('images/checkbox-checked.png')}}" alt="checked" style="height: 16px;"> শেখ রাসেল ডিজিটাল ল্যাব
+                        @endif
 
-<div class="form-row">
-    <div class="form-group col-md-6">
-        <label for="">প্রতিষ্ঠান প্রধানের নাম:</label>
-        {{$application->profile->head_name ?? ""}}
-        <p>
-            <label for="">প্রতিষ্ঠানের ইমেইল:</label>
-            {{ $application->profile->institution_email ?? "" }}
-        </p>
-        <p>
-            <label for="">প্রতিষ্ঠানের মোবাইল নম্বর:</label>
-            {{ $application->profile->institution_tel ?? "" }}
-        </p>
-    </div>
-    <div class="form-group col-md-6">
-        <label for="">বিকল্প প্রতিষ্ঠান প্রতিনিধি/কমিটির সভাপতির নাম:</label>
-        {{ $application->profile->alt_name ?? "" }}
-        <p>
-            <label for="">ইমেইল:</label>
-            {{ $application->profile->alt_email ?? "" }}
-        </p>
-        <p>
-            <label for="">মোবাইল নম্বর:</label>
-            {{ $application->profile->alt_tel ?? "" }}
-        </p>
-    </div>
-</div>
+                        @if(getResult(lab_type(),$application->lab_type)=="sof")
+                            <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> শেখ রাসেল ডিজিটাল ল্যাব
+                        @endif
+                    </td>
+
+                    <td width="50%" height="50" align="center" valign="middle" class="text-center">
+                        @if(getResult(lab_type(),$application->lab_type)=="sof")
+                            <img src="{{asset('images/checkbox-checked.png')}}" alt="checked" style="height: 16px;"> স্কুল অফ ফিউচার
+                        @endif
+
+                        @if(getResult(lab_type(),$application->lab_type)=="srdl")
+                            <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> স্কুল অফ ফিউচার
+                        @endif
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table1 table2">
+            <tbody>
+                <tr>
+                    <th colspan="3" class="block-heading">শিক্ষা প্রতিষ্ঠানের বিবরণ</th>
+                </tr>
+
+                <tr class="td-box">
+                    <td width="35%" height="35" align="left" valign="middle" class="padding010 border-right">
+                        SRDL কোড:
+                    </td>
+
+                    <td colspan="2" width="65%" height="30" align="left" valign="middle" class="padding010">
+                        112233
+                    </td>
+                </tr>
+
+                <tr class="td-box">
+                    <td width="35%" height="30" align="left" valign="middle" class="padding010 border-right">
+                        প্রতিষ্ঠানের নাম (বাংলায়):
+                    </td>
+
+                    <td colspan="2" width="65%" height="30" align="left" valign="middle" class="padding010">
+                        {{ $application->institution_bn }}
+                    </td>
+                </tr>
+
+                <tr class="td-box">
+                    <td width="35%" height="30" align="left" valign="middle" class="padding010 border-right">
+                        প্রতিষ্ঠানের নাম (ইংরেজিতে):
+                    </td>
+
+                    <td colspan="2" width="65%" height="30" align="left" valign="middle" class="padding010">
+                        {{ $application->profile->institution ?? "" }}
+                    </td>
+                </tr>
+
+                <tr class="td-box">
+                    <td width="35%" height="30" align="left" valign="middle" class="padding010 border-right">
+                        সংশোধনকৃত প্রতিষ্ঠানটির নাম (যদি থাকে):
+                    </td>
+
+                    <td colspan="2" width="65%" height="30" align="left" valign="middle" class="padding010">
+                        {{ $application->profile->institution_corrected??"" }}
+                    </td>
+                </tr>
+
+                {{--<tr class="lab-type-box">--}}
+                    {{--<td width="40%" height="30" align="left" valign="middle" class="padding010 border-right">--}}
+                        {{--ম্যানেজমেন্ট:--}}
+                    {{--</td>--}}
+
+                    {{--<td width="30%" height="30" align="center" valign="middle" class="text-center padding010">--}}
+                        {{--<img src="{{asset('images/checkbox-checked.png')}}" alt="checked" style="height: 16px;"> সরকারি--}}
+                    {{--</td>--}}
+
+                    {{--<td width="30%" height="30" align="center" valign="middle" class="text-center padding010">--}}
+                        {{--<img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> বেসরকারি--}}
+                    {{--</td>--}}
+                {{--</tr>--}}
+                {{--<div class="form-row">--}}
+                {{--<div class="form-group col-md-6">--}}
+                {{--{{ Form::label('management', 'ম্যানেজমেন্ট:') }}--}}
+                {{--<label class="checkbox-inline">--}}
+                {{--<input type="checkbox" value="" @if(!empty($application->profile->management)&& $application->profile->management=="public")checked @endif disabled>সরকারি--}}
+                {{--</label>--}}
+                {{--<label class="checkbox-inline">--}}
+                {{--<input type="checkbox" value=""  @if(!empty($application->profile->management)&& $application->profile->management=="private")checked @endif disabled>বেসরকারি--}}
+                {{--</label>--}}
+                {{--</div>--}}
+                {{--</div>--}}
 
 
-<div class="form-row">
-    <div class="form-group col-md-12">
-        <h4 class="callout callout-danger">প্রতিষ্ঠানের ঠিকানা</h4>
-    </div>
-</div>
+                {{--<tr class="lab-type-box">--}}
+                    {{--<td width="35%" height="30" align="left" valign="middle" class="padding5_10 border-right">--}}
+                        {{--প্রতিষ্ঠানের ধরন:--}}
+                    {{--</td>--}}
 
-<div class="form-row">
-    <div class="form-group  col-md-6">
-        {{Form::label('dis', 'জেলা:') }}
-        {{ $application->district??"" }}
-    </div>
-    <div class="form-group  col-md-6">
-        {{Form::label('upazila', 'উপজেলা:') }}
-        {{ $application->upazila??"" }}
-    </div>
-</div>
-<div class="form-row">
-    <div class="form-group  col-md-6">
-        {{Form::label('union_pourashava_ward', 'ইউনিয়ন/পৌরসভা/ওয়ার্ড:') }}
-        {{ $application->union_pourashava_ward?? "" }}
-        @if(!empty($application->union_pourashava_ward)&& $application->union_pourashava_ward=="অন্যান্য" && !empty($application->profile->union_others) )@endif
-        {{ $application->profile->union_others??"" }}
-    </div>
-    <div class="form-group  col-md-6">
-        {{Form::label('ward', 'ওয়ার্ড নং:') }}
-        {{$application->profile->ward??""}}
-    </div>
-</div>
-<div class="form-row">
-    <div class="form-group  col-md-6">
-        {{Form::label('village_road', 'গ্রাম/পাড়া/মহল্লা/সড়ক:') }}
-        {{$application->profile->village_road??""}}
-    </div>
-    <div class="form-group  col-md-3">
-        {{Form::label('post_office', 'পোস্ট অফিস:') }}
-        {{ $application->profile->post_office??""}}
-    </div>
-    <div class="form-group  col-md-3">
-        {{Form::label('post_code', 'পোস্ট কোড:') }}
-        {{$application->profile->post_code??""}}
-    </div>
-</div>
-<div class="form-row">
-    <div class="form-group  col-md-6">
-        {{Form::label('distance_from_upazila_complex', 'উপজেলা পরিষদ হতে দূরত্ব (কিলোমিটার)') }}
-        {{$application->profile->distance_from_upazila_complex??""}}
-    </div>
-    <div class="form-group  col-md-6">
-        {{Form::label('proper_road', 'প্রতিষ্ঠানটি পর্যন্ত যান চলাচলের মতো রাস্তা আছে কিনা?') }}
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(!empty($application->profile->proper_road) && $application->profile->proper_road=="YES" ) checked @endif  disabled>হ্যাঁ
-        </label>
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(empty($application->profile->proper_road) ) checked @endif disabled>না
-        </label>
-    </div>
-</div>
-<div class="form-row">
-    <div class="form-group  col-md-6">
-        {{Form::label('latitude', 'অক্ষাংশ (LATITUDE):') }}
-        {{$application->profile->latitude??""}}
-    </div>
-    <div class="form-group  col-md-6">
-        {{Form::label('longitude', 'দ্রাঘিমাংশ (LONGITUDE):') }}
-        {{$application->profile->longitude??""}}
-    </div>
-</div>
-<div class="form-row">
-    <div class="form-group  col-md-6">
-        {{Form::label('seat_no', 'সংসদীয় আসন নং:') }}
-        {{ $application->seat_no??"" }}
-    </div>
-    <div class="form-group  col-md-6">
-        {{Form::label('parliamentary_constituency', 'নির্বাচনী এলাকা') }}
-        {{ $application->parliamentary_constituency??"" }}
-    </div>
-</div>
+                    {{--<td colspan="2" width="80%" height="30" align="left" valign="middle" class="padding5_10">--}}
+                        {{--<img src="{{asset('images/checkbox-checked.png')}}" alt="checked" style="height: 16px;"> সাধারণ--}}
+                        {{--<img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> মাদ্রাসা--}}
+                        {{--<img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> টেকনিক্যাল--}}
+                        {{--<img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> সরকারি ট্রেনিং সেন্টার--}}
+                        {{--<img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> শিক্ষা সংশ্লিষ্ট সরকারি প্রতিষ্ঠান--}}
+                    {{--</td>--}}
+                {{--</tr>--}}
 
-<div class="form-row">
-    <div class="form-group col-md-12">
-        <h4 class="callout callout-warning">উপযুক্ততা যাচাই</h4>
-    </div>
-</div>
 
-<div class="form-row">
-    <div class="form-group">
-        {{ Form::label('having_labs', 'প্রতিষ্ঠানটিতে ইতোমধ্যে কোন কম্পিউটার ল্যাব প্রদান করা হয়েছে কিনা?') }}
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(!empty($selectedLabs)) checked @endif  disabled>হ্যাঁ
-        </label>
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(empty($selectedLabs)) checked @endif  disabled>না
-        </label>
-    </div>
-</div>
-<div class="form-row">
-    <div class="form-group col-md-8">
-        <label for="">প্রাপ্ত সরকারি কম্পিউটার ল্যাব সমূহ (যদি থাকে):</label>
-        @foreach($labs as $key=>$lab)
-            <label class="checkbox-inline">
-                <input type="checkbox" value=""  @if(in_array($key,$selectedLabs))checked @endif disabled>{{$lab}}
-            </label>
-        @endforeach
-    </div>
-    <div class="form-group col-md-4">
-        {{ Form::label('other_labs', 'অন্যান্য কম্পিউটার ল্যাব(যদি থাকে):') }}
-        {{$application->lab->lab_others_title??""}}
-    </div>
-</div>
-<div class="form-row">
-    <div class="form-group  col-md-8">
-        {{ Form::label('proper_infrastructure', 'উপযুক্ত অবকাঠামো এবং আইসিটি শিক্ষার সুযোগ, সুবিধা আছে কিনা? ') }}
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(!empty($application->verification->proper_infrastructure) && $application->verification->proper_infrastructure=="YES" ) checked @endif  disabled>হ্যাঁ
-        </label>
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(empty($application->verification->proper_infrastructure)) checked @endif  disabled>না
-        </label>
-    </div>
-    <div class="form-group  col-md-4">
-        {{ Form::label('electricity_solar', 'নিরবিচ্ছিন্ন বিদ্যুৎ/সোলার সরবরাহ আছে?                          ') }}
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(!empty($application->verification->electricity_solar) && $application->verification->electricity_solar=="YES" ) checked @endif  disabled>হ্যাঁ
-        </label>
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(empty($application->verification->electricity_solar) ) checked @endif  disabled>না
-        </label>
-    </div>
-</div>
-<div class="form-row">
-    <div class="form-group col-md-6">
-        {{ Form::label('internet_connection', 'ইন্টারনেট সংযোগ আছে ?') }}
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(!empty($application->verification->internet_connection) && $application->verification->internet_connection=="YES" ) checked @endif disabled>হ্যাঁ
-        </label>
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(empty($application->verification->internet_connection)) checked @endif  disabled>না
-        </label>
-    </div>
-    <div class="form-group col-md-6">
-        {{Form::label('internet_connection_type', 'ইন্টারনেট সংযোগের ধরন ?') }}
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(!empty($application->verification->internet_connection_type) && $application->verification->internet_connection_type=="modem")checked @endif disabled>মডেম
-        </label>
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(!empty($application->verification->internet_connection_type) && $application->verification->internet_connection_type=="broadband")checked @endif disabled>ব্রডব্যান্ড
-        </label>
-    </div>
-</div>
-<div class="form-row ">
-    <div class="form-group  col-md-6">
-        {{ Form::label('good_result', 'প্রতিষ্ঠানটি ভালো ফলাফলকারী (বিশেষ করে ইংরেজি, গণিত এবং বিজ্ঞান বিষয়ে)?', array('class' => 'awesome')) }}
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(!empty($application->verification->good_result) && $application->verification->good_result=="YES" ) checked @endif   disabled>হ্যাঁ
-        </label>
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(empty($application->verification->good_result)) checked @endif  disabled>না
-        </label>
-    </div>
-    <div class="form-group  col-md-6">
-        {{ Form::label('proper_room', 'অন্তত ১৭টি টেবিল ও ৩২জন ছাত্রের বসার মত সুপরিসর কক্ষ আছে?') }}
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(!empty($application->verification->proper_room) && $application->verification->proper_room=="YES" ) checked @endif disabled>হ্যাঁ
-        </label>
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(empty($application->verification->proper_room) ) checked @endif disabled>না
-        </label>
-    </div>
-</div>
-<div class="form-row">
-    <div class="form-group  col-md-6">
-        {{ Form::label('has_ict_teacher', 'আইসিটি শিক্ষক আছে ?') }}
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(!empty($application->verification->has_ict_teacher) && $application->verification->has_ict_teacher=="YES" ) checked @endif  disabled>হ্যাঁ
-        </label>
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(empty($application->verification->has_ict_teacher)  ) checked @endif  disabled>না
-        </label>
-    </div>
-    <div class="form-group  col-md-6">
-        {{ Form::label('proper_security', 'ল্যাবের নিরাপত্তার জন্য উপযুক্ত পরিবেশ আছে?') }}
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(!empty($application->verification->proper_security) && $application->verification->proper_security=="YES" ) checked @endif  disabled>হ্যাঁ
-        </label>
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(empty($application->verification->proper_security)) checked @endif  disabled>না
-        </label>
-    </div>
-</div>
 
-<div class="form-row">
-    <div class="form-group  col-md-6">
-        {{ Form::label('lab_maintenance', 'ল্যাবে সরবরাহকৃত আইটি ও অন্যান্য সরঞ্জামের রক্ষণাবেক্ষণ এবং ল্যাব পরিচালনা ও সংরক্ষণে প্রতিশ্ৰুতি সম্পন্ন শিক্ষা প্রতিষ্ঠান ?') }}
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(!empty($application->verification->lab_maintenance) && $application->verification->lab_maintenance=="YES" ) checked @endif  disabled>হ্যাঁ
-        </label>
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(empty($application->verification->lab_maintenance) ) checked @endif disabled>না
-        </label>
+                {{--<tr class="lab-type-box">--}}
+                    {{--<td width="35%" height="30" align="left" valign="middle" class="padding5_10 border-right">--}}
+                        {{--প্রতিষ্ঠানের স্তর:--}}
+                    {{--</td>--}}
+
+                    {{--<td colspan="2" width="65%" height="30" align="left" valign="middle" class="padding5_10">--}}
+                        {{--<img src="{{asset('images/checkbox-checked.png')}}" alt="checked" style="height: 16px;"> প্রাইমারি বা সমপর্যায়--}}
+                        {{--<img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> নিম্ন মাধ্যমিক বা সমপর্যায়--}}
+                        {{--<img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> মাধ্যমিক বা সমপর্যায়--}}
+                        {{--<img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> উচ্চমাধ্যমিক বা সমপর্যায়--}}
+                        {{--<img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> মাধ্যমিক ও উচ্চমাধ্যমিক বা সমপর্যায়--}}
+                        {{--<img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> স্নাতক বা সমপর্যায়--}}
+                        {{--<img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> ডিপ্লোমা--}}
+                        {{--<img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> অন্যান্য--}}
+                    {{--</td>--}}
+                {{--</tr>--}}
+            </tbody>
+        </table>
+
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table3">
+            <tbody>
+                <tr class="lab-type-box">
+                    <td width="20%" height="30" align="left" valign="middle" class="padding010 border-right">
+                        ম্যানেজমেন্ট:
+                    </td>
+
+                    <td width="40%" height="30" align="center" valign="middle" class="text-center padding010">
+                        <img src="{{asset('images/checkbox-checked.png')}}" alt="checked" style="height: 16px;"> সরকারি
+                    </td>
+
+                    <td width="40%" height="30" align="center" valign="middle" class="text-center padding010">
+                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> বেসরকারি
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table3">
+            <tbody>
+                <tr class="lab-type-box">
+                    <td width="20%" height="30" align="left" valign="middle" class="padding5_10 border-right">
+                        প্রতিষ্ঠানের ধরন:
+                    </td>
+
+                    <td width="80%" height="30" align="left" valign="middle" class="padding5_10">
+                        <img src="{{asset('images/checkbox-checked.png')}}" alt="checked" style="height: 16px;"> সাধারণ
+                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> মাদ্রাসা
+                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> টেকনিক্যাল
+                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> সরকারি ট্রেনিং সেন্টার
+                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> শিক্ষা সংশ্লিষ্ট সরকারি প্রতিষ্ঠান
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table3">
+            <tbody>
+                <tr class="lab-type-box">
+                    <td width="20%" height="30" align="left" valign="middle" class="padding5_10 border-right">
+                        প্রতিষ্ঠানের স্তর:
+                    </td>
+
+                    <td width="80%" height="30" align="left" valign="middle" class="padding5_10">
+                        <img src="{{asset('images/checkbox-checked.png')}}" alt="checked" style="height: 16px;"> প্রাইমারি বা সমপর্যায়
+                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> নিম্ন মাধ্যমিক বা সমপর্যায়
+                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> মাধ্যমিক বা সমপর্যায়
+                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> উচ্চমাধ্যমিক বা সমপর্যায়
+                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> মাধ্যমিক ও উচ্চমাধ্যমিক বা সমপর্যায়
+                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> স্নাতক বা সমপর্যায়
+                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> ডিপ্লোমা
+                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> অন্যান্য
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table3">
+            <tbody>
+                <tr class="td-box">
+                    <td width="50%" height="30" align="left" valign="middle" class="padding010 border-right">
+                        EIIN (যদি থাকে): {{$application->profile->eiin ?? ""}}
+                    </td>
+
+                    <td width="50%" height="30" align="left" valign="middle" class="padding010">
+                        MPO code (যদি থাকে): {{$application->profile->mpo ?? ""}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table3">
+            <tbody>
+                <tr class="td-box">
+                    <td width="50%" height="30" align="left" valign="middle" class="padding010 border-right">
+                        মোট ছাত্র: {{$application->profile->total_boys ?? 0}}
+                    </td>
+
+                    <td width="50%" height="30" align="left" valign="middle" class="padding010">
+                        মোট ছাত্রী: {{$application->profile->total_girls ?? 0}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table3">
+            <tbody>
+                <tr class="td-box">
+                    <td width="50%" height="30" align="left" valign="middle" class="padding010 border-right">
+                        <p>প্রতিষ্ঠান প্রধানের নাম: {{$application->profile->head_name ?? ""}}</p>
+                        <p>মোবাইল: {{ $application->profile->institution_email ?? "" }}</p>
+                        <p>ইমেইল:{{ $application->profile->institution_tel ?? "" }}</p>
+                    </td>
+
+                    <td width="50%" height="30" align="left" valign="middle" class="padding010">
+                        <p>বিকল্প প্রতিনিধি/ কমিটির সভাপতির নাম: {{ $application->profile->alt_name ?? "" }}</p>
+                        <p>মোবাইল: {{ $application->profile->alt_email ?? "" }}</p>
+                        <p>ইমেইল: {{ $application->profile->alt_tel ?? "" }}</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table3">
+            <tbody>
+                <tr>
+                    <th colspan="2" class="block-heading">প্রতিষ্ঠানের ঠিকানা</th>
+                </tr>
+
+                <tr class="td-box">
+                    <td width="50%" height="30" align="left" valign="middle" class="padding010 border-right">
+                        <p>জেলা:	{{ $application->district??"" }}</p>
+                    </td>
+
+                    <td width="50%" height="30" align="left" valign="middle" class="padding010">
+                        <p>উপজেলা/সিটি কর্পোরেশন: {{ $application->upazila??"" }}</p>
+                    </td>
+                </tr>
+
+                <tr class="td-box">
+                    <td width="50%" height="30" align="left" valign="middle" class="padding010 border-right">
+                        <p>
+                            ইউনিয়ন/পৌরসভা:
+                            {{ $application->union_pourashava_ward?? "" }}
+                            @if(!empty($application->union_pourashava_ward)&& $application->union_pourashava_ward=="অন্যান্য" && !empty($application->profile->union_others) )@endif
+                            {{ $application->profile->union_others??"" }}
+                        </p>
+                    </td>
+
+                    <td width="50%" height="30" align="left" valign="middle" class="padding010">
+                        <p>ওয়ার্ড নং: {{$application->profile->ward??""}}</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table3">
+            <tbody>
+                <tr class="td-box">
+                    <td width="45%" height="30" align="left" valign="middle" class="padding010 border-right">
+                        <p>গ্রাম/পাড়া/মহল্লা/সড়ক: {{$application->profile->village_road??""}}</p>
+                    </td>
+
+                    <td width="35%" height="30" align="left" valign="middle" class="padding010 border-right">
+                        <p>পোস্ট অফিস: {{ $application->profile->post_office??""}}</p>
+                    </td>
+
+                    <td width="20%" height="30" align="left" valign="middle" class="padding010">
+                        <p>পোস্ট কোড: {{$application->profile->post_code??""}}</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table3">
+            <tbody>
+                <tr class="td-box">
+                    <td width="45%" height="30" align="left" valign="middle" class="padding010 border-right">
+                        <p>উপজেলা পরিষদ হতে দূরত্ব (কিলোমিটার): {{$application->profile->distance_from_upazila_complex??""}}</p>
+                    </td>
+
+                    <td width="55%" height="30" align="left" valign="middle" class="padding010 border-right">
+                        প্রতিষ্ঠানটি পর্যন্ত যান চলাচলের মতো রাস্তা আছে কিনা?
+                        <img src="{{asset('images/checkbox-checked.png')}}" alt="checked" style="height: 16px;"> হ্যাঁ
+                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> না
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table3">
+            <tbody>
+                <tr class="td-box">
+                    <td width="50%" height="30" align="left" valign="middle" class="padding010 border-right">
+                        <p>অক্ষাংশ (LATITUDE): </p>
+                    </td>
+
+                    <td width="50%" height="30" align="left" valign="middle" class="padding010">
+                        <p>দ্রাঘিমাংশ (LONGITUDE): </p>
+                    </td>
+                </tr>
+
+                <tr class="td-box">
+                    <td width="50%" height="30" align="left" valign="middle" class="padding010 border-right">
+                        <p>সংসদীয় আসন নং:  </p>
+                    </td>
+
+                    <td width="50%" height="30" align="left" valign="middle" class="padding010">
+                        <p>নির্বাচনী এলাকা:  </p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table3">
+            <tbody>
+                <tr>
+                    <th colspan="2" class="block-heading">উপযুক্ততা যাচাই</th>
+                </tr>
+
+                <tr class="td-box">
+                    <td colspan="2" width="100%" height="30" align="left" valign="middle" class="padding5_10">
+                        শিক্ষা প্রতিষ্ঠানে ইতোমধ্যে কোন কম্পিউটার ল্যাব প্রদান করা হয়েছে কিনা?
+                        <img src="{{asset('images/checkbox-checked.png')}}" alt="checked" style="height: 16px;"> হ্যাঁ
+                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> না
+                    </td>
+                </tr>
+
+                <tr class="td-box">
+                    <td colspan="2" width="100%" height="30" align="left" valign="middle" class="padding5_10">
+                        প্রাপ্ত সরকারি কম্পিউটার ল্যাব সমূহ (যদি থাকে):
+                        <img src="{{asset('images/checkbox-checked.png')}}" alt="checked" style="height: 16px;"> শেখ রাসেল ডিজিটাল ল্যাব
+                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> বিসিসি
+                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> শিক্ষা মন্ত্রণালয়
+                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> মাধ্যমিক ও উচ্চশিক্ষা অধিদপ্তর
+                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> শিক্ষা বোর্ড
+                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> অন্যান্য
+                    </td>
+                </tr>
+
+                <tr class="td-box">
+                    <td colspan="2" width="100%" height="30" align="left" valign="middle" class="padding5_10">
+                        অন্যান্য কম্পিউটার ল্যাব(যদি থাকে):
+                    </td>
+                </tr>
+
+                <tr class="td-box">
+                    <td width="50%" height="30" align="left" valign="middle" class="padding5_10 border-right">
+                        উপযুক্ত অবকাঠামো এবং আইসিটি শিক্ষার সুযোগ, সুবিধা আছে কিনা?
+                        <img src="{{asset('images/checkbox-checked.png')}}" alt="checked" style="height: 16px;"> হ্যাঁ
+                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> না
+                    </td>
+
+                    <td width="50%" height="30" align="left" valign="middle" class="padding5_10">
+                        প্রতিষ্ঠানে নিরবিচ্ছিন্ন বিদ্যুৎ সরবরাহ আছে কিনা?
+                        <img src="{{asset('images/checkbox-checked.png')}}" alt="checked" style="height: 16px;"> হ্যাঁ
+                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> না
+                    </td>
+                </tr>
+
+                <tr class="td-box">
+                    <td width="50%" height="30" align="left" valign="middle" class="padding5_10 border-right">
+                        প্রতিষ্ঠানে ইন্টারনেট কানেকটিভিটি আছে কিনা?
+                        <img src="{{asset('images/checkbox-checked.png')}}" alt="checked" style="height: 16px;"> হ্যাঁ
+                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> না
+                    </td>
+
+                    <td width="50%" height="30" align="left" valign="middle" class="padding5_10">
+                        ইন্টারনেট সংযোগের ধরন?
+                        <img src="{{asset('images/checkbox-checked.png')}}" alt="checked" style="height: 16px;"> মডেম
+                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> ব্রডব্যান্ড
+                    </td>
+                </tr>
+
+                <tr class="td-box">
+                    <td width="50%" height="30" align="left" valign="middle" class="padding5_10 border-right">
+                        প্রতিষ্ঠানটি ভালো ফলাফলধারী (বিশেষ করে ইংরেজি, গণিত এবং বিজ্ঞান বিষয়ে) কিনা?
+                        <img src="{{asset('images/checkbox-checked.png')}}" alt="checked" style="height: 16px;"> হ্যাঁ
+                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> না
+                    </td>
+
+                    <td width="50%" height="30" align="left" valign="middle" class="padding5_10">
+                        ল্যাবের জন্য নির্বাচিত কক্ষটিতে অন্তত ১৭টি টেবিল ও ৩২ জন ছাত্রের স্বাচ্ছন্দ্যে বসার মত সুপরিসর কক্ষ আছে কিনা?
+                        <img src="{{asset('images/checkbox-checked.png')}}" alt="checked" style="height: 16px;"> হ্যাঁ
+                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> না
+                    </td>
+                </tr>
+
+                <tr class="td-box">
+                    <td width="50%" height="30" align="left" valign="middle" class="padding5_10 border-right">
+                        প্রতিষ্ঠানে আইসিটি শিক্ষাদানের সক্ষমতা সম্পন্ন উপযুক্ত পর্যাপ্ত শিক্ষক আছে কিনা?
+                        <img src="{{asset('images/checkbox-checked.png')}}" alt="checked" style="height: 16px;"> হ্যাঁ
+                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> না
+                    </td>
+
+                    <td width="50%" height="30" align="left" valign="middle" class="padding5_10">
+                        ল্যাবের নিরাপত্তার জন্য উপযুক্ত পরিবেশ আছে?
+                        <img src="{{asset('images/checkbox-checked.png')}}" alt="checked" style="height: 16px;"> হ্যাঁ
+                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> না
+                    </td>
+                </tr>
+
+
+                <tr class="td-box">
+                    <td width="50%" height="30" align="left" valign="middle" class="padding5_10 border-right">
+                        ল্যাবে সরবরাহকৃত আইটি ও অন্যান্য সরঞ্জামের রক্ষণাবেক্ষণ এবং ল্যাব পরিচালনা ও সংরক্ষণে প্রতিশ্ৰুতি সম্পন্ন কিনা?
+                        <img src="{{asset('images/checkbox-checked.png')}}" alt="checked" style="height: 16px;"> হ্যাঁ
+                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> না
+                    </td>
+
+                    <td width="50%" height="30" align="left" valign="middle" class="padding5_10">
+                        ল্যাবের জন্য নির্ধারিত কক্ষটিতে যন্ত্রপাতি এবং আসবাবপত্র সরবরাহের পূর্বে ল্যাব কক্ষের সুরক্ষা ও নিরাপত্তা বৃদ্ধির জন্য উক্ত কক্ষের দরজা, জানালাসমূহ সুগঠিত রাখতে প্রস্তুত কিনা?
+                        <img src="{{asset('images/checkbox-checked.png')}}" alt="checked" style="height: 16px;"> হ্যাঁ
+                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> না
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table3">
+            <tbody>
+                <tr class="td-box">
+                    <td width="25%" height="100" align="left" valign="middle" class="padding5_10 border-right">
+                        <p>প্রতিষ্ঠানটি সম্পর্কে সার্বিক মন্তব্য (যদি থাকে):  </p>
+                    </td>
+
+                    <td width="75%" height="100" align="left" valign="middle" class="padding5_10">
+                        <p></p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table3">
+            <tbody>
+                <tr class="td-box">
+                    <td width="50%" height="100" align="left" valign="middle" class="padding5_10 border-right">
+                        <p>যাচাইকারী (উপজেলা মাধ্যমিক শিক্ষা অফিসার)  </p>
+                        <br><br>
+                        <p>স্বাক্ষর:  </p>
+                        <br>
+                        <p>সিল:   </p>
+                        <br><br><br><br>
+                    </td>
+
+                    <td width="50%" height="100" align="left" valign="middle" class="padding5_10">
+                        <p>যাচাইকারী (সহকারী প্রোগ্রামার)  </p>
+                        <br><br>
+                        <p>স্বাক্ষর:  </p>
+                        <br>
+                        <p>সিল:   </p>
+                        <br><br><br><br>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table3">
+            <tbody>
+                <tr class="td-box">
+                    <td width="50%" height="100" align="left" valign="middle" class="padding5_10 border-right">
+                        <p>
+                            সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে
+                            <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> শেখ রাসেল ডিজিটাল ল্যাব /
+                            <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> স্কুল অফ ফিউচার
+                            স্থাপনের জন্য সুপারিশ করা হল:
+                            <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> হ্যাঁ
+                            <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> না
+                        </p>
+                        <br><br>
+                        <p>স্বাক্ষর:  </p>
+                        <br>
+                        <p>সিল:   </p>
+                        <br><br><br><br>
+                    </td>
+
+                    <td width="50%" height="100" align="left" valign="middle" class="padding5_10">
+                        <p>
+                            জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে
+                            <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> শেখ রাসেল ডিজিটাল ল্যাব /
+                            <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> স্কুল অফ ফিউচার
+                            স্থাপন করা যেতে পারে:
+                            <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> হ্যাঁ
+                            <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> না
+                        </p>
+                        <br><br>
+                        <p>স্বাক্ষর:  </p>
+                        <br>
+                        <p>সিল:   </p>
+                        <br><br><br><br>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-    <div class="form-group  col-md-6" >
-        {{ Form::label('lab_prepared', 'ল্যাবের জন্য নির্ধারিত কক্ষটিতে যন্ত্রপাতি এবং আসবাবপত্র সরবরাহের পূর্বে ল্যাব কক্ষের সুরক্ষা ও নিরাপত্তা বৃদ্ধির জন্য উক্ত কক্ষের দরজা, জানালাসমূহ সুগঠিত রাখতে প্রস্তুত?') }}
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(!empty($application->verification->lab_prepared) && $application->verification->lab_prepared=="YES" ) checked @endif disabled>হ্যাঁ
-        </label>
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(empty($application->verification->lab_prepared) ) checked @endif   disabled>না
-        </label>
+
+    <div class="row footer">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="">
+            <tbody>
+                <tr class="">
+                    <td width="33.33%" height="100" align="center" valign="middle" class="text-center">
+                        <img src="{{asset('images/ictd-logo.jpg')}}" alt="logo" class="img-responsive" style="height: 50px; float: left;">
+                    </td>
+                    <td width="33.33%" height="100" align="center" valign="middle" class="text-center">
+                        <img src="{{asset('images/digital-bd-logo.jpg')}}" alt="logo" class="img-responsive"  style="height: 50px; float: left;">
+                    </td>
+                    <td width="33.33%" height="100" align="center" valign="middle" class="text-center">
+                        <img src="{{asset('images/doict-logo.jpeg')}}" alt="logo" class="img-responsive" style="height: 50px; float: left;">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
-
-<div class="form-row">
-    <div class="form-group shadow-textarea col-md-12">
-        <label class="awesome" for="about_institution">প্রতিষ্ঠানটি সম্পর্কে আপনার মন্তব্য</label>
-        <textarea class="form-control z-depth-1" id="about_institution" name="about_institution" rows="5" placeholder="">{{ $application->verification->about_institution ?? "" }}</textarea>
-    </div>
-</div>
-<div class="form-row">
-    <div class="form-group  col-md-6 ">
-        @if($application->lab_type== lab_type()['srdl'])
-            {{ Form::label('upazila_verified','সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপনের জন্য সুপারিশ করা হল।',["id"=>"upazila_verified_lb"])}}
-        @else
-            {{ Form::label('upazila_verified','সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপনের জন্য সুপারিশ করা হল।',["id"=>"upazila_verified_lb"])}}
-        @endif
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(!empty($application->verification->app_upazila_verified) && $application->verification->app_upazila_verified=="YES" ) checked @endif disabled>হ্যাঁ
-        </label>
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(empty($application->verification->app_upazila_verified)) checked @endif  disabled>না
-        </label>
-    </div>
-
-    <div class="form-group  col-md-6 ">
-        @if($application->lab_type== lab_type()['srdl'])
-            {{ Form::label('district_verified', 'জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপন করা যেতে পারে।',["id"=>"district_verified_lb"])}}
-        @else
-            {{ Form::label('district_verified', 'জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপন করা যেতে পারে।',["id"=>"district_verified_lb"])}}
-        @endif
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(!empty($application->verification->app_district_verified) && $application->verification->app_district_verified=="YES" ) checked @endif  disabled>হ্যাঁ
-        </label>
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(empty($application->verification->app_district_verified)) checked @endif   disabled>না
-        </label>
-    </div>
-</div>
-
-@if(Auth::user()->hasRole(['super admin']))
-
-    <div class="form-row">
-        <div class="form-group col-md-12">
-            <h4 class="callout callout-success">আবেদনের ধরণ (ডিও/ অন্যান্য সুপারিশ)</h4>
-        </div>
-    </div>
-
-    <div class="form-row">
-        <div class="form-group">
-            {{ Form::label('listed_by_deo', 'আধা-সরকারি পত্রের (৪২৫/৪২৬) প্রেক্ষিতে তালিকা ভুক্ত?') }}
-            <label class="checkbox-inline">
-                <input type="checkbox" @if(!empty($application->listed_by_deo) && $application->listed_by_deo=="YES" ) checked @endif  disabled>হ্যাঁ
-            </label>
-            <label class="checkbox-inline">
-                <input type="checkbox" @if(!empty($application->listed_by_deo) && $application->listed_by_deo=="NO" ) checked @endif  disabled>না
-            </label>
-        </div>
-    </div>
-    @if($application->listed_by_deo=="YES")
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            {{ Form::label('member_name', 'মাননীয় সংসদ সদস্যের নাম') }}
-            {{$application->attachment->member_name ?? ""}}
-        </div>
-        <div class="form-group col-md-6">
-        {{ Form::label('list_attachment', 'প্রেরিত তালিকার স্ক্যান কপি (পিডিএফ):') }}
-             @if(!empty($application->attachment->list_attachment_file))
-                    <a href="{{ $application->attachment->list_attachment_file }}" target="_blank"> {{ $application->attachment->list_attachment_file_path_type }}</a>
-            @elseif(!empty($listAttachmentFile))
-                    <a href="{{ $listAttachmentFile }}" target="_blank"> {{ $listAttachmentFilePathType }}</a>
-            @endif
-        </div>
-    </div>
-    @endif
-        <div class="form-row">
-            <div class="form-group ">
-                {{ Form::label('reference', 'সুপারিশ আছে?') }}
-                <label class="checkbox-inline">
-                    <input type="checkbox" @if($application->listed_by_deo=="NO" && !empty($application->attachment->ref_type) ) checked @endif  disabled>হ্যাঁ
-                </label>
-                <label class="checkbox-inline">
-                    <input type="checkbox" @if($application->listed_by_deo=="YES" || empty($application->attachment->ref_type)) checked @endif  disabled>না
-                </label>
-            </div>
-        </div>
-        @if($application->listed_by_deo=="NO" && !empty($application->attachment->ref_type) )
-        <div class="form-row ref">
-            <div class="form-group col-md-6">
-                {{ Form::label('ref_type', 'সুপারিশকারীর পরিচয়') }}
-                {{ !empty($application->attachment->ref_type)?$application->attachment->ref_type:"" }}
-            </div>
-            <div class="form-group  col-md-6">
-                {{ Form::label('ref_name', 'সুপারিশকারীর নাম') }}
-                {{$application->attachment->ref_name ?? ''}}
-            </div>
-        </div>
-        <div class="form-row ref">
-            <div class="form-group  col-md-6">
-                {{ Form::label('ref_designation', 'সুপারিশকারীর পদবী') }}
-                {{ $application->attachment->ref_designation ?? '' }}
-            </div>
-            <div class="form-group  col-md-6">
-                {{ Form::label('ref_office', 'সুপারিশকারীর কর্মস্থল') }}
-                {{$application->attachment->ref_office ?? ''}}
-            </div>
-        </div>
-        <div class="form-row ref">
-            <div class="form-group">
-            {{ Form::label('ref_documents', 'সুপারিশ সম্পর্কিত ডকুমেন্টস:') }}
-            @if(!empty($application->attachment->ref_documents_file_path))
-                <a href="{{ $application->attachment->ref_documents_file }}" target="_blank"> {{ $application->attachment->ref_documents_file_path_type }}</a>
-            @endif
-            </div>
-        </div>
-        @endif
-    <div class="form-row verification_report_file" >
-        <div class="form-group">
-            {{ Form::label('verification_report_file', 'উপজেলা থেকে প্রেরিত প্রতিষ্ঠানটির পরিদর্শন প্রতিবেদনের স্ক্যান কপি (পিডিএফ):') }}
-        @if(!empty($application->attachment->verification_report_file))
-            <a href="{{ $application->attachment->verification_report_file }}" target="_blank"> {{ $application->attachment->verification_report_file_path_type }}</a>
-        @endif
-        </div>
-    </div>
-@endif

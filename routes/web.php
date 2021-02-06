@@ -109,6 +109,7 @@ Route::resource('users', 'UserController');
 });
 Route::get('generate-pdf','TestController@generatePDF');
 
+Route::get('create-pdf','TestController@createPdf')->name('loadpdf');
 
 
 

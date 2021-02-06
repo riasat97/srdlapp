@@ -56,4 +56,39 @@ class TestController extends ApplicationController
         return $pdf->stream('codingdriver.pdf');
     }
 
+
+
+    public function createPdf()
+    {
+        $application=Application::where('id',1012)->with('attachment','lab','verification','profile')->first();
+        $labs=[];
+        $tag= new \Spatie\Tags\Tag;
+        $tags=\Spatie\Tags\Tag::all();
+        foreach ($tags as $tag) {
+            $labs[$tag->name]=$tag->translate('name', 'bn');
+        }
+        $selectedLabs=$this->getLabs($application,'lab');
+        $listAttachmentFile= $this->getListAttachmentFile($application);
+        $listAttachmentFilePathType=$this->getListAttachmentFilePathType($application);
+        $ins_type= Arr::except(ins_type(),[""]);
+        $ins_level= Arr::only(ins_level(), array('primary','junior_secondary','secondary','higher_secondary','secondary_and_higher',"graduation","others"));
+        $ins_type_sof= Arr::only($ins_type, array('general', 'madrasha', 'technical'));
+        $ins_level_sof= $array = Arr::only(ins_level(), array('secondary', 'secondary_and_higher'));
+        $ins_level_technical= $array = Arr::only(ins_level(), array('junior_secondary','secondary','higher_secondary','secondary_and_higher',"diploma","others"));
+        //dd($deo_app_seat_count);
+        //dd(storage_path('fonts/'));
+        $data = ['application'=>$application,"ins_type"=>$ins_type,"ins_level"=>$ins_level,
+            "ins_type_sof"=>$ins_type_sof,"ins_level_sof"=>$ins_level_sof,
+            "ins_level_technical"=>$ins_level_technical,'labs'=>$labs,'selectedLabs'=>$selectedLabs,
+            'listAttachmentFile'=>$listAttachmentFile,'listAttachmentFilePathType'=>$listAttachmentFilePathType];
+        //$pdf = \App::make('dompdf.wrapper');
+        //$pdf->setOptions(['dpi' => 150, 'defaultFont' => 'Nikosh']);
+        $pdf = PDF::loadView('applications.create-pdf', $data);
+        //$pdf = PDF::loadView('dashboard', $data);
+        //$pdf->loadView('applications.generate-pdf', compact('data'));
+
+//        return loadView('applications.create-pdf');
+        return $pdf->stream('codingdriver.pdf');
+    }
+
 }
