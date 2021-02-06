@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Flash;
 use App\DataTables\ApplicationsDataTable;
 use App\Http\Requests\CreateApplicationRequest;
 use App\Models\Application;
@@ -34,7 +34,10 @@ class ApplicationController extends Controller
     }
     public function index(Request $request)
     {
-
+        if(empty(Auth::user()->mobile)&& !Auth::user()->hasRole(['super admin'])){
+            Flash::success('প্রাপ্ত ল্যাবের আবেদনসমূহ দেখার পূর্বে নিজ প্রোফাইল তৈরি করতে হবে।');
+            return redirect(route('users.edit',['id'=>Auth::user()->id]));
+        }
         if ($request->ajax()) {
             //dd($request->all());
             $data=$this->getAppData($request);
@@ -50,6 +53,7 @@ class ApplicationController extends Controller
 //                    $btn=$btn."<a href='javascript:void(0)' data-application='" . json_encode($row) . "' class='edit btn btn-success btn-sm'>Edit</a>";
 //                    }
                     $btn=$btn." <a href='javascript:void(0)' data-id='" . $row->id . "' class='view btn btn-success btn-sm'>View</a>";
+                    if(Auth::user()->hasRole(['super admin']))
                     $btn = $btn." <a href='javascript:void(0)' class='delete btn btn-warning btn-sm'>Details</a>";
                     return $btn;
                 })
@@ -250,7 +254,10 @@ class ApplicationController extends Controller
             $attachment=$this->fileUpload($request,$request->file("list_attachment_file"),$attachment,'list_attachment_file');
             $application->attachment()->save($attachment);
         }
-
+        if(empty($request->get('listed_by_deo'))&&!empty($request->get('reference'))){
+            $attachment=$this->storeReference($request,$attachment);
+            $application->attachment()->save($attachment);
+        }
         $profile= new ApplicationProfile();
             $profile->eiin= !empty($request->get('eiin'))?$request->get('eiin'):'';
             $profile->management= !empty($request->get('management'))?$request->get('management'):'';
@@ -281,41 +288,40 @@ class ApplicationController extends Controller
             //$application->management= !empty($request->get('management'))?$request->get('management'):'';
             //$application->student_type= !empty($request->get('student_type'))?$request->get('student_type'):'';
         $application->profile()->save($profile);
-        if(!empty($request->get('labs'))){
-                $applicationlabs= new ApplicationLab();
-                $applicationlabs=$this->storeLabs($request->get('labs'),$applicationlabs);
-                $applicationlabs->lab_others_title= (in_array("Others",$request->get('labs'))&&!empty($request->get('lab_others_title')))?$request->get('lab_others_title'):'';
-                $application->lab()->save($applicationlabs);
-        }
-        $verified= new ApplicationVerification();
-            $verified->govlab= !empty($request->get('govlab'))?"YES":"NO";
-            $verified->proper_infrastructure= !empty($request->get('proper_infrastructure'))?"YES":"NO";
-            $verified->proper_room= !empty($request->get('proper_room'))?"YES":"NO";
-            $verified->electricity_solar= !empty($request->get('electricity_solar'))?"YES":"NO";
-            $verified->proper_security= !empty($request->get('proper_security'))?"YES":"NO";
-            $verified->lab_maintenance= !empty($request->get('lab_maintenance'))?"YES":"NO";
-            $verified->lab_prepared= !empty($request->get('lab_prepared'))?"YES":"NO";
 
-            $verified->internet_connection= !empty($request->get('internet_connection'))?"YES":"NO";
-            $verified->internet_connection_type= !empty($request->get('internet_connection_type'))?$request->get('internet_connection_type'):'';
-            $verified->good_result= !empty($request->get('good_result'))?"YES":"NO";
-            $verified->about_institution= !empty($request->get('about_institution'))?$request->get('about_institution'):'';
-            $verified->has_ict_teacher= !empty($request->get('has_ict_teacher'))?"YES":"NO";
+        if(!empty($request->get('verification'))){
+            if(!empty($request->get('labs'))){
+                    $applicationlabs= new ApplicationLab();
+                    $applicationlabs=$this->storeLabs($request->get('labs'),$applicationlabs);
+                    $applicationlabs->lab_others_title= (in_array("Others",$request->get('labs'))&&!empty($request->get('lab_others_title')))?$request->get('lab_others_title'):'';
+                    $application->lab()->save($applicationlabs);
+            }
+            $verified= new ApplicationVerification();
+                $verified->govlab= !empty($request->get('govlab'))?"YES":"NO";
+                $verified->proper_infrastructure= !empty($request->get('proper_infrastructure'))?"YES":"NO";
+                $verified->proper_room= !empty($request->get('proper_room'))?"YES":"NO";
+                $verified->electricity_solar= !empty($request->get('electricity_solar'))?"YES":"NO";
+                $verified->proper_security= !empty($request->get('proper_security'))?"YES":"NO";
+                $verified->lab_maintenance= !empty($request->get('lab_maintenance'))?"YES":"NO";
+                $verified->lab_prepared= !empty($request->get('lab_prepared'))?"YES":"NO";
 
-            $verified->app_upazila_verified= !empty($request->get('app_upazila_verified'))?"YES":"NO";
-            $verified->app_district_verified= !empty($request->get('app_district_verified'))?"YES":"NO";
-            $verified->app_duplicate= !empty($request->get('app_duplicate'))?"YES":"NO";
-//            $verified->is_eiin= !empty($request->get('is_eiin'))?"YES":"NO";
-//            $verified->is_mpo= !empty($request->get('is_mpo'))?"YES":"NO";
-//            $verified->is_broadband= !empty($request->get('is_broadband'))?"YES":"NO";
-        $application->verification()->save($verified);
-        if(!empty($request->hasFile('verification_report_file'))){
-            $attachment=$this->storeVerificationReport($request,$attachment);
-            $application->attachment()->save($attachment);
-        }
-        if(empty($request->get('listed_by_deo'))&&!empty($request->get('reference'))){
-            $attachment=$this->storeReference($request,$attachment);
-            $application->attachment()->save($attachment);
+                $verified->internet_connection= !empty($request->get('internet_connection'))?"YES":"NO";
+                $verified->internet_connection_type= !empty($request->get('internet_connection_type'))?$request->get('internet_connection_type'):'';
+                $verified->good_result= !empty($request->get('good_result'))?"YES":"NO";
+                $verified->about_institution= !empty($request->get('about_institution'))?$request->get('about_institution'):'';
+                $verified->has_ict_teacher= !empty($request->get('has_ict_teacher'))?"YES":"NO";
+
+                $verified->app_upazila_verified= !empty($request->get('app_upazila_verified'))?"YES":"NO";
+                $verified->app_district_verified= !empty($request->get('app_district_verified'))?"YES":"NO";
+                $verified->app_duplicate= !empty($request->get('app_duplicate'))?"YES":"NO";
+    //            $verified->is_eiin= !empty($request->get('is_eiin'))?"YES":"NO";
+    //            $verified->is_mpo= !empty($request->get('is_mpo'))?"YES":"NO";
+    //            $verified->is_broadband= !empty($request->get('is_broadband'))?"YES":"NO";
+            $application->verification()->save($verified);
+            if(!empty($request->hasFile('verification_report_file'))){
+                $attachment=$this->storeVerificationReport($request,$attachment);
+                $application->attachment()->save($attachment);
+            }
         }
         if(!empty($request->get('old_app'))){
             $attachment=$this->storeOldApp($request,$attachment);

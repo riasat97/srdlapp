@@ -105,7 +105,12 @@ Route::resource('references', 'ReferenceController');
 Route::resource('referenceDesignations', 'ReferenceDesignationController');
 Route::get('change-password', 'ChangePasswordController@index')->name('changePassword');
 Route::post('change-password', 'ChangePasswordController@store')->name('change.password');
-Route::resource('users', 'UserController');
+Route::get('users/{id}/profile', 'UserController@edit')->name('users.edit');
+Route::patch('users/{id}', 'UserController@update')->name('users.update');
+
+    Route::group(['middleware' =>  ['role:super admin']], function () {
+        Route::resource('users', 'UserController')->except(['edit','update']);
+    });
 });
 Route::get('generate-pdf','TestController@generatePDF');
 

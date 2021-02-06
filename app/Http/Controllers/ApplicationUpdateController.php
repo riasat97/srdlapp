@@ -87,6 +87,11 @@ class ApplicationUpdateController extends ApplicationController
         }
         $application->attachment()->save($attachment);
         }
+
+        if((empty($request->get('listed_by_deo')) or $application->listed_by_deo=="NO") &&!empty($request->get('reference'))){
+            $attachment=$this->storeReference($request,$attachment);
+            $application->attachment()->save($attachment);
+        }
         //if($request->get('hidden_listed_by_deo')=="NO"){
         $profile= (!empty($application->profile))?$application->profile : new ApplicationProfile();
             $profile->eiin= !empty($request->get('eiin'))?$request->get('eiin'):'';
@@ -113,40 +118,37 @@ class ApplicationUpdateController extends ApplicationController
             $profile->total_boys= !empty($request->get('total_boys'))?$request->get('total_boys'):0;
             $profile->total_girls= !empty($request->get('total_girls'))?$request->get('total_girls'):0;
         $application->profile()->save($profile);
+        if(!empty($request->get('verification'))) {
+            $applicationlabs = (!empty($application->lab)) ? $application->lab : new ApplicationLab();
+                $labs = $request->get('labs');
+                $applicationlabs = empty($labs) ? $this->emptyLabs($applicationlabs) : $this->updateLabs($request->get('labs'), $applicationlabs);
+                $applicationlabs->lab_others_title = (!empty($labs) && in_array("Others", $request->get('labs')) && !empty($request->get('lab_others_title'))) ? $request->get('lab_others_title') : '';
+            $application->lab()->save($applicationlabs);
 
-        $applicationlabs= (!empty($application->lab))?$application->lab : new ApplicationLab();
-            $labs=$request->get('labs');
-            $applicationlabs=empty($labs)?$this->emptyLabs($applicationlabs):$this->updateLabs($request->get('labs'),$applicationlabs);
-            $applicationlabs->lab_others_title= (!empty($labs)&&in_array("Others",$request->get('labs'))&&!empty($request->get('lab_others_title')))?$request->get('lab_others_title'):'';
-        $application->lab()->save($applicationlabs);
+            $verified = (!empty($application->verification)) ? $application->verification : new ApplicationVerification();
+                $verified->govlab = (!empty($request->get('govlab')) && !empty($request->get('labs'))) ? "YES" : "NO";
+                $verified->proper_infrastructure = !empty($request->get('proper_infrastructure')) ? "YES" : "NO";
+                $verified->proper_room = !empty($request->get('proper_room')) ? "YES" : "NO";
+                $verified->electricity_solar = !empty($request->get('electricity_solar')) ? "YES" : "NO";
+                $verified->proper_security = !empty($request->get('proper_security')) ? "YES" : "NO";
+                $verified->lab_maintenance = !empty($request->get('lab_maintenance')) ? "YES" : "NO";
+                $verified->lab_prepared = !empty($request->get('lab_prepared')) ? "YES" : "NO";
 
-        $verified= (!empty($application->verification))?$application->verification : new ApplicationVerification();
-            $verified->govlab= (!empty($request->get('govlab'))&&!empty($request->get('labs')))?"YES":"NO";
-            $verified->proper_infrastructure= !empty($request->get('proper_infrastructure'))?"YES":"NO";
-            $verified->proper_room= !empty($request->get('proper_room'))?"YES":"NO";
-            $verified->electricity_solar= !empty($request->get('electricity_solar'))?"YES":"NO";
-            $verified->proper_security= !empty($request->get('proper_security'))?"YES":"NO";
-            $verified->lab_maintenance= !empty($request->get('lab_maintenance'))?"YES":"NO";
-            $verified->lab_prepared= !empty($request->get('lab_prepared'))?"YES":"NO";
+                $verified->internet_connection = !empty($request->get('internet_connection')) ? "YES" : "NO";
+                $verified->internet_connection_type = !empty($request->get('internet_connection_type')) ? $request->get('internet_connection_type') : '';
+                $verified->good_result = !empty($request->get('good_result')) ? "YES" : "NO";
+                $verified->about_institution = !empty($request->get('about_institution')) ? $request->get('about_institution') : '';
+                $verified->has_ict_teacher = !empty($request->get('has_ict_teacher')) ? "YES" : "NO";
 
-            $verified->internet_connection= !empty($request->get('internet_connection'))?"YES":"NO";
-            $verified->internet_connection_type= !empty($request->get('internet_connection_type'))?$request->get('internet_connection_type'):'';
-            $verified->good_result= !empty($request->get('good_result'))?"YES":"NO";
-            $verified->about_institution= !empty($request->get('about_institution'))?$request->get('about_institution'):'';
-            $verified->has_ict_teacher= !empty($request->get('has_ict_teacher'))?"YES":"NO";
+                $verified->app_upazila_verified = !empty($request->get('app_upazila_verified')) ? "YES" : "NO";
+                $verified->app_district_verified = !empty($request->get('app_district_verified')) ? "YES" : "NO";
+                $verified->app_duplicate = !empty($request->get('app_duplicate')) ? "YES" : "NO";
+            $application->verification()->save($verified);
 
-            $verified->app_upazila_verified= !empty($request->get('app_upazila_verified'))?"YES":"NO";
-            $verified->app_district_verified= !empty($request->get('app_district_verified'))?"YES":"NO";
-            $verified->app_duplicate= !empty($request->get('app_duplicate'))?"YES":"NO";
-        $application->verification()->save($verified);
-
-        if(!empty($request->hasFile('verification_report_file'))){
-            $attachment=$this->storeVerificationReport($request,$attachment);
-            $application->attachment()->save($attachment);
-        }
-        if((empty($request->get('listed_by_deo')) or $application->listed_by_deo=="NO") &&!empty($request->get('reference'))){
-            $attachment=$this->storeReference($request,$attachment);
-            $application->attachment()->save($attachment);
+            if (!empty($request->hasFile('verification_report_file'))) {
+                $attachment = $this->storeVerificationReport($request, $attachment);
+                $application->attachment()->save($attachment);
+            }
         }
         if(!empty($request->get('old_app'))){
             $attachment=$this->storeOldApp($request,$attachment);

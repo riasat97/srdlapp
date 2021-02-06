@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -23,10 +25,11 @@ class UpdateUserRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(Request $request)
     {
         $rules = User::$rules;
-        
-        return $rules;
+        $filtered = Arr::except($rules, ['email']);
+        $email= ['email'=>'required', 'string', 'email', 'max:255', 'unique:users,email_address,'.$request->get('id')];
+        return array_merge($filtered,$email);
     }
 }
