@@ -85,8 +85,12 @@
             font-size: 16px;;
         }
 
+        .qr-code {
+            margin-top: 10px;
+        }
+
         .footer {
-            margin-top: 160px;
+            margin-top: 2px;
         }
     </style>
 
