@@ -115,8 +115,8 @@ Route::patch('users/{id}', 'UserController@update')->name('users.update');
     });
 });
 Route::get('generate-pdf','TestController@generatePDF');
-Route::get('create-pdf','TestController@createPdf')->name('loadpdf');
-Route::get('update-pdf','TestController@updatePdf')->name('loadpdf');
+Route::get('/{application}/verification-form','TestController@createPdf')->name('loadpdf');
+Route::get('update-pdf','TestController@updatePdf')->name('downloadpdf');
 
 
 

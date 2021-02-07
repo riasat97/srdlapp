@@ -14,8 +14,6 @@
                 </tbody>
             </table>
 
-
-
             {{--<div class="logo">--}}
             {{--<div class="left-logo" style="float: left; display: inline-block;">--}}
             {{--<img src="{{asset('images/digital-bd-logo.jpg')}}" alt="logo" class="img-responsive"  style="height: 40px; float: left;">--}}

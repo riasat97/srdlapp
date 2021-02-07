@@ -75,7 +75,7 @@
             </div>
         </div>
         @endif
-        @if(Auth::user()->hasRole(['district admin','upazila district']))
+        @if(Auth::user()->hasRole(['district admin','upazila admin']))
             <div class="box">
                 <div class="box-header"></div>
                 <div class="box-body">

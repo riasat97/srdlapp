@@ -175,9 +175,9 @@ class UserController extends AppBaseController
             return (!empty($name)&&$name == $user->username) ? "" : $user->name;
         }
         if (Auth::user()->hasROle(['upazila admin'])) {
-            if (count($user->name) == 3)
-                $name = strtolower($name_parts[0]) . explode("_", $user->username)[1] . "_" . strtolower($name_parts[2]);
-            return ($name == $user->username) ? "" : $user->name;
+            if (count(explode(" ",$user->name)) == 3)
+                $name = strtolower($name_parts[0]). "_"  . explode("_", $user->username)[1] . "_" . strtolower($name_parts[2]);
+            return (!empty($name)&&$name == $user->username) ? "" : $user->name;
         }
             return $user->name;
     }

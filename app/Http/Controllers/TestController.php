@@ -63,9 +63,9 @@ class TestController extends ApplicationController
 
 
 
-    public function createPdf()
+    public function createPdf($id)
     {
-        $application=Application::where('id',1012)->with('attachment','lab','verification','profile')->first();
+        $application=Application::where('id',$id)->with('attachment','lab','verification','profile')->first();
         $labs=[];
         $tag= new \Spatie\Tags\Tag;
         $tags=\Spatie\Tags\Tag::all();

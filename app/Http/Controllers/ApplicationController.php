@@ -59,6 +59,8 @@ class ApplicationController extends Controller
                     $btn = $btn." <a href='javascript:void(0)' class='delete btn btn-warning btn-sm'>Details</a>";
                     if(Auth::user()->hasRole(['super admin','district admin']))
                     $btn=$btn." <a href='javascript:void(0)' data-id='" . $row->id . "' class='duplicate btn btn-danger btn-sm'>Duplicate</a>";
+                    if(Auth::user()->hasRole(['super admin','district admin','upazila admin']))
+                    $btn=$btn." <a href='" .route('loadpdf',$row->id ). "' data-id='" . $row->id . "' target=\"_blank\" class='download btn btn-primary btn-sm'>Form</a>";
                     return $btn;
                 })
                 ->rawColumns(['action'])
@@ -515,7 +517,7 @@ class ApplicationController extends Controller
         $ins_type_sof= Arr::only($ins_type, array('general', 'madrasha', 'technical'));
         $ins_level_sof= $array = Arr::only(ins_level(), array('secondary', 'secondary_and_higher'));
         $ins_level_technical= $array = Arr::only(ins_level(), array('junior_secondary','secondary','higher_secondary','secondary_and_higher',"diploma","others"));
-        return view('applications.show-application',['application'=>$application,"ins_type"=>$ins_type,"ins_level"=>$ins_level,
+        return view('applications.pdf-demo',['application'=>$application,"ins_type"=>$ins_type,"ins_level"=>$ins_level,
             "ins_type_sof"=>$ins_type_sof,"ins_level_sof"=>$ins_level_sof,
             "ins_level_technical"=>$ins_level_technical,'labs'=>$labs,'selectedLabs'=>$selectedLabs,
             'listAttachmentFile'=>$listAttachmentFile,'listAttachmentFilePathType'=>$listAttachmentFilePathType,]);
