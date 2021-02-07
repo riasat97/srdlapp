@@ -115,9 +115,8 @@ Route::patch('users/{id}', 'UserController@update')->name('users.update');
     });
 });
 Route::get('generate-pdf','TestController@generatePDF');
-Route::get('qrcode', function () {
-    return \QrCode::size(300)->generate('A basic example of QR code! Nicesnippets.com');
-});
+Route::get('create-pdf','TestController@createPdf')->name('loadpdf');
+Route::get('update-pdf','TestController@updatePdf')->name('loadpdf');
 
 
 

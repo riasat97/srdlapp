@@ -373,7 +373,7 @@
                         <div class="form-row">
                             <div class="form-group  col-md-6">
                                 {{ Form::label('having_labs', 'ইতোপূর্বে সরকারি ল্যাব প্রাপ্ত ?', array('class' => 'nothing')) }}
-                                <input name="govlab" id="govlab" type="checkbox" data-width="50" class="toggle form-control verification-content" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                <input name="govlab" @if(!empty($application->verification->govlab) && $application->verification->govlab=="YES" && !empty($selectedLabs)) checked @endif id="govlab" type="checkbox" data-width="50" class="toggle form-control verification-content" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_govlab',"NO",["id"=>"hidden_govlab"])}}
                             </div>
                             <div class="form-group col-md-6">

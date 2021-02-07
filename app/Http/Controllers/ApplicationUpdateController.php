@@ -119,6 +119,7 @@ class ApplicationUpdateController extends ApplicationController
             $profile->total_boys= !empty($request->get('total_boys'))?$request->get('total_boys'):0;
             $profile->total_girls= !empty($request->get('total_girls'))?$request->get('total_girls'):0;
         $application->profile()->save($profile);
+
         if(!empty($request->get('verification'))) {
             $applicationlabs = (!empty($application->lab)) ? $application->lab : new ApplicationLab();
                 $labs = $request->get('labs');
