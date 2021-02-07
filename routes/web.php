@@ -29,7 +29,7 @@ Route::get('/', function () {
 });
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 Auth::routes(['register' => false, 'verify' => true]);
-
+//Route::get('/{application}', 'ApplicationController@show')->name('show');
 Route::group(['prefix' => 'admin/applications', 'as' => 'applications.','middleware' => 'auth'], function () {
 
     Route::get('/', 'ApplicationController@index')->name('index');
@@ -43,6 +43,8 @@ Route::group(['prefix' => 'admin/applications', 'as' => 'applications.','middlew
     Route::get('{id}/attachment/{path}', 'ApplicationController@displayPdf')->name('displayPdf');
     Route::get('/sms', 'ApplicationController@sms')->name('sms');;
     Route::get('/{application}', 'ApplicationController@show')->name('show');
+    Route::get('/{application}/duplicate', 'ApplicationUpdateController@getDuplicate')->name('duplicate');
+    Route::patch('/{application}/duplicate', 'ApplicationUpdateController@postDuplicate')->name('postDuplicate');
     Route::post('/update/{application}', 'ApplicationController@update')->name('update');
 });
 
@@ -113,7 +115,9 @@ Route::patch('users/{id}', 'UserController@update')->name('users.update');
     });
 });
 Route::get('generate-pdf','TestController@generatePDF');
-
+Route::get('qrcode', function () {
+    return \QrCode::size(300)->generate('A basic example of QR code! Nicesnippets.com');
+});
 
 
 

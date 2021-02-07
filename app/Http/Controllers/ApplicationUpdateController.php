@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateApplicationRequest;
+use App\Http\Requests\CreateDuplicateRequest;
 use App\Models\Application;
 use App\Models\ApplicationAttachment;
 use App\Models\ApplicationLab;
@@ -182,5 +183,33 @@ class ApplicationUpdateController extends ApplicationController
         $applicationlabs->lab_by_edu_board=in_array("Education Board",$labs)?"YES":'';
         $applicationlabs->lab_by_others=in_array("Others",$labs)?"YES":'';
         return $applicationlabs;
+    }
+    public function getDuplicate($id){
+        $application=Application::where('id',$id)->with('attachment','lab','verification','profile')->first();
+        $institutions= Application::where('district',$application->district)
+            ->where('upazila',$application->upazila)->orderBy('institution_bn')->pluck('institution_bn','id')->toArray();
+        $institutions = Arr::except($institutions, [$application->id]);
+        $select= ['0' => 'নির্বাচন করুন'];
+        $institutions= $select+$institutions;
+        return view('applications.duplicate',['application'=>$application,'institutions'=>$institutions]);
+    }
+    public function postDuplicate($id,CreateDuplicateRequest $request){
+
+        $application= Application::where('id',$id)->first();
+        $dup=$this->duplicateExists($application,$request->get('app_original_id'));
+        $verification = (!empty($application->verification)) ? $application->verification : new ApplicationVerification();
+        $verification->app_duplicate = 'YES';
+        $verification->app_original_id = $request->get('app_original_id');
+        $verification->app_original_comments = !empty($request->get('app_original_comments'))?$request->get('app_original_comments'):'';
+        $application->verification()->save($verification);
+        return response()->json(['application'=>$application,'dup'=>$dup]);
+
+    }
+
+    private function duplicateExists(Application $application,$application_original_id)
+    {
+        $dup=ApplicationVerification::where('application_verification_id',$application_original_id)->where('app_original_id',$application->id)->first();
+        return !empty($dup)?true:false;
+
     }
 }

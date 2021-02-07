@@ -470,3 +470,7 @@
         </div>
     </div>
 @endif
+
+<img src="data:image/png;base64, {!! base64_encode(\QrCode::format('png')->merge('images/srdl.png', 0.3, true)
+                        ->size(200)->errorCorrection('H')
+                        ->generate(route('applications.show',$application->id ))) !!} ">

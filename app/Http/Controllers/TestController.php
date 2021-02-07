@@ -26,6 +26,7 @@ class TestController extends ApplicationController
     }
     public function generatePDF()
     {
+
         $application=Application::where('id',1012)->with('attachment','lab','verification','profile')->first();
         $labs=[];
         $tag= new \Spatie\Tags\Tag;
@@ -49,10 +50,14 @@ class TestController extends ApplicationController
                 'listAttachmentFile'=>$listAttachmentFile,'listAttachmentFilePathType'=>$listAttachmentFilePathType];
         //$pdf = \App::make('dompdf.wrapper');
         //$pdf->setOptions(['dpi' => 150, 'defaultFont' => 'Nikosh']);
-        $pdf = PDF::loadView('applications.generate-pdf', $data);
+        $config = ['instanceConfigurator' => function($mpdf) {
+            $mpdf->SetWatermarkImage('../images/srdl.png');
+            $mpdf->showWatermarkImage = true;
+
+        }];
+        $pdf = PDF::loadView('applications.generate-pdf', $data, [], $config);
         //$pdf = PDF::loadView('dashboard', $data);
         //$pdf->loadView('applications.generate-pdf', compact('data'));
-
         return $pdf->stream('codingdriver.pdf');
     }
 

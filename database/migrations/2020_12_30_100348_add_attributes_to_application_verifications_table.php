@@ -18,9 +18,13 @@ class AddAttributesToApplicationVerificationsTable extends Migration
             $table->enum('internet_connection_type', ['broadband', 'modem'])->nullable()->after('internet_connection');
             $table->enum('good_result', ['YES', 'NO'])->nullable()->after('internet_connection_type');
             $table->longText('about_institution')->nullable()->after('good_result');
+            $table->enum('has_ict_teacher', ['YES', 'NO'])->nullable()->after('about_institution');
             $table->enum('app_upazila_verified', ['YES', 'NO'])->nullable()->after('has_ict_teacher');
             $table->enum('app_district_verified', ['YES', 'NO'])->nullable()->after('app_upazila_verified');
             $table->enum('app_duplicate', ['YES', 'NO'])->nullable()->after('app_district_verified');
+            $table->unsignedBigInteger('app_original_id')->nullable()->after('app_duplicate');
+            $table->text('app_original_comments')->nullable()->after('app_original_id');
+
         });
     }
 
@@ -36,6 +40,7 @@ class AddAttributesToApplicationVerificationsTable extends Migration
             $table->dropColumn('internet_connection_type');
             $table->dropColumn('good_result');
             $table->dropColumn('about_institution');
+            $table->dropColumn('has_ict_teacher');
             $table->dropColumn('app_upazila_verified');
             $table->dropColumn('app_district_verified');
             $table->dropColumn('app_duplicate');

@@ -4,7 +4,9 @@
 @endsection
 @section('content')
     <section class="content-header">
+        @if(Auth::user()->hasRole(['super admin']))
         <h1 class="pull-left"><i class="fas fa-envelope-open-text"></i> সংক্ষিপ্ত তথ্য</h1> <br>
+        @endif
     </section>
 
     <div class="content">
@@ -13,9 +15,9 @@
         @include('flash::message')
 
         <div class="clearfix"></div>
+        @if(Auth::user()->hasRole(['super admin']))
         <div class="box box-primary">
             <div class="box-body">
-
                 <div class="container dashboard-container">
                     <div class="row dashboard-row">
                         <div class="four col-md-3 col-box">
@@ -57,12 +59,12 @@
                                     প্রাপ্ত আবেদন সংখ্যা </p>
                             </div>
                         </div>
-                        <div class="four col-md-3 col-box">
-                            <div class="counter-box"> <i class="fas fa-clipboard-list"></i><span class="counter">9</span>
-                                <p>৬৪টি জেলার মধ্যে ডিও এর মাধ্যমে ল্যাবের তালিকা গ্রহণ সম্পন্ন হওয়া জেলার সংখ্যা</p>
-                            </div>
-                        </div>
-                        <div class="four col-md-3 col-box">
+{{--                        <div class="four col-md-3 col-box">--}}
+{{--                            <div class="counter-box"> <i class="fas fa-clipboard-list"></i><span class="counter">9</span>--}}
+{{--                                <p>৬৪টি জেলার মধ্যে ডিও এর মাধ্যমে ল্যাবের তালিকা গ্রহণ সম্পন্ন হওয়া জেলার সংখ্যা</p>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
+                        <div class="four col-md-6 col-box">
                             <div class="counter-box"> <i class="fas fa-mail-bulk"></i> <span class="counter">{{$total_app}}</span>
                                 <p>মোট প্রাপ্ত
                                     আবেদন সংখ্যা </p>
@@ -70,12 +72,32 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
-        <div class="text-center">
-
-        </div>
+        @endif
+        @if(Auth::user()->hasRole(['district admin','upazila district']))
+            <div class="box">
+                <div class="box-header"></div>
+                <div class="box-body">
+                    {{ Html::image('images/srdl-lab-conditions.png', 'alt text', array('class' => 'css-class','height'=>'','width'=>'')) }}
+                </div>
+            </div>
+            <div class="box">
+                <div class="box-header"></div>
+                <div class="box-body">
+                    {{ Html::image('images/sof-lab-conditions.png', 'alt text', array('class' => 'css-class','height'=>'','width'=>'')) }}
+                </div>
+            </div>
+            <div class="text-center">
+                <div class="agree-btn">
+                    <a href="{{route('applications.index')}}">
+                        <button class="btn btn-success btn-sm" type="button">
+                            <i class="fa fa-check"></i> আমি সম্মত
+                        </button>
+                    </a>
+                </div>
+            </div>
+        @endif
     </div>
 @endsection
 

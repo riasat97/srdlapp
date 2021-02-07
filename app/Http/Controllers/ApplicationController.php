@@ -47,14 +47,18 @@ class ApplicationController extends Controller
                 ->addColumn('action', function ($row)use ($user) {
                     //dd($row->id);
                     $btn="";
-                    if($user->hasRole('super admin'))
-                    $btn="<a href='".route("applications.edit",$row->id)."' target=\"_blank\" class='super-admin-edit btn btn-info btn-sm'>App Edit</a> ";
+                    if($user->hasRole(['super admin','district admin'])){
+                        $label= $user->hasRole('super admin')?'Edit':'Verify';
+                    $btn="<a href='".route("applications.edit",$row->id)."' target=\"_blank\" class='super-admin-edit btn btn-info btn-sm'>$label</a> ";
+                    }
 //                    if (App::environment('local')) {
 //                    $btn=$btn."<a href='javascript:void(0)' data-application='" . json_encode($row) . "' class='edit btn btn-success btn-sm'>Edit</a>";
 //                    }
                     $btn=$btn." <a href='javascript:void(0)' data-id='" . $row->id . "' class='view btn btn-success btn-sm'>View</a>";
                     if(Auth::user()->hasRole(['super admin']))
                     $btn = $btn." <a href='javascript:void(0)' class='delete btn btn-warning btn-sm'>Details</a>";
+                    if(Auth::user()->hasRole(['super admin','district admin']))
+                    $btn=$btn." <a href='javascript:void(0)' data-id='" . $row->id . "' class='duplicate btn btn-danger btn-sm'>Duplicate</a>";
                     return $btn;
                 })
                 ->rawColumns(['action'])
@@ -149,6 +153,10 @@ class ApplicationController extends Controller
     }
     public function create(){
 
+        $user= Auth::user();
+        if(!$user->can('new application'))
+             return abort(404);
+
         $labs=[];
         $tag= new \Spatie\Tags\Tag;
         $tags=\Spatie\Tags\Tag::all();
@@ -230,6 +238,9 @@ class ApplicationController extends Controller
 
     public function store(CreateApplicationRequest $request){
         //dd($request->all());
+        $user= Auth::user();
+        if(!$user->can('new application'))
+            return abort(404);
         $application = Application::create([
             'lab_type' => $request->get('lab_type'),
             'institution_bn' => $request->get('institution_bn'),

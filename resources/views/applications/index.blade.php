@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('css')
+    <meta name="_token" content="{{csrf_token()}}" />
     <!-- Font Icon -->
     <link rel="stylesheet" href="{{ asset('fonts/material-icon/css/material-design-iconic-font.min.css') }}">
     <!-- Main css -->
@@ -104,6 +105,9 @@
                         </div>
                     @endif
                 </div>
+                <div id="alert-div">
+
+                </div>
                 @include('applications.table')
             </div>
         </div>
@@ -119,6 +123,7 @@
     </div>
     @include('applications.edit-modal')
     @include('applications.show-modal')
+    @include('applications.duplicate-modal')
 @endsection
 
 @push('scripts')
@@ -298,7 +303,68 @@
                     //$('#name').val(data.name);
                     //$('#detail').val(data.detail);
                 })
+
             });
+
+            $('body').on('click', '.duplicate', function () {
+                var app_id = $(this).data('id');
+                $.get("{{ route('applications.index') }}" +'/' + app_id +'/duplicate', function (data) {
+                    console.log(data);
+                    //$('.modal-title').html("ডুপ্লিকেট  আবেদন");
+                    $('.alert-danger').html('');
+                    $('.modal-body').html(data);
+                    $('.btn-primary').val("submit");
+                    $('#duplicateApplicationModal .toggle').bootstrapToggle();
+                    $('#duplicateApplicationModal').modal('show');
+                    //$('#product_id').val(data.id);
+                    //$('#name').val(data.name);
+                    //$('#detail').val(data.detail);
+                })
+            });
+
+
+            $('#formSubmit').click(function(e){
+                e.preventDefault();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                    }
+                });
+                var app_id=  $(".appId").val();
+
+                $.ajax({
+                    url: "{{ route('applications.index') }}" +'/' + app_id +'/duplicate',
+                    type:"patch",
+                    data:$('#postDuplicate').serialize(),
+                    success:function(response){
+                        console.log(response);
+                        if(response.dup){
+                            iziToast.error({
+                                title: 'Error',
+                                message: 'আপনি ইতোপূর্বে আবেদনটিকে ডুপ্লিকেট হিসাবে চিহ্নিত করেছেন!',
+                            });
+                            $('#duplicateApplicationModal').modal('hide');
+                            $('.alert-danger').hide();
+                        }
+                        else{
+                            iziToast.success({
+                                title: 'Success',
+                                message: 'Successfully updated!',
+                            });
+                            $('#duplicateApplicationModal').modal('hide');
+                            $('.alert-danger').hide();
+                        }
+                    },
+                    error: function(xhr) {
+                        $('.alert-danger').html('');
+                        $.each(xhr.responseJSON.errors, function(key,value) {
+                            $('.alert-danger').show();
+                            $('.alert-danger').append('<li>'+value+'</li>');
+                        });
+
+                    }
+                });
+            })
 
             $(document).on('click','.edit',function () {
                 var application = $(this).data('application');
