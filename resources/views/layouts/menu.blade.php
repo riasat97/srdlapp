@@ -14,7 +14,7 @@
     @if(Auth::user()->hasRole(['super admin']))
 
 <li class="{{ Request::routeIs('users*') ? 'active' : '' }}">
-    <a href="{{ route('users.index') }}"><i class="fas fa-users"></i><span>ইউজার ম্যানেজমেন্ট </span></a>
+    <a href="{{ route('users.index') }}"><i class="fas fa-users"></i><span> ইউজার ম্যানেজমেন্ট </span></a>
 </li>
 
 <li class="{{ Request::is('admin/roles*') ? 'active' : '' }}">

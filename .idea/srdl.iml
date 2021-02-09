@@ -141,8 +141,6 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/vlucas/phpdotenv" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/voku/portable-ascii" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/webmozart/assert" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/werneckbh/laravel-qr-code" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/werneckbh/qr-code" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/yajra/laravel-datatables-buttons" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/yajra/laravel-datatables-html" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/yajra/laravel-datatables-oracle" />

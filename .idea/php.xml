@@ -134,8 +134,6 @@
       <path value="$PROJECT_DIR$/vendor/sebastian/resource-operations" />
       <path value="$PROJECT_DIR$/vendor/voku/portable-ascii" />
       <path value="$PROJECT_DIR$/vendor/symfony/http-client-contracts" />
-      <path value="$PROJECT_DIR$/vendor/werneckbh/qr-code" />
-      <path value="$PROJECT_DIR$/vendor/werneckbh/laravel-qr-code" />
       <path value="$PROJECT_DIR$/vendor/ezyang/htmlpurifier" />
       <path value="$PROJECT_DIR$/vendor/simplesoftwareio/simple-qrcode" />
       <path value="$PROJECT_DIR$/vendor/dasprid/enum" />
