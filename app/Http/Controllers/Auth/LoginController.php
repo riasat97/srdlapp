@@ -67,7 +67,7 @@ class LoginController extends Controller
         $host = parse_url($url, PHP_URL_HOST);
         //return $scheme.'://'.$subDomain.'.'.$host.$this->redirectTo;
         //dd('hi');
-        if (App::environment('local')) {
+        if (App::environment('local','production')) {
             return $this->redirectTo;
         }
         if($user->hasRole('super admin')){

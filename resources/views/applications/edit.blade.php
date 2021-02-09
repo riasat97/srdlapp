@@ -65,14 +65,14 @@
                         <div class="form-row">
                             <div class="form-group col-md-12 institution_corrected">
                                 <label for="">সংশোধনকৃত প্রতিষ্ঠানটির নাম </label>
-                                <input type="text" class="form-control" id="institution_corrected" name="institution_corrected" value="{{ $application->profile->institution_corrected??"" }}" placeholder="বাংলাতে">
+                                <input type="text" class="form-control" id="institution_corrected" name="institution_corrected" value="{{ $application->profile->institution_corrected?? old('institution_corrected') }} }}" placeholder="বাংলাতে">
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group col-md-8">
                                 <label for="">শিক্ষা প্রতিষ্ঠানের নাম (ENGLISH)</label>
-                                <input type="text" class="form-control" id="inputInsEn" name="institution" value="{{ $application->profile->institution ?? "" }}" placeholder="ইংরেজিতে">
+                                <input type="text" class="form-control" id="inputInsEn" name="institution" value="{{ $application->profile->institution ?? old('institution') }}" placeholder="ইংরেজিতে">
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="">ম্যানেজমেন্ট</label>
@@ -116,7 +116,7 @@
                                 {{ Form::number('eiin', $application->profile->eiin ?? "",['class'=>'form-control', 'id'=>"eiin"])}}
                             </div>
                             <div class="form-group col-md-6">
-                                {{ Form::label('mpo', 'MPO কোড ') }}
+                                {{ Form::label('mpo', 'MPO কোড (যদি থাকে):') }}
                                 {{ Form::number('mpo',$application->profile->mpo ?? "",['class'=>'form-control', 'id'=>"mpo"])}}
                             </div>
                         </div>
@@ -135,31 +135,31 @@
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label for="">প্রতিষ্ঠান প্রধানের নাম</label>
-                                <input type="text" class="form-control" id="head_name" name="head_name" value="{{ $application->profile->head_name ?? "" }}" placeholder="বাংলাতে">
+                                <input type="text" class="form-control" id="head_name" name="head_name" value="{{ $application->profile->head_name ?? old("head_name") }}" placeholder="বাংলাতে">
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="">প্রতিষ্ঠানের ইমেইল</label>
-                                <input type="email" class="form-control" id="institution_email" name="institution_email" value="{{ $application->profile->institution_email ?? "" }}" placeholder="example@mail.com">
+                                <input type="email" class="form-control" id="institution_email" name="institution_email" value="{{ $application->profile->institution_email ?? old("institution_email") }}" placeholder="example@mail.com">
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="">প্রতিষ্ঠানের মোবাইল নম্বর</label>
-                                <input type="tel" pattern="[0-9]{11}" class="form-control" id="institution_tel" name="institution_tel" value="{{ $application->profile->institution_tel ?? "" }}" placeholder="01xxxxxxxxx">
+                                <input type="tel" pattern="[0-9]{11}" class="form-control" id="institution_tel" name="institution_tel" value="{{ $application->profile->institution_tel ?? old("institution_tel") }}" placeholder="01xxxxxxxxx">
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label for="">বিকল্প প্রতিষ্ঠান প্রতিনিধি/কমিটির সভাপতির নাম </label>
-                                <input type="text" class="form-control" id="alt_name" name="alt_name" value="{{ $application->profile->alt_name ?? "" }}" placeholder="">
+                                <input type="text" class="form-control" id="alt_name" name="alt_name" value="{{ $application->profile->alt_name ?? old("alt_name") }}" placeholder="বাংলাতে">
                             </div>
 
                             <div class="form-group col-md-4">
                                 <label for="">ইমেইল</label>
-                                <input type="email" class="form-control" id="alt_email" name="alt_email" value="{{ $application->profile->alt_email ?? "" }}" placeholder="example@mail.com">
+                                <input type="email" class="form-control" id="alt_email" name="alt_email" value="{{ $application->profile->alt_email ?? old("alt_email") }}" placeholder="example@mail.com">
                             </div>
 
                             <div class="form-group col-md-4">
                                 <label for="">মোবাইল নম্বর</label>
-                                <input type="tel" pattern="[0-9]{11}" class="form-control" id="alt_tel" name="alt_tel" value="{{ $application->profile->alt_tel ?? "" }}" placeholder="01xxxxxxxxx">
+                                <input type="tel" pattern="[0-9]{11}" class="form-control" id="alt_tel" name="alt_tel" value="{{ $application->profile->alt_tel ?? old("alt_tel") }}" placeholder="01xxxxxxxxx">
                             </div>
                         </div>
 
@@ -299,7 +299,7 @@
 
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                {{ Form::label('reference', 'সুপারিশ আছে?') }}
+                                {{ Form::label('reference', 'অন্যান্য সুপারিশ আছে?') }}
                                 <input name="reference" id="reference" type="checkbox" data-width="50" class="toggle form-control" data-width="100" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                             </div>
                         </div>
@@ -445,7 +445,7 @@
                         </div>
                         <div class="form-row col-md-12">
                             <div class="form-group shadow-textarea">
-                                <label class="awesome" for="about_institution">প্রতিষ্ঠানটি সম্পর্কে আপনার মন্তব্য</label>
+                                <label class="awesome" for="about_institution">প্রতিষ্ঠানটি সম্পর্কে আপনার মন্তব্য (যদি থাকে):</label>
                                 <textarea class="form-control z-depth-1 verification-content" id="about_institution" name="about_institution" rows="5" placeholder="">{{ $application->verification->about_institution ?? old("about_institution") }}</textarea>
                             </div>
                         </div>
@@ -465,7 +465,7 @@
                         </div>
                         <div class="form-row verification_report_file" style="">
                             <div class="form-group col-md-6">
-                                {{ Form::label('verification_report_file', 'উপজেলা থেকে প্রেরিত প্রতিষ্ঠানটির পরিদর্শন প্রতিবেদনের স্ক্যান কপি (পিডিএফ) ') }}
+                                {{ Form::label('verification_report_file', 'উপজেলা থেকে প্রেরিত প্রতিষ্ঠানটির পরিদর্শন প্রতিবেদনের স্ক্যান কপি (পিডিএফ: সর্বোচ্চ ৫০০ kb) ') }}
                             </div>
                             <div class="form-group col-md-6">
                                 <div class="verification_report_file">
@@ -473,6 +473,9 @@
                                     <label class="custom-file-label" for="verification_report_file"></label>
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-row">
+                           <p style="color:red">পিডিএফ কম্প্রেস করতে এখানে <a href="https://www.pdf2go.com/compress-pdf">ক্লিক করুন</a></p>
                         </div>
                         <div class="form-row">
                             @if(!empty($application->attachment->verification_report_file))
@@ -926,6 +929,18 @@
             });
         });
     </script>
+    @if(Auth::user()->hasRole(['district admin']))
+        <script type="text/javascript">
+            $(function () {
+                $("#lab_type").attr("disabled", "disabled");
+                $("#inputInsBn").attr("disabled", "disabled");
+                $("#div").attr("disabled", "disabled");
+                $("#dis").attr("disabled", "disabled");
+                $("#upazila").attr("disabled", "disabled");
+
+            });
+        </script>
+    @endif
     @if(Auth::user()->hasRole(['super admin']))
         <script type="text/javascript">
             $(function () {

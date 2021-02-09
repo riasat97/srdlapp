@@ -95,7 +95,7 @@
                                 {{ Form::number('eiin',null,['class'=>'form-control', 'id'=>"eiin"])}}
                             </div>
                             <div class="form-group col-md-6">
-                                {{ Form::label('mpo', 'MPO কোড ') }}
+                                {{ Form::label('mpo', 'MPO কোড (যদি থাকে):') }}
                                 {{ Form::number('mpo',null,['class'=>'form-control', 'id'=>"mpo"])}}
                             </div>
                         </div>
@@ -117,7 +117,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label for="">প্রতিষ্ঠান প্রধানের নাম</label>
-                                <input type="text" class="form-control" id="head_name" name="head_name" value="{{ old('head_name') }}" placeholder="">
+                                <input type="text" class="form-control" id="head_name" name="head_name" value="{{ old('head_name') }}" placeholder="বাংলাতে">
                             </div>
 
                             <div class="form-group col-md-4">
@@ -134,7 +134,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label for="">বিকল্প প্রতিষ্ঠান প্রতিনিধি/কমিটির সভাপতির নাম </label>
-                                <input type="text" class="form-control" id="alt_name" name="alt_name" value="{{ old('alt_name') }}" placeholder="">
+                                <input type="text" class="form-control" id="alt_name" name="alt_name" value="{{ old('alt_name') }}" placeholder="বাংলাতে">
                             </div>
 
                             <div class="form-group col-md-4">
@@ -272,7 +272,7 @@
                         </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
-                                    {{ Form::label('reference', 'সুপারিশ আছে?') }}
+                                    {{ Form::label('reference', 'অন্যান্য সুপারিশ আছে?') }}
                                     <input name="reference" id="reference" type="checkbox" data-width="50" class="toggle form-control" data-width="100" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 </div>
 
@@ -415,7 +415,7 @@
 
                         <div class="form-row col-md-12">
                             <div class="form-group shadow-textarea">
-                                <label class="awesome" for="about_institution">প্রতিষ্ঠানটি সম্পর্কে আপনার মন্তব্য</label>
+                                <label class="awesome" for="about_institution">প্রতিষ্ঠানটি সম্পর্কে আপনার মন্তব্য (যদি থাকে):</label>
                                 <textarea class="form-control z-depth-1 verification-content" id="about_institution" name="about_institution" rows="5" placeholder="">{{ old("about_institution") }}</textarea>
                             </div>
                         </div>
@@ -437,7 +437,7 @@
                         <div class="form-row verification_report_file" style="">
 
                             <div class="form-group col-md-6">
-                                {{ Form::label('verification_report_file', 'উপজেলা থেকে প্রেরিত প্রতিষ্ঠানটির পরিদর্শন প্রতিবেদনের স্ক্যান কপি (পিডিএফ) ') }}
+                                {{ Form::label('verification_report_file', 'উপজেলা থেকে প্রেরিত প্রতিষ্ঠানটির পরিদর্শন প্রতিবেদনের স্ক্যান কপি (পিডিএফ: সর্বোচ্চ ৫০০ kb) ') }}
                             </div>
 
                             <div class="form-group col-md-6">
@@ -446,6 +446,9 @@
                                     <label class="custom-file-label" for="verification_report_file"></label>
                                 </div>
                             </div>
+                        </div>
+                        <div class="form-row">
+                            <p style="color:red">পিডিএফ কম্প্রেস করতে এখানে <a href="https://www.pdf2go.com/compress-pdf">ক্লিক করুন</a></p>
                         </div>
 {{--                        <div class="form-row sof">--}}
 {{--                            <div class="form-group  col-md-6">--}}

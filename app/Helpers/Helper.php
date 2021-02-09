@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Bangladesh;
+use Illuminate\Support\Facades\Auth;
+
 if (!function_exists('ReservedSeats')) {
 
     /**
@@ -88,5 +91,26 @@ if (!function_exists('ReservedSeats')) {
     function direction(){
         return ['-1' => 'নির্বাচন করুন','east'=>'পূর্ব','west'=>'পশ্চিম','north'=>'উত্তর','south'=>'দক্ষিণ','north_east'=>'উত্তর-পূর্ব','north_west'=>'উত্তর-পশ্চিম',
             'south_east'=>'দক্ষিণ-পূর্ব','south_west'=>'দক্ষিণ-পশ্চিম'];
+    }
+
+     function permitted($application)
+    {
+        $user=Auth::user();
+        if($user->hasRole('super admin'))
+            return true;
+        if($user->hasRole('district admin')){
+            $district_en=explode('_',$user->username)[0];
+            $district_match=Bangladesh::where('district',$application->district)->first()->district_en;
+            return ($district_en== strtolower($district_match))?true:false;
+        }
+        if($user->hasRole('upazila admin')){
+            $upazila_en_domain=explode('_',$user->username)[0];
+            $district_en=explode('_',$user->username)[1];
+
+            $upazila_match=Bangladesh::where('district',$application->district)->where('upazila',$application->upazila)->first()->upazila_en_domain;
+            $district_match=Bangladesh::where('district',$application->district)->first()->district_en;
+            return ($upazila_en_domain==$upazila_match && $district_en==strtolower($district_match))?true:false;
+        }
+        return false;
     }
 }

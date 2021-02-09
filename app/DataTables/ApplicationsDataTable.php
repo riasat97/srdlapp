@@ -24,15 +24,15 @@ class ApplicationsDataTable extends DataTable
         $user= Auth::user();
         return datatables()
             ->eloquent($query)
-            ->addIndexColumn()
-            ->addColumn('action', function ($row)use ($user) {
+            ->addIndexColumn();
+            /*->addColumn('action', function ($row)use ($user) {
                 //dd($row->id);
                 if($user->hasRole('super admin'))$btn="<a href='".route("applications.edit",$row->id)."' target=\"_blank\" class='super-admin-edit btn btn-info btn-sm'>App Edit</a> "; else $btn="";
                 $btn = $btn."<a href='javascript:void(0)' data-application='" . json_encode($row) . "' class='edit btn btn-success btn-sm'>Edit</a>
-                            <a href='javascript:void(0)' class='delete btn btn-danger btn-sm'>Delete</a>";
+                            <a href='javascript:void(0)' class='delete btn btn-danger btn-sm'>Details</a>";
                 return $btn;
-            })
-            ->rawColumns(['action']);
+            })*/
+            //->rawColumns(['action']);
     }
 
     /**
@@ -59,15 +59,18 @@ class ApplicationsDataTable extends DataTable
                     ->setTableId('yajra-datatable')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->dom('Bfrtip')
+                    ->dom('lBfrtip')
                     ->orderBy(1)
-                    ->buttons(
-                        //Button::make('create')->action("window.location = '".route('applications.apply')."';"),
-                        Button::make('export'),
-                        Button::make('print'),
-                        Button::make('reset'),
-                        Button::make('reload')
-                    );
+
+            ->parameters([
+                'dom' => 'lBfrtip',
+                "pageLength"=> "25",
+                'buttons' => [ [
+                    'extend' => 'excel',
+                    'messageTop' => "SRDL"
+                ],'print',  'reset', 'reload','csv'
+                ],
+            ]);
     }
 
     /**
@@ -82,13 +85,14 @@ class ApplicationsDataTable extends DataTable
             Column::make('DT_RowIndex','serial')->title('ক্রম'),
             Column::make('division','division')->title('বিভাগ'),
             Column::make('district','district')->title('জেলা'),
+            Column::make('constituency','constituency')->title('নির্বাচনী এলাকা'),
             Column::make('upazila','upazila')->title('উপজেলা'),
             Column::make('institution_bn','institution_bn')->title('শিক্ষা প্রতিষ্ঠান'),
-            Column::computed('action')
+            /*Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
                 //->width(60)
-                ->addClass('details-control'),
+                ->addClass('details-control'),*/
         ];
     }
 //https://yajrabox.com/docs/laravel-datatables/master/html-builder-column-builder
@@ -102,7 +106,7 @@ class ApplicationsDataTable extends DataTable
         return 'Applications_' . date('YmdHis');
     }
 
-    protected function getAppData(Request $request)
+    /*protected function getAppData(Request $request)
     {
         //dd($request->all());
         $data = Application::query();
@@ -122,6 +126,54 @@ class ApplicationsDataTable extends DataTable
             //return $this->applyScopes($data);
         }
         return $data->with('attachment')->permitted(null)->latest('id');
+        //return $this->applyScopes($data);
+    }*/
+    protected function getAppData(Request $request)
+    {
+        //dd(empty($request->get('upazilaId')));
+        $data = Application::query();
+        if (!empty($request->get('filter'))) {
+            if (!empty($request->get('divId'))) {
+                $data->where('division', $request->get('divId'));
+            }
+
+            if (!empty($request->get('disId'))) {
+                $data->where('district', $request->get('disId'));
+            }
+            if (!empty($request->get('seat_type'))) {
+                $seatType=$request->get('seat_type');
+                if($seatType=="reserved")
+                    $data->whereLike('parliamentary_constituency', 'মহিলা আসন');
+                else if ($seatType=="general")
+                    $data->whereNotLike('parliamentary_constituency', 'মহিলা আসন');
+            }
+            if (!empty($request->get('parliamentaryConstituencyId'))) {
+                $data->where('parliamentary_constituency', $request->get('parliamentaryConstituencyId'));
+            }
+            if (!empty($request->get('upazilaId'))) {
+                if(Auth::user()->hasRole('district admin') && $request->get('upazilaId')=='1')
+                    $data->permitted(null);
+                else
+                    $data->where('upazila', $request->get('upazilaId'));
+            }
+            if (!empty($request->get('unionPourashavaWardId'))) {
+                $data->orWhere('union_pourashava_ward', $request->get('unionPourashavaWardId'));
+            }
+            if (!empty($request->get('lab_type'))) {
+                $data->where('lab_type', $request->get('lab_type'));
+            }
+            if (!empty($request->get('application_type'))) {
+                $applicationType= $request->get('application_type');
+                if($applicationType=='listed_by_deo')
+                    $data->where('listed_by_deo', "YES");
+                else if($applicationType=='ref')
+                    $data->where('listed_by_deo', "NO");
+            }
+            // dd($data->get()->toArray());
+            return $data->with('attachment','verification')->orderByRaw(" division,district,seat_no asc, FIELD(lab_type , 'sof') DESC,upazila ASC");
+            //return $this->applyScopes($data);
+        }
+        return $data->with('attachment','verification')->permitted(null)->latest('id');
         //return $this->applyScopes($data);
     }
 }

@@ -1,6 +1,6 @@
 <?php
-
 namespace App\Http\Controllers;
+use App\Models\User;
 use Flash;
 use App\DataTables\ApplicationsDataTable;
 use App\Http\Requests\CreateApplicationRequest;
@@ -22,6 +22,7 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ApplicationController extends Controller
 {
+
     public function application(ApplicationsDataTable $dataTable,Request $request)
     {
         $divisionList=[];
@@ -34,6 +35,7 @@ class ApplicationController extends Controller
     }
     public function index(Request $request)
     {
+        ini_set("memory_limit", "-1");
         if(empty(Auth::user()->mobile)&& !Auth::user()->hasRole(['super admin'])){
             Flash::success('প্রাপ্ত ল্যাবের আবেদনসমূহ দেখার পূর্বে নিজ প্রোফাইল তৈরি করতে হবে।');
             return redirect(route('users.edit',['id'=>Auth::user()->id]));
@@ -45,22 +47,31 @@ class ApplicationController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row)use ($user) {
-                    //dd($row->id);
+                    //dd($row);
                     $btn="";
-                    if($user->hasRole(['super admin','district admin'])){
-                        $label= $user->hasRole('super admin')?'Edit':'Verify';
-                    $btn="<a href='".route("applications.edit",$row->id)."' target=\"_blank\" class='super-admin-edit btn btn-info btn-sm'>$label</a> ";
+                    if( ($user->hasRole('district admin') && $user->verified!="YES")or $user->hasRole(['super admin'])){
+                        $lb_status=(!empty($row->verification->app_district_verified))?'Verified':'Verify';
+                        $label= $user->hasRole('super admin')?'Edit':$lb_status;
+                    $btn="<a href='".route("applications.edit",$row->id)."' target=\"_blank\" class='super-admin-edit verify btn btn-info btn-sm'>$label</a> ";
                     }
 //                    if (App::environment('local')) {
 //                    $btn=$btn."<a href='javascript:void(0)' data-application='" . json_encode($row) . "' class='edit btn btn-success btn-sm'>Edit</a>";
 //                    }
-                    $btn=$btn." <a href='javascript:void(0)' data-id='" . $row->id . "' class='view btn btn-success btn-sm'>View</a>";
+                    /*$btn=$btn." <a href='javascript:void(0)' data-id='" . $row->id . "' class='view btn btn-success btn-sm'>View</a>";*/
                     if(Auth::user()->hasRole(['super admin']))
                     $btn = $btn." <a href='javascript:void(0)' class='delete btn btn-warning btn-sm'>Details</a>";
-                    if(Auth::user()->hasRole(['super admin','district admin']))
+                    if(($user->hasRole('district admin') && $user->verified!="YES")or $user->hasRole(['super admin']))
                     $btn=$btn." <a href='javascript:void(0)' data-id='" . $row->id . "' class='duplicate btn btn-danger btn-sm'>Duplicate</a>";
-                    if(Auth::user()->hasRole(['super admin','district admin','upazila admin']))
-                    $btn=$btn." <a href='" .route('loadpdf',$row->id ). "' data-id='" . $row->id . "' target=\"_blank\" class='download btn btn-primary btn-sm'>Form</a>";
+                    if(($user->hasRole('district admin') && $user->verified=="YES")or $user->hasRole(['super admin'])){
+                        $btn=$btn." <a href='" .route('loadpdf',$row->id ). "' data-id='" . $row->id . "' target=\"_blank\" class='download btn btn-primary btn-sm'>View</a>";
+                    }
+                    if(($user->hasRole('district admin') && $user->verified=="NO")){
+                        $btn=$btn." <a href='" .route('loadpdf',$row->id ). "' data-id='" . $row->id . "' target=\"_blank\" style=\"visibility: hidden\" class='viewForm btn btn-primary btn-sm'>View</a>";
+                    }
+                    if($user->hasRole('upazila admin')){
+                        $label= $this->getDistrictVerificationStatus($user)?'View':'Download Form';
+                        $btn=$btn." <a href='" .route('loadpdf',$row->id ). "' data-id='" . $row->id . "' target=\"_blank\" class='download btn btn-primary btn-sm'>$label</a>";
+                    }
                     return $btn;
                 })
                 ->rawColumns(['action'])
@@ -78,7 +89,7 @@ class ApplicationController extends Controller
     }
     protected function getAppData(Request $request)
     {
-        //dd($request->all());
+        //dd(empty($request->get('upazilaId')));
         $data = Application::query();
         if (!empty($request->get('filter'))) {
             if (!empty($request->get('divId'))) {
@@ -99,6 +110,9 @@ class ApplicationController extends Controller
                 $data->where('parliamentary_constituency', $request->get('parliamentaryConstituencyId'));
             }
             if (!empty($request->get('upazilaId'))) {
+                if(Auth::user()->hasRole('district admin') && $request->get('upazilaId')=='1')
+                    $data->permitted(null);
+                else
                 $data->where('upazila', $request->get('upazilaId'));
             }
             if (!empty($request->get('unionPourashavaWardId'))) {
@@ -115,10 +129,10 @@ class ApplicationController extends Controller
                 $data->where('listed_by_deo', "NO");
             }
             // dd($data->get()->toArray());
-            return $data->with('attachment')->orderByRaw(" division,district,seat_no asc, FIELD(lab_type , 'sof') DESC,upazila ASC")->get();
+            return $data->with('attachment','verification')->orderByRaw(" division,district,seat_no asc, FIELD(lab_type , 'sof') DESC,upazila ASC")->get();
             //return $this->applyScopes($data);
         }
-        return $data->with('attachment')->permitted(null)->latest('id')->get();
+        return $data->with('attachment','verification')->permitted(null)->latest('id')->get();
         //return $this->applyScopes($data);
     }
     public function getParliamentaryConstituency(Request $request)
@@ -144,7 +158,8 @@ class ApplicationController extends Controller
                 ->groupBy('upazila')
                 ->orderBy('upazila','asc')
                 ->pluck('upazila','upazila');
-            $upazilas=array_merge(['-1' => 'নির্বাচন করুন'], $upazilas->toArray());
+            $select= ['1' => 'সকল'];
+            $upazilas= $select+ $upazilas->toArray();
             return $upazilas;
         }
         return [];
@@ -155,8 +170,7 @@ class ApplicationController extends Controller
     }
     public function create(){
 
-        $user= Auth::user();
-        if(!$user->can('new application'))
+        if(!Auth::user()->hasRole(['super admin']))
              return abort(404);
 
         $labs=[];
@@ -240,14 +254,13 @@ class ApplicationController extends Controller
 
     public function store(CreateApplicationRequest $request){
         //dd($request->all());
-        $user= Auth::user();
-        if(!$user->can('new application'))
+        if(!Auth::user()->hasRole(['super admin']))
             return abort(404);
         $application = Application::create([
             'lab_type' => $request->get('lab_type'),
             'institution_bn' => $request->get('institution_bn'),
             'institution_type' => $request->get('institution_type'),
-            'institution_level' => $request->get('institution_level'),
+            'institution_level' => !empty($request->get('institution_level'))?$request->get('institution_level'):'',
             'division' => $request->get('division'),
             'district' => $request->get('district'),
             'upazila' => $request->get('upazila'),
@@ -342,6 +355,7 @@ class ApplicationController extends Controller
         }
         $application->save();
         //dd($application->toArray());
+        Flash::success('প্রতিষ্ঠানটি সফলভাবে নিবন্ধিত হয়েছে।');
         return redirect()->route('applications.index')->with('status','আপনার আবেদনটি সফলভাবে জমা দেওয়া হয়েছে।!');
     }
     public function getMemberName($member_name,$request)
@@ -517,10 +531,12 @@ class ApplicationController extends Controller
         $ins_type_sof= Arr::only($ins_type, array('general', 'madrasha', 'technical'));
         $ins_level_sof= $array = Arr::only(ins_level(), array('secondary', 'secondary_and_higher'));
         $ins_level_technical= $array = Arr::only(ins_level(), array('junior_secondary','secondary','higher_secondary','secondary_and_higher',"diploma","others"));
+        $districtVerified=$this->getDistrictVerificationStatus(Auth::user());
         return view('applications.pdf-demo',['application'=>$application,"ins_type"=>$ins_type,"ins_level"=>$ins_level,
             "ins_type_sof"=>$ins_type_sof,"ins_level_sof"=>$ins_level_sof,
             "ins_level_technical"=>$ins_level_technical,'labs'=>$labs,'selectedLabs'=>$selectedLabs,
-            'listAttachmentFile'=>$listAttachmentFile,'listAttachmentFilePathType'=>$listAttachmentFilePathType,]);
+            'listAttachmentFile'=>$listAttachmentFile,'listAttachmentFilePathType'=>$listAttachmentFilePathType,
+            'districtVerified'=>$districtVerified]);
         //return response()->json($application);
         //return view('applications.preview');
     }
@@ -600,6 +616,19 @@ class ApplicationController extends Controller
 //                $query->where('seat_no', $seat_no);
 //            })->first();
         //dd($app->toArray());
+    }
+
+    private function getDistrictVerificationStatus($user)
+    {
+        if($user->hasRole('upazila admin')){
+            $upazila_en=explode('_',$user->username)[0];
+            $district_en=explode('_',$user->username)[1];
+            $district_username= $district_en.'_admin';
+            $district_user= User::where('username',$district_username)->first();
+            if($district_user->verified=='YES') return true;
+            else false;
+        }
+        return false;
     }
 
 

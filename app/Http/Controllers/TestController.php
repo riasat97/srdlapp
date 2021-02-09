@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Application;
+use App\Models\User;
 use Illuminate\Support\Arr;
+use Mpdf\QrCode\QrCode;
+use Mpdf\QrCode\Output;
 use PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -66,6 +69,8 @@ class TestController extends ApplicationController
     public function createPdf($id)
     {
         $application=Application::where('id',$id)->with('attachment','lab','verification','profile')->first();
+        if(!Auth::user()->hasRole(['super admin','district admin','upazila admin']) or !permitted($application))
+            return abort(404);
         $labs=[];
         $tag= new \Spatie\Tags\Tag;
         $tags=\Spatie\Tags\Tag::all();
@@ -80,12 +85,21 @@ class TestController extends ApplicationController
         $ins_type_sof= Arr::only($ins_type, array('general', 'madrasha', 'technical'));
         $ins_level_sof= $array = Arr::only(ins_level(), array('secondary', 'secondary_and_higher'));
         $ins_level_technical= $array = Arr::only(ins_level(), array('junior_secondary','secondary','higher_secondary','secondary_and_higher',"diploma","others"));
+        $districtVerified=$this->getDistrictVerificationStatus(Auth::user());
         //dd($deo_app_seat_count);
         //dd(storage_path('fonts/'));
+        $qrCode = new QrCode(route('applications.show',$application->id ));
+
+        $qr = new Output\Png();
+
+// Save black on white PNG image 100px wide to filename.png
+        //$qr->output($qrCode, 100, [255, 255, 255], [0, 0, 0], public_path('images/qr.png'));
+        file_put_contents(public_path('images/qr.png'), $qr->output($qrCode, 100, [255, 255, 255], [0, 0, 0]));
         $data = ['application'=>$application,"ins_type"=>$ins_type,"ins_level"=>$ins_level,
             "ins_type_sof"=>$ins_type_sof,"ins_level_sof"=>$ins_level_sof,
             "ins_level_technical"=>$ins_level_technical,'labs'=>$labs,'selectedLabs'=>$selectedLabs,
-            'listAttachmentFile'=>$listAttachmentFile,'listAttachmentFilePathType'=>$listAttachmentFilePathType];
+            'listAttachmentFile'=>$listAttachmentFile,'listAttachmentFilePathType'=>$listAttachmentFilePathType,
+            'districtVerified'=>$districtVerified,'qr'=>$qr];
         //$pdf = \App::make('dompdf.wrapper');
         //$pdf->setOptions(['dpi' => 150, 'defaultFont' => 'Nikosh']);
         $config = ['instanceConfigurator' => function($mpdf) {
@@ -129,7 +143,7 @@ class TestController extends ApplicationController
         $config = ['instanceConfigurator' => function($mpdf) {
             $mpdf->SetWatermarkImage('../images/srdl.png');
             $mpdf->showWatermarkImage = true;
-
+            //$mpdf->SetCompression(true);
         }];
         $pdf = PDF::loadView('applications.update-pdf', $data, [], $config);
         //$pdf = PDF::loadView('dashboard', $data);
@@ -137,6 +151,18 @@ class TestController extends ApplicationController
 
 //        return loadView('applications.create-pdf');
         return $pdf->stream('srdl-phase-2.pdf');
+    }
+    private function getDistrictVerificationStatus($user)
+    {
+        if($user->hasRole('upazila admin')){
+            $upazila_en=explode('_',$user->username)[0];
+            $district_en=explode('_',$user->username)[1];
+            $district_username= $district_en.'_admin';
+            $district_user= User::where('username',$district_username)->first();
+            if($district_user->verified=='YES') return true;
+            else false;
+        }
+        return false;
     }
 
 }

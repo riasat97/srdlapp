@@ -104,6 +104,14 @@
                             <button class="btn btn-lg btn-success searchbtn"  value="submitted" id="searchbtn" type="submit"><i class="fas fa-search"></i> অনুসন্ধান</button>
                         </div>
                     @endif
+
+                </div>
+                <div class="form-row">
+                    @if(Auth::user()->hasRole(['district admin']) && Auth::user()->verified!='YES')
+                        <div class="form-group col-md-12">
+                            <button type="button" id="send-apps" class="btn btn-info "><i class="fas fa-paper-plane"></i> যাচাইকৃত ল্যাবের আবেদনসমূহ প্রকল্প দপ্তরে প্রেরণ করুন  </button>
+                        </div>
+                    @endif
                 </div>
                 <div id="alert-div">
 
@@ -124,6 +132,7 @@
     @include('applications.edit-modal')
     @include('applications.show-modal')
     @include('applications.duplicate-modal')
+    @include('applications.sendApps-modal')
 @endsection
 
 @push('scripts')
@@ -195,6 +204,9 @@
 
 
                 });
+            @if(!Auth::user()->hasRole(['super admin']))
+            table.columns( [6] ).visible( false );
+            @endif
             table.columns.adjust().draw();
             $('#searchbtn').click(function (e) {
                 table.draw();
@@ -364,7 +376,58 @@
 
                     }
                 });
-            })
+            });
+            $('body').on('click', '#send-apps', function () {
+                $.get("{{ route('applications.stat') }}", function (data) {
+                    console.log(data);
+                    //$('.modal-title').html("ডুপ্লিকেট  আবেদন");
+                    $('.alert-danger').html('');
+                    $('.modal-body').html(data);
+                    $('.btn-primary').val("submit");
+                    $('#sendAppsModal .toggle').bootstrapToggle();
+                    $('#sendAppsModal').modal('show');
+                    //$('#product_id').val(data.id);
+                    //$('#name').val(data.name);
+                    //$('#detail').val(data.detail);
+                })
+            });
+            $('#sendApplications').click(function(e){
+                e.preventDefault();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                    url: "{{ route('applications.send') }}" ,
+                    type:"patch",
+                    data:$('#sendApps').serialize(),
+                    success:function(response){
+                        console.log(response);
+                        if(response.success){
+                            iziToast.success({
+                                title: 'Success',
+                                message: response.message,
+                            });
+                            $('#sendAppsModal').modal('hide');
+                            $('#send-apps').hide();
+                            $('.verify').hide();
+                            $('.duplicate').hide();
+                            $('.viewForm').removeAttr('style');
+                            $('.alert-danger').hide();
+                        }
+                        else{
+                            iziToast.error({
+                                title: 'Error',
+                                message: response.message,
+                            });
+                            $('#sendAppsModal').modal('hide');
+                            $('.alert-danger').hide();
+                        }
+                    },
+                });
+            });
 
             $(document).on('click','.edit',function () {
                 var application = $(this).data('application');
@@ -451,11 +514,11 @@
 
 
     @if(Auth::user()->hasRole(['district admin']))
-        <script type="text/javascript">
+       {{-- <script type="text/javascript">
             $(function () {
                 $('select.upazila-default option:first').attr('disabled', true);
             });
-        </script>
+        </script>--}}
     @endif
 
 @endpush

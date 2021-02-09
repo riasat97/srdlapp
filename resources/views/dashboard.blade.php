@@ -79,13 +79,13 @@
             <div class="box">
                 <div class="box-header"></div>
                 <div class="box-body">
-                    {{ Html::image('images/srdl-lab-conditions.png', 'alt text', array('class' => 'css-class','height'=>'','width'=>'')) }}
+                    {{ Html::image('images/srdl-lab-conditions.png', 'alt text', array('class' => 'css-class img-responsive','height'=>'','width'=>'',)) }}
                 </div>
             </div>
             <div class="box">
                 <div class="box-header"></div>
                 <div class="box-body">
-                    {{ Html::image('images/sof-lab-conditions.png', 'alt text', array('class' => 'css-class','height'=>'','width'=>'')) }}
+                    {{ Html::image('images/sof-lab-conditions.png', 'alt text', array('class' => 'css-class img-responsive','height'=>'','width'=>'')) }}
                 </div>
             </div>
             <div class="text-center">

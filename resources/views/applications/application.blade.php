@@ -13,19 +13,14 @@
             border-top: 0;
         }
         body {
-            font-family: nikosh, sans-serif;
+            font-family: sans-serif;
         }
     </style>
 
 @endsection
 @section('content')
     <section class="content-header">
-        <h1 class="pull-left">SRDL Applications</h1>
-        @if(Auth::user()->hasRole(['super admin']))
-            <h1 class="pull-right">
-                <a class="btn btn-primary pull-right" style="margin-top: -10px;margin-bottom: 5px" href="{{ route('applications.apply') }}">Add New</a>
-            </h1>
-        @endif
+        <h1 class="pull-left">ডাউনলোড/ প্রিন্ট: প্রাপ্ত আবেদনসমূহ</h1>
     </section>
     <div class="content">
         <div class="clearfix"></div>
@@ -38,33 +33,78 @@
             <div class="box-body">
                 <div class="form-row">
                     @if(Auth::user()->hasRole(['super admin']))
-                        <div class="form-group  col-md-3">
+                        <div class="form-group  col-md-2">
                             {{Form::label('div', 'বিভাগ') }}
                             {{ Form::select('division', $divisionList,old('division'),array('class'=>'form-control','id'=>'div')) }}
                         </div>
-                        <div class="form-group  col-md-3">
+                        <div class="form-group  col-md-2">
                             {{Form::label('dis', 'জেলা') }}
-                            {{Form::select('district', [old('district')=>old('district')], old('district'),['id'=>'dis','class'=>'form-control'])}}
+                            {{Form::select('district', ['0'=>'সকল'], old('district'),['id'=>'dis','class'=>'form-control'])}}
                             {{--                        <select name="district" id="dis" class="form-control" style="width:350px">--}}
                             {{--                        </select>--}}
                         </div>
                     @endif
                     @if(Auth::user()->hasRole(['super admin']))
-                        <div class="form-group  col-md-3">
-                            {{Form::label('parliamentary_constituency', 'নির্বাচনী এলাকা') }}
-                            {{Form::select('parliamentary_constituency', [old('parliamentary_constituency')=>old('parliamentary_constituency')], old('parliamentary_constituency'),['id'=>'parliamentary_constituency','class'=>'form-control'])}}
-                            <button class="btn btn-lg btn-success pull-right" id="searchbtn" style="margin-top: 3px;" type="submit">Search</button>
+                        <div class="form-group  col-md-2">
+                            {{Form::label('seat_type', 'সংসদীয় আসনের ধরণ') }}
+                            {{Form::select('seat_type', ['0'=>'সকল ','general'=>'সাধারণ', 'reserved'=>'সংরক্ষিত মহিলা আসন'], old('seat_type'),['id'=>'seat_type','class'=>'form-control'])}}
                         </div>
                     @endif
-                    @if(Auth::user()->hasRole(['district admin','upazila admin']))
-                        <div class="form-group  col-md-3">
+                    @if(Auth::user()->hasRole(['super admin']))
+                        <div class="form-group  col-md-2">
                             {{Form::label('parliamentary_constituency', 'নির্বাচনী এলাকা') }}
-                            {{Form::select('parliamentary_constituency', $parliamentaryConstituencyList, null,['id'=>'parliamentary_constituency','class'=>'form-control'])}}
-                            <button class="btn btn-lg btn-success pull-right" id="searchbtn" style="margin-top: 3px;" type="submit">Search</button>
+                            {{Form::select('parliamentary_constituency', ['0'=>'সকল'], old('parliamentary_constituency'),['id'=>'parliamentary_constituency','class'=>'form-control'])}}
+                        </div>
+                    @endif
+                    {{--                    @if(Auth::user()->hasRole(['district admin']))--}}
+                    {{--                        <div class="form-group  col-md-3">--}}
+                    {{--                            {{Form::label('parliamentary_constituency', 'নির্বাচনী এলাকা') }}--}}
+                    {{--                            {{Form::select('parliamentary_constituency', $parliamentaryConstituencyList, null,['id'=>'parliamentary_constituency','class'=>'form-control'])}}--}}
+                    {{--                            --}}{{--<button class="btn btn-lg btn-success pull-right" id="searchbtn" style="margin-top: 3px;" type="submit">Search</button>--}}
+                    {{--                        </div>--}}
+                    {{--                    @endif--}}
+                    @if(Auth::user()->hasRole(['super admin']))
+                        <div class="form-group  col-md-2">
+                            {{Form::label('upazila', 'উপজেলা') }}
+                            {{Form::select('upazila', ['0'=>'সকল'], old('upazila'),['id'=>'upazila','class'=>'form-control'])}}
+                        </div>
+                    @endif
+
+                    @if(Auth::user()->hasRole(['district admin']))
+                        <div class="form-group  col-md-2">
+                            {{Form::label('upazila', 'উপজেলা') }}
+                            {{Form::select('upazila', $upazilas, null,['id'=>'upazila','class'=>'form-control upazila-default'])}}
+                        </div>
+                    @endif
+
+                    @if(Auth::user()->hasRole(['super admin']))
+                        <div class="form-group  col-md-2">
+                            {{Form::label('union_pourashava_ward', 'ইউনিয়ন/পৌরসভা ') }}
+                            {{Form::select('union_pourashava_ward', ['0'=>'সকল'], old('union_pourashava_ward'),['id'=>'union_pourashava_ward','class'=>'form-control'])}}
                         </div>
                     @endif
                 </div>
-                <div style="font-family: Nikosh, sans-serif;">{{ $dataTable->table(['class' => 'table table-bordered'], false) }}</div>
+                <div class="form-row">
+                    @if(Auth::user()->hasRole(['super admin']))
+                        <div class="form-group col-md-2">
+                            <label for="">কম্পিউটার ল্যাবের ধরণ</label>
+                            {{Form::select('lab_type', array('0'=>'সকল ','srdl'=>'শেখ রাসেল ডিজিটাল ল্যাব','sof' => 'স্কুল অফ ফিউচার'), old('lab_type'),['class'=>'form-control', 'id'=>'lab_type',])}}
+                        </div>
+                    @endif
+                    @if(Auth::user()->hasRole(['super admin']))
+                        <div class="form-group col-md-2">
+                            <label for="">আবেদনের ধরণ </label>
+                            {{Form::select('application_type', array('0'=>'সকল ','listed_by_deo' => 'ডিও', 'ref' => 'অন্যান্য রেফারেন্স'), old('application_type'),['class'=>'form-control', 'id'=>'application_type',])}}
+                        </div>
+                    @endif
+                    @if(Auth::user()->hasRole(['super admin','district admin']))
+                        <div class="form-group col-md-3">
+                            <button class="btn btn-lg btn-success searchbtn"  value="submitted" id="searchbtn" type="submit"><i class="fas fa-search"></i> অনুসন্ধান</button>
+                        </div>
+                    @endif
+
+                </div>
+                <div style="font-family: sans-serif;">{{ $dataTable->table(['class' => 'table table-bordered'], false) }}</div>
 
             </div>
         </div>
@@ -83,19 +123,30 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.0.3/css/buttons.dataTables.min.css">
     <script src="https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min.js"></script>
     <script src="/vendor/datatables/buttons.server-side.js"></script>
-    @include('applications.application-searchjs')
+    @include('applications.application-filterjs')
+
 
     {!! $dataTable->scripts() !!}
 
     <script type="text/javascript">
         $(function () {
             // $('.yajra-datatable').DataTable().clear().destroy();
+            var filter= 0;
+            $('button').click(function(){
+                filter = 1;
+            });
             var table = $("#yajra-datatable");
 
-            table.on('preXhr.dt',function (e,settings,data) {
-                data.divId = ($('#div').val()) ? $('#div').val() : '',
-                data.disId = ($('#dis').val()) ? $('#dis').val() : '',
-                data.parliamentaryConstituencyId = ($('#parliamentary_constituency').val()) ? $('#parliamentary_constituency').val() : ''
+            table.on('preXhr.dt',function (e,settings,d) {
+                d.filter= filter,
+                    d.divId = ($('#div').val()) ? $('#div').val() : '',
+                    d.disId = ($('#dis').val()) ? $('#dis').val() : '',
+                    d.seat_type = ($('#seat_type').val()) ? $('#seat_type').val() : '',
+                    d.parliamentaryConstituencyId = ($('#parliamentary_constituency').val()) ? $('#parliamentary_constituency').val() : '',
+                    d.upazilaId= ($('#upazila').val()) ? $('#upazila').val() : '',
+                    d.unionPourashavaWardId= ($('#union_pourashava_ward').val()) ? $('#union_pourashava_ward').val() : '',
+                    d.lab_type= ($('#lab_type').val()) ? $('#lab_type').val() : '',
+                    d.application_type= ($('#application_type').val()) ? $('#application_type').val() : ''
             })
 
             $('#searchbtn').click(function (e) {
@@ -136,46 +187,8 @@
                     '</table>';
             }
 
-            $(document).on('click','.edit',function () {
-                var application = $(this).data('application')
-                if(application){
-                    $('#applicationInstituteNameInEditModal').html(application.institution)
 
-                    var updateUrl = $('#editApplicationModal form').attr('action')
-                    updateUrl = updateUrl.replace(':applicationId', application.id)
-                    $('#editApplicationModal form').attr('action', updateUrl)
 
-                    $('#editApplicationModal .form-control').each(function () {
-                        if($(this).attr('type')==="checkbox"){
-                            if(application[$(this).attr('name')]==='YES'){
-                                $(this).attr('checked','checked')
-                            }
-                            if($(this).attr('name')==='is_mpo' && application['mpo']){
-                                $(this).attr('checked','checked')
-                            }
-                        }else{
-                            $(this).val(application[$(this).attr('name')])
-                            if(
-                                (
-                                    $(this).attr('name')==='mpo'
-                                    || $(this).attr('name')==='internet_connection_type'
-                                )
-                                && application[$(this).attr('name')]
-                            ){
-                                $(this).prop('disabled',false)
-                            }
-                        }
-                    })
-
-                    $('#editApplicationModal .toggle').bootstrapToggle();
-
-                    $('#editApplicationModal').modal('show')
-                }
-            })
-
-            $('#editApplicationModal').on('hidden.bs.modal', function () {
-                $('#editApplicationModal .toggle').bootstrapToggle('destroy');
-            })
 
             $('.toggle').change(function(){
 
@@ -196,50 +209,7 @@
                 // });
             });
 
-            $('#updateApplication').on('submit', function (e) {
-                e.preventDefault()
-                $.ajax({
-                    url: $(this).attr('action'),
-                    type:"POST",
-                    data: $(this).serializeArray(),
-                    success:function(response){
-                        iziToast.success({
-                            title: 'Success',
-                            message: 'Successfully updated!',
-                        });
-                        $('#editApplicationModal').modal('hide')
-                    },
-                });
-            })
-
         });
     </script>
 
-    <script type="text/javascript">
-        $(function () {
-            $("#is_mpo").change(function () {
-
-                if ($(this).prop("checked") == true) {
-                    $("#mpo").removeAttr("disabled");
-                    $("#mpo").focus();
-                } else {
-                    $("#mpo").attr("disabled", "disabled");
-                }
-            });
-        });
-    </script>
-
-    <script type="text/javascript">
-        $(function () {
-            $("#internet_connection").change(function () {
-
-                if ($(this).prop("checked") == true) {
-                    $("#internet_connection_type").removeAttr("disabled");
-                    $("#internet_connection_type").focus();
-                } else {
-                    $("#internet_connection_type").attr("disabled", "disabled");
-                }
-            });
-        });
-    </script>
 @endpush

@@ -33,12 +33,13 @@ Auth::routes(['register' => false, 'verify' => true]);
 Route::group(['prefix' => 'admin/applications', 'as' => 'applications.','middleware' => 'auth'], function () {
 
     Route::get('/', 'ApplicationController@index')->name('index');
-    Route::get('/app', 'ApplicationController@application')->name('application');
     Route::get('/terms', 'ApplicationController@terms')->name('terms');
     Route::get('/apply', 'ApplicationController@create')->name('apply');
     Route::get('/eiin', 'ApplicationController@getValuesByEiin')->name('eiin');
     Route::post('/store', 'ApplicationController@store')->name('store');;
-    Route::get('{application}/edit', 'ApplicationUpdateController@edit')->name('edit');
+    Route::get('/send_applications', 'ApplicationUpdateController@getApplicationStats')->name('stat');
+    Route::patch('/send-applications', 'ApplicationUpdateController@sendApplications')->name('send');
+    Route::get('{application}/verify', 'ApplicationUpdateController@edit')->name('edit');
     Route::put('{application}', 'ApplicationUpdateController@updates')->name('updates');
     Route::get('{id}/attachment/{path}', 'ApplicationController@displayPdf')->name('displayPdf');
     Route::get('/sms', 'ApplicationController@sms')->name('sms');;
@@ -47,7 +48,9 @@ Route::group(['prefix' => 'admin/applications', 'as' => 'applications.','middlew
     Route::patch('/{application}/duplicate', 'ApplicationUpdateController@postDuplicate')->name('postDuplicate');
     Route::post('/update/{application}', 'ApplicationController@update')->name('update');
 });
-
+Route::group(['prefix' => 'admin/download_print', 'as' => 'applications.','middleware' => 'auth'], function () {
+    Route::get('/applications', 'ApplicationController@application')->name('download');
+});
 //Route::domain('{subdomain}.'. env('APP_URL', 'srdl.gov.bd'))->group(function () {
 //
 //    Route::get('/test', 'TestController@test');
@@ -118,8 +121,16 @@ Route::get('generate-pdf','TestController@generatePDF');
 Route::get('/{application}/verification-form','TestController@createPdf')->name('loadpdf');
 Route::get('update-pdf','TestController@updatePdf')->name('downloadpdf');
 
+Route::get('/clear', function() {
 
+    Artisan::call('cache:clear');
+    Artisan::call('config:clear');
+    Artisan::call('config:cache');
+    Artisan::call('view:clear');
 
+    return "Cleared!";
+
+});
 
 
 

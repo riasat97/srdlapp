@@ -79,7 +79,7 @@
                     </td>
 
                     <td colspan="2" width="65%" height="30" align="left" valign="middle" class="padding010">
-                        112233
+                        {{ $application->id }}
                     </td>
                 </tr>
 
@@ -390,7 +390,7 @@
                 <td colspan="2" width="100%" height="30" align="left" valign="middle" class="padding5_10">
                     শিক্ষা প্রতিষ্ঠানে ইতোমধ্যে কোন কম্পিউটার ল্যাব প্রদান করা হয়েছে কিনা?
                     <img @if(!empty($selectedLabs)) src="{{asset('images/checkbox-checked.png')}}" @else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> হ্যাঁ
-                    <img @if(empty($selectedLabs)) src="{{asset('images/checkbox-checked.png')}}" @else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> না
+                    <img @if(!empty($application->verification->govlab) && $application->verification->govlab=="NO") src="{{asset('images/checkbox-checked.png')}}" @else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> না
                 </td>
             </tr>
 
@@ -496,7 +496,7 @@
             </tr>
             </tbody>
         </table>
-
+        @if((Auth::user()->hasRole(['upazila admin']) && !$districtVerified ) or Auth::user()->hasRole(['super admin']) )
         <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table3">
             <tbody>
             <tr class="td-box">
@@ -568,6 +568,7 @@
             </tr>
             </tbody>
         </table>
+        @endif
     </div>
 
     <div class="row qr-code">
@@ -575,7 +576,13 @@
             <tbody>
                 <tr class="">
                     <td width="100%" height="100" align="center" valign="middle" class="text-center">
-                        <img src="{{asset('images/qr-sample.png')}}" alt="logo" class="img-responsive" style="height: 100px;">
+                       {{-- <img src="{{asset('images/qr-sample.png')}}" alt="logo" class="img-responsive" style="height: 100px;">--}}
+                       {{-- <img src="data:image/png;base64, {!! base64_encode(\QrCode::format('png')->merge('images/srdl.png', 0.3, true)
+                        ->size(100)->errorCorrection('H')
+                        ->generate(route('applications.show',$application->id ))) !!} ">--}}
+                       {{-- {{ \QrCode::format('png')->merge('images/qr.png', 0.3,true)->generate(route('applications.show',$application->id )) }}--}}
+                         <img src="{{asset('images/qr.png')}}" alt="logo" class="img-responsive" style="height: 100px;">
+
                     </td>
                 </tr>
             </tbody>
@@ -600,3 +607,4 @@
         </table>
     </div>
 </div>
+

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\Bengali;
 use App\Http\Requests\CreateApplicationRequest;
 use App\Http\Requests\CreateDuplicateRequest;
 use App\Models\Application;
@@ -12,12 +13,17 @@ use App\Models\ApplicationVerification;
 use App\Models\Bangladesh;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use Laracasts\Flash\Flash;
 
 class ApplicationUpdateController extends ApplicationController
 {
     public function edit($id){
 
         $application= Application::where('id',$id)->with('attachment','lab','verification','profile')->first();
+        //dd(permitted($application));
+        if(!Auth::user()->hasRole(['super admin','district admin']) or !permitted($application))
+            return abort(404);
         $listAttachmentFile= $this->getListAttachmentFile($application);
         $listAttachmentFilePathType=$this->getListAttachmentFilePathType($application);
         //dd($application->toArray());
@@ -27,6 +33,7 @@ class ApplicationUpdateController extends ApplicationController
         foreach ($tags as $tag) {
             $labs[$tag->name]=$tag->translate('name', 'bn');
         }
+
         $divisionList=[];
         $divisions = Bangladesh::distinct()->get("division")->toArray();
         foreach ($divisions as $key=>$division)
@@ -53,14 +60,12 @@ class ApplicationUpdateController extends ApplicationController
     }
     public function updates($id,CreateApplicationRequest $request){
         //dd($request->all());
+        $app= Application::where('id',$id)->with('attachment','lab','verification','profile')->first();
+        if(!Auth::user()->hasRole(['super admin','district admin'])or !permitted($app))
+            return abort(404);
         $application = [
-            'lab_type' => $request->get('lab_type'),
-            'institution_bn' => $request->get('institution_bn'),
             'institution_type' => $request->get('institution_type'),
-            'institution_level' => $request->get('institution_level'),
-            'division' => $request->get('division'),
-            'district' => $request->get('district'),
-            'upazila' => $request->get('upazila'),
+            'institution_level' => !empty($request->get('institution_level'))?$request->get('institution_level'):'',
             'union_pourashava_ward' => !empty($request->get('union_pourashava_ward'))?$request->get('union_pourashava_ward'):'',
             'seat_type' => $request->get('seat_type'),
             'parliamentary_constituency' => !empty($request->get('parliamentary_constituency'))?$request->get('parliamentary_constituency'):'',
@@ -68,6 +73,12 @@ class ApplicationUpdateController extends ApplicationController
             'is_parliamentary_constituency_ok' => (!empty($request->get('is_parliamentary_constituency_ok'))&&!empty($request->get('parliamentary_constituency')))?"YES":"",
             //'listed_by_deo' => !empty($request->get('listed_by_deo'))?"YES":"NO",
         ];
+        if(!empty(Auth::user()->hasRole('super admin'))){
+            $su_application= ['division' => $request->get('division'), 'district' => $request->get('district'),
+                'upazila' => $request->get('upazila'),'lab_type' => $request->get('lab_type'),
+                'institution_bn' => $request->get('institution_bn')];
+            $application= array_merge($application,$su_application);
+        }
         $updated= Application::where('id',$id)->update($application);
         $application= Application::where('id',$id)->with('attachment','lab','verification','profile')->first();
         //dd($application);
@@ -79,7 +90,7 @@ class ApplicationUpdateController extends ApplicationController
             $application->listed_by_deo="NO";
             $application->save();
         }
-        if( !empty($request->get('listed_by_deo')) && $application->listed_by_deo=="YES" && empty($request->get('reference'))){
+        if( !empty($request->get('listed_by_deo')) && empty($request->get('reference'))){
             $application->listed_by_deo="YES";
             $application->save();
             $attachment->member_name= !empty($request->get('member_name'))?$request->get('member_name'):'';
@@ -120,7 +131,7 @@ class ApplicationUpdateController extends ApplicationController
             $profile->total_girls= !empty($request->get('total_girls'))?$request->get('total_girls'):0;
         $application->profile()->save($profile);
 
-        if(!empty($request->get('verification'))) {
+        if(!empty($request->get('verification')) or Auth::user()->hasRole(['district admin'])) {
             $applicationlabs = (!empty($application->lab)) ? $application->lab : new ApplicationLab();
                 $labs = $request->get('labs');
                 $applicationlabs = empty($labs) ? $this->emptyLabs($applicationlabs) : $this->updateLabs($request->get('labs'), $applicationlabs);
@@ -158,6 +169,10 @@ class ApplicationUpdateController extends ApplicationController
         }
         //}
         $application->save();
+        if(Auth::user()->hasRole('super admin'))
+            Flash::success('অ্যাপ্লিকেশনটি সফলভাবে আপডেট করা হয়েছে।');
+        else
+        Flash::success('প্রতিষ্ঠানটির উপযুক্ততা যাচাই সফল হয়েছে।');
         //dd($application->toArray());
         return redirect()->route('applications.index')->with('status','আপনার আবেদনটি সফলভাবে জমা দেওয়া হয়েছে।!');
     }
@@ -192,6 +207,7 @@ class ApplicationUpdateController extends ApplicationController
         $institutions = Arr::except($institutions, [$application->id]);
         $select= ['0' => 'নির্বাচন করুন'];
         $institutions= $select+$institutions;
+        if(!empty($application->verification)&& $application->verification->app_duplicate=="YES") Flash::warning('আপনি ইতোমধ্যে প্রতিষ্ঠানটিকে ডুপ্লিকেট হিসেবে চিহ্নিত করেছেন। আপনি কি আবেদনটিকে পূর্বের অবস্থায় ফিরত নিতে চান ? অর্থাৎ আবেদনটি ডুপ্লিকেট নয় ?');
         return view('applications.duplicate',['application'=>$application,'institutions'=>$institutions]);
     }
     public function postDuplicate($id,CreateDuplicateRequest $request){
@@ -199,9 +215,16 @@ class ApplicationUpdateController extends ApplicationController
         $application= Application::where('id',$id)->first();
         $dup=$this->duplicateExists($application,$request->get('app_original_id'));
         $verification = (!empty($application->verification)) ? $application->verification : new ApplicationVerification();
-        $verification->app_duplicate = 'YES';
-        $verification->app_original_id = $request->get('app_original_id');
-        $verification->app_original_comments = !empty($request->get('app_original_comments'))?$request->get('app_original_comments'):'';
+        if(!empty($request->get('remove_duplicate_id'))){
+            $verification->app_duplicate = '';
+            $verification->app_original_id = '';
+            $verification->app_original_comments = '';
+        }
+        else{
+            $verification->app_duplicate = 'YES';
+            $verification->app_original_id = $request->get('app_original_id');
+            $verification->app_original_comments = !empty($request->get('app_original_comments'))?$request->get('app_original_comments'):'';
+        }
         $application->verification()->save($verification);
         return response()->json(['application'=>$application,'dup'=>$dup]);
 
@@ -212,5 +235,57 @@ class ApplicationUpdateController extends ApplicationController
         $dup=ApplicationVerification::where('application_verification_id',$application_original_id)->where('app_original_id',$application->id)->first();
         return !empty($dup)?true:false;
 
+    }
+    public function getApplicationStats(){
+        $user=Auth::user();
+        if($user->hasRole('district admin')){
+            $district_en=explode(' ',$user->name)[0];
+            $district_bn=Bangladesh::where('district_en',$district_en)->first()->district;
+            $applications=Application::where('district',$district_bn)->get();
+            $verified_apps=Application::where('district',$district_bn)->whereHas('verification', function ($query) {
+                $query->whereNotNull('app_district_verified')->where('app_duplicate','NO');
+            })->count();
+            $duplicate_apps=Application::where('district',$district_bn)->whereHas('verification',function ($query) {
+                $query->where('app_duplicate','YES');
+            })->get()->count();
+            $remaining= $applications->count()-($verified_apps+$duplicate_apps);
+            $bn= new Bengali();
+            if($remaining!=0) Flash::error('আপনার এখনো '.$bn->bn_number($remaining).' ল্যাবের আবেদন যাচাই করা/ ডুপ্লিকেট চিহ্নিত(যদি থাকে) করা বাকি।');
+            else Flash::warning('ল্যাবের আবেদনসমূহ প্রকল্প দপ্তরে প্রেরণ করার পর আবেদনসমূহ যাচাই/ ডুপ্লিকেট চিহ্নিত (যদি থাকে) করার অপশনটি বিলুপ্ত হয়ে যাবে। ');
+            //verification()->whereNotNull('app_district_verified')->orWhere('app_duplicate','YES')->count();
+            return view('applications.send-application',['applications'=>$bn->bn_number($applications->count()),'verified_apps'=>$bn->bn_number($verified_apps),
+            'duplicate_apps'=>$bn->bn_number($duplicate_apps),'remaining'=>$bn->bn_number($remaining),]);
+        }
+
+    }
+
+    public function sendApplications(){
+
+        $user=Auth::user();
+        if($user->hasRole('district admin')){
+            $district_en=explode(' ',$user->name)[0];
+            $district_bn=Bangladesh::where('district_en',$district_en)->first()->district;
+            $applications=Application::where('district',$district_bn)->get();
+            $verified_apps=Application::where('district',$district_bn)->whereHas('verification', function ($query) {
+                $query->whereNotNull('app_district_verified')->where('app_duplicate','NO');
+            })->count();
+            $duplicate_apps=Application::where('district',$district_bn)->whereHas('verification',function ($query) {
+                $query->where('app_duplicate','YES');
+            })->get()->count();
+            $remaining= $applications->count()-($verified_apps+$duplicate_apps);
+            $bn= new Bengali();
+            if($remaining==0){
+                $user->verified= "YES";
+                $user->save();
+                $success= true;
+                $message='আপনি সফল ভাবে ল্যাবের আবেদনসমূহ প্রকল্প দপ্তরে প্রেরণ করেছেন।';
+            }
+            else{
+                $success=false;
+                $message='আপনার এখনো '.$bn->bn_number($remaining).' ল্যাবের আবেদন যাচাই করা/ ডুপ্লিকেট চিহ্নিত(যদি থাকে) করা বাকি।';
+            }
+            return response()->json(['message'=>$message,'success'=>$success]);
+        }
+        return false;
     }
 }

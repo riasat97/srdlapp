@@ -25,6 +25,8 @@ class CreateDuplicateRequest extends FormRequest
     public function rules(Request $request)
     {
         //dd($request->all());
+        if(!empty($request->get('remove_duplicate_id')))
+            return [];
         return [
             'app_original_id' => 'required|not_in:0',
         ];
