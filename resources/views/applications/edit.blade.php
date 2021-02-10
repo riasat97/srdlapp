@@ -65,7 +65,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-12 institution_corrected">
                                 <label for="">সংশোধনকৃত প্রতিষ্ঠানটির নাম </label>
-                                <input type="text" class="form-control" id="institution_corrected" name="institution_corrected" value="{{ $application->profile->institution_corrected?? old('institution_corrected') }} }}" placeholder="বাংলাতে">
+                                <input type="text" class="form-control" id="institution_corrected" name="institution_corrected" value="{{ $application->profile->institution_corrected?? old('institution_corrected') }}" placeholder="বাংলাতে">
                             </div>
                         </div>
 
