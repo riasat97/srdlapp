@@ -3,6 +3,8 @@
 <head>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name') }}</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
@@ -41,7 +43,7 @@
         <header class="main-header">
 
             <!-- Logo -->
-            <a href="{{ route('dashboard') }}" class="logo">
+            <a href="{{ route('applications.dashboard') }}" class="logo">
                 <b>SRDL</b>
             </a>
 
@@ -80,11 +82,11 @@
                                         <a href="{{ route('users.edit',Auth::user()->id) }}" class="btn btn-default btn-flat">Profile</a>
                                     </div>
                                     <div class="pull-right">
-                                        <a href="{{ url('/logout') }}" class="btn btn-default btn-flat"
+                                        <a href="{{ route('logout') }}" class="btn btn-default btn-flat"
                                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                             Sign out
                                         </a>
-                                        <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                                        <form id="logout-form"  action="{{ route('logout') }}" method="POST" style="">
                                             @csrf
                                         </form>
                                     </div>

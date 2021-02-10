@@ -22,6 +22,10 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ApplicationController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     public function application(ApplicationsDataTable $dataTable,Request $request)
     {
@@ -36,7 +40,7 @@ class ApplicationController extends Controller
     public function index(Request $request)
     {
         ini_set("memory_limit", "-1");
-        if(empty(Auth::user()->mobile)&& !Auth::user()->hasRole(['super admin'])){
+        if(empty(Auth::user()->mobile) && !Auth::user()->hasRole(['super admin'])){
             Flash::success('প্রাপ্ত ল্যাবের আবেদনসমূহ দেখার পূর্বে নিজ প্রোফাইল তৈরি করতে হবে।');
             return redirect(route('users.edit',['id'=>Auth::user()->id]));
         }
@@ -285,20 +289,22 @@ class ApplicationController extends Controller
             $application->attachment()->save($attachment);
         }
         $profile= new ApplicationProfile();
-            $profile->eiin= !empty($request->get('eiin'))?$request->get('eiin'):'';
-            $profile->management= !empty($request->get('management'))?$request->get('management'):'';
+            $profile->eiin= !empty($request->get('eiin'))?$request->get('eiin'):null;
+            $profile->management= !empty($request->get('management'))?$request->get('management'):null;
             $profile->institution_corrected= (!empty($request->get('is_institution_bn_correction_needed'))&&!empty($request->get('institution_corrected')))?$request->get('institution_corrected'):'';
             $profile->institution= !empty($request->get('institution'))?$request->get('institution'):'';
             $profile->union_others= (!empty($request->get('union_pourashava_ward')=="অন্যান্য")&&!empty($request->get('union_others')))?$request->get('union_others'):'';
-            $profile->ward= !empty($request->get('ward'))?$request->get('ward'):'';
+            $profile->ward= !empty($request->get('ward'))?$request->get('ward'):null;
             $profile->village_road= !empty($request->get('village_road'))?$request->get('village_road'):'';
             $profile->post_office= !empty($request->get('post_office'))?$request->get('post_office'):'';
-            $profile->post_code= !empty($request->get('post_code'))?$request->get('post_code'):'';
-            $profile->distance_from_upazila_complex= !empty($request->get('distance_from_upazila_complex'))?$request->get('distance_from_upazila_complex'):'';
+            $profile->post_code= !empty($request->get('post_code'))?$request->get('post_code'):null;
+            $profile->distance_from_upazila_complex= !empty($request->get('distance_from_upazila_complex'))?$request->get('distance_from_upazila_complex'):null;
             //$profile->direction= !empty($request->get('direction'))?$request->get('direction'):'';
-            $profile->proper_road= !empty($request->get('proper_road'))?"YES":"NO";
-            $profile->latitude= !empty($request->get('latitude'))?$request->get('latitude'):'';
-            $profile->longitude= !empty($request->get('longitude'))?$request->get('longitude'):'';
+        if(!empty($request->get('verification'))) {
+            $profile->proper_road = !empty($request->get('proper_road')) ? "YES" : "NO";
+        }
+            $profile->latitude= !empty($request->get('latitude'))?$request->get('latitude'):null;
+            $profile->longitude= !empty($request->get('longitude'))?$request->get('longitude'):null;
 
             $profile->head_name= !empty($request->get('head_name'))?$request->get('head_name'):'';
             $profile->institution_email= !empty($request->get('institution_email'))?$request->get('institution_email'):'';
@@ -308,8 +314,8 @@ class ApplicationController extends Controller
             $profile->alt_email= !empty($request->get('alt_email'))?$request->get('alt_email'):'';
 
             $profile->mpo= !empty($request->get('mpo'))?$request->get('mpo'):'';
-            $profile->total_boys= !empty($request->get('total_boys'))?$request->get('total_boys'):0;
-            $profile->total_girls= !empty($request->get('total_girls'))?$request->get('total_girls'):0;
+            $profile->total_boys= !empty($request->get('total_boys'))?$request->get('total_boys'):null;
+            $profile->total_girls= !empty($request->get('total_girls'))?$request->get('total_girls'):null;
             //$application->total_teachers= !empty($request->get('total_teachers'))?$request->get('total_teachers'):0;
             //$application->management= !empty($request->get('management'))?$request->get('management'):'';
             //$application->student_type= !empty($request->get('student_type'))?$request->get('student_type'):'';

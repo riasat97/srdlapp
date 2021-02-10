@@ -11,6 +11,12 @@
   <link href="{{ asset('css/style.css') }}" rel="stylesheet" type="text/css" />
   <link href="{{ asset('css/custom.css') }}" rel="stylesheet" type="text/css" />
     <script src="https://kit.fontawesome.com/5b67dd8eb0.js" crossorigin="anonymous"></script>
+    {{--    favicon--}}
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('favicon/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon/favicon-16x16.png') }}">
+    <link rel="manifest" href="{{ asset('favicon/site.webmanifest') }}">
+    {{--    favicon end--}}
   @yield('css')
 </head>
 <body>

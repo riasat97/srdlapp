@@ -56,13 +56,13 @@ class LoginController extends Controller
             return $this->redirectTo();
         }
 
-        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/dashboard';
+        return property_exists($this, 'redirectTo') ? $this->redirectTo : 'dashboard';
     }
 
     public function redirectTo()
     {
         $user=Auth::user();
-        $url =  env('APP_URL', 'srdl.gov.bd');
+        $url =  env('APP_URL', 'http://srdl.gov.bd');
         $scheme = parse_url($url, PHP_URL_SCHEME);
         $host = parse_url($url, PHP_URL_HOST);
         //return $scheme.'://'.$subDomain.'.'.$host.$this->redirectTo;

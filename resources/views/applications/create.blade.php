@@ -104,13 +104,13 @@
                             <div class="form-group  col-md-6">
                                 {{ Form::label('total_boys', 'মোট ছাত্র ') }}
                                 {{--                                {{ Form::selectRange('total_boys', 1, 5000,25,['class'=>'form-control', 'id'=>'total_boys'] )}}--}}
-                                {{ Form::number('total_boys', 0,['class'=>'form-control', 'id'=>'total_boys'] )}}
+                                {{ Form::number('total_boys', null,['class'=>'form-control', 'id'=>'total_boys'] )}}
                             </div>
 
                             <div class="form-group  col-md-6">
                                 {{ Form::label('total_girls', 'মোট ছাত্রী') }}
                                 {{--                                {{ Form::selectRange('total_girls', 1, 5000,30,['class'=>'form-control', 'id'=>'total_girls'] )}}--}}
-                                {{ Form::number('total_girls', 0,['class'=>'form-control', 'id'=>'total_girls'] )}}
+                                {{ Form::number('total_girls', null,['class'=>'form-control', 'id'=>'total_girls'] )}}
                             </div>
                         </div>
 

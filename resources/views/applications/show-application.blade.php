@@ -236,7 +236,7 @@
             <tbody>
                 <tr class="td-box">
                     <td width="50%" height="30" align="left" valign="middle" class="padding010 border-right">
-                        EIIN (যদি থাকে): {{$application->profile->eiin ?? ""}}
+                        EIIN (যদি থাকে): {{ $application->profile->eiin ?? ""}}
                     </td>
 
                     <td width="50%" height="30" align="left" valign="middle" class="padding010">

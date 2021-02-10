@@ -22,11 +22,11 @@ class AddAttributesToApplicationProfilesTable extends Migration
             $table->text("village_road")->nullable()->after('ward');
             $table->string("post_office")->nullable()->after('village_road');
             $table->integer("post_code")->nullable()->after('post_office');
-            $table->decimal("distance_from_upazila_complex")->after('post_code');
+            $table->decimal("distance_from_upazila_complex")->nullable()->after('post_code');
             $table->string("direction")->nullable()->after('distance_from_upazila_complex');
             $table->enum("proper_road", ['YES', 'NO'])->nullable()->after('direction');
-            $table->double("latitude")->after('proper_road');
-            $table->double("longitude")->after('latitude');
+            $table->double("latitude")->nullable()->after('proper_road');
+            $table->double("longitude")->nullable()->after('latitude');
 
             $table->text("alt_name")->nullable()->after('institution_email');
             $table->text("alt_tel")->nullable()->after('alt_name');

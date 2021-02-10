@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('css')
-    <meta name="_token" content="{{csrf_token()}}" />
+    {{--<meta name="_token" content="{{csrf_token()}}" />--}}
     <!-- Font Icon -->
     <link rel="stylesheet" href="{{ asset('fonts/material-icon/css/material-design-iconic-font.min.css') }}">
     <!-- Main css -->

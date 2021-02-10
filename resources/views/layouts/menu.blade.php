@@ -1,6 +1,6 @@
 
 <li class="{{ Request::is('dashboard*') ? 'active' : '' }}">
-    <a href="{{ route('dashboard') }}"><i class="fas fa-tachometer-alt"></i><span> ড্যাশবোর্ড </span></a>
+    <a href="{{ route('applications.dashboard') }}"><i class="fas fa-tachometer-alt"></i><span> ড্যাশবোর্ড </span></a>
 </li>
 <li class="{{ Request::is('admin/applications*') ? 'active' : '' }}">
     <a href="{{ route('applications.index') }}"><i class="fas fa-envelope"></i><span> ল্যাবের আবেদন</span></a>

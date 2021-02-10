@@ -106,29 +106,31 @@ class ApplicationUpdateController extends ApplicationController
         }
         //if($request->get('hidden_listed_by_deo')=="NO"){
         $profile= (!empty($application->profile))?$application->profile : new ApplicationProfile();
-            $profile->eiin= !empty($request->get('eiin'))?$request->get('eiin'):'';
-            $profile->management= !empty($request->get('management'))?$request->get('management'):'';
-            $profile->institution_corrected= (!empty($request->get('is_institution_bn_correction_needed'))&&!empty($request->get('institution_corrected')))?$request->get('institution_corrected'):'NO';
+            $profile->eiin= !empty($request->get('eiin'))?$request->get('eiin'):null;
+            $profile->management= !empty($request->get('management'))?$request->get('management'):null;
+            $profile->institution_corrected= (!empty($request->get('is_institution_bn_correction_needed'))&&!empty($request->get('institution_corrected')))?$request->get('institution_corrected'):'';
             $profile->institution= !empty($request->get('institution'))?$request->get('institution'):'';
             $profile->union_others= (!empty($request->get('union_pourashava_ward')=="অন্যান্য")&&!empty($request->get('union_others')))?$request->get('union_others'):'';
-            $profile->ward= !empty($request->get('ward'))?$request->get('ward'):'';
+            $profile->ward= !empty($request->get('ward'))?$request->get('ward'):null;
             $profile->village_road= !empty($request->get('village_road'))?$request->get('village_road'):'';
             $profile->post_office= !empty($request->get('post_office'))?$request->get('post_office'):'';
-            $profile->post_code= !empty($request->get('post_code'))?$request->get('post_code'):'';
-            $profile->distance_from_upazila_complex= !empty($request->get('distance_from_upazila_complex'))?$request->get('distance_from_upazila_complex'):'';
+            $profile->post_code= !empty($request->get('post_code'))?$request->get('post_code'):null;
+            $profile->distance_from_upazila_complex= !empty($request->get('distance_from_upazila_complex'))?$request->get('distance_from_upazila_complex'):null;
             //$profile->direction= !empty($request->get('direction'))?$request->get('direction'):'';
-            $profile->proper_road= !empty($request->get('proper_road'))?"YES":"NO";
-            $profile->latitude= !empty($request->get('latitude'))?$request->get('latitude'):'';
-            $profile->longitude= !empty($request->get('longitude'))?$request->get('longitude'):'';
+        if(!empty($request->get('verification')) or Auth::user()->hasRole(['district admin'])) {
+            $profile->proper_road = !empty($request->get('proper_road')) ? "YES" : "NO";
+        }
+            $profile->latitude= !empty($request->get('latitude'))?$request->get('latitude'):null;
+            $profile->longitude= !empty($request->get('longitude'))?$request->get('longitude'):null;
             $profile->head_name= !empty($request->get('head_name'))?$request->get('head_name'):'';
             $profile->institution_email= !empty($request->get('institution_email'))?$request->get('institution_email'):'';
             $profile->institution_tel= !empty($request->get('institution_tel'))?$request->get('institution_tel'):'';
             $profile->alt_name= !empty($request->get('alt_name'))?$request->get('alt_name'):'';
             $profile->alt_tel= !empty($request->get('alt_tel'))?$request->get('alt_tel'):'';
             $profile->alt_email= !empty($request->get('alt_email'))?$request->get('alt_email'):'';
-            $profile->mpo= !empty($request->get('mpo'))?$request->get('mpo'):'';
-            $profile->total_boys= !empty($request->get('total_boys'))?$request->get('total_boys'):0;
-            $profile->total_girls= !empty($request->get('total_girls'))?$request->get('total_girls'):0;
+            $profile->mpo= !empty($request->get('mpo'))?$request->get('mpo'):null;
+            $profile->total_boys= !empty($request->get('total_boys'))?$request->get('total_boys'):null;
+            $profile->total_girls= !empty($request->get('total_girls'))?$request->get('total_girls'):null;
         $application->profile()->save($profile);
 
         if(!empty($request->get('verification')) or Auth::user()->hasRole(['district admin'])) {
@@ -239,7 +241,7 @@ class ApplicationUpdateController extends ApplicationController
     public function getApplicationStats(){
         $user=Auth::user();
         if($user->hasRole('district admin')){
-            $district_en=explode(' ',$user->name)[0];
+            $district_en=explode('_',$user->username)[0];
             $district_bn=Bangladesh::where('district_en',$district_en)->first()->district;
             $applications=Application::where('district',$district_bn)->get();
             $verified_apps=Application::where('district',$district_bn)->whereHas('verification', function ($query) {
@@ -263,7 +265,7 @@ class ApplicationUpdateController extends ApplicationController
 
         $user=Auth::user();
         if($user->hasRole('district admin')){
-            $district_en=explode(' ',$user->name)[0];
+            $district_en=explode('_',$user->username)[0];
             $district_bn=Bangladesh::where('district_en',$district_en)->first()->district;
             $applications=Application::where('district',$district_bn)->get();
             $verified_apps=Application::where('district',$district_bn)->whereHas('verification', function ($query) {

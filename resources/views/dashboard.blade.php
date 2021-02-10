@@ -102,17 +102,17 @@
 @endsection
 
 @push('scripts')
-    <script src="web-theme/js/plugins/jquery.matchHeight.js"></script>
+    <script src="{{ asset('web-theme/js/plugins/jquery.matchHeight.js')}}"></script>
     <!-- ##### All Javascript Script ##### -->
 
     <!-- Popper js -->
-    <script src="web-theme/js/bootstrap/popper.min.js"></script>
+    <script src="{{ asset('web-theme/js/bootstrap/popper.min.js')}}"></script>
     <!-- Bootstrap js -->
-    {{--    <script src="web-theme/js/bootstrap/bootstrap.min.js"></script>--}}
+    {{--    <script src="web-theme/js/bootstrap/bootstrap.min.js)}}"></script>--}}
     <!-- LazyLoad js -->
-    <script src="web-theme/js/plugins/lazyload.js"></script>
+    <script src="{{ asset('web-theme/js/plugins/lazyload.js')}}"></script>
     <!-- All Plugins js -->
-    <script src="web-theme/js/plugins/plugins.js"></script>
+    <script src="{{ asset('web-theme/js/plugins/plugins.js')}}"></script>
     <!-- Active js -->
-    <script src="web-theme/js/actived6c3d6c3.js?v=3.3"></script>
+    <script src="{{ asset('web-theme/js/actived6c3d6c3.js?v=3.3')}}"></script>
 @endpush

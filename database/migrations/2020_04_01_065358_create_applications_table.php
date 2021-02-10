@@ -22,7 +22,7 @@ class CreateApplicationsTable extends Migration
             $table->text("district");
             $table->text("upazila");
             $table->text("union_pourashava_ward")->nullable();
-            $table->enum('seat_type',['general','reserved']);
+            $table->enum('seat_type',['general','reserved'])->nullable();
             $table->text("seat_no")->nullable();
             $table->text("parliamentary_constituency")->nullable();
             $table->enum("is_parliamentary_constituency_ok", ['YES', 'NO'])->nullable();

@@ -7,7 +7,10 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     public function index()
     {
         $deo_app_seat_count= Application::where("listed_by_deo","YES")->whereNotLike('parliamentary_constituency', 'মহিলা আসন')->groupBy('seat_no')->get()->count();
