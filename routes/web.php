@@ -41,11 +41,13 @@ Route::group(['prefix' => 'admin/applications', 'as' => 'applications.','middlew
     Route::post('/store', 'ApplicationController@store')->name('store');;
     Route::get('/send_applications', 'ApplicationUpdateController@getApplicationStats')->name('stat');
     Route::patch('/send-applications', 'ApplicationUpdateController@sendApplications')->name('send');
+    Route::patch('/sendback-applications', 'ApplicationUpdateController@sendbackApplications')->name('sendback');
     Route::get('{application}/verify', 'ApplicationUpdateController@edit')->name('edit');
     Route::put('{application}', 'ApplicationUpdateController@updates')->name('updates');
     Route::get('{id}/attachment/{path}', 'ApplicationController@displayPdf')->name('displayPdf');
     Route::get('/sms', 'ApplicationController@sms')->name('sms');;
     Route::get('/{application}', 'ApplicationController@show')->name('show');
+    Route::patch('/{application}/app_district_verification', 'ApplicationUpdateController@postAppDistrictVerification')->name('appDistrictVerification');
     Route::get('/{application}/duplicate', 'ApplicationUpdateController@getDuplicate')->name('duplicate');
     Route::patch('/{application}/duplicate', 'ApplicationUpdateController@postDuplicate')->name('postDuplicate');
     Route::post('/update/{application}', 'ApplicationController@update')->name('update');

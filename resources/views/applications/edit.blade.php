@@ -7,6 +7,7 @@
     <!-- Main css -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/zInput_default_stylesheet.css') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
@@ -24,7 +25,7 @@
             </div>
 
             <div class="col-md-12 top-heading">
-                <h2>অনলাইনে কম্পিউটার ল্যাবের জন্য আবেদন করুন  </h2>
+                <h2>প্রাথমিকভাবে শেখ রাসেল ডিজিটাল ল্যাব/ স্কুল অফ ফিউচারের উপযুক্ততা যাচাইয়ের জন্য শিক্ষা প্রতিষ্ঠান নির্বাচন সংশ্লিষ্ট প্রতিবেদন</h2>
             </div>
             @if ($errors->any())
                 <div class="alert alert-danger">
@@ -45,6 +46,8 @@
 
                 <fieldset class="tab_1">
                     <div class="fieldset-content">
+                        {{Form::hidden('application_id',$application->id)}}
+
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="">কম্পিউটার ল্যাবের ধরণ</label>
@@ -58,7 +61,7 @@
                             </div>
                             <div class="form-group col-md-3" style="">
                                 {{ Form::label('is_institution_bn_correction_needed', 'প্রতিষ্ঠানটির নামটির সংশোধন প্রয়োজন?') }}
-                                <input name="is_institution_bn_correction_needed" @if(!empty($application->profile->institution_corrected)&& $application->profile->institution_corrected=="YES")checked @endif id="is_institution_bn_correction_needed" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                <input name="is_institution_bn_correction_needed" @if(!empty($application->profile->institution_corrected) )checked @endif id="is_institution_bn_correction_needed" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_is_institution_bn_correction_needed',"No",["id"=>"hidden_is_institution_bn_correction_needed"])}}
                             </div>
                         </div>
@@ -72,7 +75,8 @@
                         <div class="form-row">
                             <div class="form-group col-md-8">
                                 <label for="">শিক্ষা প্রতিষ্ঠানের নাম (ENGLISH)</label>
-                                <input type="text" class="form-control" id="inputInsEn" name="institution" value="{{ $application->profile->institution ?? old('institution') }}" placeholder="ইংরেজিতে">
+                                {{--<input type="text" class="form-control" id="inputInsEn" name="institution" value="{{ $application->profile->institution ?? old('institution') }}" placeholder="ইংরেজিতে">--}}
+                                {{ Form::text('institution',$application->profile->institution??'',['class'=>'form-control','id'=>'inputInsEn','placeholder'=>'ইংরেজিতে']) }}
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="">ম্যানেজমেন্ট</label>
@@ -124,42 +128,42 @@
                             <div class="form-group  col-md-6">
                                 {{ Form::label('total_boys', 'মোট ছাত্র ') }}
                                 {{--                                {{ Form::selectRange('total_boys', 1, 5000,25,['class'=>'form-control', 'id'=>'total_boys'] )}}--}}
-                                {{ Form::number('total_boys', $application->profile->total_boys ?? 0 ,['class'=>'form-control', 'id'=>'total_boys'] )}}
+                                {{ Form::number('total_boys', $application->profile->total_boys ?? '' ,['class'=>'form-control', 'id'=>'total_boys'] )}}
                             </div>
                             <div class="form-group  col-md-6">
                                 {{ Form::label('total_girls', 'মোট ছাত্রী') }}
                                 {{--                                {{ Form::selectRange('total_girls', 1, 5000,30,['class'=>'form-control', 'id'=>'total_girls'] )}}--}}
-                                {{ Form::number('total_girls', $application->profile->total_girls ?? 0,['class'=>'form-control', 'id'=>'total_girls'] )}}
+                                {{ Form::number('total_girls', $application->profile->total_girls ?? '',['class'=>'form-control', 'id'=>'total_girls'] )}}
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label for="">প্রতিষ্ঠান প্রধানের নাম</label>
-                                <input type="text" class="form-control" id="head_name" name="head_name" value="{{ $application->profile->head_name ?? old("head_name") }}" placeholder="বাংলাতে">
+                                {{Form::text('head_name',$application->profile->head_name ?? '' ,['id'=>'head_name','class'=>'form-control','style'=>'','placeholder'=>"বাংলাতে"])}}
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="">প্রতিষ্ঠানের ইমেইল</label>
-                                <input type="email" class="form-control" id="institution_email" name="institution_email" value="{{ $application->profile->institution_email ?? old("institution_email") }}" placeholder="example@mail.com">
+                                {{Form::email('institution_email',$application->profile->institution_email ?? '' ,['id'=>'institution_email','class'=>'form-control','style'=>'','placeholder'=>"example@mail.com"])}}
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="">প্রতিষ্ঠানের মোবাইল নম্বর</label>
-                                <input type="tel" pattern="[0-9]{11}" class="form-control" id="institution_tel" name="institution_tel" value="{{ $application->profile->institution_tel ?? old("institution_tel") }}" placeholder="01xxxxxxxxx">
+                                {{Form::tel('institution_tel',$application->profile->institution_tel ?? '' ,['id'=>'institution_tel','class'=>'form-control','style'=>'','placeholder'=>"01xxxxxxxxx",'pattern'=>"[0-9]{11}"])}}
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-4">
                                 <label for="">বিকল্প প্রতিষ্ঠান প্রতিনিধি/কমিটির সভাপতির নাম </label>
-                                <input type="text" class="form-control" id="alt_name" name="alt_name" value="{{ $application->profile->alt_name ?? old("alt_name") }}" placeholder="বাংলাতে">
+                                {{Form::text('alt_name',$application->profile->alt_name ?? '' ,['id'=>'alt_name','class'=>'form-control','style'=>'','placeholder'=>"বাংলাতে"])}}
                             </div>
 
                             <div class="form-group col-md-4">
                                 <label for="">ইমেইল</label>
-                                <input type="email" class="form-control" id="alt_email" name="alt_email" value="{{ $application->profile->alt_email ?? old("alt_email") }}" placeholder="example@mail.com">
+                                {{Form::email('alt_email',$application->profile->alt_email ?? '' ,['id'=>'alt_email','class'=>'form-control','style'=>'','placeholder'=>"example@mail.com"])}}
                             </div>
 
                             <div class="form-group col-md-4">
                                 <label for="">মোবাইল নম্বর</label>
-                                <input type="tel" pattern="[0-9]{11}" class="form-control" id="alt_tel" name="alt_tel" value="{{ $application->profile->alt_tel ?? old("alt_tel") }}" placeholder="01xxxxxxxxx">
+                                {{Form::tel('alt_tel',$application->profile->alt_tel ?? '' ,['id'=>'alt_tel','class'=>'form-control','style'=>'','placeholder'=>"01xxxxxxxxx",'pattern'=>"[0-9]{11}"])}}
                             </div>
                         </div>
 
@@ -289,10 +293,13 @@
                             @if(!empty($application->attachment->list_attachment_file))
                                 <div class="form-group col-md-6">
                                     <a href="{{ $application->attachment->list_attachment_file }}" target="_blank"> {{ $application->attachment->list_attachment_file_path_type }}</a>
+                                    {{Form::hidden('list_attachment',true)}}
+
                                 </div>
                             @elseif(!empty($listAttachmentFile))
                                 <div class="form-group col-md-6">
                                     <a href="{{ $listAttachmentFile }}" target="_blank"> {{ $listAttachmentFilePathType }}</a>
+                                    {{Form::hidden('list_attachment',true)}}
                                 </div>
                             @endif
                         </div>
@@ -344,6 +351,7 @@
                             @if(!empty($application->attachment->ref_documents_file_path))
                                 <div class="form-group col-md-6">
                                     <a href="{{ $application->attachment->ref_documents_file }}" target="_blank"> {{ $application->attachment->ref_documents_file_path_type }}</a>
+                                    {{Form::hidden('ref_documents',true)}}
                                 </div>
                             @endif
                         </div>
@@ -385,7 +393,7 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group  col-md-6">
-                                {{ Form::label('proper_infrastructure', 'উপযুক্ত অবকাঠামো এবং আইসিটি শিক্ষার সুযোগ, সুবিধা আছে কিনা? ') }}
+                                {{ Form::label('proper_infrastructure', 'উপযুক্ত অবকাঠামো (পাঁকা ভবন) এবং আইসিটি শিক্ষার সুযোগ, সুবিধা আছে কিনা? ') }}
                                 <input name="proper_infrastructure" @if(!empty($application->verification->proper_infrastructure) && $application->verification->proper_infrastructure=="YES" ) checked @endif id="proper_infrastructure" type="checkbox" data-width="50"  class="toggle form-control verification-content" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_proper_infrastructure',"NO",["id"=>"hidden_proper_infrastructure"])}}
                             </div>
@@ -395,7 +403,7 @@
                                 {{Form::hidden('hidden_electricity_solar',"NO",["id"=>"hidden_electricity_solar"])}}
                             </div>
                         </div>
-                        <div class="form-row">
+                       {{-- <div class="form-row">
                             <div class="form-group col-md-6">
                                 {{ Form::label('internet_connection', 'ইন্টারনেট সংযোগ আছে ?', array('class' => 'awesome')) }}
                                 <input name="internet_connection" @if(!empty($application->verification->internet_connection) && $application->verification->internet_connection=="YES" ) checked @endif id="internet_connection" type="checkbox"  data-width="50" class="toggle form-control verification-content" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
@@ -405,6 +413,19 @@
                                 {{Form::label('internet_connection_type', 'ইন্টারনেট সংযোগের ধরন ?', array('class' => 'nothing')) }}
                                 {{Form::select('internet_connection_type', array('0' => 'নির্বাচন করুন','modem' => 'মডেম', 'broadband' => 'ব্রডব্যান্ড'), $application->verification->internet_connection_type ?? null,['class'=>'form-control', 'id'=>'internet_connection_type','class' => 'form-control verification-content',"disabled"=>"true"])}}
                             </div>
+                        </div>--}}
+                        <div class="form-row">
+
+                            <div class="form-group col-md-6">
+                                {{Form::label('internet_connection_type', 'ইন্টারনেট সংযোগের ধরন:', array('class' => '')) }}
+                                {{Form::select('internet_connection_type[]', internet_connection_types(), null,['class'=>'form-control verification-content','id'=>'internet_connection_type', 'multiple' => 'multiple','style'=>"width: 20%",'data-placeholder'=>' একাধিক হতে পারে'])}}
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                {{ Form::label('mobile_operators', 'ডাটা কানেকশনের জন্য ব্যবহৃত মোবাইল অপারেটর সমূহ:', array('id' => '')) }}
+                                {{ Form::select('mobile_operators[]', mobile_operators(), null, ['class'=>'form-control', 'id' => 'mobile_operators', 'multiple' => 'multiple', 'data-placeholder'=>' একাধিক হতে পারে']) }}
+                            </div>
+
                         </div>
                         <div class="form-row ">
                             <div class="form-group  col-md-6">
@@ -433,7 +454,7 @@
 
                         <div class="form-row">
                             <div class="form-group  col-md-6">
-                                {{ Form::label('lab_maintenance', 'ল্যাবে সরবরাহকৃত আইটি ও অন্যান্য সরঞ্জামের রক্ষণাবেক্ষণ এবং ল্যাব পরিচালনা ও সংরক্ষণে প্রতিশ্ৰুতি সম্পন্ন শিক্ষা প্রতিষ্ঠান ?') }}
+                                {{ Form::label('lab_maintenance', 'ল্যাবে সরবরাহকৃত আইটি ও অন্যান্য সরঞ্জামের রক্ষণাবেক্ষণ এবং ল্যাব পরিচালনা, সংরক্ষণে মানসিকতা ও প্রতিশ্ৰুতি সম্পন্ন শিক্ষা প্রতিষ্ঠান ?') }}
                                 <input name="lab_maintenance" @if(!empty($application->verification->lab_maintenance) && $application->verification->lab_maintenance=="YES" ) checked @endif id="lab_maintenance" type="checkbox" data-width="50" class="toggle form-control verification-content" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_lab_maintenance',"NO",["id"=>"hidden_lab_maintenance"])}}
                             </div>
@@ -445,22 +466,31 @@
                         </div>
                         <div class="form-row col-md-12">
                             <div class="form-group shadow-textarea">
-                                <label class="awesome" for="about_institution">প্রতিষ্ঠানটি সম্পর্কে আপনার মন্তব্য (যদি থাকে):</label>
-                                <textarea class="form-control z-depth-1 verification-content" id="about_institution" name="about_institution" rows="5" placeholder="">{{ $application->verification->about_institution ?? old("about_institution") }}</textarea>
+                                <label class="awesome" for="about_institution">প্রতিষ্ঠানটি সম্পর্কে সার্বিক মন্তব্য (যদি থাকে): </label>
+                               {{-- <textarea class="form-control z-depth-1 verification-content" id="about_institution" name="about_institution" rows="5" placeholder="">{{ $application->verification->about_institution ?? old("about_institution") }}</textarea>--}}
+                                {{ Form::textarea('about_institution',$application->verification->about_institution ?? '',['class'=>'form-control z-depth-1 verification-content','id'=>'about_institution','rows'=>'5','placeholder'=>'']) }}
                             </div>
                         </div>
 
                         <div class="form-row verify">
-                            <div class="form-group  col-md-6 ">
-                                {{ Form::label('upazila_verified','',["id"=>"upazila_verified_lb"])}}
+                            <div class="form-group">
+                                <p id="upazila_verified_lb"></p>
+                                {{--{{ Form::label('upazila_verified','',["id"=>"upazila_verified_lb"])}}
                                 <input name="app_upazila_verified" @if(!empty($application->verification->app_upazila_verified) && $application->verification->app_upazila_verified=="YES" ) checked @endif id="app_upazila_verified" type="checkbox"  data-width="50" class="toggle form-control verification-content" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
-                                {{Form::hidden('hidden_upazila_verified',"NO",["id"=>"hidden_upazila_verified"])}}
+                                {{Form::hidden('hidden_upazila_verified',"NO",["id"=>"hidden_upazila_verified"])}}--}}
                             </div>
-
-                            <div class="form-group  col-md-6 ">
+                          {{--  <div class="form-group  col-md-6 ">
                                 {{ Form::label('district_verified', '',["id"=>"district_verified_lb"])}}
                                 <input name="app_district_verified" @if(!empty($application->verification->app_district_verified) && $application->verification->app_district_verified=="YES" ) checked @endif  id="app_district_verified" type="checkbox"  data-width="50" class="toggle form-control verification-content" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_district_verified',"NO",["id"=>"hidden_district_verified"])}}
+                            </div>--}}
+                        </div>
+                        <div class="form-row verify">
+                            <div id="app_upazila_verified" class="form-group  col-md-12">
+                                {{ Form::radio('app_upazila_verified', 'YES', (!empty($application->verification->app_upazila_verified) && $application->verification->app_upazila_verified=="YES" )?true:false,['id'=>'app_upazila_verified_yes','class'=>'verification-content','title'=>'সুপারিশ করা হল']) }}
+                                {{ Form::radio('app_upazila_verified', 'NO', (!empty($application->verification->app_upazila_verified) && $application->verification->app_upazila_verified=="NO" )?true:false,['id'=>'app_upazila_verified_no','class'=>'verification-content','title'=>'সুপারিশ করা হল না']) }}
+                                {{--<input type="radio" name="app_upazila_verified" value="YES" @if(!empty($application->verification->app_upazila_verified) && $application->verification->app_upazila_verified=="YES" ) checked @endif id="app_upazila_verified_yes" class="verification-content" title="সুপারিশ করা হল">--}}
+                                {{--<input type="radio" name="app_upazila_verified" value="NO" @if(!empty($application->verification->app_upazila_verified) && $application->verification->app_upazila_verified=="NO" ) checked @endif id="app_upazila_verified_no"  class="verification-content" title="সুপারিশ করা হল না">--}}
                             </div>
                         </div>
                         <div class="form-row verification_report_file" style="">
@@ -481,6 +511,7 @@
                             @if(!empty($application->attachment->verification_report_file))
                                 <div class="form-group col-md-6">
                                     <a href="{{ $application->attachment->verification_report_file }}" target="_blank"> {{ $application->attachment->verification_report_file_path_type }}</a>
+                                    {{Form::hidden('verification_report',true)}}
                                 </div>
                             @endif
                         </div>
@@ -646,11 +677,12 @@
     <script src="{{ asset('js/main.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
     <script src="{{ asset('js/maximize-select2-height.min.js')}}"></script>
+    <script src="{{ asset('js/zInput.js')}}"></script>
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     <script src="https://kit.fontawesome.com/5b67dd8eb0.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-    @if(!empty($application->profile->institution_corrected) && $application->profile->institution_corrected=="YES")
+    @if(!empty($application->profile->institution_corrected))
         <script type="text/javascript">
             $(function () {
                 $(".institution_corrected").show();
@@ -693,24 +725,7 @@
     </script>
     @endif
 
-    <script>
-        $('#labs_multiple').select2().maximizeSelect2Height({
-            //tags: true,
-            //placeholder: "নির্বাচন করুন (একাধিক হতে পারে)"
-            minimumResultsForSearch: -1,
-            placeholder: function(){
-                $(this).data('placeholder');
-            },
-            allowClear: true
-            // data: ["Clare","Cork","South Dublin"],
-            // tokenSeparators: [','],
-            // placeholder: "Add your tags here",
-            /* the next 2 lines make sure the user can click away after typing and not lose the new tag */
-            // selectOnClose: true,
-            // closeOnSelect: false
-        });
 
-    </script>
 
     @if(!empty($application->lab->lab_others_title))
         <script type="text/javascript">
@@ -770,8 +785,8 @@
                     });
                     $("#institution_type option:contains('" + ins_type_selected+ "')").prop('selected',true);
                     $(".verify").show();
-                    $("#upazila_verified_lb").text('সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপনের জন্য সুপারিশ করা হল।');
-                    $("#district_verified_lb").text('জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপন করা যেতে পারে।');
+                    $("#upazila_verified_lb").text('সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপনের জন্য:');
+                    $("#district_verified_lb").text('জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার:');
                     $(".sof").show();
 
                 } else {
@@ -781,8 +796,8 @@
                     });
                     $("#institution_type option:contains('" + ins_type_selected+ "')").prop('selected',true);
                     $(".verify").show();
-                    $("#upazila_verified_lb").text('সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপনের জন্য সুপারিশ করা হল।');
-                    $("#district_verified_lb").text('জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপন করা যেতে পারে।');
+                    $("#upazila_verified_lb").text('সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপনের জন্য:');
+                    $("#district_verified_lb").text('জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব:');
                     $(".sof").hide();
                 }
             });
@@ -793,13 +808,13 @@
         $(function () {
             if ($("#lab_type").val() == "sof") {
                 $(".verify").show();
-                $("#upazila_verified_lb").text('সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপনের জন্য সুপারিশ করা হল।');
-                $("#district_verified_lb").text('জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপন করা যেতে পারে।');
+                $("#upazila_verified_lb").text('সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপনের জন্য:');
+                $("#district_verified_lb").text('জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার:');
                 $(".sof").show();
             } else {
                 $(".verify").show();
-                $("#upazila_verified_lb").text('সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপনের জন্য সুপারিশ করা হল।');
-                $("#district_verified_lb").text('জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপন করা যেতে পারে।');
+                $("#upazila_verified_lb").text('সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপনের জন্য:');
+                $("#district_verified_lb").text('জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব:');
                 $(".sof").hide();
             }
         });
@@ -900,23 +915,8 @@
         });
     </script>
 
-    @if(!empty($application->verification->internet_connection) && $application->verification->internet_connection =="YES" )
-        <script type="text/javascript">
-            $(function () {
-                $('#internet_connection').bootstrapToggle('on');
-                $("#internet_connection_type").removeAttr("disabled");
-                $("#internet_connection_type").focus();
-                //$("#labs_multiple").removeAttr("disabled");
-            });
-        </script>
-    @else
-        <script type="text/javascript">
-            $(function () {
-                $("#internet_connection_type").attr("disabled", "disabled");
-            });
-        </script>
-    @endif
-    <script type="text/javascript">
+
+    {{--<script type="text/javascript">
         $(function () {
             $("#internet_connection").change(function () {
 
@@ -928,8 +928,8 @@
                 }
             });
         });
-    </script>
-    @if(Auth::user()->hasRole(['district admin']))
+    </script>--}}
+    @if(Auth::user()->hasRole(['upazila admin']))
         <script type="text/javascript">
             $(function () {
                 $("#lab_type").attr("disabled", "disabled");
@@ -1102,14 +1102,7 @@
         });
     </script>
 
-    @if(!empty($selectedLabs))
-        <script type="text/javascript">
-            $(function () {
-                $('#govlab').bootstrapToggle('on');
-                $("#labs_multiple").removeAttr("disabled");
-            });
-        </script>
-    @endif
+
     <script type="text/javascript">
 
         $(function () {
@@ -1122,38 +1115,9 @@
                 }
             });
         });
-        $('#labs_multiple').on('select2:select', function(e) {
 
-            var data = e.params.data;
-            //alert(data.id);
-            if (data.id == 'Others') {
-                $('#lab_others_title').show();
-            }
-            // var items= $(this).val();
-            // //alert(items);
-            // if($.inArray("Others",items) != -1 ){
-            //     $('#lab_others_title').show();
-            // }
-            // else {
-            //     $('#lab_others_title').hide();
-            // }
-        });
-        $("#labs_multiple").on("select2:unselect", function (e) {
-            var value=   e.params.data.id;
-            if (value == 'Others')
-                $('#lab_others_title').val('');
-                $('#lab_others_title').hide();
-        });
     </script>
-    @if(!empty($selectedLabs))
-        <script type="text/javascript">
-            var labs= @json($selectedLabs);
-            console.log(labs);
-            $(function () {
-                $('#labs_multiple').val(labs).trigger('change');
-            });
-        </script>
-    @endif
+
     <script type="text/javascript">
 
         $(document).ready(function(){

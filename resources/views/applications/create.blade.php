@@ -7,6 +7,7 @@
     <!-- Main css -->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/zInput_default_stylesheet.css') }}">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
@@ -24,7 +25,7 @@
             </div>
 
             <div class="col-md-12 top-heading">
-                <h2>অনলাইনে কম্পিউটার ল্যাবের জন্য আবেদন করুন  </h2>
+                <h2>কম্পিউটার ল্যাবের জন্য আবেদন নিবন্ধন</h2>
             </div>
             @if ($errors->any())
                 <div class="alert alert-danger">
@@ -346,13 +347,13 @@
                             <div class="form-group col-md-6">
                                 {{ Form::label('labs', 'প্রাপ্ত ল্যাব সমূহ', array('class' => 'nothing')) }}
 {{--                                <span>প্রাপ্ত ল্যাব সমূহ</span>--}}
-                                {{ Form::select('labs[]', $labs, old('labs'), ['class'=>'form-control verification-content', 'id' => 'labs_multiple', 'multiple' => 'multiple','disabled'=>true, 'data-placeholder'=>' একাধিক হতে পারে']) }}
+                                {{ Form::select('labs[]', $labs, old('labs'), ['class'=>'form-control', 'id' => 'labs_multiple', 'multiple' => 'multiple','disabled'=>true, 'data-placeholder'=>' একাধিক হতে পারে']) }}
                                 {{ Form::text('lab_others_title',old('lab_others_title'),['id'=>'lab_others_title','class'=>'form-control verification-content','style'=>'','placeholder'=>'অন্যান্য কম্পিউটার ল্যাব'])}}
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group  col-md-6">
-                                {{ Form::label('proper_infrastructure', 'উপযুক্ত অবকাঠামো এবং আইসিটি শিক্ষার সুযোগ, সুবিধা আছে কিনা? ') }}
+                                {{ Form::label('proper_infrastructure', 'উপযুক্ত অবকাঠামো (পাঁকা ভবন) এবং আইসিটি শিক্ষার সুযোগ, সুবিধা আছে কিনা? ') }}
                                 <input name="proper_infrastructure" id="proper_infrastructure" type="checkbox" data-width="50"  class="toggle form-control verification-content" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_proper_infrastructure',"NO",["id"=>"hidden_proper_infrastructure"])}}
                             </div>
@@ -363,16 +364,17 @@
                             </div>
                         </div>
                         <div class="form-row">
+
                             <div class="form-group col-md-6">
-                                {{ Form::label('internet_connection', 'ইন্টারনেট সংযোগ আছে ?', array('class' => '')) }}
-                                <input name="internet_connection" id="internet_connection" type="checkbox"  data-width="50" class="toggle form-control verification-content" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
-                                {{Form::hidden('hidden_internet_connection',"NO",["id"=>"hidden_internet_connection"])}}
+                                {{Form::label('internet_connection_type', 'ইন্টারনেট সংযোগের ধরন:', array('class' => '')) }}
+                                {{Form::select('internet_connection_type[]', internet_connection_types(), null,['class'=>'form-control verification-content','id'=>'internet_connection_type', 'multiple' => 'multiple','style'=>"width: 20%",'data-placeholder'=>' একাধিক হতে পারে'])}}
                             </div>
 
                             <div class="form-group col-md-6">
-                                {{Form::label('internet_connection_type', 'ইন্টারনেট সংযোগের ধরন ?', array('class' => 'nothing')) }}
-                                {{Form::select('internet_connection_type', array('0' => 'নির্বাচন করুন','modem' => 'মডেম', 'broadband' => 'ব্রডব্যান্ড'), null,['class'=>'form-control verification-content', 'id'=>'internet_connection_type',"disabled"=>"true"])}}
+                                {{ Form::label('mobile_operators', 'ডাটা কানেকশনের জন্য ব্যবহৃত মোবাইল অপারেটরসমূহ:', array('id' => '')) }}
+                                {{ Form::select('mobile_operators[]', mobile_operators(), old('mobile_operators'), ['class'=>'form-control', 'id' => 'mobile_operators', 'multiple' => 'multiple','disabled'=>'', 'data-placeholder'=>' একাধিক হতে পারে']) }}
                             </div>
+
                         </div>
 
                         <div class="form-row">
@@ -402,7 +404,7 @@
                         </div>
                         <div class="form-row">
                             <div class="form-group  col-md-6">
-                                {{ Form::label('lab_maintenance', 'ল্যাবে সরবরাহকৃত আইটি ও অন্যান্য সরঞ্জামের রক্ষণাবেক্ষণ এবং ল্যাব পরিচালনা ও সংরক্ষণে প্রতিশ্ৰুতি সম্পন্ন শিক্ষা প্রতিষ্ঠান ?') }}
+                                {{ Form::label('lab_maintenance', 'ল্যাবে সরবরাহকৃত আইটি ও অন্যান্য সরঞ্জামের রক্ষণাবেক্ষণ এবং ল্যাব পরিচালনা, সংরক্ষণে মানসিকতা ও প্রতিশ্ৰুতি সম্পন্ন শিক্ষা প্রতিষ্ঠান ?') }}
                                 <input name="lab_maintenance" id="lab_maintenance" type="checkbox" data-width="50" class="toggle form-control verification-content" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_lab_maintenance',"NO",["id"=>"hidden_lab_maintenance"])}}
                             </div>
@@ -415,25 +417,32 @@
 
                         <div class="form-row col-md-12">
                             <div class="form-group shadow-textarea">
-                                <label class="awesome" for="about_institution">প্রতিষ্ঠানটি সম্পর্কে আপনার মন্তব্য (যদি থাকে):</label>
+                                <label class="awesome" for="about_institution">প্রতিষ্ঠানটি সম্পর্কে সার্বিক মন্তব্য (যদি থাকে):</label>
                                 <textarea class="form-control z-depth-1 verification-content" id="about_institution" name="about_institution" rows="5" placeholder="">{{ old("about_institution") }}</textarea>
                             </div>
                         </div>
 
 
                         <div class="form-row verify">
-                            <div class="form-group  col-md-6 ">
-                                {{ Form::label('upazila_verified','',["id"=>"upazila_verified_lb"])}}
-                                <input name="app_upazila_verified" id="app_upazila_verified" type="checkbox"  data-width="50" class="toggle form-control verification-content" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
-                                {{Form::hidden('hidden_upazila_verified',"NO",["id"=>"hidden_upazila_verified"])}}
+                            <div class="form-group">
+                                <p id="upazila_verified_lb"></p>
+                                {{--{{ Form::label('upazila_verified','',["id"=>"upazila_verified_lb"])}}--}}
+                                {{--<input name="app_upazila_verified" id="app_upazila_verified" type="checkbox"  data-width="50" class="toggle form-control verification-content" data-toggle="toggle" data-on="সুপারিশ করা হল" data-off="সুপারিশ করা হল না" data-onstyle="success" data-offstyle="danger">
+                                {{Form::hidden('hidden_upazila_verified',"NO",["id"=>"hidden_upazila_verified"])}}--}}
                             </div>
-
-                            <div class="form-group  col-md-6 ">
+                           {{-- <div class="form-group  col-md-6 ">
                                 {{ Form::label('district_verified', '',["id"=>"district_verified_lb"])}}
-                                <input name="app_district_verified" id="app_district_verified" type="checkbox"  data-width="50" class="toggle form-control verification-content" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                <input name="app_district_verified" id="app_district_verified" type="checkbox"  data-width="50" class="toggle form-control verification-content" data-toggle="toggle" data-on="স্থাপন করা যেতে পারে" data-off="স্থাপন করা যেতে পারে না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_district_verified',"NO",["id"=>"hidden_district_verified"])}}
+                            </div>--}}
+                        </div>
+                        <div class="form-row verify">
+                            <div id="app_upazila_verified" class="form-group  col-md-12">
+                                <input type="radio" name="app_upazila_verified" value="YES" @if(!empty(old('app_upazila_verified')) && old('app_upazila_verified') =="YES" )) checked @endif class="verification-content" title="সুপারিশ করা হল">
+                                <input type="radio" name="app_upazila_verified" value="NO" @if(!empty(old('app_upazila_verified')) && old('app_upazila_verified') =="NO" )) checked @endif  class="verification-content" title="সুপারিশ করা হল না">
                             </div>
                         </div>
+
                         <div class="form-row verification_report_file" style="">
 
                             <div class="form-group col-md-6">
@@ -624,6 +633,7 @@
     <script src="{{ asset('js/main.js')}}"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
     <script src="{{ asset('js/maximize-select2-height.min.js')}}"></script>
+    <script src="{{ asset('js/zInput.js')}}"></script>
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     <script src="https://kit.fontawesome.com/5b67dd8eb0.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -650,23 +660,7 @@
      });
  </script>
 
-    <script>
-        $('#labs_multiple').select2().maximizeSelect2Height({
-            //tags: true,
-            //placeholder: "নির্বাচন করুন (একাধিক হতে পারে)"
-            minimumResultsForSearch: -1,
-            placeholder: function(){
-                $(this).data('placeholder');
-            },
-            allowClear: true
-           // data: ["Clare","Cork","South Dublin"],
-            // tokenSeparators: [','],
-            // placeholder: "Add your tags here",
-            /* the next 2 lines make sure the user can click away after typing and not lose the new tag */
-            // selectOnClose: true,
-            // closeOnSelect: false
-        });
-    </script>
+
     <script type="text/javascript">
 
         $(document).ready(function(){
@@ -708,8 +702,8 @@
                          $("#institution_type").append('<option value="'+key+'">'+value+'</option>');
                      });
                      $(".verify").show();
-                     $("#upazila_verified_lb").text('সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপনের জন্য সুপারিশ করা হল।');
-                     $("#district_verified_lb").text('জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপন করা যেতে পারে।');
+                     $("#upazila_verified_lb").text('সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপনের জন্য:');
+                     $("#district_verified_lb").text('জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার:');
                      $(".sof").show();
 
                  } else {
@@ -718,8 +712,8 @@
                          $("#institution_type").append('<option value="'+key+'">'+value+'</option>');
                      });
                      $(".verify").show();
-                     $("#upazila_verified_lb").text('সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপনের জন্য সুপারিশ করা হল।');
-                     $("#district_verified_lb").text('জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপন করা যেতে পারে।');
+                     $("#upazila_verified_lb").text('সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপনের জন্য:');
+                     $("#district_verified_lb").text('জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব:');
                      $(".sof").hide();
                  }
              });
@@ -729,13 +723,13 @@
          $(function () {
              if ($("#lab_type").val() == "sof") {
                  $(".verify").show();
-                 $("#upazila_verified_lb").text('সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপনের জন্য সুপারিশ করা হল।');
-                 $("#district_verified_lb").text('জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপন করা যেতে পারে।');
+                 $("#upazila_verified_lb").text('সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপনের জন্য:');
+                 $("#district_verified_lb").text('জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার:');
                  $(".sof").show();
              } else {
                  $(".verify").show();
-                 $("#upazila_verified_lb").text('সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপনের জন্য সুপারিশ করা হল।');
-                 $("#district_verified_lb").text('জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপন করা যেতে পারে।');
+                 $("#upazila_verified_lb").text('সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপনের জন্য:');
+                 $("#district_verified_lb").text('জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব:');
                  $(".sof").hide();
              }
          });
@@ -960,27 +954,7 @@
             }
         });
     });
-     $('#labs_multiple').on('select2:select', function(e) {
 
-         var data = e.params.data;
-         //alert(data.id);
-         if (data.id == 'Others') {
-             $('#lab_others_title').show();
-         }
-         // var items= $(this).val();
-         // //alert(items);
-         // if($.inArray("Others",items) != -1 ){
-         //     $('#lab_others_title').show();
-         // }
-         // else {
-         //     $('#lab_others_title').hide();
-         // }
-     });
-     $("#labs_multiple").on("select2:unselect", function (e) {
-         var value=   e.params.data.id;
-         if (value == 'Others')
-         $('#lab_others_title').hide();
-     });
     </script>
 
     <script type="text/javascript">

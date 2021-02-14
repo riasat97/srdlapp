@@ -1,30 +1,34 @@
 <div class="container">
-    <htmlpageheader name="page-header">
-        <div class="row">
-            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="">
-                <tbody>
-                <tr class="">
-                    <td width="55%" height="100" align="right" valign="middle" class="text-center">
-                        <img src="{{asset('images/srdl-logo.jpg')}}" alt="logo" class="img-responsive" style="height: 55px;padding-bottom: 0px; margin-bottom: 0px;">
-                    </td>
-                    <td width="45%" height="100" align="right" valign="middle" class="text-center">
-                        <img src="{{asset('images/Mujib Borsho.png')}}" alt="logo" class="img-responsive" style="height: 40px;">
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+    <div class="row">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="">
+            <tbody>
+            <tr class="">
+                <td width="33.33%" height="100" align="left" valign="middle" class="text-center">
+                    <img src="{{asset('images/Bangladesh-Govt-Logo.jpg')}}" alt="logo" class="img-responsive" style="height: 55px;padding-bottom: 0px; margin-bottom: 0px;">
+                </td>
+                <td width="33.33%" height="100" align="center" valign="middle" class="text-center">
+                    <img src="{{asset('images/srdl-logo.jpg')}}" alt="logo" class="img-responsive" style="height: 55px;padding-bottom: 0px; margin-bottom: 0px;">
+                </td>
+                <td width="33.33%" height="100" align="right" valign="middle" class="text-center">
+                    <img src="{{asset('images/Mujib Borsho.png')}}" alt="logo" class="img-responsive" style="height: 40px;">
+                </td>
+            </tr>
+            </tbody>
+        </table>
 
-            {{--<div class="logo">--}}
-            {{--<div class="left-logo" style="float: left; display: inline-block;">--}}
-            {{--<img src="{{asset('images/digital-bd-logo.jpg')}}" alt="logo" class="img-responsive"  style="height: 40px; float: left;">--}}
-            {{--<img src="{{asset('images/ictd-logo.jpg')}}" alt="logo" class="img-responsive" style="height: 40px; float: left;">--}}
-            {{--<img src="{{asset('images/doict-logo.jpeg')}}" alt="logo" class="img-responsive" style="height: 40px; float: left;">--}}
-            {{--<img src="{{asset('images/srdl-logo.jpg')}}" alt="logo" class="img-responsive" style="height: 50px; text-align: center; padding-left: 50px;">--}}
-            {{--<img src="{{asset('images/Mujib Borsho.png')}}" alt="logo" class="img-responsive" style="height: 40px; float: right;">--}}
-            {{--</div>--}}
-            {{--</div>--}}
-        </div>
-    </htmlpageheader>
+
+
+        {{--<div class="logo">--}}
+        {{--<div class="left-logo" style="float: left; display: inline-block;">--}}
+        {{--<img src="{{asset('images/digital-bd-logo.jpg')}}" alt="logo" class="img-responsive"  style="height: 40px; float: left;">--}}
+        {{--<img src="{{asset('images/ictd-logo.jpg')}}" alt="logo" class="img-responsive" style="height: 40px; float: left;">--}}
+        {{--<img src="{{asset('images/doict-logo.jpeg')}}" alt="logo" class="img-responsive" style="height: 40px; float: left;">--}}
+        {{--<img src="{{asset('images/srdl-logo.jpg')}}" alt="logo" class="img-responsive" style="height: 50px; text-align: center; padding-left: 50px;">--}}
+        {{--<img src="{{asset('images/Mujib Borsho.png')}}" alt="logo" class="img-responsive" style="height: 40px; float: right;">--}}
+        {{--</div>--}}
+        {{--</div>--}}
+    </div>
+
 
     <div class="row main-content" style="">
         <div class="heading">
@@ -75,7 +79,7 @@
                 </td>
 
                 <td colspan="2" width="65%" height="30" align="left" valign="middle" class="padding010">
-                    112233
+                    {{ $application->id }}
                 </td>
             </tr>
 
@@ -185,6 +189,9 @@
                 <td width="40%" height="30" align="center" valign="middle" class="text-center padding010">
                     <img @if(!empty($application->profile->management)&& $application->profile->management=="private") src="{{asset('images/checkbox-checked.png')}}" @else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> বেসরকারি
                 </td>
+                <td width="40%" height="30" align="center" valign="middle" class="text-center padding010">
+                    <img @if(!empty($application->profile->management)&& $application->profile->management=="others") src="{{asset('images/checkbox-checked.png')}}" @else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> অন্যান্য
+                </td>
             </tr>
             </tbody>
         </table>
@@ -232,7 +239,7 @@
             <tbody>
             <tr class="td-box">
                 <td width="50%" height="30" align="left" valign="middle" class="padding010 border-right">
-                    EIIN (যদি থাকে): {{$application->profile->eiin ?? ""}}
+                    EIIN (যদি থাকে): {{ $application->profile->eiin ?? ""}}
                 </td>
 
                 <td width="50%" height="30" align="left" valign="middle" class="padding010">
@@ -259,16 +266,22 @@
         <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table3">
             <tbody>
             <tr class="td-box">
-                <td width="50%" height="30" align="left" valign="middle" class="padding010 border-right">
+                <td width="50%" height="30" align="left" valign="middle" class="padding5_10 border-right">
                     <p>প্রতিষ্ঠান প্রধানের নাম: {{$application->profile->head_name ?? ""}}</p>
+                    <br><br>
                     <p>মোবাইল: {{ $application->profile->institution_email ?? "" }}</p>
+                    <br>
                     <p>ইমেইল:{{ $application->profile->institution_tel ?? "" }}</p>
+                    <br>
                 </td>
 
-                <td width="50%" height="30" align="left" valign="middle" class="padding010">
+                <td width="50%" height="30" align="left" valign="middle" class="padding5_10">
                     <p>বিকল্প প্রতিনিধি/ কমিটির সভাপতির নাম: {{ $application->profile->alt_name ?? "" }}</p>
+                    <br><br>
                     <p>মোবাইল: {{ $application->profile->alt_email ?? "" }}</p>
+                    <br>
                     <p>ইমেইল: {{ $application->profile->alt_tel ?? "" }}</p>
+                    <br>
                 </td>
             </tr>
             </tbody>
@@ -364,7 +377,12 @@
             </tr>
             </tbody>
         </table>
+    </div>
 
+    <br><br><br><br><br><br>
+
+    <div class="row main-content" style="">
+        {{--hhhhhhh--}}
         <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table3">
             <tbody>
             <tr>
@@ -375,7 +393,7 @@
                 <td colspan="2" width="100%" height="30" align="left" valign="middle" class="padding5_10">
                     শিক্ষা প্রতিষ্ঠানে ইতোমধ্যে কোন কম্পিউটার ল্যাব প্রদান করা হয়েছে কিনা?
                     <img @if(!empty($selectedLabs)) src="{{asset('images/checkbox-checked.png')}}" @else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> হ্যাঁ
-                    <img @if(empty($selectedLabs)) src="{{asset('images/checkbox-checked.png')}}" @else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> না
+                    <img @if(!empty($application->verification->govlab) && $application->verification->govlab=="NO") src="{{asset('images/checkbox-checked.png')}}" @else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> না
                 </td>
             </tr>
 
@@ -397,7 +415,7 @@
 
             <tr class="td-box">
                 <td width="50%" height="30" align="left" valign="middle" class="padding5_10 border-right">
-                    উপযুক্ত অবকাঠামো এবং আইসিটি শিক্ষার সুযোগ, সুবিধা আছে কিনা?
+                    উপযুক্ত অবকাঠামো (পাঁকা ভবন) এবং আইসিটি শিক্ষার সুযোগ, সুবিধা আছে কিনা?
                     <img @if(!empty($application->verification->proper_infrastructure) && $application->verification->proper_infrastructure=="YES") src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> হ্যাঁ
                     <img @if(!empty($application->verification->proper_infrastructure) && $application->verification->proper_infrastructure=="NO") src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> না
                 </td>
@@ -411,15 +429,18 @@
 
             <tr class="td-box">
                 <td width="50%" height="30" align="left" valign="middle" class="padding5_10 border-right">
-                    প্রতিষ্ঠানে ইন্টারনেট কানেকটিভিটি আছে কিনা?
-                    <img @if(!empty($application->verification->internet_connection) && $application->verification->internet_connection=="YES" )  src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> হ্যাঁ
-                    <img @if(!empty($application->verification->internet_connection) && $application->verification->internet_connection=="NO" )  src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> না
-                </td>
-
-                <td width="50%" height="30" align="left" valign="middle" class="padding5_10">
                     ইন্টারনেট সংযোগের ধরন?
-                    <img @if(!empty($application->verification->internet_connection_type) && $application->verification->internet_connection_type=="modem")  src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> মডেম
-                    <img @if(!empty($application->verification->internet_connection_type) && $application->verification->internet_connection_type=="broadband") src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> ব্রডব্যান্ড
+                    <img @if(!empty($application->internet->internet_connection=="NO"))  src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> নাই
+                    <img @if(!empty($application->internet->internet_connection=="YES") && $application->internet->modem=="YES")  src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> মডেম
+                    <img @if(!empty($application->internet->internet_connection=="YES") && $application->internet->broadband=="YES") src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> ব্রডব্যান্ড
+                </td>
+                <td width="50%" height="30" align="left" valign="middle" class="padding5_10 border-right">
+                    ডাটা কানেকশনের জন্য ব্যবহৃত মোবাইল অপারেটরসমূহ (যদি মডেম নির্বাচিত করে থাকেন):
+                    <img @if(!empty($application->internet->modem=="YES") && $application->internet->gp=="YES")  src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> গ্রামীনফোন
+                    <img @if(!empty($application->internet->modem=="YES") && $application->internet->robi=="YES") src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> রবি
+                    <img @if(!empty($application->internet->modem=="YES") && $application->internet->banglalink=="YES") src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> বাংলালিংক
+                    <img @if(!empty($application->internet->modem=="YES") && $application->internet->airtel=="YES") src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> এয়ারটেল
+                    <img @if(!empty($application->internet->modem=="YES") && $application->internet->teletalk=="YES") src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> টেলিটক
                 </td>
             </tr>
 
@@ -454,7 +475,7 @@
 
             <tr class="td-box">
                 <td width="50%" height="30" align="left" valign="middle" class="padding5_10 border-right">
-                    ল্যাবে সরবরাহকৃত আইটি ও অন্যান্য সরঞ্জামের রক্ষণাবেক্ষণ এবং ল্যাব পরিচালনা ও সংরক্ষণে প্রতিশ্ৰুতি সম্পন্ন কিনা?
+                    ল্যাবে সরবরাহকৃত আইটি ও অন্যান্য সরঞ্জামের রক্ষণাবেক্ষণ এবং ল্যাব পরিচালনা, সংরক্ষণে মানসিকতা ও প্রতিশ্ৰুতি সম্পন্ন কিনা?
                     <img @if(!empty($application->verification->lab_maintenance) && $application->verification->lab_maintenance=="YES" )  src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> হ্যাঁ
                     <img @if(!empty($application->verification->lab_maintenance) && $application->verification->lab_maintenance=="NO" )  src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> না
                 </td>
@@ -481,102 +502,115 @@
             </tr>
             </tbody>
         </table>
+        @if((Auth::user()->hasRole(['upazila admin']) && !$districtVerified ) or Auth::user()->hasRole(['super admin']) )
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table3">
+                <tbody>
+                <tr class="td-box">
+                    <td width="50%" height="100" align="left" valign="middle" class="padding5_10 border-right">
+                        <p>যাচাইকারী (উপজেলা মাধ্যমিক শিক্ষা অফিসার)  </p>
+                        <br>
+                        <p>স্বাক্ষর:  </p>
+                        <br>
+                        <p>সিল:   </p>
+                        <br><br><br><br>
+                    </td>
 
-        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table3">
+                    <td width="50%" height="100" align="left" valign="middle" class="padding5_10">
+                        <p>যাচাইকারী (সহকারী প্রোগ্রামার)  </p>
+                        <br>
+                        <p>স্বাক্ষর:  </p>
+                        <br>
+                        <p>সিল:   </p>
+                        <br><br><br><br>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table3">
+                <tbody>
+                <tr class="td-box">
+                    <td width="50%" height="100" align="left" valign="middle" class="padding5_10 border-right">
+                        <p>
+                            @if($application->lab_type== lab_type()['srdl'])
+                                {{ Form::label('upazila_verified','সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপনের জন্য:',["id"=>"upazila_verified_lb"])}}
+                            @else
+                                {{ Form::label('upazila_verified','সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপনের জন্য:',["id"=>"upazila_verified_lb"])}}
+                            @endif
+                            {{--সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে
+                            <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> শেখ রাসেল ডিজিটাল ল্যাব /
+                            <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> স্কুল অফ ফিউচার
+                            স্থাপনের জন্য সুপারিশ করা হল:--}}
+                            <img @if(!empty($application->verification->app_upazila_verified) && $application->verification->app_upazila_verified=="YES" ) src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> হ্যাঁ
+                            <img @if(!empty($application->verification->app_upazila_verified) && $application->verification->app_upazila_verified=="NO" )  src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> না
+                        </p>
+                        <br>
+                        <p>স্বাক্ষর:  </p>
+                        <br>
+                        <p>সিল:   </p>
+                        <br><br><br><br>
+                    </td>
+
+                    <td width="50%" height="100" align="left" valign="middle" class="padding5_10">
+                        <p>
+                            @if($application->lab_type== lab_type()['srdl'])
+                                {{ Form::label('district_verified', 'জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব:',["id"=>"district_verified_lb"])}}
+                            @else
+                                {{ Form::label('district_verified', 'জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার:',["id"=>"district_verified_lb"])}}
+                            @endif
+                            {{--জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে
+                            <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> শেখ রাসেল ডিজিটাল ল্যাব /
+                            <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> স্কুল অফ ফিউচার
+                            স্থাপন করা যেতে পারে:--}}
+                            <img @if(!empty($application->verification->app_district_verified) && $application->verification->app_district_verified=="YES" )  src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> হ্যাঁ
+                            <img @if(!empty($application->verification->app_district_verified) && $application->verification->app_district_verified=="NO" )   src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> না
+                        </p>
+                        <br>
+                        <p>স্বাক্ষর:  </p>
+                        <br>
+                        <p>সিল:   </p>
+                        <br><br><br><br>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        @endif
+    </div>
+
+    <div class="row qr-code">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="">
             <tbody>
-            <tr class="td-box">
-                <td width="50%" height="100" align="left" valign="middle" class="padding5_10 border-right">
-                    <p>যাচাইকারী (উপজেলা মাধ্যমিক শিক্ষা অফিসার)  </p>
-                    <br><br>
-                    <p>স্বাক্ষর:  </p>
-                    <br>
-                    <p>সিল:   </p>
-                    <br><br><br><br>
-                </td>
+            <tr class="">
+                <td width="100%" height="100" align="center" valign="middle" class="text-center">
+                    {{-- <img src="{{asset('images/qr-sample.png')}}" alt="logo" class="img-responsive" style="height: 100px;">--}}
+                    {{-- <img src="data:image/png;base64, {!! base64_encode(\QrCode::format('png')->merge('images/srdl.png', 0.3, true)
+                     ->size(100)->errorCorrection('H')
+                     ->generate(route('applications.show',$application->id ))) !!} ">--}}
+                    {{-- {{ \QrCode::format('png')->merge('images/qr.png', 0.3,true)->generate(route('applications.show',$application->id )) }}--}}
+                    <img src="{{asset('images/qr.png')}}" alt="logo" class="img-responsive" style="height: 100px;">
 
-                <td width="50%" height="100" align="left" valign="middle" class="padding5_10">
-                    <p>যাচাইকারী (সহকারী প্রোগ্রামার)  </p>
-                    <br><br>
-                    <p>স্বাক্ষর:  </p>
-                    <br>
-                    <p>সিল:   </p>
-                    <br><br><br><br>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-
-        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="table3">
-            <tbody>
-            <tr class="td-box">
-                <td width="50%" height="100" align="left" valign="middle" class="padding5_10 border-right">
-                    <p>
-                        @if($application->lab_type== lab_type()['srdl'])
-                            {{ Form::label('upazila_verified','সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপনের জন্য সুপারিশ করা হল।',["id"=>"upazila_verified_lb"])}}
-                        @else
-                            {{ Form::label('upazila_verified','সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপনের জন্য সুপারিশ করা হল।',["id"=>"upazila_verified_lb"])}}
-                        @endif
-                        {{--সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে
-                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> শেখ রাসেল ডিজিটাল ল্যাব /
-                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> স্কুল অফ ফিউচার
-                        স্থাপনের জন্য সুপারিশ করা হল:--}}
-                        <img @if(!empty($application->verification->app_upazila_verified) && $application->verification->app_upazila_verified=="YES" ) src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> হ্যাঁ
-                        <img @if(!empty($application->verification->app_upazila_verified) && $application->verification->app_upazila_verified=="NO" )  src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> না
-                    </p>
-                    <br><br>
-                    <p>স্বাক্ষর:  </p>
-                    <br>
-                    <p>সিল:   </p>
-                    <br><br><br><br>
-                </td>
-
-                <td width="50%" height="100" align="left" valign="middle" class="padding5_10">
-                    <p>
-                        @if($application->lab_type== lab_type()['srdl'])
-                            {{ Form::label('district_verified', 'জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপন করা যেতে পারে।',["id"=>"district_verified_lb"])}}
-                        @else
-                            {{ Form::label('district_verified', 'জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপন করা যেতে পারে।',["id"=>"district_verified_lb"])}}
-                        @endif
-                        {{--জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে
-                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> শেখ রাসেল ডিজিটাল ল্যাব /
-                        <img src="{{asset('images/empty-check-box.png')}}" alt="checked" style="height: 16px;"> স্কুল অফ ফিউচার
-                        স্থাপন করা যেতে পারে:--}}
-                        <img @if(!empty($application->verification->app_district_verified) && $application->verification->app_district_verified=="YES" )  src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> হ্যাঁ
-                        <img @if(!empty($application->verification->app_district_verified) && $application->verification->app_district_verified=="NO" )   src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> না
-                    </p>
-                    <br><br>
-                    <p>স্বাক্ষর:  </p>
-                    <br>
-                    <p>সিল:   </p>
-                    <br><br><br><br>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
 
-    <img src="data:image/png;base64, {!! base64_encode(\QrCode::format('png')->merge('images/srdl.png', 0.3, true)
-                        ->size(100)->errorCorrection('H')
-                        ->generate(route('applications.show',$application->id ))) !!} ">
-
-
-    <htmlpagefooter name="page-footer">
-        <div class="row footer">
-            <table width="100%" border="0" cellpadding="0" cellspacing="0" class="">
-                <tbody>
-                <tr class="">
-                    <td width="33.33%" height="100" align="center" valign="middle" class="text-center">
-                        <img src="{{asset('images/ictd-logo.jpg')}}" alt="logo" class="img-responsive" style="height: 50px; float: left;">
-                    </td>
-                    <td width="33.33%" height="100" align="center" valign="middle" class="text-center">
-                        <img src="{{asset('images/digital-bd-logo.jpg')}}" alt="logo" class="img-responsive"  style="height: 50px; float: left;">
-                    </td>
-                    <td width="33.33%" height="100" align="center" valign="middle" class="text-center">
-                        <img src="{{asset('images/doict-logo.jpeg')}}" alt="logo" class="img-responsive" style="height: 50px; float: left;">
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </htmlpagefooter>
+    <div class="row footer">
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="">
+            <tbody>
+            <tr class="">
+                <td width="33.33%" height="70" align="center" valign="middle" class="text-center">
+                    <img src="{{asset('images/ictd-logo.jpg')}}" alt="logo" class="img-responsive" style="height: 55px; float: left;">
+                </td>
+                <td width="33.33%" height="70" align="center" valign="middle" class="text-center">
+                    <img src="{{asset('images/digital-bd-logo.jpg')}}" alt="logo" class="img-responsive"  style="height: 55px; float: left;">
+                </td>
+                <td width="33.33%" height="70" align="center" valign="middle" class="text-center">
+                    <img src="{{asset('images/doict-logo.jpeg')}}" alt="logo" class="img-responsive" style="height: 55px; float: left;">
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
+

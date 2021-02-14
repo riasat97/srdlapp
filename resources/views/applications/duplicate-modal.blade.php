@@ -8,7 +8,7 @@
             <div class="alert alert-danger" style="display:none"></div>
             {!! Form::open(['id'=>'postDuplicate']) !!}
             @csrf
-            <div class="modal-body">
+            <div class="modal-body3" id="duplicate-modal">
 
             </div>
             <div class="modal-footer">
@@ -16,7 +16,6 @@
                     <button type="button" class="btn btn-primary" id="formSubmit">হ্যাঁ </button>
                     <button type="button" class="btn btn-default"  data-dismiss="modal">না</button>
                 </div>
-
             </div>
             {!! Form::close() !!}
 

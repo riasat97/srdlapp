@@ -17,7 +17,7 @@ class User extends Authenticatable
     public $table = 'users';
 
 
-    protected $dates = ['deleted_at'];
+    protected $dates = ['signature_at','deleted_at'];
 
 
 

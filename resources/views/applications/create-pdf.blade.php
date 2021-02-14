@@ -97,8 +97,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
-@include('applications.show-application')
-
+@if($manual)
+    @include('applications.show-application-manual')
+@else
+    @include('applications.show-application')
+@endif
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </body>
 </html>

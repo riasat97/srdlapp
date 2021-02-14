@@ -8,7 +8,7 @@
             <div class="alert alert-danger" style="display:none"></div>
             {!! Form::open(['id'=>'sendApps']) !!}
             @csrf
-            <div class="modal-body">
+            <div class="modal-body1" id="sending">
 
             </div>
             <div class="modal-footer">
@@ -16,7 +16,6 @@
                     <button type="button" class="btn btn-success" id="sendApplications">প্রেরণ</button>
                     <button type="button" class="btn btn-default"  data-dismiss="modal">বাতিল</button>
                 </div>
-
             </div>
             {!! Form::close() !!}
 

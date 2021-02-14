@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Application;
 use App\Models\User;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Mpdf\QrCode\QrCode;
 use Mpdf\QrCode\Output;
 use PDF;
@@ -66,8 +67,13 @@ class TestController extends ApplicationController
 
 
 
-    public function createPdf($id)
+    public function createPdf($id,Request $request)
     {
+        $manual=false;
+        if ($request->has('type')) {
+            $type = $request->get('type');
+            $manual= ($type=='manual')?true:false;
+        }
         $application=Application::where('id',$id)->with('attachment','lab','verification','profile')->first();
         if(!Auth::user()->hasRole(['super admin','district admin','upazila admin']) or !permitted($application))
             return abort(404);
@@ -77,6 +83,8 @@ class TestController extends ApplicationController
         foreach ($tags as $tag) {
             $labs[$tag->name]=$tag->translate('name', 'bn');
         }
+        $user=$this->getDistrictAndUpazilaAdminFromApplication($application->id);
+        //dd($user);
         $selectedLabs=$this->getLabs($application,'lab');
         $listAttachmentFile= $this->getListAttachmentFile($application);
         $listAttachmentFilePathType=$this->getListAttachmentFilePathType($application);
@@ -99,7 +107,7 @@ class TestController extends ApplicationController
             "ins_type_sof"=>$ins_type_sof,"ins_level_sof"=>$ins_level_sof,
             "ins_level_technical"=>$ins_level_technical,'labs'=>$labs,'selectedLabs'=>$selectedLabs,
             'listAttachmentFile'=>$listAttachmentFile,'listAttachmentFilePathType'=>$listAttachmentFilePathType,
-            'districtVerified'=>$districtVerified,'qr'=>$qr];
+            'districtVerified'=>$districtVerified,'qr'=>$qr,'manual'=>$manual,'user'=>$user ];
         //$pdf = \App::make('dompdf.wrapper');
         //$pdf->setOptions(['dpi' => 150, 'defaultFont' => 'Nikosh']);
         $config = ['instanceConfigurator' => function($mpdf) {
@@ -107,6 +115,7 @@ class TestController extends ApplicationController
             $mpdf->showWatermarkImage = true;
 
         }];
+
         $pdf = PDF::loadView('applications.create-pdf', $data, [], $config);
         //$pdf = PDF::loadView('dashboard', $data);
         //$pdf->loadView('applications.generate-pdf', compact('data'));
@@ -115,43 +124,6 @@ class TestController extends ApplicationController
         return $pdf->stream('srdl-phase-2.pdf');
     }
 
-    public function updatePdf()
-    {
-        $application=Application::where('id',1012)->with('attachment','lab','verification','profile')->first();
-        $labs=[];
-        $tag= new \Spatie\Tags\Tag;
-        $tags=\Spatie\Tags\Tag::all();
-        foreach ($tags as $tag) {
-            $labs[$tag->name]=$tag->translate('name', 'bn');
-        }
-        $selectedLabs=$this->getLabs($application,'lab');
-        $listAttachmentFile= $this->getListAttachmentFile($application);
-        $listAttachmentFilePathType=$this->getListAttachmentFilePathType($application);
-        $ins_type= Arr::except(ins_type(),[""]);
-        $ins_level= Arr::only(ins_level(), array('primary','junior_secondary','secondary','higher_secondary','secondary_and_higher',"graduation","others"));
-        $ins_type_sof= Arr::only($ins_type, array('general', 'madrasha', 'technical'));
-        $ins_level_sof= $array = Arr::only(ins_level(), array('secondary', 'secondary_and_higher'));
-        $ins_level_technical= $array = Arr::only(ins_level(), array('junior_secondary','secondary','higher_secondary','secondary_and_higher',"diploma","others"));
-        //dd($deo_app_seat_count);
-        //dd(storage_path('fonts/'));
-        $data = ['application'=>$application,"ins_type"=>$ins_type,"ins_level"=>$ins_level,
-            "ins_type_sof"=>$ins_type_sof,"ins_level_sof"=>$ins_level_sof,
-            "ins_level_technical"=>$ins_level_technical,'labs'=>$labs,'selectedLabs'=>$selectedLabs,
-            'listAttachmentFile'=>$listAttachmentFile,'listAttachmentFilePathType'=>$listAttachmentFilePathType];
-        //$pdf = \App::make('dompdf.wrapper');
-        //$pdf->setOptions(['dpi' => 150, 'defaultFont' => 'Nikosh']);
-        $config = ['instanceConfigurator' => function($mpdf) {
-            $mpdf->SetWatermarkImage('../images/srdl.png');
-            $mpdf->showWatermarkImage = true;
-            //$mpdf->SetCompression(true);
-        }];
-        $pdf = PDF::loadView('applications.update-pdf', $data, [], $config);
-        //$pdf = PDF::loadView('dashboard', $data);
-        //$pdf->loadView('applications.generate-pdf', compact('data'));
-
-//        return loadView('applications.create-pdf');
-        return $pdf->stream('srdl-phase-2.pdf');
-    }
     private function getDistrictVerificationStatus($user)
     {
         if($user->hasRole('upazila admin')){
@@ -163,6 +135,22 @@ class TestController extends ApplicationController
             else false;
         }
         return false;
+    }
+    public function getDistrictAndUpazilaAdminFromApplication( $application){
+        $user= Application::where('applications.id',$application)
+            ->join('bangladesh', function($q)
+            {
+                $q->on('bangladesh.district','=','applications.district')
+                    ->on('bangladesh.upazila','=','applications.upazila');
+            })
+            ->first();
+          //dd($user->toArray());
+        $district_admin_match= Str::lower($user->district_en).'_admin';
+        $upazila_admin_match= Str::lower($user->upazila_en_domain).'_'.Str::lower($user->district_en).'_admin';
+        $district_admin= User::where('username',$district_admin_match)->first();
+        $upazila_admin= User::where('username',$upazila_admin_match)->first();
+        return ['district_admin'=>$district_admin,'upazila_admin'=>$upazila_admin];
+
     }
 
 }

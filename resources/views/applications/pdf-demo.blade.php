@@ -1,3 +1,5 @@
+@include('flash::message')
+@if(Auth::user()->hasRole(['super admin']))
 <div class="form-row">
     <div class="form-group">
         {{ Form::label('lab_type', 'কম্পিউটার ল্যাবের ধরণ:') }}
@@ -38,6 +40,9 @@
         </label>
         <label class="checkbox-inline">
             <input type="checkbox" value=""  @if(!empty($application->profile->management)&& $application->profile->management=="private")checked @endif disabled>বেসরকারি
+        </label>
+        <label class="checkbox-inline">
+            <input type="checkbox" value=""  @if(!empty($application->profile->management)&& $application->profile->management=="others")checked @endif disabled>অন্যান্য
         </label>
     </div>
 </div>
@@ -269,22 +274,35 @@
 </div>
 <div class="form-row">
     <div class="form-group col-md-6">
-        {{ Form::label('internet_connection', 'ইন্টারনেট সংযোগ আছে ?') }}
+        {{Form::label('internet_connection_type', 'ইন্টারনেট সংযোগের ধরন ?') }}
         <label class="checkbox-inline">
-            <input type="checkbox" @if(!empty($application->verification->internet_connection) && $application->verification->internet_connection=="YES" ) checked @endif disabled>হ্যাঁ
+            <input type="checkbox" @if(!empty($application->internet) && !empty($application->internet->internet_connection=="NO"))checked @endif disabled>নাই
         </label>
         <label class="checkbox-inline">
-            <input type="checkbox" @if(empty($application->verification->internet_connection)) checked @endif  disabled>না
+            <input type="checkbox" @if(!empty($application->internet) && $application->internet->internet_connection_type=="modem")checked @endif disabled>মডেম
+        </label>
+        <label class="checkbox-inline">
+            <input type="checkbox" @if(!empty($application->internet) && $application->internet->internet_connection_type=="broadband")checked @endif disabled>ব্রডব্যান্ড
         </label>
     </div>
     <div class="form-group col-md-6">
-        {{Form::label('internet_connection_type', 'ইন্টারনেট সংযোগের ধরন ?') }}
+        {{ Form::label('mobile_operators', 'ডাটা কানেকশনের জন্য ব্যবহৃত মোবাইল অপারেটরসমূহ (যদি মডেম নির্বাচিত করে থাকেন):') }}
         <label class="checkbox-inline">
-            <input type="checkbox" @if(!empty($application->verification->internet_connection_type) && $application->verification->internet_connection_type=="modem")checked @endif disabled>মডেম
+            <input type="checkbox" @if(!empty($application->internet) &&!empty($application->internet->modem=="YES") && $application->internet->gp=="YES")checked @endif disabled>গ্রামীনফোন
         </label>
         <label class="checkbox-inline">
-            <input type="checkbox" @if(!empty($application->verification->internet_connection_type) && $application->verification->internet_connection_type=="broadband")checked @endif disabled>ব্রডব্যান্ড
+            <input type="checkbox" @if(!empty($application->internet) &&!empty($application->internet->modem=="YES") && $application->internet->robi=="YES")checked @endif disabled>রবি
         </label>
+        <label class="checkbox-inline">
+            <input type="checkbox" @if(!empty($application->internet) &&!empty($application->internet->modem=="YES") && $application->internet->banglalink=="YES")checked @endif disabled>বাংলালিংক
+        </label>
+        <label class="checkbox-inline">
+            <input type="checkbox" @if(!empty($application->internet) &&!empty($application->internet->modem=="YES") && $application->internet->airtel=="YES")checked @endif disabled>এয়ারটেল
+        </label>
+        <label class="checkbox-inline">
+            <input type="checkbox" @if(!empty($application->internet) &&!empty($application->internet->modem=="YES") && $application->internet->teletalk=="YES")checked @endif disabled>টেলিটক
+        </label>
+
     </div>
 </div>
 <div class="form-row ">
@@ -351,41 +369,40 @@
 
 <div class="form-row">
     <div class="form-group shadow-textarea col-md-12">
-        <label class="awesome" for="about_institution">প্রতিষ্ঠানটি সম্পর্কে আপনার মন্তব্য</label>
-        <textarea class="form-control z-depth-1" id="about_institution" name="about_institution" rows="5" placeholder="">{{ $application->verification->about_institution ?? "" }}</textarea>
-    </div>
-</div>
-<div class="form-row">
-    <div class="form-group  col-md-6 ">
-        @if($application->lab_type== lab_type()['srdl'])
-            {{ Form::label('upazila_verified','সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপনের জন্য সুপারিশ করা হল।',["id"=>"upazila_verified_lb"])}}
-        @else
-            {{ Form::label('upazila_verified','সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপনের জন্য সুপারিশ করা হল।',["id"=>"upazila_verified_lb"])}}
-        @endif
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(!empty($application->verification->app_upazila_verified) && $application->verification->app_upazila_verified=="YES" ) checked @endif disabled>হ্যাঁ
-        </label>
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(empty($application->verification->app_upazila_verified)) checked @endif  disabled>না
-        </label>
-    </div>
-
-    <div class="form-group  col-md-6 ">
-        @if($application->lab_type== lab_type()['srdl'])
-            {{ Form::label('district_verified', 'জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপন করা যেতে পারে।',["id"=>"district_verified_lb"])}}
-        @else
-            {{ Form::label('district_verified', 'জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপন করা যেতে পারে।',["id"=>"district_verified_lb"])}}
-        @endif
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(!empty($application->verification->app_district_verified) && $application->verification->app_district_verified=="YES" ) checked @endif  disabled>হ্যাঁ
-        </label>
-        <label class="checkbox-inline">
-            <input type="checkbox" @if(empty($application->verification->app_district_verified)) checked @endif   disabled>না
-        </label>
+        <label class="awesome" for="about_institution">প্রতিষ্ঠানটি সম্পর্কে সার্বিক মন্তব্য (যদি থাকে):</label>
+        <textarea class="form-control z-depth-1" id="about_institution" name="about_institution" disabled rows="5" placeholder="">{{ $application->verification->about_institution ?? "" }}</textarea>
     </div>
 </div>
 
-@if(Auth::user()->hasRole(['super admin']))
+    <div class="form-row">
+        <div class="form-group  col-md-12">
+            @if($application->lab_type== lab_type()['srdl'])
+                {{ Form::label('upazila_verified','সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপনের জন্য সুপারিশ করা হল।',["id"=>"upazila_verified_lb"])}}
+            @else
+                {{ Form::label('upazila_verified','সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপনের জন্য সুপারিশ করা হল।',["id"=>"upazila_verified_lb"])}}
+            @endif
+            <label class="checkbox-inline">
+                <input type="checkbox" @if(!empty($application->verification->app_upazila_verified) && $application->verification->app_upazila_verified=="YES" ) checked @endif disabled>সুপারিশ করা হল
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" @if(!empty($application->verification->app_upazila_verified)&& $application->verification->app_upazila_verified=="NO") checked @endif  disabled> সুপারিশ করা হল না
+            </label>
+        </div>
+
+       {{-- <div class="form-group  col-md-6 ">
+            @if($application->lab_type== lab_type()['srdl'])
+                {{ Form::label('district_verified', 'জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপন করা যেতে পারে।',["id"=>"district_verified_lb"])}}
+            @else
+                {{ Form::label('district_verified', 'জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপন করা যেতে পারে।',["id"=>"district_verified_lb"])}}
+            @endif
+            <label class="checkbox-inline">
+                <input type="checkbox" @if(!empty($application->verification->app_district_verified) && $application->verification->app_district_verified=="YES" ) checked @endif  disabled>হ্যাঁ
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" @if(empty($application->verification->app_district_verified)) checked @endif   disabled>না
+            </label>
+        </div>--}}
+    </div>
 
     <div class="form-row">
         <div class="form-group col-md-12">
@@ -421,7 +438,7 @@
     </div>
     @endif
         <div class="form-row">
-            <div class="form-group ">
+            <div class="form-group">
                 {{ Form::label('reference', 'সুপারিশ আছে?') }}
                 <label class="checkbox-inline">
                     <input type="checkbox" @if($application->listed_by_deo=="NO" && !empty($application->attachment->ref_type) ) checked @endif  disabled>হ্যাঁ
@@ -461,12 +478,50 @@
             </div>
         </div>
         @endif
-    <div class="form-row verification_report_file" >
-        <div class="form-group">
-            {{ Form::label('verification_report_file', 'উপজেলা থেকে প্রেরিত প্রতিষ্ঠানটির পরিদর্শন প্রতিবেদনের স্ক্যান কপি (পিডিএফ):') }}
-        @if(!empty($application->attachment->verification_report_file))
-            <a href="{{ $application->attachment->verification_report_file }}" target="_blank"> {{ $application->attachment->verification_report_file_path_type }}</a>
+@endif
+<div class="form-row">
+    <div class="form-group col-md-12">
+        @if($application->lab_type== lab_type()['srdl'])
+            {{ Form::label('district_verified', 'জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব:',["id"=>"district_verified_lb"])}}
+        @else
+            {{ Form::label('district_verified', 'জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার:',["id"=>"district_verified_lb"])}}
         @endif
+        <div class="form-inline required">
+            <div class="form-group has-feedback">
+                <label class="input-group">
+                            <span class="input-group-addon">
+                                {{ Form::radio('app_district_verified', 'YES', (!empty($application->verification->app_district_verified) && $application->verification->app_district_verified=="YES" )?true:false,['id'=>'app_district_verified_yes','class'=>'verification-content','title'=>'স্থাপন করা যেতে পারে']) }}
+                            </span>
+                    <div class="form-control form-control-static">
+                        স্থাপন করা যেতে পারে
+                    </div>
+                    <span class="glyphicon form-control-feedback "></span>
+                </label>
+            </div>
+            <div class="form-group has-feedback ">
+                <label class="input-group">
+                        <span class="input-group-addon">
+                           {{ Form::radio('app_district_verified', 'NO', (!empty($application->verification->app_district_verified) && $application->verification->app_district_verified=="NO" )?true:false,['id'=>'app_district_verified_no','class'=>'verification-content','title'=>'স্থাপন করা যেতে পারে না']) }}
+                        </span>
+                    <div class="form-control form-control-static">
+                        স্থাপন করা যেতে পারে না
+                    </div>
+                    <span class="glyphicon form-control-feedback "></span>
+                </label>
+            </div>
         </div>
     </div>
-@endif
+</div>
+{{-- <div class="form-row verify">
+     <div id="app_upazila_verified" class="form-group  col-md-12">
+         {{ Form::radio('app_upazila_verified', 'YES', (!empty($application->verification->app_upazila_verified) && $application->verification->app_upazila_verified=="YES" )?true:false,['id'=>'app_upazila_verified_yes','class'=>'verification-content','title'=>'সুপারিশ করা হল']) }}
+         {{ Form::radio('app_upazila_verified', 'NO', (!empty($application->verification->app_upazila_verified) && $application->verification->app_upazila_verified=="NO" )?true:false,['id'=>'app_upazila_verified_no','class'=>'verification-content','title'=>'সুপারিশ করা হল না']) }}
+     </div>
+ </div>--}}
+<div class="form-row">
+    <div class="form-group col-md-6">
+        {{ Form::label('app_district_verified_comments', 'মন্তব্য (যদি থাকে):') }}
+        {!! Form::textarea ('app_district_verified_comments', $application->verification->app_district_verified_comments??'' , ['class' => 'form-control','id'=>'app_district_verified_comments','rows'=>"3"]) !!}
+    </div>
+</div>
+{!! Form::hidden('id', $application->id , ['class' => 'form-control appId']) !!}

@@ -2,9 +2,9 @@
 <div class="form-row">
     <!-- Name Field -->
     <div class="form-group col-md-6">
-        {!! Form::label('name', 'নাম:') !!}
+        {!! Form::label('name', 'নাম (বাংলায়):') !!}
         @if(!empty($user))
-            {!! Form::text('name', empty($name)?'':$user->name, ['class' => 'form-control']) !!}
+            {!! Form::text('name', empty($name)?'':$user->name, ['class' => 'form-control','placeholder'=>'বাংলাতে']) !!}
         @else
             {!! Form::text('name', null, ['class' => 'form-control']) !!}
         @endif
@@ -27,7 +27,7 @@
 </div>--}}
 <!-- Mobile Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('mobile', 'মোবাইল:') !!}
+    {!! Form::label('mobile', 'মোবাইল (ENGLISH):') !!}
     @if(!empty($user))
         {!! Form::tel('mobile', $user->mobile??'', ['class' => 'form-control','pattern'=>"[0-9]{11}"]) !!}
     @else

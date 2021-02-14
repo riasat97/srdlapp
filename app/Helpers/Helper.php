@@ -19,7 +19,7 @@ if (!function_exists('ReservedSeats')) {
         return array('srdl'=>'শেখ রাসেল ডিজিটাল ল্যাব','sof' => 'স্কুল অফ ফিউচার');
     }
     function management(){
-        return array('public'=>'সরকারি','private' => 'বেসরকারি');
+        return array('public'=>'সরকারি','private' => 'বেসরকারি','others'=>'অন্যান্য');
     }
     function institution_type(){
         return array('school' => 'স্কুল', 'college' => 'কলেজ', 'school and college'=> "স্কুল ও কলেজ", 'madrasha'=> "মাদ্রাসা",'technical'=>"টেকনিক্যাল",'primary'=>'প্রাইমারি','university'=>'বিশ্ববিদ্যালয়','gov_training'=>"সরকারি ট্রেনিং সেন্টার",'gov_rel_ins'=>"শিক্ষা সংশ্লিষ্ট সরকারি প্রতিষ্ঠান",'others'=>"অন্যান্য");
@@ -32,6 +32,15 @@ if (!function_exists('ReservedSeats')) {
     }
     function ref_type(){
         return array('0' => 'নির্বাচন করুন','public_representative' => 'মাননীয় সংসদ সদস্য','political_party'=>'রাজনৈতিক দল', 'gov_emp' => 'সরকারি কর্মকর্তা',"famous_person"=>"প্রখ্যাত ব্যক্তিত্ব","others"=>"অন্যান্য ");
+    }
+    function internet_connection_types(){
+        return array('0' => 'নাই','modem' => 'মডেম', 'broadband' => 'ব্রডব্যান্ড');
+    }
+    function mobile_operators(){
+        return ['gp'=>'গ্রামীনফোন','robi'=>'রবি','banglalink'=>'বাংলালিংক','airtel'=>'এয়ারটেল','teletalk'=>'টেলিটক'];
+    }
+    function designations(){
+        return array('0' => 'নির্বাচন করুন','dc' => 'জেলা প্রশাসক', 'adc' => 'অতিরিক্ত জেলা প্রশাসক','uno'=>'উপজেলা নির্বাহী অফিসার'/*,'programmer'=>'প্রোগ্রামার','ap'=>'সহকারী প্রোগ্রামার','useo'=>'উপজেলা মাধ্যমিক শিক্ষা অফিসার','others'=>'অন্যান্য'*/);
     }
     function ReservedSeats()
     {

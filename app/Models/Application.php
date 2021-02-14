@@ -95,5 +95,10 @@ class Application extends Model
     {
         return $this->hasOne('App\Models\ApplicationProfile','application_profile_id');
     }
+    public function internet()
+    {
+        return $this->hasOne('App\Models\ApplicationInternetConnection','application_id');
+    }
+
 
 }

@@ -6,6 +6,8 @@
     <!-- Main css -->
     <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     <link rel="stylesheet" href="{{ asset('css/iziToast.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/zInput_default_stylesheet.css') }}">
+
     <!-- Main css -->
     <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">
@@ -99,17 +101,33 @@
                             {{Form::select('application_type', array('0'=>'সকল ','listed_by_deo' => 'ডিও', 'ref' => 'অন্যান্য রেফারেন্স'), old('application_type'),['class'=>'form-control', 'id'=>'application_type',])}}
                         </div>
                     @endif
-                    @if(Auth::user()->hasRole(['super admin','district admin']))
+                    @if(Auth::user()->hasRole(['super admin']))
                         <div class="form-group col-md-3">
                             <button class="btn btn-lg btn-success searchbtn"  value="submitted" id="searchbtn" type="submit"><i class="fas fa-search"></i> অনুসন্ধান</button>
                         </div>
                     @endif
+                        @if(Auth::user()->hasRole(['district admin']))
+                            <div class="form-group col-md-10">
+                                <button class="btn btn-lg btn-success searchbtn"  value="submitted" id="searchbtn" type="submit"><i class="fas fa-search"></i> অনুসন্ধান</button>
+                            </div>
+                        @endif
 
+                </div>
+
+                <div class="form-row">
+                    @if(Auth::user()->hasRole(['upazila admin']) && Auth::user()->verified!='YES')
+                        <div class="form-group col-md-12">
+                            <button type="button" id="send-apps" class="btn btn-info "><i class="fas fa-paper-plane"></i> যাচাইকৃত ল্যাবের আবেদনসমূহ জেলা প্রশাসকের কার্যালয়ে প্রেরণ করুন  </button>
+                        </div>
+                    @endif
                 </div>
                 <div class="form-row">
                     @if(Auth::user()->hasRole(['district admin']) && Auth::user()->verified!='YES')
-                        <div class="form-group col-md-12">
-                            <button type="button" id="send-apps" class="btn btn-info "><i class="fas fa-paper-plane"></i> যাচাইকৃত ল্যাবের আবেদনসমূহ প্রকল্প দপ্তরে প্রেরণ করুন  </button>
+                        <div class="form-group col-md-4">
+                            <button type="button" id="send-apps" class="btn btn-info "><i class="fas fa-paper-plane"></i> যাচাইকৃত ল্যাবের আবেদনসমূহ প্রকল্প দপ্তরে প্রেরণ</button>
+                        </div>
+                        <div class="form-group col-md-4" style="margin-left: -60px">
+                            <button type="button" id="sendback-apps" class="btn btn-warning "><i class="fas fa-undo"></i> যাচাইকৃত ল্যাবের আবেদনসমূহ উপজেলা কার্যালয়ে ফেরত</button>
                         </div>
                     @endif
                 </div>
@@ -126,13 +144,13 @@
             </div>
         </div>
         <div class="text-center">
-
         </div>
     </div>
     @include('applications.edit-modal')
     @include('applications.show-modal')
     @include('applications.duplicate-modal')
     @include('applications.sendApps-modal')
+    @include('applications.sendbackApps-modal', ['verifiedUpazilas' => $verified_upazilas])
 @endsection
 
 @push('scripts')
@@ -140,6 +158,7 @@
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
     <script src="{{ asset('js/iziToast.min.js') }}"></script>
+    <script src="{{ asset('js/zInput.js')}}"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.0.3/css/buttons.dataTables.min.css">
     <script src="https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min.js"></script>
     <script src="/vendor/datatables/buttons.server-side.js"></script>
@@ -306,9 +325,9 @@
                 var app_id = $(this).data('id');
                 $.get("{{ route('applications.show', '') }}" +'/' + app_id, function (data) {
                     console.log(data);
-                    $('.modal-title').html("শেখ রাসেল ডিজিটাল ল্যাব/ স্কুল অফ ফিউচারের জন্য প্রাপ্ত আবেদন");
+                    $('.modal-title').html("শেখ রাসেল ডিজিটাল ল্যাব/ স্কুল অফ ফিউচারের জন্য প্রাপ্ত আবেদন যাচাই ");
                     $('.modal-body').html(data);
-                    $('.btn-primary').val("verify");
+                    //$('.btn-primary').val("verify");
                     $('#showApplicationModal .toggle').bootstrapToggle();
                     $('#showApplicationModal').modal('show');
                     //$('#product_id').val(data.id);
@@ -324,8 +343,9 @@
                     console.log(data);
                     //$('.modal-title').html("ডুপ্লিকেট  আবেদন");
                     $('.alert-danger').html('');
-                    $('.modal-body').html(data);
-                    $('.btn-primary').val("submit");
+                    $('.modal-body3').html(data);
+                    //$('#duplicateApplicationModal').find('#duplicate-modal').append(data);
+                    //$('.btn-primary').val("submit");
                     $('#duplicateApplicationModal .toggle').bootstrapToggle();
                     $('#duplicateApplicationModal').modal('show');
                     //$('#product_id').val(data.id);
@@ -334,7 +354,11 @@
                 })
             });
 
+            /*$('#duplicateApplicationModal').on('hidden.bs.modal', function () {
+                $(this).find('form').trigger('reset');
+            })*/
 
+          /*post duplicate*/
             $('#formSubmit').click(function(e){
                 e.preventDefault();
                 $.ajaxSetup({
@@ -350,22 +374,34 @@
                     data:$('#postDuplicate').serialize(),
                     success:function(response){
                         console.log(response);
-                        if(response.dup){
+                        if(!response.duplicate){
+                            if(response.removed){
+                                iziToast.success({
+                                    title: 'Success',
+                                    message: 'অ্যাপ্লিকেশনটিকে সফলভাবে পূর্বের অবস্থায় ফিরত আনা হয়েছে !',
+                                });
+                                $('#duplicateApplicationModal').modal('hide');
+                                $('#duplicate_'+app_id).text("Duplicate");
+                                $('.alert-danger').hide();
+                            }
+                            else{
+                                iziToast.success({
+                                    title: 'Success',
+                                    message: 'অ্যাপ্লিকেশনটিকে সফলভাবে ডুপ্লিকেট চিহ্নিত করা হয়েছে !',
+                                });
+                                $('#duplicateApplicationModal').modal('hide');
+                                $('#duplicate_'+app_id).text("Duplicated");
+                                $('.alert-danger').hide();
+                            }
+                        }else{
                             iziToast.error({
                                 title: 'Error',
-                                message: 'আপনি ইতোপূর্বে আবেদনটিকে ডুপ্লিকেট হিসাবে চিহ্নিত করেছেন!',
+                                message: 'আপনি ইতোপূর্বেই এই অ্যাপ্লিকেশনটিকে ডুপ্লিকেট হিসাবে চিহ্নিত করেছেন। ',
                             });
                             $('#duplicateApplicationModal').modal('hide');
                             $('.alert-danger').hide();
                         }
-                        else{
-                            iziToast.success({
-                                title: 'Success',
-                                message: 'Successfully updated!',
-                            });
-                            $('#duplicateApplicationModal').modal('hide');
-                            $('.alert-danger').hide();
-                        }
+
                     },
                     error: function(xhr) {
                         $('.alert-danger').html('');
@@ -382,7 +418,7 @@
                     console.log(data);
                     //$('.modal-title').html("ডুপ্লিকেট  আবেদন");
                     $('.alert-danger').html('');
-                    $('.modal-body').html(data);
+                    $('.modal-body1').html(data);
                     $('.btn-primary').val("submit");
                     $('#sendAppsModal .toggle').bootstrapToggle();
                     $('#sendAppsModal').modal('show');
@@ -398,7 +434,6 @@
                         'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
                     }
                 });
-
                 $.ajax({
                     url: "{{ route('applications.send') }}" ,
                     type:"patch",
@@ -414,7 +449,9 @@
                             $('#send-apps').hide();
                             $('.verify').hide();
                             $('.duplicate').hide();
-                            $('.viewForm').removeAttr('style');
+                            $('.districtVerification').hide();
+                            $('.viewForm').hide();
+                            $('.digital').removeAttr('style');
                             $('.alert-danger').hide();
                         }
                         else{
@@ -426,6 +463,90 @@
                             $('.alert-danger').hide();
                         }
                     },
+                });
+            });
+            $(document).ready(function() {
+                $(".modal").on("hidden.bs.modal", function(){
+                    $(".modal-body1").html("");
+                });
+            });
+            $('body').on('click', '#sendback-apps', function () {
+                    //$('.modal-title').html("ডুপ্লিকেট  আবেদন");
+                    $('.alert-danger').html('');
+                    $('#sending').html("");
+                    //$('.btn-primary').val("submit");
+                    $('#sendbackAppsModal').modal('show');
+                    //$('#product_id').val(data.id);
+                    //$('#name').val(data.name);
+                    //$('#detail').val(data.detail);
+
+            });
+            $('#sendbackApplications').click(function(e){
+                e.preventDefault();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    url: "{{ route('applications.sendback') }}" ,
+                    type:"patch",
+                    data:$('#sendbackApps').serialize(),
+                    success:function(response){
+                        console.log(response);
+                        if(response.success){
+                            iziToast.success({
+                                title: 'Success',
+                                message: response.message,
+                            });
+                            $('#sendbackAppsModal').modal('hide');
+                            window.setTimeout(function(){location.reload()},3000)
+                            $('.alert-danger').hide();
+                        }
+                        else{
+                            iziToast.error({
+                                title: 'Error',
+                                message: response.message,
+                            });
+                            $('#sendAppsModal').modal('hide');
+                            $('.alert-danger').hide();
+                        }
+                    },
+                });
+            });
+
+            /*post district verification*/
+            $('#save_app_district_verified').click(function(e){
+                e.preventDefault();
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+                    }
+                });
+                var app_id=  $(".appId").val();
+
+                $.ajax({
+                    url: "{{ route('applications.index') }}" +'/' + app_id +'/app_district_verification',
+                    type:"patch",
+                    data:$('#form_app_district_verified').serialize(),
+                    success:function(response){
+                        console.log(response);
+                            iziToast.success({
+                                title: 'Success',
+                                message: 'অ্যাপ্লিকেশনটি  সফলভাবে যাচাই করা হয়েছে!',
+                            });
+                            $('#showApplicationModal').modal('hide');
+                            $('#'+app_id).text("Verified");
+                            $('.alert-danger').hide();
+                    },
+                    error: function(xhr) {
+                        $('.alert-danger').html('');
+                        $.each(xhr.responseJSON.errors, function(key,value) {
+                            $('.alert-danger').show();
+                            $('.alert-danger').append('<li>'+value+'</li>');
+                        });
+
+                    }
                 });
             });
 
@@ -520,5 +641,6 @@
             });
         </script>--}}
     @endif
+    @include('applications.application-reloadjs')
 
 @endpush

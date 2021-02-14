@@ -241,6 +241,20 @@ fieldset {
      text-align: left!important;
      margin-right: 0px!important;
  }
+/*.internet-con{
+    min-width: 1px!important;
+}
+!*#internet_connection_type{
+    margin-left:-145px!important;
+    width:100px!important
+}*!
+#internet_connection_type{
+    min-width:1px!important;
+}
+#operator_type{
+    margin-left: -100px!important;
+    min-width: 50px!important;
+}*/
 /*.tab_2 .form-row .form-group label {*/
 /*    min-width: 245px;*/
 /*    text-align: left;*/

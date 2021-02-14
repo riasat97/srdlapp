@@ -28,8 +28,20 @@ class UpdateUserRequest extends FormRequest
     public function rules(Request $request)
     {
         $rules = User::$rules;
-        $filtered = Arr::except($rules, ['email']);
-        $email= ['email'=>'required', 'string', 'email', 'max:255', 'unique:users,email_address,'.$request->get('id')];
-        return array_merge($filtered,$email);
+        $filtered = Arr::except($rules, ['email','name']);
+        $add= ['email'=>'required', 'string', 'email', 'max:255', 'unique:users,email_address,'.$request->get('id'),
+            'name' => 'regex:/^[\p{Bengali}]/u|required|max:100'
+        ];
+        //'name' => 'regex:/^[\p{Bengali}]{0,100}$/u'
+        return array_merge($filtered,$add);
+    }
+    public function messages()
+    {
+        return [
+            'name.required' => 'নিজের নাম বাংলায় লেখা আবশ্যক!',
+            'name.regex' => 'নিজের নাম বাংলায় লেখা আবশ্যক!',
+            'mobile.required' => ' মোবাইল নম্বর আবশ্যক!',
+            'mobile.regex' => ' মোবাইল নম্বর অবশ্যই ইংলিশে এবং ১১ ডিজিট হবে!',
+        ];
     }
 }

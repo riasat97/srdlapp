@@ -2,7 +2,7 @@
 
 <div class="form-row">
     <div class="form-group col-md-6">
-        {{ Form::label('verified_apps', 'যাচাই করা ল্যাবের আবেদন সংখ্যা:') }}
+        {{ Form::label('verified_apps', 'যাচাই করা/ডুপ্লিকেট চিহ্নিত করা ল্যাবের আবেদন সংখ্যা:') }}
         {!! Form::text('verified_apps', $verified_apps , ['class' => 'form-control',"disabled"=>"true"]) !!}
     </div>
 </div>

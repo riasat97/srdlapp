@@ -5,15 +5,20 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Edit Application of <span id="applicationInstituteName"></span></h4>
             </div>
-            <form id="updateApplication" method="post" action="{{ route('applications.update', [':applicationId']) }}">
-                @csrf
+            <div class="alert alert-danger" style="display:none"></div>
+            {!! Form::open(['id'=>'form_app_district_verified']) !!}
+            @csrf
                 <div class="modal-body">
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-{{--                    <button type="submit" class="btn btn-primary">Save changes</button>--}}
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <button type="submit" id="save_app_district_verified" class="btn btn-primary">সংরক্ষণ</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">বাতিল</button>
+                        </div>
+                    </div>
                 </div>
-            </form>
+            {!! Form::close() !!}
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
