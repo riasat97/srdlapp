@@ -28,7 +28,14 @@
     </section>
     <div class="content">
         <div class="clearfix"></div>
+        @if(Auth::user()->hasRole(['district admin']) && count($verified_upazilas)<2)
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <h4 class="callout callout-danger">উপজেলা কার্যালয়সমূহ হতে অদ্যাবধি কোনো আবেদন যাচাই করা হয়নি।</h4>
+                </div>
+            </div>
 
+        @endif
         @include('flash::message')
 
         <div class="clearfix">
@@ -78,6 +85,7 @@
                         <div class="form-group  col-md-2">
                             {{Form::label('upazila', 'উপজেলা') }}
                             {{Form::select('upazila', $upazilas, null,['id'=>'upazila','class'=>'form-control upazila-default'])}}
+                            {{ Form::hidden('dis',$district_bn,['id'=>'dis']) }}
                         </div>
                     @endif
 
@@ -391,6 +399,7 @@
                                 });
                                 $('#duplicateApplicationModal').modal('hide');
                                 $('#duplicate_'+app_id).text("Duplicated");
+                                $('#verify_'+app_id).hide();
                                 $('.alert-danger').hide();
                             }
                         }else{
@@ -447,6 +456,7 @@
                             });
                             $('#sendAppsModal').modal('hide');
                             $('#send-apps').hide();
+                            $('#sendback-apps').hide();
                             $('.verify').hide();
                             $('.duplicate').hide();
                             $('.districtVerification').hide();
@@ -537,7 +547,8 @@
                             });
                             $('#showApplicationModal').modal('hide');
                             $('#'+app_id).text("Verified");
-                            $('.alert-danger').hide();
+                            $('#duplicate_'+app_id).hide();
+                        $('.alert-danger').hide();
                     },
                     error: function(xhr) {
                         $('.alert-danger').html('');

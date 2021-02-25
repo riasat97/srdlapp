@@ -419,6 +419,7 @@
                             <div class="form-group shadow-textarea">
                                 <label class="awesome" for="about_institution">প্রতিষ্ঠানটি সম্পর্কে সার্বিক মন্তব্য (যদি থাকে):</label>
                                 <textarea class="form-control z-depth-1 verification-content" id="about_institution" name="about_institution" rows="5" placeholder="">{{ old("about_institution") }}</textarea>
+                                <span class="pull-right label label-default" id="count_message"></span>
                             </div>
                         </div>
 
@@ -446,7 +447,7 @@
                         <div class="form-row verification_report_file" style="">
 
                             <div class="form-group col-md-6">
-                                {{ Form::label('verification_report_file', 'উপজেলা থেকে প্রেরিত প্রতিষ্ঠানটির পরিদর্শন প্রতিবেদনের স্ক্যান কপি (পিডিএফ: সর্বোচ্চ ৫০০ kb) ') }}
+                                {{ Form::label('verification_report_file', 'প্রতিষ্ঠানটির পরিদর্শন প্রতিবেদনের স্ক্যান কপি (পিডিএফ: সর্বোচ্চ ৫০০ kb) ') }}
                             </div>
 
                             <div class="form-group col-md-6">

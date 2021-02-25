@@ -479,21 +479,31 @@
         </div>
         @endif
 @endif
+<div class="form-row verification_report_file" style="">
+    <div class="form-group col-md-6">
+        {{ Form::label('verification_report_file', 'উপজেলা কার্যালয় থেকে প্রেরিত প্রতিষ্ঠানটির পরিদর্শন রিপোর্ট:') }}
+    </div>
+    @if(!empty($application->attachment->verification_report_file))
+        <div class="form-group col-md-6">
+            <a href="{{ $application->attachment->verification_report_file }}" target="_blank"> {{ $application->attachment->verification_report_file_path_type }}</a>
+        </div>
+    @endif
+</div>
 <div class="form-row">
     <div class="form-group col-md-12">
         @if($application->lab_type== lab_type()['srdl'])
-            {{ Form::label('district_verified', 'জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব:',["id"=>"district_verified_lb"])}}
+            {{ Form::label('district_verified', 'জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপনের জন্য:',["id"=>"district_verified_lb"])}}
         @else
-            {{ Form::label('district_verified', 'জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার:',["id"=>"district_verified_lb"])}}
+            {{ Form::label('district_verified', 'জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপনের জন্য:',["id"=>"district_verified_lb"])}}
         @endif
         <div class="form-inline required">
             <div class="form-group has-feedback">
                 <label class="input-group">
                             <span class="input-group-addon">
-                                {{ Form::radio('app_district_verified', 'YES', (!empty($application->verification->app_district_verified) && $application->verification->app_district_verified=="YES" )?true:false,['id'=>'app_district_verified_yes','class'=>'verification-content','title'=>'স্থাপন করা যেতে পারে']) }}
+                                {{ Form::radio('app_district_verified', 'YES', (!empty($application->verification->app_district_verified) && $application->verification->app_district_verified=="YES" )?true:false,['id'=>'app_district_verified_yes','class'=>'verification-content','title'=>'সুপারিশ করা হল']) }}
                             </span>
                     <div class="form-control form-control-static">
-                        স্থাপন করা যেতে পারে
+                        সুপারিশ করা হল
                     </div>
                     <span class="glyphicon form-control-feedback "></span>
                 </label>
@@ -501,10 +511,10 @@
             <div class="form-group has-feedback ">
                 <label class="input-group">
                         <span class="input-group-addon">
-                           {{ Form::radio('app_district_verified', 'NO', (!empty($application->verification->app_district_verified) && $application->verification->app_district_verified=="NO" )?true:false,['id'=>'app_district_verified_no','class'=>'verification-content','title'=>'স্থাপন করা যেতে পারে না']) }}
+                           {{ Form::radio('app_district_verified', 'NO', (!empty($application->verification->app_district_verified) && $application->verification->app_district_verified=="NO" )?true:false,['id'=>'app_district_verified_no','class'=>'verification-content','title'=>'সুপারিশ করা হল না']) }}
                         </span>
                     <div class="form-control form-control-static">
-                        স্থাপন করা যেতে পারে না
+                        সুপারিশ করা হল না
                     </div>
                     <span class="glyphicon form-control-feedback "></span>
                 </label>

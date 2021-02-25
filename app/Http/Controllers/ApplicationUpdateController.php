@@ -74,7 +74,6 @@ class ApplicationUpdateController extends ApplicationController
             'institution_type' => $request->get('institution_type'),
             'institution_level' => !empty($request->get('institution_level'))?$request->get('institution_level'):'',
             'union_pourashava_ward' => !empty($request->get('union_pourashava_ward'))?$request->get('union_pourashava_ward'):'',
-            'seat_type' => $request->get('seat_type'),
             'parliamentary_constituency' => !empty($request->get('parliamentary_constituency'))?$request->get('parliamentary_constituency'):'',
             'seat_no' => !empty($request->get('parliamentary_constituency'))?$this->getSeatNo($request->get('parliamentary_constituency')):'',
             'is_parliamentary_constituency_ok' => (!empty($request->get('is_parliamentary_constituency_ok'))&&!empty($request->get('parliamentary_constituency')))?"YES":"",
@@ -83,7 +82,7 @@ class ApplicationUpdateController extends ApplicationController
         if(!empty(Auth::user()->hasRole('super admin'))){
             $su_application= ['division' => $request->get('division'), 'district' => $request->get('district'),
                 'upazila' => $request->get('upazila'),'lab_type' => $request->get('lab_type'),
-                'institution_bn' => $request->get('institution_bn')];
+                'institution_bn' => $request->get('institution_bn'),'seat_type' => $request->get('seat_type')];
             $application= array_merge($application,$su_application);
         }
         $updated= Application::where('id',$id)->update($application);
@@ -172,7 +171,7 @@ class ApplicationUpdateController extends ApplicationController
             $application->verification()->save($verified);
 
             if (!empty($request->hasFile('verification_report_file'))) {
-                $attachment = $this->storeVerificationReport($request, $attachment);
+                $attachment = $this->storeVerificationReport($request, $attachment,$application);
                 $application->attachment()->save($attachment);
             }
         }
@@ -216,10 +215,11 @@ class ApplicationUpdateController extends ApplicationController
     private function updateInternetConnectionTypes($internetConnectionTypes, ApplicationInternetConnection $applicationInternetConnection)
     {
         if(empty($internetConnectionTypes))$applicationInternetConnection->internet_connection='';
-        if(in_array("0",$internetConnectionTypes)) $applicationInternetConnection->internet_connection= "NO";
-
-        $applicationInternetConnection->broadband= in_array("broadband",$internetConnectionTypes)?"YES":'';
-        $applicationInternetConnection->modem=in_array("modem",$internetConnectionTypes)?"YES":'';
+        if(!empty($internetConnectionTypes)&& in_array("0",$internetConnectionTypes)) $applicationInternetConnection->internet_connection= "NO";
+        if(!empty($internetConnectionTypes)){
+            $applicationInternetConnection->broadband= in_array("broadband",$internetConnectionTypes)?"YES":'';
+            $applicationInternetConnection->modem=in_array("modem",$internetConnectionTypes)?"YES":'';
+        }
         return $applicationInternetConnection;
     }
     private function updateMobileOperators($mobileOperators, ApplicationInternetConnection $applicationInternetConnection)
@@ -316,7 +316,7 @@ class ApplicationUpdateController extends ApplicationController
             $applications=Application::where('district',$district_bn)->get();
 
             $verified_apps=Application::where('district',$district_bn)->whereHas('verification', function ($query) {
-                $query->whereNotNull('app_district_verified')->orWhere('app_duplicate','YES');
+                $query->whereNotNull('app_district_verified');
             })->count();
 
             $duplicate_apps=Application::where('district',$district_bn)->whereHas('verification',function ($query) {
@@ -334,14 +334,14 @@ class ApplicationUpdateController extends ApplicationController
             $applications=Application::where('district',$district_bn)->where('upazila',$upazila_bn)->get();
 
             $verified_apps=Application::where('district',$district_bn)->where('upazila',$upazila_bn)->whereHas('verification', function ($query) {
-                $query->whereNotNull('app_upazila_verified')->orWhere('app_duplicate','YES');
+                $query->whereNotNull('app_upazila_verified');
             })->count();
             $duplicate_apps=Application::where('district',$district_bn)->where('upazila',$upazila_bn)->whereHas('verification',function ($query) {
                 $query->where('app_duplicate','YES');
             })->get()->count();
         }
 
-        $remaining= $applications->count()-($verified_apps);
+        $remaining= $applications->count()-($verified_apps+$duplicate_apps);
             $bn= new Bengali();
             if($remaining!=0) Flash::error('আপনার এখনো '.$bn->bn_number($remaining).'টি ল্যাবের আবেদন যাচাই করা/ ডুপ্লিকেট চিহ্নিত(যদি থাকে) করা বাকি।');
             else Flash::warning('ল্যাবের আবেদনসমূহ প্রকল্প দপ্তরে প্রেরণ করার পর আবেদনসমূহ যাচাই/ ডুপ্লিকেট চিহ্নিত (যদি থাকে) করার অপশনটি বিলুপ্ত হয়ে যাবে। ');
@@ -362,7 +362,7 @@ class ApplicationUpdateController extends ApplicationController
             $applications = Application::where('district', $district_bn)->get();
 
             $verified_apps = Application::where('district', $district_bn)->whereHas('verification', function ($query) {
-                $query->whereNotNull('app_district_verified')->orWhere('app_duplicate', 'YES');
+                $query->whereNotNull('app_district_verified');
             })->count();
             $duplicate_apps = Application::where('district', $district_bn)->whereHas('verification', function ($query) {
                 $query->where('app_duplicate', 'YES');
@@ -379,20 +379,20 @@ class ApplicationUpdateController extends ApplicationController
             $applications=Application::where('district',$district_bn)->where('upazila',$upazila_bn)->get();
 
             $verified_apps=Application::where('district',$district_bn)->where('upazila',$upazila_bn)->whereHas('verification', function ($query) {
-                $query->whereNotNull('app_upazila_verified')->orWhere('app_duplicate','YES');
+                $query->whereNotNull('app_upazila_verified');
             })->count();
             $duplicate_apps=Application::where('district',$district_bn)->where('upazila',$upazila_bn)->whereHas('verification',function ($query) {
                 $query->where('app_duplicate','YES');
             })->get()->count();
         }
-            $remaining= $applications->count()-($verified_apps);
+            $remaining= $applications->count()-($verified_apps+$duplicate_apps);
             $bn= new Bengali();
             if($remaining==0){
                 $user->verified= "YES";
                 $user->signature_at= Carbon::now();
                 $user->save();
                 $success= true;
-                $message='আপনি সফল ভাবে ল্যাবের আবেদনসমূহ প্রকল্প দপ্তরে প্রেরণ করেছেন।';
+                $message='আপনি সফল ভাবে ল্যাবের আবেদনসমূহ প্রেরণ করেছেন।';
             }
             else{
                 $success=false;

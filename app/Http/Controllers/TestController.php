@@ -115,13 +115,13 @@ class TestController extends ApplicationController
             $mpdf->showWatermarkImage = true;
 
         }];
-
-        $pdf = PDF::loadView('applications.create-pdf', $data, [], $config);
+         $pdf = PDF::loadView('applications.create-pdf', $data, [], $config);
         //$pdf = PDF::loadView('dashboard', $data);
         //$pdf->loadView('applications.generate-pdf', compact('data'));
 
 //        return loadView('applications.create-pdf');
-        return $pdf->stream('srdl-phase-2.pdf');
+        if($manual)  return $pdf->download($application->id.'-srdl-verification-form.pdf');;
+        return $pdf->stream($application->id.'-srdl-digital-copy.pdf');
     }
 
     private function getDistrictVerificationStatus($user)

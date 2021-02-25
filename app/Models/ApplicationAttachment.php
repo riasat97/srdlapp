@@ -96,9 +96,9 @@ class ApplicationAttachment extends Model
     {
         if(!empty($this->attributes['verification_report_file_path'])){
             if(filter_var($this->attributes['verification_report_file_path'], FILTER_VALIDATE_URL))
-                return "পসুপারিশ সম্পর্কিত ডকুমেন্টসটি দেখুন- google drive" ;
+                return "সুপারিশ সম্পর্কিত ডকুমেন্টসটি দেখুন- google drive" ;
             elseif(!empty($this->attributes['verification_report_file_path']))
-                return "সুপারিশ সম্পর্কিত ডকুমেন্টসটি দেখুন- local drive";
+                return "সুপারিশ সম্পর্কিত ডকুমেন্টসটি দেখুন- Signed Form";
         }
     }
     public function application()

@@ -28,6 +28,9 @@
                 <h2>প্রাথমিকভাবে শেখ রাসেল ডিজিটাল ল্যাব/ স্কুল অফ ফিউচারের উপযুক্ততা যাচাইয়ের জন্য শিক্ষা প্রতিষ্ঠান নির্বাচন সংশ্লিষ্ট প্রতিবেদন</h2>
             </div>
             @if ($errors->any())
+                @if( Auth::user()->hasROle('upazila admin') && empty($application->attachment->verification_report_file) )
+                            <h6 class="alert alert-danger">প্রতিষ্ঠানটির পরিদর্শন প্রতিবেদনের স্ক্যান কপি পুনরায় আপলোড করতে হবে। (পিডিএফ: সর্বোচ্চ ৫০০ kb)</h6>
+                @endif
                 <div class="alert alert-danger">
                     <ul>
                         @foreach ($errors->all() as $error)
@@ -201,13 +204,13 @@
                             </div>
                             <div class="form-group  col-md-6">
                                 {{Form::label('village_road', 'গ্রাম/পাড়া/মহল্লা/সড়ক') }}
-                                {{Form::text('village_road', $application->profile->village_road??"",['id'=>'village_road','class'=>'form-control','style'=>''])}}
+                                {{Form::text('village_road', $application->profile->village_road??"",['id'=>'village_road','class'=>'form-control','style'=>'','placeholder'=>"বাংলাতে"])}}
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group  col-md-6">
                                 {{Form::label('post_office', 'পোস্ট অফিস') }}
-                                {{Form::text('post_office',  $application->profile->post_office??"",['id'=>'post_office','class'=>'form-control','style'=>''])}}
+                                {{Form::text('post_office',  $application->profile->post_office??"",['id'=>'post_office','class'=>'form-control','style'=>'','placeholder'=>"বাংলাতে"])}}
                             </div>
                             <div class="form-group  col-md-6">
                                 {{Form::label('post_code', 'পোস্ট কোড') }}
@@ -468,7 +471,8 @@
                             <div class="form-group shadow-textarea">
                                 <label class="awesome" for="about_institution">প্রতিষ্ঠানটি সম্পর্কে সার্বিক মন্তব্য (যদি থাকে): </label>
                                {{-- <textarea class="form-control z-depth-1 verification-content" id="about_institution" name="about_institution" rows="5" placeholder="">{{ $application->verification->about_institution ?? old("about_institution") }}</textarea>--}}
-                                {{ Form::textarea('about_institution',$application->verification->about_institution ?? '',['class'=>'form-control z-depth-1 verification-content','id'=>'about_institution','rows'=>'5','placeholder'=>'']) }}
+                                {{ Form::textarea('about_institution',$application->verification->about_institution ?? '',['class'=>'form-control z-depth-1 verification-content','id'=>'about_institution', 'maxlength'=>"500",'rows'=>'5','placeholder'=>'বাংলাতে (সর্বোচ্চ 500 অক্ষর)']) }}
+                                <span class="pull-right label label-default" id="count_message"></span>
                             </div>
                         </div>
 
@@ -495,7 +499,7 @@
                         </div>
                         <div class="form-row verification_report_file" style="">
                             <div class="form-group col-md-6">
-                                {{ Form::label('verification_report_file', 'উপজেলা থেকে প্রেরিত প্রতিষ্ঠানটির পরিদর্শন প্রতিবেদনের স্ক্যান কপি (পিডিএফ: সর্বোচ্চ ৫০০ kb) ') }}
+                                {{ Form::label('verification_report_file', 'পরিদর্শন প্রতিবেদনের স্ক্যান কপি (পিডিএফ: সর্বোচ্চ ৫০০ kb) ') }}
                             </div>
                             <div class="form-group col-md-6">
                                 <div class="verification_report_file">
@@ -937,6 +941,7 @@
                 $("#div").attr("disabled", "disabled");
                 $("#dis").attr("disabled", "disabled");
                 $("#upazila").attr("disabled", "disabled");
+                $("#seat_type").attr("disabled", "disabled");
 
             });
         </script>

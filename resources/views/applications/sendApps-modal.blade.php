@@ -3,7 +3,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"> যাচাইকৃত ল্যাবের আবেদনসমূহ প্রকল্প দপ্তরে প্রেরণ করুন <span id="applicationInstituteNameInEditModal"></span>!</h4>
+                <h4 class="modal-title"> @if(Auth::user()->hasRole(['district admin']))যাচাইকৃত ল্যাবের আবেদনসমূহ প্রকল্প দপ্তরে প্রেরণ করুন
+                    @elseif(Auth::user()->hasRole(['upazila admin'])) যাচাইকৃত ল্যাবের আবেদনসমূহ জেলা প্রশাসকের কার্যালয়ে প্রেরণ করুন
+                    @endif
+                    <span id="applicationInstituteNameInEditModal"></span>!</h4>
             </div>
             <div class="alert alert-danger" style="display:none"></div>
             {!! Form::open(['id'=>'sendApps']) !!}

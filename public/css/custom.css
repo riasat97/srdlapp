@@ -299,3 +299,8 @@ fieldset {
     content:" *";
     color: red;
 }
+#count_message {
+    background-color: #e9ecef;
+    margin-top: -20px;
+    margin-right: 5px;
+}

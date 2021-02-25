@@ -58,10 +58,10 @@ class ApplicationController extends Controller
                     $disUpazilaAdmin=$this->getDistrictAndUpazilaAdminFromApplication($row->id);
                     //dd();
                     $btn="";
-                    if( ($user->hasRole('upazila admin') && $user->verified!="YES")or $user->hasRole(['super admin'])){
+                    if( ($user->hasRole('upazila admin') && empty($row->verification->app_duplicate) && $user->verified!="YES")or $user->hasRole(['super admin'])){
                         $lb_status=(!empty($row->verification->app_upazila_verified))?'Verified':'Verify';
                         $label= $user->hasRole('super admin')?'Edit':$lb_status;
-                    $btn="<a href='".route("applications.edit",$row->id)."' target=\"_blank\" class='super-admin-edit verify btn btn-info btn-sm'>$label</a> ";
+                    $btn="<a href='".route("applications.edit",$row->id)."' target=\"_blank\" id='verify_" . $row->id . "' class='super-admin-edit verify btn btn-info btn-sm'>$label</a> ";
                     }
 //                    if (App::environment('local')) {
 //                    $btn=$btn."<a href='javascript:void(0)' data-application='" . json_encode($row) . "' class='edit btn btn-success btn-sm'>Edit</a>";
@@ -69,7 +69,7 @@ class ApplicationController extends Controller
                     if(Auth::user()->hasRole(['super admin']))
                     $btn = $btn." <a href='javascript:void(0)' class='delete btn btn-warning btn-sm'>Details</a>";
 
-                    if(($user->hasRole('district admin') && $user->verified!="YES" && !empty($disUpazilaAdmin['upazila_admin']->verified=="YES")) or $user->hasRole(['super admin'])){
+                    if(($user->hasRole('district admin') && empty($row->verification->app_duplicate) && $user->verified!="YES" && !empty($disUpazilaAdmin['upazila_admin']->verified=="YES")) or $user->hasRole(['super admin'])){
                         $lb_status=(!empty($row->verification->app_district_verified))?'Verified':'Verify';
                         $btn=$btn." <a href='javascript:void(0)' data-id='" . $row->id . "' id='" . $row->id . "' class='districtVerification view btn btn-info btn-sm'>$lb_status</a>";
                     }
@@ -78,12 +78,12 @@ class ApplicationController extends Controller
                         $btn=$btn." <a href='" .route('loadpdf',$row->id ). "' data-id='" . $row->id . "' target=\"_blank\" class='digital btn btn-primary btn-sm'>Digital Copy</a>";
 
                         /*duplicate*/
-                    if(($user->hasRole('district admin') && $user->verified!="YES" && !empty($disUpazilaAdmin['upazila_admin']->verified=="YES") )or $user->hasRole(['super admin'])){
+                    if(($user->hasRole('district admin') && empty($row->verification->app_district_verified) && $user->verified!="YES" && !empty($disUpazilaAdmin['upazila_admin']->verified=="YES") )or $user->hasRole(['super admin'])){
                         $lb_status=(!empty($row->verification) && !empty($row->verification->app_duplicate=="YES"))?'Duplicated':'Duplicate';
                         $btn=$btn." <a href='javascript:void(0)' data-id='" . $row->id . "' id='duplicate_" . $row->id . "' class='duplicate btn btn-danger btn-sm'>$lb_status</a>";
                     }
 
-                    if(($user->hasRole('upazila admin') && $user->verified!="YES" )){
+                    if(($user->hasRole('upazila admin') && empty($row->verification->app_upazila_verified) && $user->verified!="YES" )){
                         $lb_status=(!empty($row->verification) && !empty($row->verification->app_duplicate=="YES"))?'Duplicated':'Duplicate';
                         $btn=$btn." <a href='javascript:void(0)' data-id='" . $row->id . "' id='duplicate_" . $row->id . "' class='duplicate btn btn-danger btn-sm'>$lb_status</a>";
                     }
@@ -110,9 +110,10 @@ class ApplicationController extends Controller
         $parliamentaryConstituencyList= $this->getParliamentaryConstituency($request);
         $upazilas= $this->getUpazilas($request);
         $verified_upazilas= $this->getVerifiedUpazilas($request);
+        $districtBnForDistrictAdmin=$this->getDistrictBnNameByUser();
         return view('applications.index',['divisionList'=>$divisionList,
             'parliamentaryConstituencyList'=>$parliamentaryConstituencyList,'upazilas'=>$upazilas,
-            'verified_upazilas'=>$verified_upazilas]);
+            'verified_upazilas'=>$verified_upazilas,'district_bn'=>$districtBnForDistrictAdmin]);
     }
     protected function getAppData(Request $request)
     {
@@ -402,7 +403,7 @@ class ApplicationController extends Controller
     //            $verified->is_broadband= !empty($request->get('is_broadband'))?"YES":"NO";
             $application->verification()->save($verified);
             if(!empty($request->hasFile('verification_report_file'))){
-                $attachment=$this->storeVerificationReport($request,$attachment);
+                $attachment=$this->storeVerificationReport($request,$attachment,$application);
                 $application->attachment()->save($attachment);
             }
         }
@@ -558,11 +559,31 @@ class ApplicationController extends Controller
         return $applicationInternetConnection;
     }
 
-    protected function storeVerificationReport(Request $request, $attachment)
+    protected function storeVerificationReport(Request $req, $attachment,$application)
     {
-        if(!empty($request->hasFile("verification_report_file")))
-            return $this->fileUpload($request,$request->file("verification_report_file"),$attachment,'verification_report_file');
-        return  $attachment;
+        if(!empty($req->hasFile("verification_report_file")))
+
+        $appFilePath= "verification_report_file_path";
+        $file= $req->file("verification_report_file");
+        if(!empty($attachment->$appFilePath) &&!filter_var($attachment->$appFilePath, FILTER_VALIDATE_URL) ){
+            Storage::delete($attachment->$appFilePath);
+        }
+        $division= $application->division;
+        $district= $application->district;
+        $upazila=  $application->upazila;
+        $path= 'verifications/'.$division.'/'.$district.'/'.$upazila;
+        $this->mkDirectoryIfNotExists($path);
+        $fileName = $application->id.'_'.$application->institution_bn.'.pdf';
+        $filePath = $req->file('verification_report_file')->storeAs($path, $fileName, 'public');
+        $attachment->verification_report_file = $fileName;
+        $attachment->$appFilePath = $filePath;
+        return $attachment;
+
+    }
+    public function mkDirectoryIfNotExists($path){
+        if(!Storage::exists($path)) {
+            Storage::makeDirectory($path, 0775, true); //creates directory
+        }
     }
 
     protected function storeReference(Request $request, $attachment)
@@ -734,7 +755,15 @@ class ApplicationController extends Controller
 
     }
 
-
+    private function getDistrictBnNameByUser()
+    {
+        if(Auth::user()->hasRole('district admin')){
+            $district_en=strtolower(explode('_',Auth::user()->username)[0]);
+            $districtobj= Bangladesh::where('district_en',$district_en)->first();
+            return $districtobj->district;
+        }
+        return  false;
+    }
 
 
 }

@@ -37,8 +37,8 @@ class CreateApplicationRequest extends FormRequest
                 'division' => 'required| min:2',
                 'district' => 'required',
                 'upazila' => 'required',
-                'seat_type' => Rule::requiredIf(!empty($request->get('listed_by_deo'))),
-                'parliamentary_constituency' => Rule::requiredIf(!empty($request->get('listed_by_deo'))),
+                //'seat_type' => Rule::requiredIf(!empty($request->get('listed_by_deo'))),
+                //'parliamentary_constituency' => Rule::requiredIf(!empty($request->get('listed_by_deo'))),
                 'member_name' => Rule::requiredIf(!empty($request->get('listed_by_deo'))),
                 'ref_type' => Rule::requiredIf(empty($request->get('listed_by_deo'))),
                 'ref_name' => Rule::requiredIf(empty($request->get('listed_by_deo'))),
@@ -48,8 +48,7 @@ class CreateApplicationRequest extends FormRequest
 
             ];
             if ($request->hasFile('list_attachment_file') or !$request->get('list_attachment')) {
-                $list_attachment_file= ['list_attachment_file' => 'required_if:listed_by_deo,on|mimes:pdf|max:1000',
-                'ref_documents_file'=>'required_without:listed_by_deo|mimes:pdf|max:1000'];
+                $list_attachment_file= ['list_attachment_file' => 'required_if:listed_by_deo,on|mimes:pdf|max:1000'];
                 $rules= array_merge($rules,$list_attachment_file);
             }
 
@@ -85,11 +84,11 @@ class CreateApplicationRequest extends FormRequest
                 'distance_from_upazila_complex' => 'required|numeric',
                 'latitude' => 'required|numeric',
                 'longitude' => 'required|numeric',
-                'seat_type' => 'required|string',
+                'seat_type' => 'sometimes|required|string',
                 'parliamentary_constituency' => 'required|string',
                 'labs' => 'required_if:govlab,on|array',
                 'internet_connection_type' => 'required|array',
-                'about_institution' => 'nullable|string',
+                'about_institution' => 'nullable|string|max:500',
                 'app_upazila_verified' => 'required|in:YES,NO',
             ];
             if (!empty($request->get('labs'))&& in_array('Others', $request->input('labs', []))) {
@@ -135,7 +134,7 @@ class CreateApplicationRequest extends FormRequest
             'institution_type.not_in' => 'প্রতিষ্ঠানের ধরন অবশ্যক!',
             'institution_level.required' => 'প্রতিষ্ঠানের স্তর অবশ্যক!',
             'institution_level.not_in' => 'প্রতিষ্ঠানের স্তর অবশ্যক!',
-            'eiin.required' => 'eiin অবশ্যক তবে না থাকলে ০ দিতে হবে!',
+            'eiin.required_if' => 'eiin অবশ্যক তবে না থাকলে ০ দিতে হবে!',
             'eiin.numeric' => 'eiin ইংলিশ ডিজিট হতে হবে!',
             'mpo.numeric' => 'mpo ইংলিশ ডিজিট হতে হবে!',
             'total_boys.required' => 'মোট ছাত্রের সংখ্যা অবশ্যক তবে না থাকলে ০ দিতে হবে।',
@@ -165,11 +164,12 @@ class CreateApplicationRequest extends FormRequest
             'parliamentary_constituency.required' => 'নির্বাচনী এলাকার নাম অবশ্যক !',
             'labs.required'=>'ইতোপূর্বে ল্যাব প্রাপ্ত হলে ল্যাবসমূহ নির্বাচন অবশ্যক !',
             'lab_others_title.required'=>'প্রাপ্ত ল্যাব সমূহের মধ্যে অন্যান্য নির্বাচন করা হলে অন্যান্য ল্যাবের নাম অবশ্যক !',
-            'mobile_operators.required'=>'ইন্টারনেট সংযোগের ধরন মডেম হলে ডাটা কানেকশনের জন্য ব্যবহৃত মোবাইল অপারেটর সমূহ নির্বাচন  অবশ্যক !',
+            'internet_connection_type.required' => 'ইন্টারনেট সংযোগের ধরন অবশ্যক। যদি সংযোগ না থাকে তাহলে নাই নির্বাচন করতে হবে। ',
+            'mobile_operators.required'=>'ইন্টারনেট সংযোগের ধরন মডেম হলে ডাটা কানেকশনের জন্য ব্যবহৃত মোবাইল অপারেটর সমূহ নির্বাচন অবশ্যক !',
             'app_upazila_verified.required' => 'সুপারিশকারী (উপজেলা নির্বাহী অফিসার) কর্তৃক প্রতিষ্ঠানটিকে সুপারিশ করা বা না করা আবশ্যক। ',
-            'verification_report_file.required' => 'উপজেলা থেকে প্রেরিত প্রতিষ্ঠানটির পরিদর্শন প্রতিবেদনের স্ক্যান কপি আবশ্যক। ',
-            'verification_report_file.max' => 'উপজেলা থেকে প্রেরিত প্রতিষ্ঠানটির পরিদর্শন প্রতিবেদনের স্ক্যান কপি (পিডিএফ: সর্বোচ্চ ৫০০ kb)। ',
-            'verification_report_file.mimes' => 'উপজেলা থেকে প্রেরিত প্রতিষ্ঠানটির পরিদর্শন প্রতিবেদনের স্ক্যান কপি (পিডিএফ: সর্বোচ্চ ৫০০ kb)। ',
+            'verification_report_file.required' => 'প্রতিষ্ঠানটির পরিদর্শন প্রতিবেদনের স্ক্যান কপি আবশ্যক। ',
+            'verification_report_file.max' => 'প্রতিষ্ঠানটির পরিদর্শন প্রতিবেদনের স্ক্যান কপি (পিডিএফ: সর্বোচ্চ ৫০০ kb)। ',
+            'verification_report_file.mimes' => 'প্রতিষ্ঠানটির পরিদর্শন প্রতিবেদনের স্ক্যান কপি (পিডিএফ: সর্বোচ্চ ৫০০ kb)। ',
         ];
     }
 }

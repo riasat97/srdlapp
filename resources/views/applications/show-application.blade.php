@@ -448,34 +448,32 @@
                         <img @if(!empty($application->verification->app_upazila_verified) && $application->verification->app_upazila_verified=="NO" )  src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> সুপারিশ করা হল না
                     </p>
                     <br>
-                    <p>@if(!empty($user['upazila_admin']->verified=='YES'))স্বাক্ষরিত/- @endif  </p>
-                    <br>
+                    <p>@if(!empty($user['upazila_admin']->verified=='YES'))স্বাক্ষরিত/- @else <img src="{{ asset('images/sign.png') }}" width="150" height="50" alt="sign"> @endif  </p>
                     <p>{{ (!empty($user['upazila_admin']->verified=='YES')&&!empty($user['upazila_admin']->signature_at))?\App\Classes\Bengali::bn_date_time($user['upazila_admin']->signature_at->format('d-m-Y H:i:s')):'' }}</p>
                     <p>({{ $user['upazila_admin']->name??'' }})</p>
                     <p>{{ !empty($user['upazila_admin']->designation)?designations()[$user['upazila_admin']->designation]:'উপজেলা নির্বাহী অফিসার' }}</p>
                     <p>{{ $application->upazila.',' .$application->district }}</p>
-                    <br><br><br><br>
+                    <br><br><br>
                 </td>
 
                 <td width="50%" height="100" align="left" valign="middle" class="padding5_10">
                     <p>
                         @if($application->lab_type== lab_type()['srdl'])
-                            {{ Form::label('district_verified', 'জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব:',["id"=>"district_verified_lb"])}}
+                            {{ Form::label('district_verified', 'জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপনের জন্য:',["id"=>"district_verified_lb"])}}
                         @else
-                            {{ Form::label('district_verified', 'জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার:',["id"=>"district_verified_lb"])}}
+                            {{ Form::label('district_verified', 'জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপনের জন্য:',["id"=>"district_verified_lb"])}}
                         @endif
                         <br>
-                        <img @if(!empty($application->verification->app_district_verified) && $application->verification->app_district_verified=="YES" )  src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> স্থাপন করা যেতে পারে
-                        <img @if(!empty($application->verification->app_district_verified) && $application->verification->app_district_verified=="NO" )   src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> স্থাপন করা যেতে পারে না
+                        <img @if(!empty($application->verification->app_district_verified) && $application->verification->app_district_verified=="YES" )  src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> সুপারিশ করা হল
+                        <img @if(!empty($application->verification->app_district_verified) && $application->verification->app_district_verified=="NO" )   src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> সুপারিশ করা হল না
                     </p>
                     <br>
-                    <p>@if(!empty($user['district_admin']->verified=='YES'))স্বাক্ষরিত/- @endif  </p>
-                    <br>
+                    <p>@if(!empty($user['district_admin']->verified=='YES'))স্বাক্ষরিত/- @else <img src="{{ asset('images/sign.png') }}" width="150" height="50" alt="sign"> @endif  </p>
                     <p>{{ (!empty($user['district_admin']->verified=='YES')&&!empty($user['district_admin']->signature_at) )?\App\Classes\Bengali::bn_date_time($user['district_admin']->signature_at->format('d-m-Y H:i:s')):'' }}</p>
                     <p>({{ $user['district_admin']->name??'' }})</p>
                     <p>{{ !empty($user['district_admin']->designation)?designations()[$user['district_admin']->designation]:'জেলা প্রশাসক' }}</p>
                     <p>{{ $application->district }}</p>
-                    <br><br><br><br>
+                    <br><br><br>
                 </td>
             </tr>
             </tbody>
