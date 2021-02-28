@@ -1,7 +1,9 @@
 <div class="nav-tabs-custom">
     <ul class="nav nav-tabs">
         <li class="active"><a href="#tab_1" data-toggle="tab">সকল উপজেলা</a></li>
+        @if(Auth::user()->hasRole(['district admin']))
         <li><a href="#tab_2" data-toggle="tab">উপজেলা ওয়ারী</a></li>
+        @endif
     </ul>
     <div class="tab-content">
         <div class="tab-pane active" id="tab_1">
