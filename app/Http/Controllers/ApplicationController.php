@@ -109,7 +109,7 @@ class ApplicationController extends Controller
         $divisionList=array_merge(['-1' => 'নির্বাচন করুন'], $divisionList);
         $parliamentaryConstituencyList= $this->getParliamentaryConstituency($request);
         $upazilas= $this->getUpazilas($request);
-        $verified_upazilas= $this->getVerifiedUpazilas($request);
+        $verified_upazilas= $this->getVerifiedUpazilas();
         $districtBnForDistrictAdmin=$this->getDistrictBnNameByUser();
         return view('applications.index',['divisionList'=>$divisionList,
             'parliamentaryConstituencyList'=>$parliamentaryConstituencyList,'upazilas'=>$upazilas,
@@ -192,7 +192,7 @@ class ApplicationController extends Controller
         }
         return [];
     }
-    protected function getVerifiedUpazilas(Request $request)
+    protected function getVerifiedUpazilas()
     {
         $user=Auth::user();
         if($user->hasRole(['district admin'])){
@@ -544,6 +544,7 @@ class ApplicationController extends Controller
             if($internetCon== "broadband")$applicationInternetConnection->broadband= "YES";
             if($internetCon== "modem")$applicationInternetConnection->modem= "YES";
         }
+
         return $applicationInternetConnection;
     }
     protected function storeMobileOperators( $mobileOperators,$applicationInternetConnection)

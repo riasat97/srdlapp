@@ -123,7 +123,7 @@ class ApplicationUpdateController extends ApplicationController
             $profile->post_code= !empty($request->get('post_code'))?$request->get('post_code'):null;
             $profile->distance_from_upazila_complex= !empty($request->get('distance_from_upazila_complex'))?$request->get('distance_from_upazila_complex'):null;
             //$profile->direction= !empty($request->get('direction'))?$request->get('direction'):'';
-        if(!empty($request->get('verification')) or Auth::user()->hasRole(['district admin'])) {
+        if(!empty($request->get('verification')) or Auth::user()->hasRole(['upazila admin'])) {
             $profile->proper_road = !empty($request->get('proper_road')) ? "YES" : "NO";
         }
             $profile->latitude= !empty($request->get('latitude'))?$request->get('latitude'):null;
@@ -216,9 +216,10 @@ class ApplicationUpdateController extends ApplicationController
     {
         if(empty($internetConnectionTypes))$applicationInternetConnection->internet_connection='';
         if(!empty($internetConnectionTypes)&& in_array("0",$internetConnectionTypes)) $applicationInternetConnection->internet_connection= "NO";
-        if(!empty($internetConnectionTypes)){
+        if(!empty($internetConnectionTypes) && !in_array("0",$internetConnectionTypes)){
             $applicationInternetConnection->broadband= in_array("broadband",$internetConnectionTypes)?"YES":'';
             $applicationInternetConnection->modem=in_array("modem",$internetConnectionTypes)?"YES":'';
+            $applicationInternetConnection->internet_connection= "YES";
         }
         return $applicationInternetConnection;
     }
@@ -346,9 +347,10 @@ class ApplicationUpdateController extends ApplicationController
             if($remaining!=0) Flash::error('আপনার এখনো '.$bn->bn_number($remaining).'টি ল্যাবের আবেদন যাচাই করা/ ডুপ্লিকেট চিহ্নিত(যদি থাকে) করা বাকি।');
             else Flash::warning('ল্যাবের আবেদনসমূহ প্রকল্প দপ্তরে প্রেরণ করার পর আবেদনসমূহ যাচাই/ ডুপ্লিকেট চিহ্নিত (যদি থাকে) করার অপশনটি বিলুপ্ত হয়ে যাবে। ');
 
-            return view('applications.send-application',['applications'=>$bn->bn_number($applications->count()),'verified_apps'=>$bn->bn_number($verified_apps),
-            'duplicate_apps'=>$bn->bn_number($duplicate_apps),'remaining'=>$bn->bn_number($remaining),]);
+        $verified_upazilas= $this->getVerifiedUpazilas();
 
+        return view('applications.send-application',['applications'=>$bn->bn_number($applications->count()),'verified_apps'=>$bn->bn_number($verified_apps),
+            'duplicate_apps'=>$bn->bn_number($duplicate_apps),'remaining'=>$bn->bn_number($remaining), 'verified_upazilas'=>$verified_upazilas]);
     }
 
     public function sendApplications(){

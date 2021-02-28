@@ -36,8 +36,7 @@ class AddAttributesToApplicationVerificationsTable extends Migration
     public function down()
     {
         Schema::table('application_verifications', function (Blueprint $table) {
-            $table->dropColumn('internet_connection');
-            $table->dropColumn('internet_connection_type');
+
             $table->dropColumn('good_result');
             $table->dropColumn('about_institution');
             $table->dropColumn('has_ict_teacher');

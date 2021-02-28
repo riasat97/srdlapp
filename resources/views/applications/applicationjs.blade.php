@@ -309,7 +309,7 @@
 
                // console.log(ui.item.ex[0].district);
                 $('#eiin').val(ui.item.label); // display the selected text
-                $('#inputInsEn').val(ui.item.value); // save selected id to input
+                //$('#inputInsEn').val(ui.item.value); // save selected id to input
                 $('#institution_tel').val(ui.item.mobile);
                 //$("#div").append('<option value="'+ui.item.area.division+'">'+ui.item.area.division+'</option>')
                 // $("#div").val(ui.item.area.division);
@@ -321,7 +321,7 @@
                 $("#total_girls").val(ui.item.total_girls);
                 $("#total_teachers").val(ui.item.total_teachers);
 
-                $("#management").val(ui.item.management);
+                //$("#management").val(ui.item.management);
                 $("#student_type").val(ui.item.student_type);
 
                 if( ui.item.is_mpo === 'YES')$('#is_mpo').bootstrapToggle('on');
