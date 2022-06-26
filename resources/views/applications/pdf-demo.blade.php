@@ -487,6 +487,10 @@
         <div class="form-group col-md-6">
             <a href="{{ $application->attachment->verification_report_file }}" target="_blank"> {{ $application->attachment->verification_report_file_path_type }}</a>
         </div>
+    @else
+        <div class="form-group col-md-6">
+            পরিদর্শন প্রতিবেদনের স্ক্যান কপিটি উপজেলা থেকে আপলোড করা হয়নি।
+        </div>
     @endif
 </div>
 <div class="form-row">

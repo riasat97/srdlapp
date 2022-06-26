@@ -7,7 +7,7 @@
 </li>
 @if(Auth::user()->hasRole(['super admin']))
 <li class="{{ Request::is('admin/download*') ? 'active' : '' }}">
-    <a href="{{ route('applications.download') }}"><i class="fas fa-download"></i><span> ডাউনলোড/ প্রিন্ট</span></a>
+    <a href="{{ route('web.selected-institutions') }}"><i class="fas fa-download"></i><span> চূড়ান্ত তালিকা</span></a>
 </li>
 @endif
 <li class="{{ Request::routeIs('users.edit') ? 'active' : '' }}">

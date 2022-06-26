@@ -179,7 +179,7 @@
                 $('button').click(function(){
                     filter = 1;
                 });
-            // $('.yajra-datatable').DataTable().clear().destroy();
+             //$('.yajra-datatable').DataTable().clear().destroy();
                 var table = $('.yajra-datatable').DataTable({
                     processing: true,
                     serverSide: true,
@@ -233,8 +233,8 @@
                 });
             @if(!Auth::user()->hasRole(['super admin']))
             table.columns( [6] ).visible( false );
+            //table.columns.adjust().draw();
             @endif
-            table.columns.adjust().draw();
             $('#searchbtn').click(function (e) {
                 table.draw();
             });
@@ -443,10 +443,14 @@
                         'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
                     }
                 });
+                var upazilaWise = $("#app_upazila option:selected" ).val();
+                if(upazilaWise==0) upazilaWise=false
+                else upazilaWise=true;
+
                 $.ajax({
                     url: "{{ route('applications.send') }}" ,
                     type:"patch",
-                    data:$('#sendApps').serialize(),
+                    data:$('#sendApps').serialize()+"&upazila_wise="+upazilaWise,
                     success:function(response){
                         console.log(response);
                         if(response.success){
@@ -455,6 +459,9 @@
                                 message: response.message,
                             });
                             $('#sendAppsModal').modal('hide');
+                            if(response.type=="upazilaWise"){
+                                window.setTimeout(function(){location.reload()},2000);
+                            }
                             $('#send-apps').hide();
                             $('#sendback-apps').hide();
                             $('.verify').hide();

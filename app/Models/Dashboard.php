@@ -6,9 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
-class Application extends Model
+class Dashboard extends Model
 {
     use \Spatie\Tags\HasTags;
+    protected $table = 'applications';
     protected $guarded = [];
     protected $appends = ['constituency','application_type','ins','contact'];
     public function getLabTypeAttribute($value)
@@ -29,22 +30,15 @@ class Application extends Model
     }
     public function getConstituencyAttribute()
     {
-         return "{$this->seat_no} {$this->parliamentary_constituency}";
+        return "{$this->seat_no} {$this->parliamentary_constituency}";
     }
     public function getContactAttribute()
     {
         return empty($this->profile)?0:$this->profile->tel;
     }
-    private function getLabId(Application $application)
-    {
-        if($application->lab_type=="শেখ রাসেল ডিজিটাল ল্যাব")return $application->id;
-        if($application->lab_type=="স্কুল অফ ফিউচার")return $application->id." (SOF)";
-        if($application->lab_type=="স্কুল অফ ফিউচার ও শেখ রাসেল ডিজিটাল ল্যাব")return $this->id." (SOF & SRDL)";
-
-    }
     public function getInsAttribute()
     {
-        $labId=$this->getLabId($this);
+        $labId= ($this->lab_type=="স্কুল অফ ফিউচার")?$this->id." (SOF)":$this->id;
         return (!empty($this->profile) && !empty($this->profile->institution_corrected))?
             $this->profile->institution_corrected."-".$labId:$this->institution_bn."-".$labId;
     }
@@ -117,11 +111,6 @@ class Application extends Model
     {
         return $this->hasOne('App\Models\ApplicationInternetConnection','application_id');
     }
-    public function trainees()
-    {
-        return $this->hasMany('App\Models\Trainee','application_id');
-    }
-
 
 
 }

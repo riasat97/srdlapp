@@ -1,13 +1,15 @@
-@extends('layouts.app')
+@extends('layouts.dashboard')
 @section('css')
     <!-- Font Icon -->
     <link rel="stylesheet" href="{{ asset('fonts/material-icon/css/material-design-iconic-font.min.css') }}">
     <!-- Main css -->
-    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
+    {{--<link rel="stylesheet" href="{{ asset('css/custom.css') }}">--}}
     <link rel="stylesheet" href="{{ asset('css/iziToast.min.css') }}">
     <!-- Main css -->
     <link href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    {{--<link href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" rel="stylesheet">--}}
+    {{--<link rel="https://cdn.datatables.net/rowgroup/1.1.1/css/rowGroup.bootstrap4.min.css" />--}}
+    <link href="//cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css" rel="stylesheet">
     <style>
         .modal-footer{
             border-top: 0;
@@ -20,7 +22,7 @@
 @endsection
 @section('content')
     <section class="content-header">
-        <h1 class="pull-left">ডাউনলোড/ প্রিন্ট: প্রাপ্ত আবেদনসমূহ</h1>
+        <h1 class="pull-left">শেখ রাসেল ডিজিটাল ল্যাব স্থাপন প্রকল্প (২য় পর্যায়): চূড়ান্ত তালিকা </h1>
     </section>
     <div class="content">
         <div class="clearfix"></div>
@@ -32,7 +34,6 @@
         <div class="box box-primary">
             <div class="box-body">
                 <div class="form-row">
-                    @if(Auth::user()->hasRole(['super admin']))
                         <div class="form-group  col-md-2">
                             {{Form::label('div', 'বিভাগ') }}
                             {{ Form::select('division', $divisionList,old('division'),array('class'=>'form-control','id'=>'div')) }}
@@ -43,19 +44,14 @@
                             {{--                        <select name="district" id="dis" class="form-control" style="width:350px">--}}
                             {{--                        </select>--}}
                         </div>
-                    @endif
-                    @if(Auth::user()->hasRole(['super admin']))
                         <div class="form-group  col-md-2">
                             {{Form::label('seat_type', 'সংসদীয় আসনের ধরণ') }}
                             {{Form::select('seat_type', ['0'=>'সকল ','general'=>'সাধারণ', 'reserved'=>'সংরক্ষিত মহিলা আসন'], old('seat_type'),['id'=>'seat_type','class'=>'form-control'])}}
                         </div>
-                    @endif
-                    @if(Auth::user()->hasRole(['super admin']))
                         <div class="form-group  col-md-2">
                             {{Form::label('parliamentary_constituency', 'নির্বাচনী এলাকা') }}
                             {{Form::select('parliamentary_constituency', ['0'=>'সকল'], old('parliamentary_constituency'),['id'=>'parliamentary_constituency','class'=>'form-control'])}}
                         </div>
-                    @endif
                     {{--                    @if(Auth::user()->hasRole(['district admin']))--}}
                     {{--                        <div class="form-group  col-md-3">--}}
                     {{--                            {{Form::label('parliamentary_constituency', 'নির্বাচনী এলাকা') }}--}}
@@ -63,45 +59,25 @@
                     {{--                            --}}{{--<button class="btn btn-lg btn-success pull-right" id="searchbtn" style="margin-top: 3px;" type="submit">Search</button>--}}
                     {{--                        </div>--}}
                     {{--                    @endif--}}
-                    @if(Auth::user()->hasRole(['super admin']))
                         <div class="form-group  col-md-2">
                             {{Form::label('upazila', 'উপজেলা') }}
                             {{Form::select('upazila', ['0'=>'সকল'], old('upazila'),['id'=>'upazila','class'=>'form-control'])}}
                         </div>
-                    @endif
 
-                    @if(Auth::user()->hasRole(['district admin']))
-                        <div class="form-group  col-md-2">
-                            {{Form::label('upazila', 'উপজেলা') }}
-                            {{Form::select('upazila', $upazilas, null,['id'=>'upazila','class'=>'form-control upazila-default'])}}
-                        </div>
-                    @endif
-
-                    @if(Auth::user()->hasRole(['super admin']))
-                        <div class="form-group  col-md-2">
+                        {{--<div class="form-group  col-md-2">
                             {{Form::label('union_pourashava_ward', 'ইউনিয়ন/পৌরসভা ') }}
                             {{Form::select('union_pourashava_ward', ['0'=>'সকল'], old('union_pourashava_ward'),['id'=>'union_pourashava_ward','class'=>'form-control'])}}
-                        </div>
-                    @endif
+                        </div>--}}
                 </div>
                 <div class="form-row">
-                    @if(Auth::user()->hasRole(['super admin']))
                         <div class="form-group col-md-2">
                             <label for="">কম্পিউটার ল্যাবের ধরণ</label>
-                            {{Form::select('lab_type', array('0'=>'সকল ','srdl'=>'শেখ রাসেল ডিজিটাল ল্যাব','sof' => 'স্কুল অফ ফিউচার'), old('lab_type'),['class'=>'form-control', 'id'=>'lab_type',])}}
+                            {{Form::select('lab_type', array('0'=>'সকল ','srdl'=>'শেখ রাসেল ডিজিটাল ল্যাব','sof' => 'স্কুল অফ ফিউচার','srdl_sof' => 'স্কুল অফ ফিউচার ও শেখ রাসেল ডিজিটাল ল্যাব'), old('lab_type'),['class'=>'form-control', 'id'=>'lab_type',])}}
                         </div>
-                    @endif
-                    @if(Auth::user()->hasRole(['super admin']))
-                        <div class="form-group col-md-2">
-                            <label for="">আবেদনের ধরণ </label>
-                            {{Form::select('application_type', array('0'=>'সকল ','listed_by_deo' => 'ডিও', 'ref' => 'অন্যান্য রেফারেন্স'), old('application_type'),['class'=>'form-control', 'id'=>'application_type',])}}
-                        </div>
-                    @endif
-                    @if(Auth::user()->hasRole(['super admin','district admin']))
+
                         <div class="form-group col-md-3">
                             <button class="btn btn-lg btn-success searchbtn"  value="submitted" id="searchbtn" type="submit"><i class="fas fa-search"></i> অনুসন্ধান</button>
                         </div>
-                    @endif
 
                 </div>
                 <div style="font-family: sans-serif;">{{ $dataTable->table(['class' => 'table table-bordered'], false) }}</div>
@@ -118,7 +94,9 @@
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
     <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+    {{--<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>--}}
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap4.min.js"></script>
+
     <script src="{{ asset('js/iziToast.min.js') }}"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.0.3/css/buttons.dataTables.min.css">
     <script src="https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min.js"></script>
@@ -135,8 +113,7 @@
             $('button').click(function(){
                 filter = 1;
             });
-            var table = $("#datatable");
-
+            var table = $("#dashboard-datatable");
             table.on('preXhr.dt',function (e,settings,d) {
                 d.filter= filter,
                     d.divId = ($('#div').val()) ? $('#div').val() : '',
@@ -145,8 +122,7 @@
                     d.parliamentaryConstituencyId = ($('#parliamentary_constituency').val()) ? $('#parliamentary_constituency').val() : '',
                     d.upazilaId= ($('#upazila').val()) ? $('#upazila').val() : '',
                     d.unionPourashavaWardId= ($('#union_pourashava_ward').val()) ? $('#union_pourashava_ward').val() : '',
-                    d.lab_type= ($('#lab_type').val()) ? $('#lab_type').val() : '',
-                    d.application_type= ($('#application_type').val()) ? $('#application_type').val() : ''
+                    d.lab_type= ($('#lab_type').val()) ? $('#lab_type').val() : ''
             })
 
             $('#searchbtn').click(function (e) {
@@ -154,7 +130,7 @@
                 return false;
             });
 
-            $('#datatable tbody').on('click', 'td.details-control', function () {
+            $('#dashboard-datatable tbody').on('click', 'td.details-control', function () {
                 var tr = $(this).closest('tr');
                 var row = table.DataTable().row( tr );
 
@@ -213,3 +189,4 @@
     </script>
 
 @endpush
+

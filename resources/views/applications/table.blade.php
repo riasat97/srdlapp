@@ -1,5 +1,5 @@
 <div class="col-sm-12">
-    <table class="table table-bordered yajra-datatable" style="width: 100%">
+    <table class="table table-bordered yajra-datatable" id="" style="width: 100%">
         <thead>
         <tr>
             <th>ক্রম</th>

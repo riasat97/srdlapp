@@ -3,7 +3,9 @@
 namespace App\DataTables;
 
 use App\Models\Application;
+use App\Models\Dashboard;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
@@ -11,7 +13,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class ApplicationsDataTable extends DataTable
+class SelectedInstitutionsDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -21,24 +23,25 @@ class ApplicationsDataTable extends DataTable
      */
     public function dataTable($query)
     {
-        $user= Auth::user();
         return datatables()
             ->eloquent($query)
-            ->addIndexColumn();
-            /*->addColumn('action', function ($row)use ($user) {
-                //dd($row->id);
-                if($user->hasRole('super admin'))$btn="<a href='".route("applications.edit",$row->id)."' target=\"_blank\" class='super-admin-edit btn btn-info btn-sm'>App Edit</a> "; else $btn="";
-                $btn = $btn."<a href='javascript:void(0)' data-application='" . json_encode($row) . "' class='edit btn btn-success btn-sm'>Edit</a>
-                            <a href='javascript:void(0)' class='delete btn btn-danger btn-sm'>Details</a>";
-                return $btn;
-            })*/
-            //->rawColumns(['action']);
+            ->addIndexColumn()
+            ->filter(function ($instance) {
+
+                if (!empty(request()->get('search')['value'])) {
+                    $instance->where(function($w){
+                        $search = request()->get('search')['value'];
+                        $w->orWhere('ins', 'LIKE', "%$search%")
+                           ->orWhere('id', 'LIKE', "%$search%");
+                    });
+                }
+            });
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\Application $model
+     * @param \App\Models\SelectedInstitution $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function query( Request $request)
@@ -56,15 +59,19 @@ class ApplicationsDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-                    ->setTableId('datatable')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    ->dom('lBfrtip')
-                    ->orderBy(1)
+            ->setTableId('dashboard-datatable')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            ->dom('lBfrtip')
+            ->orderBy(1)
 
             ->parameters([
                 'dom' => 'lBfrtip',
                 "pageLength"=> "25",
+                'responsive' => true,
+                'autoWidth' => false,
+                "sScrollX"=> "100%",
+                    "bScrollCollapse"=> true,
                 'buttons' => [ [
                     'extend' => 'excel',
                     'messageTop' => "SRDL"
@@ -82,12 +89,15 @@ class ApplicationsDataTable extends DataTable
     {
         return [
 
-            Column::make('DT_RowIndex','serial')->title('ক্রম'),
+            Column::make('DT_RowIndex','id')->title('ক্রম'),
             Column::make('division','division')->title('বিভাগ'),
             Column::make('district','district')->title('জেলা'),
-            Column::make('constituency','constituency')->title('নির্বাচনী এলাকা'),
+            Column::make('constituency','parliamentary_constituency')->title('নির্বাচনী এলাকা'),
             Column::make('upazila','upazila')->title('উপজেলা'),
-            Column::make('institution_bn','institution_bn')->title('শিক্ষা প্রতিষ্ঠান'),
+            Column::make('ins','institution_bn')->title('শিক্ষা প্রতিষ্ঠান'),
+            Column::make('profile.head_name','profile.head_name')->title('প্রতিষ্ঠান প্রধান'),
+            Column::make('contact','profile.institution_tel')->title('যোগাযোগ'),
+            Column::make('profile.institution_email','profile.institution_email')->title('ইমেইল')
             /*Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
@@ -95,7 +105,7 @@ class ApplicationsDataTable extends DataTable
                 ->addClass('details-control'),*/
         ];
     }
-//https://yajrabox.com/docs/laravel-datatables/master/html-builder-column-builder
+
     /**
      * Get filename for export.
      *
@@ -103,31 +113,9 @@ class ApplicationsDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'Applications_' . date('YmdHis');
+        return 'SelectedInstitutions_' . date('YmdHis');
     }
 
-    /*protected function getAppData(Request $request)
-    {
-        //dd($request->all());
-        $data = Application::query();
-        if (!empty($request->get('divId'))|| !empty($request->get('disId')) || !empty($request->get('parliamentaryConstituencyId'))) {
-            if (!empty($request->get('divId'))) {
-                $data->where('division', $request->get('divId'));
-            }
-
-            if (!empty($request->get('disId'))) {
-                $data->where('district', $request->get('disId'));
-            }
-            if (!empty($request->get('parliamentaryConstituencyId'))) {
-                $data->where('parliamentary_constituency', $request->get('parliamentaryConstituencyId'));
-            }
-            // dd($data->get()->toArray());
-            return $data->with('attachment')->latest('id');
-            //return $this->applyScopes($data);
-        }
-        return $data->with('attachment')->permitted(null)->latest('id');
-        //return $this->applyScopes($data);
-    }*/
     protected function getAppData(Request $request)
     {
         //dd(empty($request->get('upazilaId')));
@@ -151,10 +139,7 @@ class ApplicationsDataTable extends DataTable
                 $data->where('parliamentary_constituency', $request->get('parliamentaryConstituencyId'));
             }
             if (!empty($request->get('upazilaId'))) {
-                if(Auth::user()->hasRole('district admin') && $request->get('upazilaId')=='1')
-                    $data->permitted(null);
-                else
-                    $data->where('upazila', $request->get('upazilaId'));
+                $data->where('upazila', $request->get('upazilaId'));
             }
             if (!empty($request->get('unionPourashavaWardId'))) {
                 $data->orWhere('union_pourashava_ward', $request->get('unionPourashavaWardId'));
@@ -169,11 +154,12 @@ class ApplicationsDataTable extends DataTable
                 else if($applicationType=='ref')
                     $data->where('listed_by_deo', "NO");
             }
+
             // dd($data->get()->toArray());
-            return $data->with('attachment','verification','profile','internet')->orderByRaw(" division,district,seat_no asc, FIELD(lab_type , 'sof') DESC,upazila ASC");
+            return $data->with('profile')->where('status',"YES")->orderByRaw(" division,district,seat_no asc, FIELD(lab_type , 'sof') DESC,upazila ASC");
             //return $this->applyScopes($data);
         }
-        return $data->with('attachment','verification')->permitted(null)->latest('id');
+         return $data->with('profile')->where('status',"YES")->latest('id');
         //return $this->applyScopes($data);
     }
 }

@@ -36,15 +36,15 @@
         </div>
         <div class="tab-pane" id="tab_2">
             @if(Auth::user()->hasRole(['district admin']))
-                @if(count($verified_upazilas)>1)
+                @if(count($verified_upazilas_and_district_apps)>1)
                     <div class="form-group  col-md-12">
                         {{Form::label('app_upazila', 'উপজেলা') }}
-                        {{Form::select('app_upazila', $verified_upazilas, null,['id'=>'app_upazila','class'=>'form-control upazila-default'])}}
+                        {{Form::select('app_upazila', $verified_upazilas_and_district_apps, null,['id'=>'app_upazila','class'=>'form-control upazila-default'])}}
                     </div>
                 @else
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <h4 class="callout callout-danger">উপজেলা কার্যালয়সমূহ হতে অদ্যাবধি কোনো আবেদন যাচাই করা হয়নি।</h4>
+                            <h4 class="callout callout-danger">উপজেলা কার্যালয়সমূহ হতে অদ্যাবধি কোনো আবেদন যাচাই করা হয়নি / প্রেরণ করা হলেও জেলা কার্যালয় কর্তৃক আবেদনসমূহ ভেরিফাই করা হয়নি। </h4>
                         </div>
                     </div>
                 @endif

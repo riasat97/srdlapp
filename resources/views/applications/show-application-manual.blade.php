@@ -493,6 +493,9 @@
                 <tr class="td-box">
                     <td width="50%" height="100" align="left" valign="middle" class="padding5_10 border-right">
                         যাচাইকারী (যেকোনো একজন):<br>
+                        @if( $user['upazila_admin']->designation == 'adc')
+                            <img   src="{{asset('images/empty-check-box.png')}}"   alt="checked" style="height: 16px;"> প্রোগ্রামার
+                        @endif
                         <img   src="{{asset('images/empty-check-box.png')}}"   alt="checked" style="height: 16px;"> সহকারী প্রোগ্রামার
                         <img   src="{{asset('images/empty-check-box.png')}}"   alt="checked" style="height: 16px;"> উপজেলা মাধ্যমিক শিক্ষা অফিসার
                         <br><br><br>
@@ -505,9 +508,9 @@
                     <td width="50%" height="100" align="left" valign="middle" class="padding5_10 border-right">
                         <p>
                             @if($application->lab_type== lab_type()['srdl'])
-                                {{ Form::label('upazila_verified','সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপনের জন্য:',["id"=>"upazila_verified_lb"])}}
+                                {{ Form::label('upazila_verified','সুপারিশকারী ('.$recommender.'): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপনের জন্য:',["id"=>"upazila_verified_lb"])}}
                             @else
-                                {{ Form::label('upazila_verified','সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপনের জন্য:',["id"=>"upazila_verified_lb"])}}
+                                {{ Form::label('upazila_verified','সুপারিশকারী ('.$recommender.'): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপনের জন্য:',["id"=>"upazila_verified_lb"])}}
                             @endif
                             <br>
                             <img  src="{{asset('images/empty-check-box.png')}}"   alt="checked" style="height: 16px;"> সুপারিশ করা হল

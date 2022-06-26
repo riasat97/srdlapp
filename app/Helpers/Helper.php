@@ -16,7 +16,7 @@ if (!function_exists('ReservedSeats')) {
         return $input[$res];
     }
     function lab_type(){
-        return array('srdl'=>'শেখ রাসেল ডিজিটাল ল্যাব','sof' => 'স্কুল অফ ফিউচার');
+        return array('srdl'=>'শেখ রাসেল ডিজিটাল ল্যাব','sof' => 'স্কুল অফ ফিউচার','srdl_sof'=>'স্কুল অফ ফিউচার ও শেখ রাসেল ডিজিটাল ল্যাব');
     }
     function management(){
         return array('public'=>'সরকারি','private' => 'বেসরকারি','others'=>'অন্যান্য');
@@ -41,6 +41,13 @@ if (!function_exists('ReservedSeats')) {
     }
     function designations(){
         return array('0' => 'নির্বাচন করুন','dc' => 'জেলা প্রশাসক', 'adc' => 'অতিরিক্ত জেলা প্রশাসক','uno'=>'উপজেলা নির্বাহী অফিসার'/*,'programmer'=>'প্রোগ্রামার','ap'=>'সহকারী প্রোগ্রামার','useo'=>'উপজেলা মাধ্যমিক শিক্ষা অফিসার','others'=>'অন্যান্য'*/);
+    }
+    function trainee_designations(){
+        return array('0' => 'নির্বাচন করুন','professor' => 'অধ্যাপক', 'associate professor' => 'সহযোগী অধ্যাপক',
+            'assistant professor'=>'সহকারী অধ্যাপক','senior_lecturer'=>'জ্যেষ্ঠ প্রভাষক বা সমমান','lecturer'=>'প্রভাষক বা সমমান',
+            'junior_instructor'=>'জুনিয়র ইন্সট্রাক্টর','senior_assistant_teacher'=>'সিনিয়র সহকারী শিক্ষক বা সমমান',
+            'assistant_teacher'=>'সহকারী শিক্ষক বা সমমান','trade_instructor'=>'ট্রেড ইন্সট্রাক্টর বা সমমান',
+            'others'=>'অন্যান্য');
     }
     function ReservedSeats()
     {
@@ -122,4 +129,5 @@ if (!function_exists('ReservedSeats')) {
         }
         return false;
     }
+
 }

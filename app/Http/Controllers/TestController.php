@@ -84,6 +84,7 @@ class TestController extends ApplicationController
             $labs[$tag->name]=$tag->translate('name', 'bn');
         }
         $user=$this->getDistrictAndUpazilaAdminFromApplication($application->id);
+        $recommender= $user['upazila_admin']->designation!=""?designations()[$user['upazila_admin']->designation]:"উপজেলা নির্বাহী অফিসার";
         //dd($user);
         $selectedLabs=$this->getLabs($application,'lab');
         $listAttachmentFile= $this->getListAttachmentFile($application);
@@ -107,7 +108,7 @@ class TestController extends ApplicationController
             "ins_type_sof"=>$ins_type_sof,"ins_level_sof"=>$ins_level_sof,
             "ins_level_technical"=>$ins_level_technical,'labs'=>$labs,'selectedLabs'=>$selectedLabs,
             'listAttachmentFile'=>$listAttachmentFile,'listAttachmentFilePathType'=>$listAttachmentFilePathType,
-            'districtVerified'=>$districtVerified,'qr'=>$qr,'manual'=>$manual,'user'=>$user ];
+            'districtVerified'=>$districtVerified,'qr'=>$qr,'manual'=>$manual,'user'=>$user,'recommender'=>$recommender ];
         //$pdf = \App::make('dompdf.wrapper');
         //$pdf->setOptions(['dpi' => 150, 'defaultFont' => 'Nikosh']);
         $config = ['instanceConfigurator' => function($mpdf) {

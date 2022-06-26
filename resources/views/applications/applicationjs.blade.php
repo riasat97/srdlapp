@@ -136,44 +136,48 @@
         getParliamentaryConstituencyIfnotOk();
     }
     function getParlimentaryConstituencies() {
+        var seatTypeID = $('#seat_type').val();
         var unionPourashavaWardID = $('#union_pourashava_ward').val();
         var upazilaID = $("#upazila").val();
         var disID = $('#dis').val();
         //$("#hidethis").show();
         //$('#is_parliamentary_constituency_ok').bootstrapToggle('on');
-        if(unionPourashavaWardID){
-            $.ajax({
-                type:"GET",
-                url:"{{url('parliamentary_constituencies')}}?upazilaId="+upazilaID+"&disId="+disID+"&unionPourashavaWardId="+unionPourashavaWardID,
-                success:function(res){
-                    if(res){
-                        $("#parliamentary_constituency").empty();
-                        $("#seat-no").text('সংসদীয় আসন নং:'+res['parliament'].seat_no);
-                        $("#hiddent_seat_no").val(res['parliament'].seat_no);
-                        //$('#parliamentary_constituency').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
-                        $("#parliamentary_constituency").append('<option value="'+res['parliament'].parliamentary_constituency+'">'+res['parliament'].parliamentary_constituency+'</option>');
-                        //$("#is_parliamentary_constituency_ok").removeAttr("disabled", "disabled");
-                        $("#hidethis").show();
-                        //$('#is_parliamentary_constituency_ok').bootstrapToggle('on');
-                    }else{
-                        console.log('make empty');
-                        $("#union_pourashava_ward").empty();
-                        $("#parliamentary_constituency").empty();
+        if(seatTypeID != "reserved") {
+            if (unionPourashavaWardID) {
+                $.ajax({
+                    type: "GET",
+                    url: "{{url('parliamentary_constituencies')}}?upazilaId=" + upazilaID + "&disId=" + disID + "&unionPourashavaWardId=" + unionPourashavaWardID,
+                    success: function (res) {
+                        if (res) {
+                            $("#parliamentary_constituency").empty();
+                            $("#seat-no").text('সংসদীয় আসন নং:' + res['parliament'].seat_no);
+                            $("#hiddent_seat_no").val(res['parliament'].seat_no);
+                            //$('#parliamentary_constituency').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
+                            $("#parliamentary_constituency").append('<option value="' + res['parliament'].parliamentary_constituency + '">' + res['parliament'].parliamentary_constituency + '</option>');
+                            //$("#is_parliamentary_constituency_ok").removeAttr("disabled", "disabled");
+                            $("#hidethis").show();
+                            //$('#is_parliamentary_constituency_ok').bootstrapToggle('on');
+                        } else {
+                            console.log('make empty');
+                            $("#union_pourashava_ward").empty();
+                            $("#parliamentary_constituency").empty();
+                        }
                     }
-                }
-            });
-        }else{
-            console.log('make empty');
-            $("#union_pourashava_ward").empty();
-            $("#parliamentary_constituency").empty();
+                });
+            } else {
+                console.log('make empty');
+                $("#union_pourashava_ward").empty();
+                $("#parliamentary_constituency").empty();
+            }
         }
     }
-
+    @if(Auth::user()->hasRole(['super admin']))
     $('#is_parliamentary_constituency_ok').on('change',function(){
         if ($("#is_parliamentary_constituency_ok").prop("checked") == false ) {
             getParliamentaryConstituencyIfnotOk();
         }
     });
+    @endif
     function getParliamentaryConstituencyIfnotOk(){
 
             $("#parliamentary_constituency").removeAttr("disabled");

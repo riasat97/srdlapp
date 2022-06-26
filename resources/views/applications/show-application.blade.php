@@ -199,18 +199,18 @@
                     <td width="50%" height="30" align="left" valign="middle" class="padding5_10 border-right">
                         <p>প্রতিষ্ঠান প্রধানের নাম: {{$application->profile->head_name ?? ""}}</p>
                         <br><br>
-                        <p>মোবাইল: {{ $application->profile->institution_email ?? "" }}</p>
+                        <p>মোবাইল: {{ $application->profile->institution_tel ?? "" }}</p>
                         <br>
-                        <p>ইমেইল:{{ $application->profile->institution_tel ?? "" }}</p>
+                        <p>ইমেইল:{{ $application->profile->institution_email ?? "" }}</p>
                         <br>
                     </td>
 
                     <td width="50%" height="30" align="left" valign="middle" class="padding5_10">
                         <p>বিকল্প প্রতিনিধি/ কমিটির সভাপতির নাম: {{ $application->profile->alt_name ?? "" }}</p>
                         <br><br>
-                        <p>মোবাইল: {{ $application->profile->alt_email ?? "" }}</p>
+                        <p>মোবাইল: {{ $application->profile->alt_tel ?? "" }}</p>
                         <br>
-                        <p>ইমেইল: {{ $application->profile->alt_tel ?? "" }}</p>
+                        <p>ইমেইল: {{ $application->profile->alt_email ?? "" }}</p>
                         <br>
                     </td>
                 </tr>
@@ -439,9 +439,9 @@
                 <td width="50%" height="100" align="left" valign="middle" class="padding5_10 border-right">
                     <p>
                         @if($application->lab_type== lab_type()['srdl'])
-                            {{ Form::label('upazila_verified','সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপনের জন্য:',["id"=>"upazila_verified_lb"])}}
+                            {{ Form::label('upazila_verified','সুপারিশকারী ('.$recommender.'): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপনের জন্য:',["id"=>"upazila_verified_lb"])}}
                         @else
-                            {{ Form::label('upazila_verified','সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপনের জন্য:',["id"=>"upazila_verified_lb"])}}
+                            {{ Form::label('upazila_verified','সুপারিশকারী ('.$recommender.'): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপনের জন্য:',["id"=>"upazila_verified_lb"])}}
                         @endif
                         <br>
                         <img @if(!empty($application->verification->app_upazila_verified) && $application->verification->app_upazila_verified=="YES" ) src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> সুপারিশ করা হল
@@ -451,7 +451,7 @@
                     <p>@if(!empty($user['upazila_admin']->verified=='YES'))স্বাক্ষরিত/- @else <img src="{{ asset('images/sign.png') }}" width="150" height="50" alt="sign"> @endif  </p>
                     <p>{{ (!empty($user['upazila_admin']->verified=='YES')&&!empty($user['upazila_admin']->signature_at))?\App\Classes\Bengali::bn_date_time($user['upazila_admin']->signature_at->format('d-m-Y H:i:s')):'' }}</p>
                     <p>({{ $user['upazila_admin']->name??'' }})</p>
-                    <p>{{ !empty($user['upazila_admin']->designation)?designations()[$user['upazila_admin']->designation]:'উপজেলা নির্বাহী অফিসার' }}</p>
+                    <p>{{ $recommender }}</p>
                     <p>{{ $application->upazila.',' .$application->district }}</p>
                     <br><br><br>
                 </td>
@@ -459,9 +459,9 @@
                 <td width="50%" height="100" align="left" valign="middle" class="padding5_10">
                     <p>
                         @if($application->lab_type== lab_type()['srdl'])
-                            {{ Form::label('district_verified', 'জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপনের জন্য:',["id"=>"district_verified_lb"])}}
+                            {{ Form::label('district_verified', 'জেলা প্রশাসক: '.$recommender.' এর সুপারিশমতে উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপনের জন্য:',["id"=>"district_verified_lb"])}}
                         @else
-                            {{ Form::label('district_verified', 'জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপনের জন্য:',["id"=>"district_verified_lb"])}}
+                            {{ Form::label('district_verified', 'জেলা প্রশাসক: '.$recommender.' এর সুপারিশমতে উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপনের জন্য:',["id"=>"district_verified_lb"])}}
                         @endif
                         <br>
                         <img @if(!empty($application->verification->app_district_verified) && $application->verification->app_district_verified=="YES" )  src="{{asset('images/checkbox-checked.png')}}"@else src="{{asset('images/empty-check-box.png')}}" @endif  alt="checked" style="height: 16px;"> সুপারিশ করা হল

@@ -62,7 +62,7 @@ class UserController extends AppBaseController
             'password' => Hash::make($input['password']),
             'name' => $input['name'],
             'designation' => $input['designation'],
-            'posting_type' => $input['posting_type'],
+            //'posting_type' => $input['posting_type'],
             'mobile' => $input['mobile'],
             'email' => $input['email'],
         ]);

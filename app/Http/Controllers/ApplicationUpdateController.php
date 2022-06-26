@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Classes\Bengali;
 use App\Http\Requests\CreateApplicationRequest;
 use App\Http\Requests\CreateApplicationSendBackRequest;
+use App\Http\Requests\CreateApplicationSendRequest;
 use App\Http\Requests\CreateDistrictVerificationRequest;
 use App\Http\Requests\CreateDuplicateRequest;
 use App\Models\Application;
@@ -77,7 +78,6 @@ class ApplicationUpdateController extends ApplicationController
             'parliamentary_constituency' => !empty($request->get('parliamentary_constituency'))?$request->get('parliamentary_constituency'):'',
             'seat_no' => !empty($request->get('parliamentary_constituency'))?$this->getSeatNo($request->get('parliamentary_constituency')):'',
             'is_parliamentary_constituency_ok' => (!empty($request->get('is_parliamentary_constituency_ok'))&&!empty($request->get('parliamentary_constituency')))?"YES":"",
-            //'listed_by_deo' => !empty($request->get('listed_by_deo'))?"YES":"NO",
         ];
         if(!empty(Auth::user()->hasRole('super admin'))){
             $su_application= ['division' => $request->get('division'), 'district' => $request->get('district'),
@@ -88,11 +88,11 @@ class ApplicationUpdateController extends ApplicationController
         $updated= Application::where('id',$id)->update($application);
         $application= Application::where('id',$id)->with('attachment','lab','verification','profile')->first();
         //dd($application);
-        if(($request->get('hidden_is_parliamentary_constituency_ok')=="NO") && !empty($request->get('parliamentary_constituency'))){
+        if(Auth::user()->hasRole('super admin') && $request->get('hidden_is_parliamentary_constituency_ok')=="NO" && !empty($request->get('parliamentary_constituency'))){
             $application->is_parliamentary_constituency_ok= "NO";
         }
         $attachment= (!empty($application->attachment))?$application->attachment : new ApplicationAttachment();
-        if( empty($request->get('listed_by_deo')) && $application->listed_by_deo=="YES"){ // deo changed to ref
+        if( Auth::user()->hasRole('super admin') && empty($request->get('listed_by_deo')) && $application->listed_by_deo=="YES"){ // deo changed to ref
             $application->listed_by_deo="NO";
             $application->save();
         }
@@ -165,14 +165,20 @@ class ApplicationUpdateController extends ApplicationController
                 $verified->good_result = !empty($request->get('good_result')) ? "YES" : "NO";
                 $verified->about_institution = !empty($request->get('about_institution')) ? $request->get('about_institution') : '';
                 $verified->has_ict_teacher = !empty($request->get('has_ict_teacher')) ? "YES" : "NO";
-            if(!empty($request->get('app_upazila_verified')))
+            if(!empty($request->get('app_upazila_verified')) && $application->attachment->verification_report_file )
                 $verified->app_upazila_verified = $request->get('app_upazila_verified');
-                //$verified->app_district_verified = !empty($request->get('app_district_verified')) ? "YES" : "NO";
             $application->verification()->save($verified);
 
             if (!empty($request->hasFile('verification_report_file'))) {
                 $attachment = $this->storeVerificationReport($request, $attachment,$application);
                 $application->attachment()->save($attachment);
+                if(empty($application->attachment->verification_report_file_path)){
+                    $verified->app_upazila_verified= null;
+                }else{
+                    if(!empty($request->get('app_upazila_verified')))
+                        $verified->app_upazila_verified = $request->get('app_upazila_verified');
+                }
+                $application->verification()->save($verified);
             }
         }
         if(!empty($request->get('old_app'))){
@@ -183,8 +189,12 @@ class ApplicationUpdateController extends ApplicationController
         $application->save();
         if(Auth::user()->hasRole('super admin'))
             Flash::success('অ্যাপ্লিকেশনটি সফলভাবে আপডেট করা হয়েছে।');
-        else
-        Flash::success('প্রতিষ্ঠানটির উপযুক্ততা যাচাই সফল হয়েছে।');
+        else{
+            if(!empty($application->attachment->verification_report_file_path))
+                Flash::success('অ্যাপ্লিকেশনটি সফলভাবে আপডেট করা হয়েছে।');
+            else
+                Flash::error('পরিদর্শন প্রতিবেদনের স্ক্যান কপিটি আপলোড সফল হয়নি। ');
+        }
         //dd($application->toArray());
         return redirect()->route('applications.index')->with('status','আপনার আবেদনটি সফলভাবে জমা দেওয়া হয়েছে।!');
     }
@@ -348,14 +358,17 @@ class ApplicationUpdateController extends ApplicationController
             else Flash::warning('ল্যাবের আবেদনসমূহ প্রকল্প দপ্তরে প্রেরণ করার পর আবেদনসমূহ যাচাই/ ডুপ্লিকেট চিহ্নিত (যদি থাকে) করার অপশনটি বিলুপ্ত হয়ে যাবে। ');
 
         $verified_upazilas= $this->getVerifiedUpazilas();
-
+        $verified_upazilas_and_district_apps=$this->getDisVerifiedUpazilas();
         return view('applications.send-application',['applications'=>$bn->bn_number($applications->count()),'verified_apps'=>$bn->bn_number($verified_apps),
-            'duplicate_apps'=>$bn->bn_number($duplicate_apps),'remaining'=>$bn->bn_number($remaining), 'verified_upazilas'=>$verified_upazilas]);
+            'duplicate_apps'=>$bn->bn_number($duplicate_apps),'remaining'=>$bn->bn_number($remaining),
+            'verified_upazilas'=>$verified_upazilas,'verified_upazilas_and_district_apps'=>$verified_upazilas_and_district_apps]);
     }
 
-    public function sendApplications(){
+    public function sendApplications(CreateApplicationSendRequest $request){
 
         $user=Auth::user();
+        $districtAdmin=false;
+        $upazilaWise= $request->get('upazila_wise');
         if($user->hasRole('district admin')) {
 
             $district_en = explode('_', $user->username)[0];
@@ -369,6 +382,13 @@ class ApplicationUpdateController extends ApplicationController
             $duplicate_apps = Application::where('district', $district_bn)->whereHas('verification', function ($query) {
                 $query->where('app_duplicate', 'YES');
             })->get()->count();
+            if(!empty($request->get('app_upazila'))) {
+                $upazila_bn= $request->get('app_upazila');
+                $this->postUpazilaWiseSendApplications($upazila_bn,$applications,$verified_apps,$duplicate_apps);
+                $message='আপনি সফল ভাবে প্রকল্প দপ্তরে '.$upazila_bn.' উপজেলা কার্যালয়ের যাচাইকৃত ল্যাবের আবেদনসমূহ প্রেরণ করেছেন।';
+                return response()->json(['message'=>$message,'success'=>true,'type'=>'upazilaWise']);
+            }
+            $districtAdmin=true;
         }
         if($user->hasRole('upazila admin')){
 
@@ -387,6 +407,7 @@ class ApplicationUpdateController extends ApplicationController
                 $query->where('app_duplicate','YES');
             })->get()->count();
         }
+
             $remaining= $applications->count()-($verified_apps+$duplicate_apps);
             $bn= new Bengali();
             if($remaining==0){
@@ -394,15 +415,20 @@ class ApplicationUpdateController extends ApplicationController
                 $user->signature_at= Carbon::now();
                 $user->save();
                 $success= true;
-                $message='আপনি সফল ভাবে ল্যাবের আবেদনসমূহ প্রেরণ করেছেন।';
+                $message='আপনি সফল ভাবে যাচাইকৃত ল্যাবের আবেদনসমূহ প্রেরণ করেছেন।';
+                /*if($districtAdmin && !$upazilaWise){
+                    $verified_applications = Application::where('district', $district_bn)->whereHas('verification', function ($query) {
+                        $query->whereNotNull('app_district_verified')->orWhere('app_duplicate','YES');
+                    })->groupBy('upazila')->pluck('upazila','upazila');;
+                    $this->postUpazilaWiseSendApplications($upazila_bn,$applications,$verified_apps,$duplicate_apps);
+                }*/
             }
             else{
                 $success=false;
                 $message='আপনার এখনো '.$bn->bn_number($remaining).' ল্যাবের আবেদন যাচাই করা/ ডুপ্লিকেট চিহ্নিত(যদি থাকে) করা বাকি।';
             }
-            return response()->json(['message'=>$message,'success'=>$success]);
+            return response()->json(['message'=>$message,'success'=>$success,'type'=>'allUpazila']);
 
-        return false;
     }
     public function sendbackApplications(CreateApplicationSendBackRequest $request){
         $user=Auth::user();
@@ -421,7 +447,7 @@ class ApplicationUpdateController extends ApplicationController
                 $message='আপনি সফল ভাবে ল্যাবের আবেদনসমূহ '.$upazilaobj->upazila.' উপজেলা কার্যালয়ে ফেরত পাঠিয়েছেন।';
                 $applications= Application::where('upazila',$upazilaobj->upazila)->where('district',$upazilaobj->district)->get();
                 foreach ($applications as $application){
-                    $application->verification()->update((['app_district_verified'=>null,'app_duplicate'=>null]));
+                    $application->verification()->update((['app_district_verified'=>null]));
                 }
 
             }else{
@@ -444,5 +470,25 @@ class ApplicationUpdateController extends ApplicationController
 
         $application->verification()->save($verification);
         return response()->json(['application'=>$application,'dup'=>$dup]);
+    }
+
+    private function postUpazilaWiseSendApplications($upazila_bn,$applications,$verified_apps,$duplicate_apps)
+    {
+        $user=Auth::user();
+        $district_en = explode('_', $user->username)[0];
+        $district_bn = Bangladesh::where('district_en', $district_en)->first()->district;
+        $update=['app_district_verified_at'=>Carbon::now()];
+        $applicationsToUpdate=Application::where('district',$district_bn)->where('upazila',$upazila_bn)->get();
+        foreach ($applicationsToUpdate as $application){
+            $application->verification()->update($update);
+        }
+        $remaining= $applications->count()-($verified_apps+$duplicate_apps);
+        $bn= new Bengali();
+        if($remaining==0){
+            $user->verified= "YES";
+            $user->signature_at= Carbon::now();
+            $user->save();
+        }
+        return true;
     }
 }

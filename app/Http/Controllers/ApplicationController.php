@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 use App\Models\ApplicationInternetConnection;
 use App\Models\User;
+use Carbon\Carbon;
 use Flash;
 use App\DataTables\ApplicationsDataTable;
 use App\Http\Requests\CreateApplicationRequest;
@@ -56,7 +57,7 @@ class ApplicationController extends Controller
                     //dd($row);
                     if(!$user->hasRole('super admin'))
                     $disUpazilaAdmin=$this->getDistrictAndUpazilaAdminFromApplication($row->id);
-                    //dd();
+                    //dd($disUpazilaAdmin);
                     $btn="";
                     if( ($user->hasRole('upazila admin') && empty($row->verification->app_duplicate) && $user->verified!="YES")or $user->hasRole(['super admin'])){
                         $lb_status=(!empty($row->verification->app_upazila_verified))?'Verified':'Verify';
@@ -73,7 +74,6 @@ class ApplicationController extends Controller
                         $lb_status=(!empty($row->verification->app_district_verified))?'Verified':'Verify';
                         $btn=$btn." <a href='javascript:void(0)' data-id='" . $row->id . "' id='" . $row->id . "' class='districtVerification view btn btn-info btn-sm'>$lb_status</a>";
                     }
-
                     if(($user->hasRole('district admin') ) or $user->hasRole(['super admin']))
                         $btn=$btn." <a href='" .route('loadpdf',$row->id ). "' data-id='" . $row->id . "' target=\"_blank\" class='digital btn btn-primary btn-sm'>Digital Copy</a>";
 
@@ -97,11 +97,13 @@ class ApplicationController extends Controller
                         $btn=$btn." <a href='" .route('loadpdf',[$row->id,'type'=>'manual'] ). "' data-id='" . $row->id . "' target=\"_blank\"  class='viewForm btn btn-primary btn-sm'>Download Form</a>";
                         $btn=$btn." <a href='" .route('loadpdf',$row->id ). "' data-id='" . $row->id . "' target=\"_blank\" style=\"visibility: hidden\" class='digital btn btn-primary btn-sm'>Digital Copy</a>";
                     }
+
                     return $btn;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
         }
+
         $divisionList=[];
         $divisions = Bangladesh::distinct()->get("division")->toArray();
         foreach ($divisions as $key=>$division)
@@ -157,10 +159,10 @@ class ApplicationController extends Controller
                 $data->where('listed_by_deo', "NO");
             }
             // dd($data->get()->toArray());
-            return $data->with('attachment','verification')->orderByRaw(" division,district,seat_no asc, FIELD(lab_type , 'sof') DESC,upazila ASC")->get();
+            return $data->with('attachment','verification','profile')->orderByRaw(" division,district,seat_no asc, FIELD(lab_type , 'sof') DESC,upazila ASC")->get();
             //return $this->applyScopes($data);
         }
-        return $data->with('attachment','verification')->permitted(null)->latest('id')->get();
+         return$data->with('attachment','verification','profile')->permitted(null)->latest('id')->get();
         //return $this->applyScopes($data);
     }
     public function getParliamentaryConstituency(Request $request)
@@ -209,6 +211,51 @@ class ApplicationController extends Controller
             }
             $select= ['0' => 'নির্বাচন করুন '];
             $upazilas= $select+ $verifiedUpazilas;
+            return $upazilas;
+        }
+        return [];
+    }
+    protected function getDisVerifiedUpazilas()
+    {
+        $user=Auth::user();
+        if($user->hasRole(['district admin'])){
+            $verifiedUpazilas=[];
+            $upazilas = Bangladesh::permitted(null)
+                ->groupBy('upazila')
+                ->orderBy('upazila','asc')
+                ->get();
+            foreach ($upazilas as $upazila){
+                $upazila_admin_match= Str::lower($upazila->upazila_en_domain).'_'.Str::lower($upazila->district_en).'_admin';
+                $upazila_admin= User::where('username',$upazila_admin_match)->first();
+                if(!empty($upazila_admin->verified)&&$upazila_admin->verified=="YES")
+                    $verifiedUpazilas[$upazila->upazila]=$upazila->upazila;
+            }
+
+            $district_en = explode('_', $user->username)[0];
+            $district_bn = Bangladesh::where('district_en', $district_en)->first()->district;
+            //$applications=Application::where('district',$district_bn)->get();
+            $verifiedDisUpazilas=[];
+            foreach ($verifiedUpazilas as $upazila){
+                $c=0;
+                $applications= Application::where('upazila',$upazila)->where('district',$district_bn)->get();
+                foreach ($applications as $application){
+                    if(empty($application->verification->app_district_verified_at)&& !empty($application->verification->app_district_verified) or !empty($application->verification->app_duplicate) )
+                    $c++;
+                }
+
+                if($c==$applications->count())
+                $verifiedDisUpazilas[$upazila]=$upazila;
+            }
+            //$verifiedDisUpazilas = array_unique($verifiedDisUpazilas);
+            /*$verifiedUpazilaAndDisApp=[];
+            foreach ($verifiedUpazilas as $verifiedUpazila){
+                if(in_array($verifiedUpazila,$verifiedDisUpazilas)){
+                    $verifiedUpazilaAndDisApp[$verifiedUpazila]=$verifiedUpazila;
+                }
+            }*/
+
+            $select= ['0' => 'নির্বাচন করুন '];
+            $upazilas= $select+ $verifiedDisUpazilas;
             return $upazilas;
         }
         return [];
@@ -394,14 +441,10 @@ class ApplicationController extends Controller
                 $verified->good_result= !empty($request->get('good_result'))?"YES":"NO";
                 $verified->about_institution= !empty($request->get('about_institution'))?$request->get('about_institution'):'';
                 $verified->has_ict_teacher= !empty($request->get('has_ict_teacher'))?"YES":"NO";
-                if(!empty($request->get('app_upazila_verified')))
-                $verified->app_upazila_verified= $request->get('app_upazila_verified');
-
-                //$verified->app_district_verified= !empty($request->get('app_district_verified'))?"YES":"NO";
-    //            $verified->is_eiin= !empty($request->get('is_eiin'))?"YES":"NO";
-    //            $verified->is_mpo= !empty($request->get('is_mpo'))?"YES":"NO";
-    //            $verified->is_broadband= !empty($request->get('is_broadband'))?"YES":"NO";
+            if(!empty($request->get('app_upazila_verified')))
+                $verified->app_upazila_verified = $request->get('app_upazila_verified');
             $application->verification()->save($verified);
+
             if(!empty($request->hasFile('verification_report_file'))){
                 $attachment=$this->storeVerificationReport($request,$attachment,$application);
                 $application->attachment()->save($attachment);
@@ -413,8 +456,9 @@ class ApplicationController extends Controller
         }
         $application->save();
         //dd($application->toArray());
-        Flash::success('প্রতিষ্ঠানটি সফলভাবে নিবন্ধিত হয়েছে।');
-        return redirect()->route('applications.index')->with('status','আপনার আবেদনটি সফলভাবে জমা দেওয়া হয়েছে।!');
+            Flash::success('প্রতিষ্ঠানটি সফলভাবে নিবন্ধিত হয়েছে।');
+
+            return redirect()->route('applications.index')->with('status','আপনার আবেদনটি সফলভাবে জমা দেওয়া হয়েছে।!');
     }
     public function getMemberName($member_name,$request)
     {
@@ -429,8 +473,8 @@ class ApplicationController extends Controller
             //$file =  base_path().'/public/uploads/documents/'.$application;
             $fileName =  $application->attachment->$path;
             $file=Storage::path($fileName);
-
-           if (file_exists($file)){
+           //dd($file);
+           if (Storage::exists($fileName)){
 
                 $ext =File::extension($file);
                 //dd($ext);
@@ -563,7 +607,6 @@ class ApplicationController extends Controller
     protected function storeVerificationReport(Request $req, $attachment,$application)
     {
         if(!empty($req->hasFile("verification_report_file")))
-
         $appFilePath= "verification_report_file_path";
         $file= $req->file("verification_report_file");
         if(!empty($attachment->$appFilePath) &&!filter_var($attachment->$appFilePath, FILTER_VALIDATE_URL) ){
@@ -572,9 +615,10 @@ class ApplicationController extends Controller
         $division= $application->division;
         $district= $application->district;
         $upazila=  $application->upazila;
+        $institution= $application->profile->institution;
         $path= 'verifications/'.$division.'/'.$district.'/'.$upazila;
         $this->mkDirectoryIfNotExists($path);
-        $fileName = $application->id.'_'.$application->institution_bn.'.pdf';
+        $fileName = $application->id.'_'.$institution.'.pdf';
         $filePath = $req->file('verification_report_file')->storeAs($path, $fileName, 'public');
         $attachment->verification_report_file = $fileName;
         $attachment->$appFilePath = $filePath;

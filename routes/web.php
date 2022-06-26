@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Application;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -20,13 +22,19 @@ use Illuminate\Support\Facades\Route;
 //https://stackoverflow.com/questions/29893859/laravel-5-login-redirect-to-a-subdomain
 //https://laravel-news.com/laravel-auth-redirection
 //https://stackoverflow.com/questions/52583886/post-request-in-laravel-error-419-sorry-your-session-419-your-page-has-exp
-
+Route::group(['prefix' => 'selected', 'as' => 'web.'], function () {
+    Route::get('/institutions', 'DashboardController@application')->name('selected-institutions');
+});
 Route::get('/', function () {
     if (Auth::check()) {
         return redirect()->route('applications.dashboard');
     }
-    return view('auth/login');
+    return redirect()->route('web.selected-institutions');
 });
+Route::get('/fantasy', 'FantasyController@index')->name('fantasy');
+Route::get('/fantasy/{event}/teams', 'FantasyController@teams')->name('fantasyTeams');
+Route::get('/fantasy/login', 'FantasyController@login')->name('fantasylogin');
+
 //Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 Auth::routes(['register' => false, 'verify' => true]);
 //Route::get('/{application}', 'ApplicationController@show')->name('show');
@@ -51,7 +59,16 @@ Route::group(['prefix' => 'admin/applications', 'as' => 'applications.','middlew
     Route::get('/{application}/duplicate', 'ApplicationUpdateController@getDuplicate')->name('duplicate');
     Route::patch('/{application}/duplicate', 'ApplicationUpdateController@postDuplicate')->name('postDuplicate');
     Route::post('/update/{application}', 'ApplicationController@update')->name('update');
+
 });
+
+Route::group(['prefix' => 'admin/institutions', 'as' => 'institutions.','middleware' => 'auth'], function () {
+    Route::get('{id}/trainees', 'TraineeController@edit')->name('trainees.edit');
+    Route::patch('{id}/trainees', 'TraineeController@update')->name('trainees.update');
+
+});
+
+
 Route::group(['prefix' => 'admin/download_print', 'as' => 'applications.','middleware' => 'auth'], function () {
     Route::get('/applications', 'ApplicationController@application')->name('download');
 });
@@ -137,7 +154,25 @@ Route::get('/clear', function() {
 
 });
 
+Route::get('/empty-reserved', function() {
+    $reserved_seats=[];
+   $reserved_seats_entered= Application::whereLike('parliamentary_constituency','মহিলা আসন-')->groupBy('seat_no')->get('seat_no')->toArray();
+   foreach ($reserved_seats_entered as $res_en){
+       $reserved_seats[]= $res_en['seat_no'];
+   }
+   //dd($reserved_seats);
+   $all_reserved= ReservedSeats();
+   $empty_seats=[];
+   foreach ($all_reserved as $all_res){
 
+       if(!in_array($all_res['seat_no'],$reserved_seats)){
+           $empty_seats[]= $all_res;
+       }
+   }
+
+    return ($empty_seats);
+
+});
 
 
 
