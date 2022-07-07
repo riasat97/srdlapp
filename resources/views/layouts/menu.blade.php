@@ -42,3 +42,7 @@
 </li>
 
 
+<li class="{{ Request::is('admin/labs*') ? 'active' : '' }}">
+    <a href="{{ route('labs.stocks.index') }}"><i class="fa fa-edit"></i><span>Stocks</span></a>
+</li>
+

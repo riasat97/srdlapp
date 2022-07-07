@@ -59,12 +59,19 @@ Route::group(['prefix' => 'admin/applications', 'as' => 'applications.','middlew
     Route::get('/{application}/duplicate', 'ApplicationUpdateController@getDuplicate')->name('duplicate');
     Route::patch('/{application}/duplicate', 'ApplicationUpdateController@postDuplicate')->name('postDuplicate');
     Route::post('/update/{application}', 'ApplicationController@update')->name('update');
-
 });
 
-Route::group(['prefix' => 'admin/institutions', 'as' => 'institutions.','middleware' => 'auth'], function () {
+Route::group(['prefix' => 'admin/labs', 'as' => 'labs.','middleware' => 'auth'], function () {
     Route::get('{id}/trainees', 'TraineeController@edit')->name('trainees.edit');
     Route::patch('{id}/trainees', 'TraineeController@update')->name('trainees.update');
+    //Route::resource('stocks', 'StockController');
+   // Route::get('/stocks', 'StockController@index')->name('stocks.index');
+    Route::get('/stocks', 'StockController@stocks')->name('stocks.index');
+    /*Route::get('{labId}/stocks/{stockId}', 'StockController@show')->name('stocks.show');*/
+    Route::get('{labId}/stocks/create', 'StockController@create')->name('stocks.create');
+    Route::post('{labId}/stocks/store', 'StockController@store')->name('stocks.store');
+    Route::get('{labId}/stocks/{stockId}/edit', 'StockController@edit')->name('stocks.edit');
+    Route::patch('{labId}/stocks/{stockId}', 'StockController@update')->name('stocks.update');
 
 });
 
@@ -173,6 +180,8 @@ Route::get('/empty-reserved', function() {
     return ($empty_seats);
 
 });
+
+
 
 
 

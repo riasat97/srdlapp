@@ -1,4 +1,4 @@
-@extends('layouts.dashboard')
+@extends('layouts.app')
 @section('css')
     <!-- Font Icon -->
     <link rel="stylesheet" href="{{ asset('fonts/material-icon/css/material-design-iconic-font.min.css') }}">
@@ -34,24 +34,24 @@
         <div class="box box-primary">
             <div class="box-body">
                 <div class="form-row">
-                        <div class="form-group  col-md-2">
-                            {{Form::label('div', 'বিভাগ') }}
-                            {{ Form::select('division', $divisionList,old('division'),array('class'=>'form-control','id'=>'div')) }}
-                        </div>
-                        <div class="form-group  col-md-2">
-                            {{Form::label('dis', 'জেলা') }}
-                            {{Form::select('district', ['0'=>'সকল'], old('district'),['id'=>'dis','class'=>'form-control'])}}
-                            {{--                        <select name="district" id="dis" class="form-control" style="width:350px">--}}
-                            {{--                        </select>--}}
-                        </div>
-                        <div class="form-group  col-md-2">
-                            {{Form::label('seat_type', 'সংসদীয় আসনের ধরণ') }}
-                            {{Form::select('seat_type', ['0'=>'সকল ','general'=>'সাধারণ', 'reserved'=>'সংরক্ষিত মহিলা আসন'], old('seat_type'),['id'=>'seat_type','class'=>'form-control'])}}
-                        </div>
-                        <div class="form-group  col-md-2">
-                            {{Form::label('parliamentary_constituency', 'নির্বাচনী এলাকা') }}
-                            {{Form::select('parliamentary_constituency', ['0'=>'সকল'], old('parliamentary_constituency'),['id'=>'parliamentary_constituency','class'=>'form-control'])}}
-                        </div>
+                    <div class="form-group  col-md-2">
+                        {{Form::label('div', 'বিভাগ') }}
+                        {{ Form::select('division', $divisionList,old('division'),array('class'=>'form-control','id'=>'div')) }}
+                    </div>
+                    <div class="form-group  col-md-2">
+                        {{Form::label('dis', 'জেলা') }}
+                        {{Form::select('district', ['0'=>'সকল'], old('district'),['id'=>'dis','class'=>'form-control'])}}
+                        {{--                        <select name="district" id="dis" class="form-control" style="width:350px">--}}
+                        {{--                        </select>--}}
+                    </div>
+                    <div class="form-group  col-md-2">
+                        {{Form::label('seat_type', 'সংসদীয় আসনের ধরণ') }}
+                        {{Form::select('seat_type', ['0'=>'সকল ','general'=>'সাধারণ', 'reserved'=>'সংরক্ষিত মহিলা আসন'], old('seat_type'),['id'=>'seat_type','class'=>'form-control'])}}
+                    </div>
+                    <div class="form-group  col-md-2">
+                        {{Form::label('parliamentary_constituency', 'নির্বাচনী এলাকা') }}
+                        {{Form::select('parliamentary_constituency', ['0'=>'সকল'], old('parliamentary_constituency'),['id'=>'parliamentary_constituency','class'=>'form-control'])}}
+                    </div>
                     {{--                    @if(Auth::user()->hasRole(['district admin']))--}}
                     {{--                        <div class="form-group  col-md-3">--}}
                     {{--                            {{Form::label('parliamentary_constituency', 'নির্বাচনী এলাকা') }}--}}
@@ -59,25 +59,25 @@
                     {{--                            --}}{{--<button class="btn btn-lg btn-success pull-right" id="searchbtn" style="margin-top: 3px;" type="submit">Search</button>--}}
                     {{--                        </div>--}}
                     {{--                    @endif--}}
-                        <div class="form-group  col-md-2">
-                            {{Form::label('upazila', 'উপজেলা') }}
-                            {{Form::select('upazila', ['0'=>'সকল'], old('upazila'),['id'=>'upazila','class'=>'form-control'])}}
-                        </div>
+                    <div class="form-group  col-md-2">
+                        {{Form::label('upazila', 'উপজেলা') }}
+                        {{Form::select('upazila', ['0'=>'সকল'], old('upazila'),['id'=>'upazila','class'=>'form-control'])}}
+                    </div>
 
-                        {{--<div class="form-group  col-md-2">
-                            {{Form::label('union_pourashava_ward', 'ইউনিয়ন/পৌরসভা ') }}
-                            {{Form::select('union_pourashava_ward', ['0'=>'সকল'], old('union_pourashava_ward'),['id'=>'union_pourashava_ward','class'=>'form-control'])}}
-                        </div>--}}
+                    {{--<div class="form-group  col-md-2">
+                        {{Form::label('union_pourashava_ward', 'ইউনিয়ন/পৌরসভা ') }}
+                        {{Form::select('union_pourashava_ward', ['0'=>'সকল'], old('union_pourashava_ward'),['id'=>'union_pourashava_ward','class'=>'form-control'])}}
+                    </div>--}}
                 </div>
                 <div class="form-row">
-                        <div class="form-group col-md-2">
-                            <label for="">কম্পিউটার ল্যাবের ধরণ</label>
-                            {{Form::select('lab_type', array('0'=>'সকল ','srdl'=>'শেখ রাসেল ডিজিটাল ল্যাব','sof' => 'স্কুল অফ ফিউচার','srdl_sof' => 'স্কুল অফ ফিউচার ও শেখ রাসেল ডিজিটাল ল্যাব'), old('lab_type'),['class'=>'form-control', 'id'=>'lab_type',])}}
-                        </div>
+                    <div class="form-group col-md-2">
+                        <label for="">কম্পিউটার ল্যাবের ধরণ</label>
+                        {{Form::select('lab_type', array('0'=>'সকল ','srdl'=>'শেখ রাসেল ডিজিটাল ল্যাব','sof' => 'স্কুল অফ ফিউচার','srdl_sof' => 'স্কুল অফ ফিউচার ও শেখ রাসেল ডিজিটাল ল্যাব'), old('lab_type'),['class'=>'form-control', 'id'=>'lab_type',])}}
+                    </div>
 
-                        <div class="form-group col-md-3">
-                            <button class="btn btn-lg btn-success searchbtn"  value="submitted" id="searchbtn" type="submit"><i class="fas fa-search"></i> অনুসন্ধান</button>
-                        </div>
+                    <div class="form-group col-md-3">
+                        <button class="btn btn-lg btn-success searchbtn"  value="submitted" id="searchbtn" type="submit"><i class="fas fa-search"></i> অনুসন্ধান</button>
+                    </div>
 
                 </div>
                 <div style="font-family: sans-serif;">{{ $dataTable->table(['class' => 'table table-bordered'], false) }}</div>

@@ -15,14 +15,17 @@ class CreateTraineesTable extends Migration
     {
         Schema::create('trainees', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('application_id');
-            $table->string('name');
-            $table->string('designation');
-            $table->string('subject');
-            $table->string('email')->unique();
-            $table->string('mobile');
-            $table->enum('verified', ['YES', 'NO'])->nullable();
-            $table->dateTimeTz('signature_at')->nullable();
+            $table->unsignedBigInteger('lab_id');
+            $table->string('name')->nullable();
+            $table->string('designation')->nullable();
+            $table->string('age')->nullable();
+            $table->string('gender')->nullable();
+            $table->string('qualification')->nullable();
+            $table->string('subject')->nullable();
+            $table->string('email')->nullable()->unique();
+            $table->string('mobile')->nullable()->unique();
+            /*$table->enum('verified', ['YES', 'NO'])->nullable();
+            $table->dateTimeTz('signature_at')->nullable();*/
             $table->timestamps();
         });
     }

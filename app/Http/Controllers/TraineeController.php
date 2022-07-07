@@ -30,6 +30,8 @@ class TraineeController extends Controller
     public function update($id,Request $request)
     {
         dd($request->all());
+        $trainee= new Trainee();
+
         if (Auth::user()->hasRole(['super admin'])){
             $user = $this->userRepository->update($request->all(), $id);
             Flash::success('User updated successfully.');

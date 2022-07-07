@@ -3,18 +3,17 @@
 @section('content')
     <section class="content-header">
         <h1>
-            ০৪ জন প্রশিক্ষণার্থীদের তালিকা
+            Stock
         </h1>
    </section>
    <div class="content">
-       @include('flash::message')
        @include('adminlte-templates::common.errors')
        <div class="box box-primary">
            <div class="box-body">
                <div class="row">
-                   {!! Form::open(['route' => ['labs.trainees.update', $institution->id], 'method' => 'patch']) !!}
+                   {!! Form::model($stock, ['route' => ['labs.stocks.update', [$lab->id,$stock->id]], 'method' => 'patch']) !!}
 
-                        @include('trainees.fields')
+                        @include('stocks.fields')
 
                    {!! Form::close() !!}
                </div>

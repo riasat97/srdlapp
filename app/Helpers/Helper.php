@@ -49,6 +49,16 @@ if (!function_exists('ReservedSeats')) {
             'assistant_teacher'=>'সহকারী শিক্ষক বা সমমান','trade_instructor'=>'ট্রেড ইন্সট্রাক্টর বা সমমান',
             'others'=>'অন্যান্য');
     }
+    function qualifications(){
+        return array('0' => 'নির্বাচন করুন',"M.Sc (Engineering)","M.Sc","Kamil","LL.M","M.A","M.Com","M.Ed","M.S.S","MBA","MBS","ME/Mtech","Mmed","B.Sc (Engineering)","B.Sc (Honors)","B.A","B.Com","B.Ed","B.S.S","B.Tech","BBA","BBS","Fazil","LL.B","Others");
+    }
+    function ages(){
+        $ages=[];
+        for($i=21;$i<60;$i++){
+            $ages[$i]=$i;
+        }
+        return array_merge(['-1' => 'নির্বাচন করুন'],$ages);
+    }
     function ReservedSeats()
     {
         return $reservedSeats=array(
