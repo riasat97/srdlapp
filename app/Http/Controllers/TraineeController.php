@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\Application;
+use App\Models\Lab;
 use App\Models\Trainee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,12 +12,12 @@ use Illuminate\Support\Facades\Auth;
 class TraineeController extends Controller
 {
 
-    public function edit($id)
+    public function edit($labId)
     {
-        $application= Application::where('id',$id)->with('attachment','lab','verification','profile')->first();
-        if( !Auth::user()->hasAnyRole(['super admin','upazila admin']) or !permitted($application))
+        $lab= Lab::where('id',$labId)->first();
+        if( !Auth::user()->hasAnyRole(['super admin','upazila admin']) or !permitted($lab))
             return abort(404);
-        return view('trainees.edit',['institution'=>$application]);
+        return view('trainees.edit',['lab'=>$lab]);
     }
 
     /**
@@ -27,21 +28,43 @@ class TraineeController extends Controller
      *
      * @return Response
      */
-    public function update($id,Request $request)
+    public function update($labId,Request $request)
     {
-        dd($request->all());
-        $trainee= new Trainee();
-
-        if (Auth::user()->hasRole(['super admin'])){
-            $user = $this->userRepository->update($request->all(), $id);
-            Flash::success('User updated successfully.');
-            return redirect(route('users.index'));
+        $lab= Lab::where('id',$labId)->first();
+        $requestData = $request->all();
+        if(empty($lab->trainees))
+        $this->creatTrainees($requestData,$labId);
+        else $this->updateTrainees($lab,$requestData);
+        dd('created');
+    }
+    private function createTrainees($requestData,$labId){
+        for ($i=0;$i<4;$i++) {
+            Trainee::create([
+                'lab_id'=>  $labId,
+                'name'=>  $requestData['name'][$i],
+                'designation'=>  $requestData['designation'][$i],
+                'age'=>  $requestData['age'][$i],
+                'gender'=>  $requestData['gender'][$i],
+                'qualification'=>  $requestData['qualification'][$i],
+                'subject'=>  $requestData['subject'][$i],
+                'email'=>  $requestData['email'][$i],
+                'mobile'=>  $requestData['mobile'][$i]
+            ]);
         }
-        elseif (Auth::user()->id == $id){
-            $user = $this->userRepository->update($request->all(), $id);
-            Flash::success('User updated successfully.');
-            return redirect(route('users.edit',['id'=>$id]));
+    }
+    private function updateTrainees($lab,$requestData){
+        $trainees= $lab->trainees;
+        foreach ($trainees as $i=>$trainee){
+        $trainee->name= $requestData['name'][$i];
+        $trainee->designation= $requestData['designation'][$i];
+        $trainee->age= $requestData['age'][$i];
+        $trainee->gender= $requestData['gender'][$i];
+        $trainee->qualification= $requestData['qualification'][$i];
+        $trainee->subject= $requestData['subject'][$i];
+        $trainee->email= $requestData['email'][$i];
+        $trainee->mobile= $requestData['mobile'][$i];
+            $lab->trainees()->save($trainee);
         }
-        else  return abort(404);
+        dd('updated');
     }
 }

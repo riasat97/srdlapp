@@ -87,4 +87,9 @@ class Lab extends Model
     {
         return $this->hasOne('App\Models\Stock','lab_id');
     }
+
+    public function trainees()
+    {
+        return $this->hasMany('App\Models\Trainee','lab_id');
+    }
 }

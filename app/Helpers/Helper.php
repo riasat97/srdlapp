@@ -43,14 +43,13 @@ if (!function_exists('ReservedSeats')) {
         return array('0' => 'নির্বাচন করুন','dc' => 'জেলা প্রশাসক', 'adc' => 'অতিরিক্ত জেলা প্রশাসক','uno'=>'উপজেলা নির্বাহী অফিসার'/*,'programmer'=>'প্রোগ্রামার','ap'=>'সহকারী প্রোগ্রামার','useo'=>'উপজেলা মাধ্যমিক শিক্ষা অফিসার','others'=>'অন্যান্য'*/);
     }
     function trainee_designations(){
-        return array('0' => 'নির্বাচন করুন','professor' => 'অধ্যাপক', 'associate professor' => 'সহযোগী অধ্যাপক',
-            'assistant professor'=>'সহকারী অধ্যাপক','senior_lecturer'=>'জ্যেষ্ঠ প্রভাষক বা সমমান','lecturer'=>'প্রভাষক বা সমমান',
-            'junior_instructor'=>'জুনিয়র ইন্সট্রাক্টর','senior_assistant_teacher'=>'সিনিয়র সহকারী শিক্ষক বা সমমান',
-            'assistant_teacher'=>'সহকারী শিক্ষক বা সমমান','trade_instructor'=>'ট্রেড ইন্সট্রাক্টর বা সমমান',
-            'others'=>'অন্যান্য');
+        return array('0' => 'নির্বাচন করুন', 'principal'=>'অধ্যক্ষ/প্রধান শিক্ষক','vice principal'=>'উপাধ্যক্ষ/সহকারী প্রধান শিক্ষক',
+            'assistant professor'=>'সহকারী অধ্যাপক','senior_lecturer'=>'জ্যেষ্ঠ প্রভাষক','lecturer'=>'প্রভাষক','physical_education_teacher'=>'শরীরচর্চা শিক্ষক','demonstrator'=>'প্রদর্শক','librarian'=>'গ্রন্থাগারিক',
+            'chief_instructor'=>'চীফ ইন্সট্রাক্টর','superintendent'=>'সুপারিনটেনডেন্ট','assistant_superintendent'=>'সহকারী সুপারিনটেনডেন্ট','senior_instructor'=>'সিনিয়র ইন্সট্রাক্টর','trade_instructor'=>'ট্রেড ইন্সট্রাক্টর','instructor'=>'ইন্সট্রাক্টর',
+            'senior_assistant_teacher'=>'সিনিয়র সহকারী শিক্ষক','assistant_teacher'=>'সহকারী শিক্ষক','assistant_moulavi'=>'সহকারী মৌলভী','assistant_librarian'=>'সহকারী গ্রন্থাগারিক','junior_instructor'=>'জুনিয়র ইন্সট্রাক্টর','others'=>'অন্যান্য');
     }
     function qualifications(){
-        return array('0' => 'নির্বাচন করুন',"M.Sc (Engineering)","M.Sc","Kamil","LL.M","M.A","M.Com","M.Ed","M.S.S","MBA","MBS","ME/Mtech","Mmed","B.Sc (Engineering)","B.Sc (Honors)","B.A","B.Com","B.Ed","B.S.S","B.Tech","BBA","BBS","Fazil","LL.B","Others");
+        return array('0' => 'নির্বাচন করুন','m.eng'=>"M.Sc (Engineering)",'msc'=>"M.Sc",'kamil'=>"Kamil","llm"=>"LL.M",'ma'=>"M.A","mcom"=>"M.Com","med"=>"M.Ed","mss"=>"M.S.S","mba"=>"MBA","mbs"=>"MBS","me/mtech"=>"ME/Mtech","mmed"=>"Mmed","bsc.eng"=>"B.Sc (Engineering)",'bsc'=>"B.Sc (Honors)","ba"=>"B.A","bcom"=>"B.Com","bed"=>"B.Ed","bss"=>"B.S.S","btech"=>"B.Tech","bba"=>"BBA","bbs"=>"BBS","fazil"=>"Fazil","llb"=>"LL.B","others"=>"Others");
     }
     function ages(){
         $ages=[];

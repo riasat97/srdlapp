@@ -62,8 +62,8 @@ Route::group(['prefix' => 'admin/applications', 'as' => 'applications.','middlew
 });
 
 Route::group(['prefix' => 'admin/labs', 'as' => 'labs.','middleware' => 'auth'], function () {
-    Route::get('{id}/trainees', 'TraineeController@edit')->name('trainees.edit');
-    Route::patch('{id}/trainees', 'TraineeController@update')->name('trainees.update');
+    Route::get('{labId}/trainees', 'TraineeController@edit')->name('trainees.edit');
+    Route::patch('{labId}/trainees', 'TraineeController@update')->name('trainees.update');
     //Route::resource('stocks', 'StockController');
    // Route::get('/stocks', 'StockController@index')->name('stocks.index');
     Route::get('/stocks', 'StockController@stocks')->name('stocks.index');

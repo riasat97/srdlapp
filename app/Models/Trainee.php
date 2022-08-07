@@ -42,4 +42,9 @@ class Trainee extends Model
         return $this->hasOne(App\Models\Application::class);
     }
 
+    public function lab()
+    {
+        return $this->belongsTo('App\Models\Lab','lab_id');
+    }
+
 }
