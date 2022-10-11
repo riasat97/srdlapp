@@ -28,7 +28,7 @@ if (!function_exists('ReservedSeats')) {
         return array(""=>"",'general'=> "সাধারণ", 'madrasha'=> "মাদ্রাসা",'technical'=>"টেকনিক্যাল",'gov_training'=>"সরকারি ট্রেনিং সেন্টার",'gov_rel_ins'=>"শিক্ষা সংশ্লিষ্ট সরকারি প্রতিষ্ঠান",'others'=>"অন্যান্য");
     }
     function ins_level(){
-        return array(""=>"",'primary'=>'প্রাইমারি বা সমপর্যায়','junior_secondary' => 'নিম্ন মাধ্যমিক বা সমপর্যায়', 'secondary' => 'মাধ্যমিক বা সমপর্যায়','higher_secondary'=> "উচ্চমাধ্যমিক বা সমপর্যায়", "secondary_and_higher"=>"মাধ্যমিক ও উচ্চমাধ্যমিক বা সমপর্যায়","graduation"=>"স্নাতক বা সমপর্যায়","diploma"=>"ডিপ্লোমা বা সমপর্যায়",'others'=>"অন্যান্য");
+        return array(""=>"",'primary'=>'প্রাইমারি বা সমপর্যায়','junior_secondary' => 'নিম্ন মাধ্যমিক বা সমপর্যায়', 'secondary' => 'মাধ্যমিক বা সমপর্যায়','higher_secondary'=> "উচ্চমাধ্যমিক বা সমপর্যায়", "secondary_and_higher"=>"মাধ্যমিক ও উচ্চমাধ্যমিক বা সমপর্যায়","graduation"=>"স্নাতক বা সমপর্যায়","post_graduation"=>"স্নাতকোত্তর","diploma"=>"ডিপ্লোমা বা সমপর্যায়",'others'=>"অন্যান্য");
     }
     function ref_type(){
         return array('0' => 'নির্বাচন করুন','public_representative' => 'মাননীয় সংসদ সদস্য','political_party'=>'রাজনৈতিক দল', 'gov_emp' => 'সরকারি কর্মকর্তা',"famous_person"=>"প্রখ্যাত ব্যক্তিত্ব","others"=>"অন্যান্য ");
@@ -117,7 +117,12 @@ if (!function_exists('ReservedSeats')) {
         return ['-1' => 'নির্বাচন করুন','east'=>'পূর্ব','west'=>'পশ্চিম','north'=>'উত্তর','south'=>'দক্ষিণ','north_east'=>'উত্তর-পূর্ব','north_west'=>'উত্তর-পশ্চিম',
             'south_east'=>'দক্ষিণ-পূর্ব','south_west'=>'দক্ষিণ-পশ্চিম'];
     }
-
+    function room_status(){
+        return array('building'=>'পাকা','half_building' => 'সেমি পাকা','tin_shed'=>'টিন শেড');
+    }
+    function window_status(){
+        return array('iron'=>'লোহার গ্রিল','wooden' => 'কাঁঠের গ্রিল');
+    }
      function permitted($application)
     {
         $user=Auth::user();

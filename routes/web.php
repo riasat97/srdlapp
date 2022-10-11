@@ -25,12 +25,17 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'selected', 'as' => 'web.'], function () {
     Route::get('/institutions', 'DashboardController@application')->name('selected-institutions');
 });
+
+
+Route::get('/about', 'DashboardController@getAbout')->name('about');
+
 Route::get('/', function () {
     if (Auth::check()) {
         return redirect()->route('applications.dashboard');
     }
-    return redirect()->route('web.selected-institutions');
+    return redirect('/');
 });
+Route::get('/', 'DashboardController@getHome')->name('home');
 Route::get('/fantasy', 'FantasyController@index')->name('fantasy');
 Route::get('/fantasy/{event}/teams', 'FantasyController@teams')->name('fantasyTeams');
 Route::get('/fantasy/login', 'FantasyController@login')->name('fantasylogin');
@@ -155,8 +160,9 @@ Route::get('/clear', function() {
     Artisan::call('config:clear');
     Artisan::call('config:cache');
     Artisan::call('view:clear');
+    \Artisan::call('route:cache');
     Artisan::call('route:clear');
-
+    \Artisan::call('optimize:clear');
     return "Cleared!";
 
 });

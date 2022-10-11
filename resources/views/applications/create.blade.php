@@ -114,6 +114,28 @@
                                 {{ Form::number('total_girls', null,['class'=>'form-control', 'id'=>'total_girls'] )}}
                             </div>
                         </div>
+                        <div class="form-row">
+                            <div class="form-group  col-md-6">
+                                {{ Form::label('total_teachers', 'মোট শিক্ষক সংখ্যা') }}
+                                {{ Form::number('total_teachers', null,['class'=>'form-control', 'id'=>'total_teachers'] )}}
+                            </div>
+
+                            <div class="form-group  col-md-6">
+                                {{ Form::label('total_computer_trained_teachers', 'কম্পিউটার প্রশিক্ষণপ্রাপ্ত শিক্ষক সংখ্যা') }}
+                                {{ Form::number('total_computer_trained_teachers', null,['class'=>'form-control', 'id'=>'total_computer_trained_teachers'] )}}
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group  col-md-6">
+                                {{ Form::label('total_staffs', 'মোট স্টাফ সংখ্যা') }}
+                                {{ Form::number('total_staffs', null,['class'=>'form-control', 'id'=>'total_staffs'] )}}
+                            </div>
+
+                            <div class="form-group  col-md-6">
+                                {{ Form::label('total_computer_trained_staffs', 'কম্পিউটার প্রশিক্ষণপ্রাপ্ত স্টাফ সংখ্যা') }}
+                                {{ Form::number('total_computer_trained_staffs', null,['class'=>'form-control', 'id'=>'total_computer_trained_staffs'] )}}
+                            </div>
+                        </div>
 
                         <div class="form-row">
                             <div class="form-group col-md-4">
@@ -351,6 +373,70 @@
                                 {{ Form::text('lab_others_title',old('lab_others_title'),['id'=>'lab_others_title','class'=>'form-control verification-content','style'=>'','placeholder'=>'অন্যান্য কম্পিউটার ল্যাব'])}}
                             </div>
                         </div>
+                        <div class="form-row">
+                            <div class="form-group  col-md-6">
+                                {{ Form::label('srdl', 'শেখ রাসেল ডিজিটাল ল্যাব') }}
+                                {{ Form::text('srdl',null,['class'=>'form-control verification-content','id'=>'srdl','placeholder'=>'']) }}
+                            </div>
+                            <div class="form-group  col-md-6">
+                                {{ Form::label('year', 'স্থাপনের সাল') }}
+                                {{ Form::text('year',null,['class'=>'form-control verification-content','id'=>'srdl_year','placeholder'=>'']) }}
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group  col-md-6">
+                                 {{ Form::label('desktop_count', 'ডেক্সটপ সংখ্যা') }}
+                                 {{ Form::text('desktop_count',null,['class'=>'form-control verification-content','id'=>'srdl_desktop_count','placeholder'=>'']) }}
+                             </div>
+                            <div class="form-group  col-md-6">
+                                {{ Form::label('desktop_count_active', 'সচল ডেক্সটপ সংখ্যা') }}
+                                {{ Form::text('desktop_count_active',null,['class'=>'form-control verification-content','id'=>'srdl_desktop_count_active','placeholder'=>'']) }}
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group  col-md-6">
+                                {{ Form::label('laptop_count', 'ল্যাপটপ সংখ্যা') }}
+                                {{ Form::text('laptop_count',null,['class'=>'form-control verification-content','id'=>'srdl_laptop_count','placeholder'=>'']) }}
+                            </div>
+                            <div class="form-group  col-md-6">
+                                {{ Form::label('laptop_count_active', 'সচল ল্যাপটপ সংখ্যা') }}
+                                {{ Form::text('laptop_count_active',null,['class'=>'form-control','id'=>'srdl_laptop_count_active','placeholder'=>'']) }}
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group  col-md-6">
+                                {{ Form::label('lab_length', 'ল্যাব স্থাপনের জন্য কক্ষের মাপ - দৈর্ঘ্য (ফুট)') }}
+                                {{ Form::text('lab_length',null,['class'=>'form-control','placeholder'=>'']) }}
+                            </div>
+                            <div class="form-group  col-md-6">
+                                {{ Form::label('lab_width', 'ল্যাব স্থাপনের জন্য কক্ষের মাপ - প্রস্থ (ফুট)') }}
+                                {{ Form::text('lab_width',null,['class'=>'form-control','placeholder'=>'']) }}
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group  col-md-6">
+                                {{ Form::label('lab_room_status', 'ল্যাব কক্ষটির স্ট্যাটাস') }}
+                                {{Form::select('lab_room_status', array_merge(['0' => 'নির্বাচন করুন'],room_status()), old('lab_room_status'),['class'=>'form-control', 'id'=>'lab_room_status'])}}
+                            </div>
+                            <div class="form-group  col-md-6">
+                                {{ Form::label('lab_window_status', 'ল্যাব কক্ষটির জানালার স্ট্যাটাস') }}
+                                {{Form::select('lab_window_status', array_merge(['0' => 'নির্বাচন করুন'],window_status()), old('lab_window_status'),['class'=>'form-control', 'id'=>'lab_window_status'])}}
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group  col-md-6">
+                                {{ Form::label('two_storey_building', 'প্রতিষ্ঠানটি কমপক্ষে দুই তলা বিল্ডিং বিশিষ্ট') }}
+                                <input name="two_storey_building" id="two_storey_building" type="checkbox" data-width="50" class="toggle form-control verification-content" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                {{Form::hidden('hidden_two_storey_building',"NO",["id"=>"hidden_two_storey_building"])}}
+                            </div>
+                            <div class="form-group  col-md-6">
+                                {{ Form::label('boundary', 'প্রতিষ্ঠানের বাউন্ডারি আছে?') }}
+                                <input name="boundary" id="boundary" type="checkbox" data-width="50" class="toggle form-control verification-content" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                {{Form::hidden('hidden_boundary',"NO",["id"=>"hidden_boundary"])}}
+                            </div>
+                        </div>
+
                         <div class="form-row">
                             <div class="form-group  col-md-6">
                                 {{ Form::label('proper_infrastructure', 'উপযুক্ত অবকাঠামো (পাঁকা ভবন) এবং আইসিটি শিক্ষার সুযোগ, সুবিধা আছে কিনা? ') }}
