@@ -43,6 +43,10 @@
 
 
 <li class="{{ Request::is('admin/labs*') ? 'active' : '' }}">
-    <a href="{{ route('labs.stocks.index') }}"><i class="fa fa-edit"></i><span>Stocks</span></a>
+    <a href="{{ route('labs.stocks.index') }}"><i class="fa fa-laptop"></i><span>Stocks</span></a>
+</li>
+
+<li class="{{ Request::is('notices*') ? 'active' : '' }}">
+    <a href="{{ route('notice.attachments') }}"><i class="fa fa-newspaper-o"></i><span>Notices</span></a>
 </li>
 

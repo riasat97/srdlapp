@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 use App\Models\ApplicationInternetConnection;
+use App\Models\ApplicationOldLab;
 use App\Models\User;
 use Carbon\Carbon;
 use Flash;
@@ -159,10 +160,10 @@ class ApplicationController extends Controller
                 $data->where('listed_by_deo', "NO");
             }
             // dd($data->get()->toArray());
-            return $data->with('attachment','verification','profile')->orderByRaw(" division,district,seat_no asc, FIELD(lab_type , 'sof') DESC,upazila ASC")->get();
+            return $data->with('attachment','verification','profile')->orderByRaw(" division,district,seat_no asc, FIELD(lab_type , 'sof','srdl_sof') DESC,upazila ASC")->get();
             //return $this->applyScopes($data);
         }
-         return$data->with('attachment','verification','profile')->permitted(null)->latest('id')->get();
+         return $data->with('attachment','profile')->permitted(null)->latest('id')->get();
         //return $this->applyScopes($data);
     }
     public function getParliamentaryConstituency(Request $request)
@@ -349,7 +350,7 @@ class ApplicationController extends Controller
     }
 
     public function store(CreateApplicationRequest $request){
-        //dd($request->all());
+
         if(!Auth::user()->hasRole(['super admin']))
             return abort(404);
         $application = Application::create([
@@ -408,9 +409,12 @@ class ApplicationController extends Controller
             $profile->mpo= !empty($request->get('mpo'))?$request->get('mpo'):'';
             $profile->total_boys= !empty($request->get('total_boys'))?$request->get('total_boys'):0;
             $profile->total_girls= !empty($request->get('total_girls'))?$request->get('total_girls'):0;
-            //$application->total_teachers= !empty($request->get('total_teachers'))?$request->get('total_teachers'):0;
-            //$application->management= !empty($request->get('management'))?$request->get('management'):'';
-            //$application->student_type= !empty($request->get('student_type'))?$request->get('student_type'):'';
+
+            $profile->total_teachers= !empty($request->get('total_teachers'))?$request->get('total_teachers'):0;
+            $profile->total_computer_trained_teachers= !empty($request->get('total_computer_trained_teachers'))?$request->get('total_computer_trained_teachers'):0;
+            $profile->total_staffs= !empty($request->get('total_staffs'))?$request->get('total_staffs'):0;
+            $profile->total_computer_trained_staffs= !empty($request->get('total_computer_trained_staffs'))?$request->get('total_computer_trained_staffs'):0;
+
         $application->profile()->save($profile);
 
         if(!empty($request->get('verification'))){
@@ -420,6 +424,7 @@ class ApplicationController extends Controller
                     $applicationlabs->lab_others_title= (in_array("Others",$request->get('labs'))&&!empty($request->get('lab_others_title')))?$request->get('lab_others_title'):'';
                     $application->lab()->save($applicationlabs);
             }
+            $this->createOldLabs($request,$application);
             $appInternetConType= new ApplicationInternetConnection();
             if(!empty($request->get('internet_connection_type'))){
                 $appInternetConType=$this->storeInternetConnectionTypes($request->get('internet_connection_type'),$appInternetConType);
@@ -441,6 +446,15 @@ class ApplicationController extends Controller
                 $verified->good_result= !empty($request->get('good_result'))?"YES":"NO";
                 $verified->about_institution= !empty($request->get('about_institution'))?$request->get('about_institution'):'';
                 $verified->has_ict_teacher= !empty($request->get('has_ict_teacher'))?"YES":"NO";
+
+            $verified->two_storey_building= !empty($request->get('two_storey_building'))?"YES":"NO";
+            $verified->boundary= !empty($request->get('boundary'))?"YES":"NO";
+            $verified->lab_length= !empty($request->get('lab_length'))?$request->get('lab_length'):0;
+            $verified->lab_width= !empty($request->get('lab_width'))?$request->get('lab_width'):0;
+
+            $verified->lab_room_status= !empty($request->get('lab_room_status'))?$request->get('lab_room_status'):'';
+            $verified->lab_window_status= !empty($request->get('lab_window_status'))?$request->get('lab_window_status'):'';
+
             if(!empty($request->get('app_upazila_verified')))
                 $verified->app_upazila_verified = $request->get('app_upazila_verified');
             $application->verification()->save($verified);
@@ -808,6 +822,24 @@ class ApplicationController extends Controller
             return $districtobj->district;
         }
         return  false;
+    }
+
+    private function createOldLabs(Request $request, Application $application)
+    {
+        $requestData = $request->all();
+        $lab_titles= $requestData['lab_title'];
+        foreach ($lab_titles as $k=>$lab_title){
+            ApplicationOldLab::create([
+                'application_id'=>  $application->id,
+                'lab_title'=>  $requestData['lab_title'][$k],
+                'year'=>  $requestData['year'][$k],
+                'desktop'=>  $requestData['desktop'][$k],
+                'active_desktop'=>  $requestData['active_desktop'][$k],
+                'laptop'=>  $requestData['laptop'][$k],
+                'active_laptop'=>  $requestData['active_laptop'][$k],
+                'lab_comments'=>  $requestData['lab_comments'][$k]
+            ]);
+        }
     }
 
 

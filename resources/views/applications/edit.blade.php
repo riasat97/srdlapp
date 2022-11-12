@@ -54,7 +54,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="">কম্পিউটার ল্যাবের ধরণ</label>
-                                {{Form::select('lab_type', array('0' => 'নির্বাচন করুন','srdl'=>'শেখ রাসেল ডিজিটাল ল্যাব','sof' => 'স্কুল অফ ফিউচার'), getResult(lab_type(),$application->lab_type),['class'=>'form-control', 'id'=>'lab_type',])}}
+                                {{Form::select('lab_type', array('0' => 'নির্বাচন করুন','srdl'=>'শেখ রাসেল ডিজিটাল ল্যাব','sof' => 'স্কুল অফ ফিউচার','srdl_sof' => 'স্কুল অফ ফিউচার ও শেখ রাসেল ডিজিটাল ল্যাব'), getResult(lab_type(),$application->lab_type),['class'=>'form-control', 'id'=>'lab_type',])}}
                             </div>
                         </div>
                         <div class="form-row">

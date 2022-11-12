@@ -80,6 +80,14 @@ $(function () {
 
 {{--verification start--}}
 <script type="text/javascript">
+    @if(!empty(old('verification')))
+    $(function () {
+        $('#verification').bootstrapToggle('on');
+            $("input[name=app_upazila_verified]").removeAttr("disabled");
+            $("#app_upazila_verified").zInput();
+    });
+    @endif
+
 @if(!empty($selectedLabs))
         $(function () {
             $('#govlab').bootstrapToggle('on');
@@ -92,7 +100,16 @@ $(function () {
             $("#labs_multiple").removeAttr("disabled");
         });
 @endif
-
+    @if(!empty(old('two_storey_building')))
+    $(function () {
+        $('#two_storey_building').bootstrapToggle('on');
+    });
+    @endif
+    @if(!empty(old('boundary')))
+    $(function () {
+        $('#boundary').bootstrapToggle('on');
+    });
+    @endif
 @if(!empty(old('internet_connection_type'))&& in_array("modem",old('internet_connection_type')))
 $(function () {
     $("#mobile_operators").removeAttr("disabled");
@@ -164,10 +181,9 @@ $(function () {
 </script>
 {{--verification end--}}
 <script type="text/javascript">
-@if(Auth::user()->hasRole(['super admin']))
+    @if(Auth::user()->hasRole(['super admin']))
     $(document).ready(function() {
-        $('input[name=app_upazila_verified]').attr("disabled",true);
-
+        // $('input[name=app_upazila_verified]').attr("disabled",true);
         $("#verification").change(function () {
 
             if ($(this).prop("checked") == true) {
@@ -175,12 +191,15 @@ $(function () {
                 $("#app_upazila_verified").zInput();
             } else {
                 $('input[name=app_upazila_verified]').attr("disabled",true);
+                $("#app_upazila_verified").zInput();
             }
         });
     });
-@else
+    @else
+    $(document).ready(function() {
     $("#app_upazila_verified").zInput();
-@endif
+    });
+    @endif
 </script>
 
 {{--select2 start--}}

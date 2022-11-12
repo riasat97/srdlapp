@@ -88,7 +88,7 @@
                     @if(Auth::user()->hasRole(['super admin']))
                         <div class="form-group col-md-2">
                             <label for="">কম্পিউটার ল্যাবের ধরণ</label>
-                            {{Form::select('lab_type', array('0'=>'সকল ','srdl'=>'শেখ রাসেল ডিজিটাল ল্যাব','sof' => 'স্কুল অফ ফিউচার'), old('lab_type'),['class'=>'form-control', 'id'=>'lab_type',])}}
+                            {{Form::select('lab_type', array('0'=>'সকল ','srdl'=>'শেখ রাসেল ডিজিটাল ল্যাব','sof' => 'স্কুল অফ ফিউচার','srdl_sof' => 'স্কুল অফ ফিউচার ও শেখ রাসেল ডিজিটাল ল্যাব'), old('lab_type'),['class'=>'form-control', 'id'=>'lab_type',])}}
                         </div>
                     @endif
                     @if(Auth::user()->hasRole(['super admin']))

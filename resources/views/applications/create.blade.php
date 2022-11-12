@@ -12,6 +12,12 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.1/css/tempusdominus-bootstrap-4.min.css" />
+    <style>
+        .lab-comments {
+            width: 100px;
+            height: 37px;
+        }
+    </style>
 @endsection
 
 @section('main')
@@ -49,7 +55,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-12">
                                 <label for="">কম্পিউটার ল্যাবের ধরণ</label>
-                                {{Form::select('lab_type', array('0' => 'নির্বাচন করুন','srdl'=>'শেখ রাসেল ডিজিটাল ল্যাব','sof' => 'স্কুল অফ ফিউচার'), old('lab_type'),['class'=>'form-control', 'id'=>'lab_type'])}}
+                                {{Form::select('lab_type', array('0' => 'নির্বাচন করুন','srdl'=>'শেখ রাসেল ডিজিটাল ল্যাব','sof' => 'স্কুল অফ ফিউচার','srdl_sof' => 'স্কুল অফ ফিউচার ও শেখ রাসেল ডিজিটাল ল্যাব'), old('lab_type'),['class'=>'form-control', 'id'=>'lab_type'])}}
                             </div>
                         </div>
                         <div class="form-row">
@@ -171,9 +177,9 @@
                             </div>
                         </div>
 
-                            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                                <b>প্রতিষ্ঠানের ঠিকানা</b>
-                            </nav> <br><br>
+                        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                            <b>প্রতিষ্ঠানের ঠিকানা</b>
+                        </nav> <br><br>
 
                         <div class="form-row">
                             <div class="form-group  col-md-6">
@@ -225,10 +231,10 @@
                                 {{Form::label('distance_from_upazila_complex', 'উপজেলা পরিষদ হতে দূরত্ব (কিলোমিটার)') }}
                                 {{Form::number('distance_from_upazila_complex', old('distance_from_upazila_complex'),['id'=>'distance_from_upazila_complex','class'=>'form-control','style'=>''])}}
                             </div>
-                           {{-- <div class="form-group  col-md-4">
-                                {{Form::label('direction', 'দিক') }}
-                                {{Form::select('direction',direction(),old('direction'),['id'=>'direction','class'=>'form-control','style'=>''])}}
-                            </div>--}}
+                            {{-- <div class="form-group  col-md-4">
+                                 {{Form::label('direction', 'দিক') }}
+                                 {{Form::select('direction',direction(),old('direction'),['id'=>'direction','class'=>'form-control','style'=>''])}}
+                             </div>--}}
                             <div class="form-group  col-md-6">
                                 {{Form::label('proper_road', 'প্রতিষ্ঠানটি পর্যন্ত যান চলাচলের মতো রাস্তা আছে কিনা?') }}
                                 <input name="proper_road" id="proper_road" type="checkbox"  data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
@@ -252,7 +258,7 @@
                             </div>
                             <div class="form-group  col-md-2">
                                 {{Form::label('seat_no', 'সংসদীয় আসন নং:'.old('seat_no'),array('id' => 'seat-no')) }}
-{{--                                {{Form::hidden('seat_no',old('seat_no'),["id"=>"hidden_seat_no"])}}--}}
+                                {{--                                {{Form::hidden('seat_no',old('seat_no'),["id"=>"hidden_seat_no"])}}--}}
                                 <input type="hidden" name="seat_no" value="{{ old('seat_no') }}" id="hidden_seat_no">
                             </div>
                             <div class="form-group  col-md-4">
@@ -266,22 +272,22 @@
                             </div>
                         </div>
                         @if(Auth::user()->hasRole(['super admin']))
-                        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                            <b>আবেদনের ধরণ (ডিও/ অন্যান্য সুপারিশ)</b>
-                        </nav> <br><br>
+                            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                                <b>আবেদনের ধরণ (ডিও/ অন্যান্য সুপারিশ)</b>
+                            </nav> <br><br>
 
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-{{--                                {{ Form::label('reference', 'আধা-সরকারি পত্র সংখ্যা:- ৫৬.০০.০০০০.০০৬.৯৯.০০৩.২০-৪২৫/৪২৬ এর প্রেক্ষিতে সুপারিশ প্রাপ্ত?') }}--}}
-                                {{ Form::label('listed_by_deo', 'আধা-সরকারি পত্রের (৪২৫/৪২৬) প্রেক্ষিতে তালিকা ভুক্ত?') }}
-                                <input name="listed_by_deo" id="listed_by_deo" type="checkbox" data-width="50" class="toggle form-control" data-width="100" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    {{--                                {{ Form::label('reference', 'আধা-সরকারি পত্র সংখ্যা:- ৫৬.০০.০০০০.০০৬.৯৯.০০৩.২০-৪২৫/৪২৬ এর প্রেক্ষিতে সুপারিশ প্রাপ্ত?') }}--}}
+                                    {{ Form::label('listed_by_deo', 'আধা-সরকারি পত্রের (৪২৫/৪২৬) প্রেক্ষিতে তালিকা ভুক্ত?') }}
+                                    <input name="listed_by_deo" id="listed_by_deo" type="checkbox" data-width="50" class="toggle form-control" data-width="100" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                </div>
+                                <div class="form-group  col-md-6 member_name deo" style="display: none">
+                                    {{ Form::label('member_name', 'মাননীয় সংসদ সদস্যের নাম') }}
+                                    {{ Form::text('member_name',old('member_name'),['id'=>'member_name','class'=>'form-control deo','placeholder'=>'']) }}
+                                </div>
                             </div>
-                            <div class="form-group  col-md-6 member_name deo" style="display: none">
-                                {{ Form::label('member_name', 'মাননীয় সংসদ সদস্যের নাম') }}
-                                {{ Form::text('member_name',old('member_name'),['id'=>'member_name','class'=>'form-control deo','placeholder'=>'']) }}
-                            </div>
-                        </div>
-                        <div class="form-row list_attachment deo" style="display: none">
+                            <div class="form-row list_attachment deo" style="display: none">
                                 <div class="form-group col-md-2">
                                     {{ Form::label('list_attachment', 'প্রেরিত তালিকার স্ক্যান কপি (পিডিএফ)') }}
                                 </div>
@@ -292,7 +298,7 @@
                                         <label class="custom-file-label" for="list_attachment_file"></label>
                                     </div>
                                 </div>
-                        </div>
+                            </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     {{ Form::label('reference', 'অন্যান্য সুপারিশ আছে?') }}
@@ -341,12 +347,13 @@
                                     </div>
                                 </div>
                             </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-12">
-                                {{ Form::label('verification', 'উপযুক্ততা যাচাই করুন') }}
-                                <input name="verification" id="verification" type="checkbox"  class="toggle form-control" data-width="50" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    {{ Form::label('verification', 'উপযুক্ততা যাচাই করুন') }}
+                                    <input name="verification" id="verification" type="checkbox"  class="toggle form-control" data-width="50" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">
+                                    {{Form::hidden('hidden_verification',"NO",["id"=>"hidden_verification"])}}
+                                </div>
                             </div>
-                        </div>
 
                         @endif
                     </div> {{--fieldset-content end--}}
@@ -368,60 +375,62 @@
                             </div>
                             <div class="form-group col-md-6">
                                 {{ Form::label('labs', 'প্রাপ্ত ল্যাব সমূহ', array('class' => 'nothing')) }}
-{{--                                <span>প্রাপ্ত ল্যাব সমূহ</span>--}}
+                                {{--                                <span>প্রাপ্ত ল্যাব সমূহ</span>--}}
                                 {{ Form::select('labs[]', $labs, old('labs'), ['class'=>'form-control', 'id' => 'labs_multiple', 'multiple' => 'multiple','disabled'=>true, 'data-placeholder'=>' একাধিক হতে পারে']) }}
                                 {{ Form::text('lab_others_title',old('lab_others_title'),['id'=>'lab_others_title','class'=>'form-control verification-content','style'=>'','placeholder'=>'অন্যান্য কম্পিউটার ল্যাব'])}}
                             </div>
                         </div>
+
                         <div class="form-row">
-                            <div class="form-group  col-md-6">
-                                {{ Form::label('srdl', 'শেখ রাসেল ডিজিটাল ল্যাব') }}
-                                {{ Form::text('srdl',null,['class'=>'form-control verification-content','id'=>'srdl','placeholder'=>'']) }}
-                            </div>
-                            <div class="form-group  col-md-6">
-                                {{ Form::label('year', 'স্থাপনের সাল') }}
-                                {{ Form::text('year',null,['class'=>'form-control verification-content','id'=>'srdl_year','placeholder'=>'']) }}
-                            </div>
+
+                            <table class="table">
+                                <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">ল্যাবের নাম</th>
+                                    <th scope="col">স্থাপনের সাল</th>
+                                    <th scope="col">ডেক্সটপ সংখ্যা</th>
+                                    <th scope="col">সচল ডেক্সটপ সংখ্যা</th>
+                                    <th scope="col">ল্যাপটপ সংখ্যা</th>
+                                    <th scope="col">সচল ল্যাপটপ সংখ্যা</th>
+                                    <th scope="col">মন্তব্য</th>
+                                </tr>
+                                </thead>
+                                <tbody id="dynamic_field">
+                                <tr class="">
+                                    <th scope="row">1</th>
+                                    <td> <input disabled type="text" class="form-control old-lab" name="lab_title[]" value="{{ old('lab_title[]') }}" placeholder=""></td>
+                                    <td>  <input disabled type="number" class="form-control old-lab" name="year[]" value="{{ old('year[]') }}" placeholder=""></td>
+                                    <td>  <input disabled type="number" class="form-control old-lab" name="desktop[]" value="{{ old('desktop[]') }}" placeholder=""></td>
+                                    <td> <input disabled type="number" class="form-control old-lab" name="active_desktop[]" value="{{ old('active_desktop[]') }}" placeholder=""></td>
+                                    <td> <input disabled type="number" class="form-control old-lab" name="laptop[]" value="{{ old("laptop[]") }}" placeholder=""></td>
+                                    <td>  <input disabled type="number" class="form-control old-lab" name="active_laptop[]" value="{{ old("active_laptop[]") }}" placeholder=""></td>
+                                    <td>  <textarea  disabled class="lab-comments old-lab" name="lab_comments[]" value="{{ old("lab_comments[]") }}" rows="1" cols="1" placeholder=""></textarea></td>
+                                    <td>  <button disabled type="button" name="add" id="add" class="btn btn-success old-lab"><i class="fa fa-plus"></i></button></td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="form-row">
-                            <div class="form-group  col-md-6">
-                                 {{ Form::label('desktop_count', 'ডেক্সটপ সংখ্যা') }}
-                                 {{ Form::text('desktop_count',null,['class'=>'form-control verification-content','id'=>'srdl_desktop_count','placeholder'=>'']) }}
-                             </div>
-                            <div class="form-group  col-md-6">
-                                {{ Form::label('desktop_count_active', 'সচল ডেক্সটপ সংখ্যা') }}
-                                {{ Form::text('desktop_count_active',null,['class'=>'form-control verification-content','id'=>'srdl_desktop_count_active','placeholder'=>'']) }}
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group  col-md-6">
-                                {{ Form::label('laptop_count', 'ল্যাপটপ সংখ্যা') }}
-                                {{ Form::text('laptop_count',null,['class'=>'form-control verification-content','id'=>'srdl_laptop_count','placeholder'=>'']) }}
-                            </div>
-                            <div class="form-group  col-md-6">
-                                {{ Form::label('laptop_count_active', 'সচল ল্যাপটপ সংখ্যা') }}
-                                {{ Form::text('laptop_count_active',null,['class'=>'form-control','id'=>'srdl_laptop_count_active','placeholder'=>'']) }}
-                            </div>
-                        </div>
+
 
                         <div class="form-row">
                             <div class="form-group  col-md-6">
                                 {{ Form::label('lab_length', 'ল্যাব স্থাপনের জন্য কক্ষের মাপ - দৈর্ঘ্য (ফুট)') }}
-                                {{ Form::text('lab_length',null,['class'=>'form-control','placeholder'=>'']) }}
+                                {{ Form::text('lab_length',null,['class'=>'form-control verification-content','id'=>'lab_length','placeholder'=>'']) }}
                             </div>
                             <div class="form-group  col-md-6">
                                 {{ Form::label('lab_width', 'ল্যাব স্থাপনের জন্য কক্ষের মাপ - প্রস্থ (ফুট)') }}
-                                {{ Form::text('lab_width',null,['class'=>'form-control','placeholder'=>'']) }}
+                                {{ Form::text('lab_width',null,['class'=>'form-control verification-content','id'=>'lab_width','placeholder'=>'']) }}
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group  col-md-6">
                                 {{ Form::label('lab_room_status', 'ল্যাব কক্ষটির স্ট্যাটাস') }}
-                                {{Form::select('lab_room_status', array_merge(['0' => 'নির্বাচন করুন'],room_status()), old('lab_room_status'),['class'=>'form-control', 'id'=>'lab_room_status'])}}
+                                {{Form::select('lab_room_status', array_merge(['0' => 'নির্বাচন করুন'],room_status()), old('lab_room_status'),['class'=>'form-control verification-content', 'id'=>'lab_room_status'])}}
                             </div>
                             <div class="form-group  col-md-6">
                                 {{ Form::label('lab_window_status', 'ল্যাব কক্ষটির জানালার স্ট্যাটাস') }}
-                                {{Form::select('lab_window_status', array_merge(['0' => 'নির্বাচন করুন'],window_status()), old('lab_window_status'),['class'=>'form-control', 'id'=>'lab_window_status'])}}
+                                {{Form::select('lab_window_status', array_merge(['0' => 'নির্বাচন করুন'],window_status()), old('lab_window_status'),['class'=>'form-control verification-content', 'id'=>'lab_window_status'])}}
                             </div>
                         </div>
                         <div class="form-row">
@@ -517,11 +526,11 @@
                                 {{--<input name="app_upazila_verified" id="app_upazila_verified" type="checkbox"  data-width="50" class="toggle form-control verification-content" data-toggle="toggle" data-on="সুপারিশ করা হল" data-off="সুপারিশ করা হল না" data-onstyle="success" data-offstyle="danger">
                                 {{Form::hidden('hidden_upazila_verified',"NO",["id"=>"hidden_upazila_verified"])}}--}}
                             </div>
-                           {{-- <div class="form-group  col-md-6 ">
-                                {{ Form::label('district_verified', '',["id"=>"district_verified_lb"])}}
-                                <input name="app_district_verified" id="app_district_verified" type="checkbox"  data-width="50" class="toggle form-control verification-content" data-toggle="toggle" data-on="স্থাপন করা যেতে পারে" data-off="স্থাপন করা যেতে পারে না" data-onstyle="success" data-offstyle="danger">
-                                {{Form::hidden('hidden_district_verified',"NO",["id"=>"hidden_district_verified"])}}
-                            </div>--}}
+                            {{-- <div class="form-group  col-md-6 ">
+                                 {{ Form::label('district_verified', '',["id"=>"district_verified_lb"])}}
+                                 <input name="app_district_verified" id="app_district_verified" type="checkbox"  data-width="50" class="toggle form-control verification-content" data-toggle="toggle" data-on="স্থাপন করা যেতে পারে" data-off="স্থাপন করা যেতে পারে না" data-onstyle="success" data-offstyle="danger">
+                                 {{Form::hidden('hidden_district_verified',"NO",["id"=>"hidden_district_verified"])}}
+                             </div>--}}
                         </div>
                         <div class="form-row verify">
                             <div id="app_upazila_verified" class="form-group  col-md-12">
@@ -546,158 +555,133 @@
                         <div class="form-row">
                             <p style="color:red">পিডিএফ কম্প্রেস করতে এখানে <a href="https://www.pdf2go.com/compress-pdf">ক্লিক করুন</a></p>
                         </div>
-{{--                        <div class="form-row sof">--}}
-{{--                            <div class="form-group  col-md-6">--}}
-{{--                                {{ Form::label('is_eiin', 'EIIN নম্বর আছে?') }}--}}
-{{--                                <input name="is_eiin" id="is_eiin" type="checkbox"  data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">--}}
-{{--                                {{Form::hidden('hidden_is_eiin',"NO",["id"=>"hidden_is_eiin"])}}--}}
-{{--                            </div>--}}
-{{--                            <div class="form-group col-md-6 is_mpo">--}}
-{{--                                {{ Form::label('is_mpo', 'MPO ভুক্ত কিনা ?') }}--}}
-{{--                                <input name="is_mpo" id="is_mpo" type="checkbox" data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">--}}
-{{--                                {{Form::hidden('hidden_is_mpo',"NO",["id"=>"hidden_is_mpo"])}}--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                        <div class="form-row sof">--}}
-{{--                            <div class="form-group  col-md-6">--}}
-{{--                                {{ Form::label('has_ict_teacher', 'আইসিটি শিক্ষক আছে ?') }}--}}
-{{--                                <input name="has_ict_teacher" id="has_ict_teacher" type="checkbox"  data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">--}}
-{{--                                {{Form::hidden('hidden_has_ict_teacher',"NO",["id"=>"hidden_has_ict_teacher"])}}--}}
-{{--                            </div>--}}
-{{--                            <div class="form-group  col-md-6 " >--}}
-{{--                                {{ Form::label('is_broadband', 'ব্রডব্যান্ড ইন্টারনেট সংযোগ আছে ?') }}--}}
-{{--                                <input name="is_broadband" id="is_broadband" type="checkbox"  data-width="50" class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">--}}
-{{--                                {{Form::hidden('hidden_is_broadband',"NO",["id"=>"hidden_is_broadband"])}}--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-
                     </div>
                     <div class="fieldset-footer" id="verify-fieldset-footer">
                         <span>Step 2 of 2</span>
                     </div>
                 </fieldset>
 
-{{--                @if(Auth::user()->hasRole(['district admin']))--}}
-{{--                <div class="ref-form">--}}
-{{--                @endif--}}
-{{--                <h3 class="step">--}}
-{{--                    <span class="title_text">বিবিধ </span>--}}
-{{--                </h3>--}}
+                {{--                @if(Auth::user()->hasRole(['district admin']))--}}
+                {{--                <div class="ref-form">--}}
+                {{--                @endif--}}
+                {{--                <h3 class="step">--}}
+                {{--                    <span class="title_text">বিবিধ </span>--}}
+                {{--                </h3>--}}
 
-{{--                <fieldset class="tab_3" >--}}
-{{--                    <div class="fieldset-content">--}}
-{{--                        <div class="form-row">--}}
-{{--                            <div class="form-group col-md-6">--}}
-{{--                                {{ Form::label('reference', 'সুপারিশ আছে?') }}--}}
-{{--                                <input name="reference" id="reference" type="checkbox" data-width="50" class="toggle form-control" data-width="100" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">--}}
-{{--                            </div>--}}
+                {{--                <fieldset class="tab_3" >--}}
+                {{--                    <div class="fieldset-content">--}}
+                {{--                        <div class="form-row">--}}
+                {{--                            <div class="form-group col-md-6">--}}
+                {{--                                {{ Form::label('reference', 'সুপারিশ আছে?') }}--}}
+                {{--                                <input name="reference" id="reference" type="checkbox" data-width="50" class="toggle form-control" data-width="100" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">--}}
+                {{--                            </div>--}}
 
-{{--                            --}}{{--<div class="form-group col-md-6">--}}
-{{--                                --}}{{--{{ Form::label('ref_type', 'সুপারিশকারীর পরিচয়') }}--}}
-{{--                                --}}{{--{{ Form::select('ref_type',array('public_representative' => 'জন প্রতিনিধি', 'govt_emp' => 'সরকারি কর্মকর্তা',"famous_personel"=>"প্রখ্যাত ব্যক্তিত্ব","others"=>"অন্যান্য "), null,['class' => 'form-control',"disabled"=>"true"]) }}--}}
-{{--                            --}}{{--</div>--}}
-{{--                        </div>--}}
+                {{--                            --}}{{--<div class="form-group col-md-6">--}}
+                {{--                                --}}{{--{{ Form::label('ref_type', 'সুপারিশকারীর পরিচয়') }}--}}
+                {{--                                --}}{{--{{ Form::select('ref_type',array('public_representative' => 'জন প্রতিনিধি', 'govt_emp' => 'সরকারি কর্মকর্তা',"famous_personel"=>"প্রখ্যাত ব্যক্তিত্ব","others"=>"অন্যান্য "), null,['class' => 'form-control',"disabled"=>"true"]) }}--}}
+                {{--                            --}}{{--</div>--}}
+                {{--                        </div>--}}
 
-{{--                        <div class="form-row">--}}
-{{--                            <div class="form-group col-md-6">--}}
-{{--                                {{ Form::label('ref_type', 'সুপারিশকারীর পরিচয়') }}--}}
-{{--                                {{ Form::select('ref_type',array('public_representative' => 'মাননীয় সংসদ সদস্য','political_party'=>'রাজনৈতিক দল', 'gov_emp' => 'সরকারি কর্মকর্তা',"famous_person"=>"প্রখ্যাত ব্যক্তিত্ব","others"=>"অন্যান্য "), null,['class' => 'form-control',"disabled"=>"true"]) }}--}}
-{{--                            </div>--}}
+                {{--                        <div class="form-row">--}}
+                {{--                            <div class="form-group col-md-6">--}}
+                {{--                                {{ Form::label('ref_type', 'সুপারিশকারীর পরিচয়') }}--}}
+                {{--                                {{ Form::select('ref_type',array('public_representative' => 'মাননীয় সংসদ সদস্য','political_party'=>'রাজনৈতিক দল', 'gov_emp' => 'সরকারি কর্মকর্তা',"famous_person"=>"প্রখ্যাত ব্যক্তিত্ব","others"=>"অন্যান্য "), null,['class' => 'form-control',"disabled"=>"true"]) }}--}}
+                {{--                            </div>--}}
 
-{{--                            <div class="form-group  col-md-6">--}}
-{{--                                {{ Form::label('ref_name', 'সুপারিশকারীর নাম') }}--}}
-{{--                                {{ Form::text('ref_name',null,['class'=>'form-control','placeholder'=>'',"disabled"=>"true"]) }}--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
+                {{--                            <div class="form-group  col-md-6">--}}
+                {{--                                {{ Form::label('ref_name', 'সুপারিশকারীর নাম') }}--}}
+                {{--                                {{ Form::text('ref_name',null,['class'=>'form-control','placeholder'=>'',"disabled"=>"true"]) }}--}}
+                {{--                            </div>--}}
+                {{--                        </div>--}}
 
-{{--                        <div class="form-row">--}}
-{{--                            <div class="form-group  col-md-6">--}}
-{{--                                {{ Form::label('ref_designation', 'সুপারিশকারীর পদবী') }}--}}
-{{--                                {{ Form::text('ref_designation',null,['class' => 'form-control',"disabled"=>"true"])}}--}}
-{{--                            </div>--}}
+                {{--                        <div class="form-row">--}}
+                {{--                            <div class="form-group  col-md-6">--}}
+                {{--                                {{ Form::label('ref_designation', 'সুপারিশকারীর পদবী') }}--}}
+                {{--                                {{ Form::text('ref_designation',null,['class' => 'form-control',"disabled"=>"true"])}}--}}
+                {{--                            </div>--}}
 
-{{--                            <div class="form-group  col-md-6">--}}
-{{--                                {{ Form::label('ref_office', 'সুপারিশকারীর কর্মস্থল') }}--}}
-{{--                                {{ Form::text('ref_office',null,['class'=>'form-control','placeholder'=>'',"disabled"=>"true"]) }}--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
+                {{--                            <div class="form-group  col-md-6">--}}
+                {{--                                {{ Form::label('ref_office', 'সুপারিশকারীর কর্মস্থল') }}--}}
+                {{--                                {{ Form::text('ref_office',null,['class'=>'form-control','placeholder'=>'',"disabled"=>"true"]) }}--}}
+                {{--                            </div>--}}
+                {{--                        </div>--}}
 
-{{--                        <div class="form-row ">--}}
-{{--                            <div class="form-group col-md-2">--}}
-{{--                                {{ Form::label('ref_documents', 'সুপারিশ সম্পর্কিত ডকুমেন্টস') }}--}}
-{{--                            </div>--}}
+                {{--                        <div class="form-row ">--}}
+                {{--                            <div class="form-group col-md-2">--}}
+                {{--                                {{ Form::label('ref_documents', 'সুপারিশ সম্পর্কিত ডকুমেন্টস') }}--}}
+                {{--                            </div>--}}
 
-{{--                            <div class="form-group col-md-10 ">--}}
-{{--                                <div class="ref_documents_file">--}}
-{{--                                    <input type="file" name="ref_documents_file" disabled class="custom-file-input" id="ref_documents_file">--}}
-{{--                                    <label class="custom-file-label" for="ref_documents_file"></label>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
+                {{--                            <div class="form-group col-md-10 ">--}}
+                {{--                                <div class="ref_documents_file">--}}
+                {{--                                    <input type="file" name="ref_documents_file" disabled class="custom-file-input" id="ref_documents_file">--}}
+                {{--                                    <label class="custom-file-label" for="ref_documents_file"></label>--}}
+                {{--                                </div>--}}
+                {{--                            </div>--}}
+                {{--                        </div>--}}
 
-{{--                        <div class="form-row">--}}
-{{--                            <div class="form-group col-md-6">--}}
-{{--                                {{ Form::label('old_app', 'পূর্বে ডাক যোগে/সরাসরি আবেদন করেছেন?') }}--}}
-{{--                                <input name="old_app" id="old_app" type="checkbox"  class="toggle form-control" data-width="50" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">--}}
-{{--                            </div>--}}
-{{--                            <div class="form-group col-md-4">--}}
-{{--                                {{ Form::label('old_application_date', 'আবেদনের তারিখ') }}--}}
-{{--                                <div class="input-group date" id="old_application_date" data-target-input="nearest">--}}
-{{--                                    <input type="text" width="100%" name="old_application_date" class="form-control datetimepicker-input" data-target="#old_application_date" disabled/>--}}
-{{--                                    <div class="input-group-append" data-target="#old_application_date" data-toggle="datetimepicker">--}}
-{{--                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
+                {{--                        <div class="form-row">--}}
+                {{--                            <div class="form-group col-md-6">--}}
+                {{--                                {{ Form::label('old_app', 'পূর্বে ডাক যোগে/সরাসরি আবেদন করেছেন?') }}--}}
+                {{--                                <input name="old_app" id="old_app" type="checkbox"  class="toggle form-control" data-width="50" data-toggle="toggle" data-on="হ্যাঁ" data-off="না" data-onstyle="success" data-offstyle="danger">--}}
+                {{--                            </div>--}}
+                {{--                            <div class="form-group col-md-4">--}}
+                {{--                                {{ Form::label('old_application_date', 'আবেদনের তারিখ') }}--}}
+                {{--                                <div class="input-group date" id="old_application_date" data-target-input="nearest">--}}
+                {{--                                    <input type="text" width="100%" name="old_application_date" class="form-control datetimepicker-input" data-target="#old_application_date" disabled/>--}}
+                {{--                                    <div class="input-group-append" data-target="#old_application_date" data-toggle="datetimepicker">--}}
+                {{--                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>--}}
+                {{--                                    </div>--}}
+                {{--                                </div>--}}
+                {{--                            </div>--}}
+                {{--                        </div>--}}
 
-{{--                        --}}{{--<div class="form-row ">--}}
-{{--                            --}}{{--<div class="form-group ">--}}
-{{--                                --}}{{--{{ Form::label('old_application_date', 'পূর্বে করা আবেদনের তারিখ') }}--}}
-{{--                                        --}}{{--<!-- {{ Form::text('old_application_date', null, ['class' => 'form-control', 'id'=>'old_application_date',"disabled"=>"true"]) }} -->--}}
-{{--                                --}}{{--<div class="input-group date" id="old_application_date" data-target-input="nearest">--}}
-{{--                                    --}}{{--<input type="text" width="100%" name="old_application_date" class="form-control datetimepicker-input" data-target="#old_application_date" disabled/>--}}
-{{--                                    --}}{{--<div class="input-group-append" data-target="#old_application_date" data-toggle="datetimepicker">--}}
-{{--                                        --}}{{--<div class="input-group-text"><i class="fa fa-calendar"></i></div>--}}
-{{--                                    --}}{{--</div>--}}
-{{--                                --}}{{--</div>--}}
-{{--                            --}}{{--</div>--}}
-{{--                        --}}{{--</div>--}}
+                {{--                        --}}{{--<div class="form-row ">--}}
+                {{--                            --}}{{--<div class="form-group ">--}}
+                {{--                                --}}{{--{{ Form::label('old_application_date', 'পূর্বে করা আবেদনের তারিখ') }}--}}
+                {{--                                        --}}{{--<!-- {{ Form::text('old_application_date', null, ['class' => 'form-control', 'id'=>'old_application_date',"disabled"=>"true"]) }} -->--}}
+                {{--                                --}}{{--<div class="input-group date" id="old_application_date" data-target-input="nearest">--}}
+                {{--                                    --}}{{--<input type="text" width="100%" name="old_application_date" class="form-control datetimepicker-input" data-target="#old_application_date" disabled/>--}}
+                {{--                                    --}}{{--<div class="input-group-append" data-target="#old_application_date" data-toggle="datetimepicker">--}}
+                {{--                                        --}}{{--<div class="input-group-text"><i class="fa fa-calendar"></i></div>--}}
+                {{--                                    --}}{{--</div>--}}
+                {{--                                --}}{{--</div>--}}
+                {{--                            --}}{{--</div>--}}
+                {{--                        --}}{{--</div>--}}
 
-{{--                        <div class="form-row">--}}
-{{--                            <div class="form-group col-md-2">--}}
-{{--                                {{ Form::label('old_application_attachment', 'পূর্বে করা আবেদনটি সংযুক্ত করুন') }}--}}
-{{--                            </div>--}}
+                {{--                        <div class="form-row">--}}
+                {{--                            <div class="form-group col-md-2">--}}
+                {{--                                {{ Form::label('old_application_attachment', 'পূর্বে করা আবেদনটি সংযুক্ত করুন') }}--}}
+                {{--                            </div>--}}
 
-{{--                            <div class="form-group col-md-10">--}}
-{{--                                <div class="old_application_attachment">--}}
-{{--                                    <input type="file" name="old_application_attachment" disabled class="custom-file-input" id="old_application_attachment">--}}
-{{--                                    <label class="custom-file-label" for="old_application_attachment"></label>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
+                {{--                            <div class="form-group col-md-10">--}}
+                {{--                                <div class="old_application_attachment">--}}
+                {{--                                    <input type="file" name="old_application_attachment" disabled class="custom-file-input" id="old_application_attachment">--}}
+                {{--                                    <label class="custom-file-label" for="old_application_attachment"></label>--}}
+                {{--                                </div>--}}
+                {{--                            </div>--}}
+                {{--                        </div>--}}
 
-{{--                        <div class="form-row">--}}
-{{--                            <div class="form-group col-md-2">--}}
-{{--                                {{ Form::label('signature', 'আপনার স্বাক্ষর সংযুক্ত করুন') }}--}}
-{{--                            </div>--}}
+                {{--                        <div class="form-row">--}}
+                {{--                            <div class="form-group col-md-2">--}}
+                {{--                                {{ Form::label('signature', 'আপনার স্বাক্ষর সংযুক্ত করুন') }}--}}
+                {{--                            </div>--}}
 
-{{--                            <div class="form-group col-md-10 ">--}}
-{{--                                <div class="old_applicasition_attachment">--}}
-{{--                                    <input type="file" name="signature"  class="custom-file-input" id="signature">--}}
-{{--                                    <label class="custom-file-label" for="signature"></label>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
+                {{--                            <div class="form-group col-md-10 ">--}}
+                {{--                                <div class="old_applicasition_attachment">--}}
+                {{--                                    <input type="file" name="signature"  class="custom-file-input" id="signature">--}}
+                {{--                                    <label class="custom-file-label" for="signature"></label>--}}
+                {{--                                </div>--}}
+                {{--                            </div>--}}
+                {{--                        </div>--}}
+                {{--                    </div>--}}
 
-{{--                    <div class="fieldset-footer">--}}
-{{--                        <span>Step 3 of 3</span>--}}
-{{--                    </div>--}}
-{{--                </fieldset>--}}
-{{--                @if(Auth::user()->hasRole(['district admin']))--}}
-{{--                </div>--}}
-{{--                @endif--}}
+                {{--                    <div class="fieldset-footer">--}}
+                {{--                        <span>Step 3 of 3</span>--}}
+                {{--                    </div>--}}
+                {{--                </fieldset>--}}
+                {{--                @if(Auth::user()->hasRole(['district admin']))--}}
+                {{--                </div>--}}
+                {{--                @endif--}}
                 {{ Form::close() }}
             </div>
         </div>
@@ -706,7 +690,7 @@
 @endsection
 
 @section("js")
- <!-- JS -->
+    <!-- JS -->
     <script src="{{ asset('vendor/jquery/jquery.min.js')}}"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
@@ -725,27 +709,27 @@
     <script src="https://kit.fontawesome.com/5b67dd8eb0.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
- <script type="text/javascript">
-     $(function () {
-         $('#union_others').hide();
-         $('.deo').hide();
-         $('.ref').hide();
-         $(".verify").hide();
-         $('#lab_others_title').hide();
-         $(".institution_corrected").hide();
-     });
-     $(function () {
-         $("#is_institution_bn_correction_needed").change(function () {
+    <script type="text/javascript">
+        $(function () {
+            $('#union_others').hide();
+            $('.deo').hide();
+            $('.ref').hide();
+            $(".verify").hide();
+            $('#lab_others_title').hide();
+            $(".institution_corrected").hide();
+        });
+        $(function () {
+            $("#is_institution_bn_correction_needed").change(function () {
 
-             if ($(this).prop("checked") == true) {
-                 $(".institution_corrected").show();
-             }
-             else{
-                 $(".institution_corrected").hide();
-             }
-         });
-     });
- </script>
+                if ($(this).prop("checked") == true) {
+                    $(".institution_corrected").show();
+                }
+                else{
+                    $(".institution_corrected").hide();
+                }
+            });
+        });
+    </script>
 
 
     <script type="text/javascript">
@@ -776,123 +760,123 @@
         });
     </script>
     {{--LAB TYPE SELECTION--}}
-     <script type="text/javascript">
-         $(function () {
-             $("#lab_type").change(function () {
-                 $("#institution_level").empty();
-                 var ins_type = @json($ins_type);
-                 var ins_type_sof = @json($ins_type_sof);
-                 console.log($("#lab_type").val());
-                 if ($(this).val() == "sof") {
-                     $("#institution_type").empty();
-                     $.each(ins_type_sof,function(key,value){
-                         $("#institution_type").append('<option value="'+key+'">'+value+'</option>');
-                     });
-                     $(".verify").show();
-                     $("#upazila_verified_lb").text('সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপনের জন্য:');
-                     $("#district_verified_lb").text('জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার:');
-                     $(".sof").show();
+    <script type="text/javascript">
+        $(function () {
+            $("#lab_type").change(function () {
+                $("#institution_level").empty();
+                var ins_type = @json($ins_type);
+                var ins_type_sof = @json($ins_type_sof);
+                console.log($("#lab_type").val());
+                if ($(this).val() == "sof") {
+                    $("#institution_type").empty();
+                    $.each(ins_type_sof,function(key,value){
+                        $("#institution_type").append('<option value="'+key+'">'+value+'</option>');
+                    });
+                    $(".verify").show();
+                    $("#upazila_verified_lb").text('সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপনের জন্য:');
+                    $("#district_verified_lb").text('জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার:');
+                    $(".sof").show();
 
-                 } else {
-                     $("#institution_type").empty();
-                     $.each(ins_type,function(key,value){
-                         $("#institution_type").append('<option value="'+key+'">'+value+'</option>');
-                     });
-                     $(".verify").show();
-                     $("#upazila_verified_lb").text('সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপনের জন্য:');
-                     $("#district_verified_lb").text('জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব:');
-                     $(".sof").hide();
-                 }
-             });
-         });
-     </script>
-     <script type="text/javascript">
-         $(function () {
-             if ($("#lab_type").val() == "sof") {
-                 $(".verify").show();
-                 $("#upazila_verified_lb").text('সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপনের জন্য:');
-                 $("#district_verified_lb").text('জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার:');
-                 $(".sof").show();
-             } else {
-                 $(".verify").show();
-                 $("#upazila_verified_lb").text('সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপনের জন্য:');
-                 $("#district_verified_lb").text('জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব:');
-                 $(".sof").hide();
-             }
-         });
-         // $(function () {
-         //     $("#lab_type").change(function () {
-         //
-         //         if ($(this).val() == "sof") {
-         //
-         //             $("#is_mpo").removeAttr("disabled");
-         //             $("#is_mpo").show();
-         //
-         //         } else {
-         //             $("#is_mpo").attr("disabled", "disabled");
-         //             $("#is_mpo").hide();
-         //         }
-         //     });
-         // });
-     </script>
+                } else {
+                    $("#institution_type").empty();
+                    $.each(ins_type,function(key,value){
+                        $("#institution_type").append('<option value="'+key+'">'+value+'</option>');
+                    });
+                    $(".verify").show();
+                    $("#upazila_verified_lb").text('সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপনের জন্য:');
+                    $("#district_verified_lb").text('জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব:');
+                    $(".sof").hide();
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            if ($("#lab_type").val() == "sof") {
+                $(".verify").show();
+                $("#upazila_verified_lb").text('সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার স্থাপনের জন্য:');
+                $("#district_verified_lb").text('জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে স্কুল অফ ফিউচার:');
+                $(".sof").show();
+            } else {
+                $(".verify").show();
+                $("#upazila_verified_lb").text('সুপারিশকারী (উপজেলা নির্বাহী অফিসার): যাচাইকারী কর্মকর্তার প্রতিবেদন মোতাবেক প্রতিষ্ঠান নির্বাচনের নির্দেশিকা অনুসরণ পূর্বক উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব স্থাপনের জন্য:');
+                $("#district_verified_lb").text('জেলা প্রশাসক: উপজেলা নির্বাহী অফিসারের সুপারিশমতে উক্ত প্রতিষ্ঠানে শেখ রাসেল ডিজিটাল ল্যাব:');
+                $(".sof").hide();
+            }
+        });
+        // $(function () {
+        //     $("#lab_type").change(function () {
+        //
+        //         if ($(this).val() == "sof") {
+        //
+        //             $("#is_mpo").removeAttr("disabled");
+        //             $("#is_mpo").show();
+        //
+        //         } else {
+        //             $("#is_mpo").attr("disabled", "disabled");
+        //             $("#is_mpo").hide();
+        //         }
+        //     });
+        // });
+    </script>
 
-      <script type="text/javascript">
+    <script type="text/javascript">
 
-          $(function () {
-              $("#institution_type").change(function () {
-                  var lab_type= $("#lab_type").val();
-                  var ins_type= $("#institution_type option:selected" ).val();
-                  var ins_level = @json($ins_level);
-                  var ins_level_technical = @json($ins_level_technical);
-                  var ins_level_sof = @json($ins_level_sof);
-                  //console.log($("#lab_type").val());
-                  if ($.inArray(ins_type, ["general","madrasha"]) >= 0 && lab_type=="srdl") {
-                      $("#institution_level").removeAttr("disabled");
-                      $("#institution_level").empty();
-                      $.each(ins_level,function(key,value){
-                          $("#institution_level").append('<option value="'+key+'">'+value+'</option>');
-                      });
-                  }
-                  else if(ins_type=="technical" && lab_type=="srdl"){
-                      $("#institution_level").removeAttr("disabled");
-                      $("#institution_level").empty();
-                      $.each(ins_level_technical,function(key,value){
-                          $("#institution_level").append('<option value="'+key+'">'+value+'</option>');
-                      });
-                  }
-                  else if($.inArray(ins_type, ["general","madrasha","technical"]) >= 0 && lab_type=="sof"){
-                      $("#institution_level").removeAttr("disabled");
-                      $("#institution_level").empty();
-                      $.each(ins_level_sof,function(key,value){
-                          $("#institution_level").append('<option value="'+key+'">'+value+'</option>');
-                      });
-                  }
-                  else {
-                      $("#institution_level").empty();
-                      $("#institution_level").attr("disabled", "disabled");
-                  }
-              });
-          });
-      </script>
+        $(function () {
+            $("#institution_type").change(function () {
+                var lab_type= $("#lab_type").val();
+                var ins_type= $("#institution_type option:selected" ).val();
+                var ins_level = @json($ins_level);
+                var ins_level_technical = @json($ins_level_technical);
+                var ins_level_sof = @json($ins_level_sof);
+                //console.log($("#lab_type").val());
+                if ($.inArray(ins_type, ["general","madrasha"]) >= 0 && lab_type=="srdl") {
+                    $("#institution_level").removeAttr("disabled");
+                    $("#institution_level").empty();
+                    $.each(ins_level,function(key,value){
+                        $("#institution_level").append('<option value="'+key+'">'+value+'</option>');
+                    });
+                }
+                else if(ins_type=="technical" && lab_type=="srdl"){
+                    $("#institution_level").removeAttr("disabled");
+                    $("#institution_level").empty();
+                    $.each(ins_level_technical,function(key,value){
+                        $("#institution_level").append('<option value="'+key+'">'+value+'</option>');
+                    });
+                }
+                else if($.inArray(ins_type, ["general","madrasha","technical"]) >= 0 && lab_type=="sof"){
+                    $("#institution_level").removeAttr("disabled");
+                    $("#institution_level").empty();
+                    $.each(ins_level_sof,function(key,value){
+                        $("#institution_level").append('<option value="'+key+'">'+value+'</option>');
+                    });
+                }
+                else {
+                    $("#institution_level").empty();
+                    $("#institution_level").attr("disabled", "disabled");
+                }
+            });
+        });
+    </script>
 
-     <script type="text/javascript">
+    <script type="text/javascript">
 
-         $(function () {
-             $("#institution_type").change(function () {
+        $(function () {
+            $("#institution_type").change(function () {
 
-                 var ins_type= $("#institution_type option:selected" ).val();
-                 if ($.inArray(ins_type, ["gov_training","gov_rel_ins","others"]) >= 0) {
-                     //alert($("#institution_type option:selected" ).val());
-                     $("#eiin").attr("disabled", "disabled");
-                     $("#mpo").attr("disabled", "disabled");
-                 } else {
-                     //alert('hi');
-                     $("#eiin").removeAttr("disabled");
-                     $("#mpo").removeAttr("disabled");
-                 }
-             });
-         });
-     </script>
+                var ins_type= $("#institution_type option:selected" ).val();
+                if ($.inArray(ins_type, ["gov_training","gov_rel_ins","others"]) >= 0) {
+                    //alert($("#institution_type option:selected" ).val());
+                    $("#eiin").attr("disabled", "disabled");
+                    $("#mpo").attr("disabled", "disabled");
+                } else {
+                    //alert('hi');
+                    $("#eiin").removeAttr("disabled");
+                    $("#mpo").removeAttr("disabled");
+                }
+            });
+        });
+    </script>
 
     <script type="text/javascript">
         $(function () {
@@ -907,73 +891,73 @@
             });
         });
     </script>
-     @if(Auth::user()->hasRole(['super admin']))
-         <script type="text/javascript">
-             $(function () {
-                 $(".verification-content").attr("disabled", "disabled");
+    @if(Auth::user()->hasRole(['super admin']) )
+        <script type="text/javascript">
+            $(function () {
+                $(".verification-content").attr("disabled", "disabled");
 
-                 $("#verification").change(function () {
+                $("#verification").change(function () {
 
-                     if ($(this).prop("checked") == true) {
-                         $(".verification-content").removeAttr("disabled");
-                     } else {
-                         $(".verification-content").attr("disabled", "disabled");
-                     }
-                 });
-             });
-         </script>
-     @endif
-     @if(Auth::user()->hasRole(['super admin']))
-     <script type="text/javascript">
-         $(function () {
-             $("#listed_by_deo").change(function () {
+                    if ($(this).prop("checked") == true) {
+                        $(".verification-content").removeAttr("disabled");
+                    } else {
+                        $(".verification-content").attr("disabled", "disabled");
+                    }
+                });
+            });
+        </script>
+    @endif
+    @if(Auth::user()->hasRole(['super admin']))
+        <script type="text/javascript">
+            $(function () {
+                $("#listed_by_deo").change(function () {
 
-                 if ($(this).prop("checked") == true) {
-                     $(".deo").removeAttr("disabled");
-                     $(".deo").show();
-                     $(".member_name").focus();
-                     $('#reference').bootstrapToggle('off');
-                     $(".ref").attr("disabled", "disabled");
-                     $(".ref").hide();
-                     //$('.tab_2').hide();
-                     //$('.tab_3').hide();
-                     //$('.tab_4').hide();
-                     //$('.title').hide();
-                     //$('.fieldset-footer').hide();
-                     //$('.actions').hide();
-                     //$('#submit').show();
-                   //  $('.actions').html("<ul role=\"menu\" aria-label=\"Pagination\"><li aria-hidden=\"false\" style=\"\"><a  href=\"#finish\" role=\"menuitem\">Submit</a></li></ul>");
-                   //   $('.actions').html("<ul role=\"menu\" aria-label=\"Pagination\"><li><button class=\"submitbtn btn btn-success\"  type=\"submit\">\n" +
-                   //       "    Submit\n" +
-                   //       "</button></li></ul>");
-                 } else {
-                     $(".deo").attr("disabled", "disabled");
-                     $(".deo").hide();
-                     $('#reference').bootstrapToggle('on');
-                     $(".ref").removeAttr("disabled");
-                     $(".ref").show();
-                     //$('.tab_2').show();
-                     //$('.tab_3').show();
-                     //$('.tab_4').show();
-                     //$('.title').show();
-                     //$('.fieldset-footer').show();
-                     //$('.actions').show();
-                     //$('#submit').hide();
-                     //  $('.actions').html("<ul role=\"menu\" aria-label=\"Pagination\"><li aria-hidden=\"false\" style=\"\"><a  href=\"#finish\" role=\"menuitem\">Submit</a></li></ul>");
-                     //$('.actions').html("");
-                 }
-             });
-         });
-     </script>
-     @endif
-{{--     @if(Auth::user()->hasRole(['district admin']))--}}
-{{--         <script type="text/javascript">--}}
-{{--             $(function () {--}}
-{{--                 $('.fieldset-footer').hide();--}}
-{{--                 $('.ref-form').hide();--}}
-{{--             });--}}
-{{--         </script>--}}
-{{--     @endif--}}
+                    if ($(this).prop("checked") == true) {
+                        $(".deo").removeAttr("disabled");
+                        $(".deo").show();
+                        $(".member_name").focus();
+                        $('#reference').bootstrapToggle('off');
+                        $(".ref").attr("disabled", "disabled");
+                        $(".ref").hide();
+                        //$('.tab_2').hide();
+                        //$('.tab_3').hide();
+                        //$('.tab_4').hide();
+                        //$('.title').hide();
+                        //$('.fieldset-footer').hide();
+                        //$('.actions').hide();
+                        //$('#submit').show();
+                        //  $('.actions').html("<ul role=\"menu\" aria-label=\"Pagination\"><li aria-hidden=\"false\" style=\"\"><a  href=\"#finish\" role=\"menuitem\">Submit</a></li></ul>");
+                        //   $('.actions').html("<ul role=\"menu\" aria-label=\"Pagination\"><li><button class=\"submitbtn btn btn-success\"  type=\"submit\">\n" +
+                        //       "    Submit\n" +
+                        //       "</button></li></ul>");
+                    } else {
+                        $(".deo").attr("disabled", "disabled");
+                        $(".deo").hide();
+                        $('#reference').bootstrapToggle('on');
+                        $(".ref").removeAttr("disabled");
+                        $(".ref").show();
+                        //$('.tab_2').show();
+                        //$('.tab_3').show();
+                        //$('.tab_4').show();
+                        //$('.title').show();
+                        //$('.fieldset-footer').show();
+                        //$('.actions').show();
+                        //$('#submit').hide();
+                        //  $('.actions').html("<ul role=\"menu\" aria-label=\"Pagination\"><li aria-hidden=\"false\" style=\"\"><a  href=\"#finish\" role=\"menuitem\">Submit</a></li></ul>");
+                        //$('.actions').html("");
+                    }
+                });
+            });
+        </script>
+    @endif
+    {{--     @if(Auth::user()->hasRole(['district admin']))--}}
+    {{--         <script type="text/javascript">--}}
+    {{--             $(function () {--}}
+    {{--                 $('.fieldset-footer').hide();--}}
+    {{--                 $('.ref-form').hide();--}}
+    {{--             });--}}
+    {{--         </script>--}}
+    {{--     @endif--}}
     <script type="text/javascript">
         $(function () {
             $("#reference").change(function () {
@@ -1011,57 +995,59 @@
         });
     </script>
 
-{{--     @if(!empty(old('govlab')))
-         <script type="text/javascript">
-             $(function () {
-                 $('#govlab').bootstrapToggle('on');
-                 $("#labs_multiple").removeAttr("disabled");
-             });
-         </script>
-     @endif
-     @if(!empty(old('listed_by_deo')))
-         <script type="text/javascript">
-             $(function () {
-                 $('#listed_by_deo').bootstrapToggle('on');
-                 //$("#labs_multiple").removeAttr("disabled");
-             });
-         </script>
-     @endif--}}
+    {{--     @if(!empty(old('govlab')))
+             <script type="text/javascript">
+                 $(function () {
+                     $('#govlab').bootstrapToggle('on');
+                     $("#labs_multiple").removeAttr("disabled");
+                 });
+             </script>
+         @endif
+         @if(!empty(old('listed_by_deo')))
+             <script type="text/javascript">
+                 $(function () {
+                     $('#listed_by_deo').bootstrapToggle('on');
+                     //$("#labs_multiple").removeAttr("disabled");
+                 });
+             </script>
+         @endif--}}
 
     <script type="text/javascript">
-    $(function () {
-        $("input[name='govlab']").change(function () {
-            if ($(this).prop("checked") == true) {
-                $("#labs_multiple").removeAttr("disabled");
-                $("#total_pc_gov_non_gov").removeAttr("disabled");
-                $("#labs_multiple").focus();
-            } else {
-                $("#labs_multiple").attr("disabled", "disabled");
-                $("#total_pc_gov_non_gov").attr("disabled", "disabled")
-            }
+        $(function () {
+            $("input[name='govlab']").change(function () {
+                if ($(this).prop("checked") == true) {
+                    $("#labs_multiple").removeAttr("disabled");
+                    $("#total_pc_gov_non_gov").removeAttr("disabled");
+                    $(".old-lab").removeAttr("disabled");
+                    $("#labs_multiple").focus();
+                } else {
+                    $("#labs_multiple").attr("disabled", "disabled");
+                    $(".old-lab").attr("disabled", "disabled");
+                    $("#total_pc_gov_non_gov").attr("disabled", "disabled")
+                }
+            });
         });
-    });
 
     </script>
 
     <script type="text/javascript">
 
-     $(document).ready(function(){
-         //$('#institution_type').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
-        // $('#lab_type').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
-        //$('#total_pc_own').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
-        //$('#total_pc_gov_non_gov').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
-        //$('#internet_connection_type').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
-        //$('#ref_type').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
-       // $('#div').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
-       // $('#dis').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
-        //$('#upazila').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
-        //$('#union_pourashava_ward').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
-        //$('#management').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
-        //$('#student_type').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
-        //$('#direction').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
+        $(document).ready(function(){
+            //$('#institution_type').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
+            // $('#lab_type').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
+            //$('#total_pc_own').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
+            //$('#total_pc_gov_non_gov').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
+            //$('#internet_connection_type').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
+            //$('#ref_type').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
+            // $('#div').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
+            // $('#dis').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
+            //$('#upazila').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
+            //$('#union_pourashava_ward').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
+            //$('#management').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
+            //$('#student_type').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
+            //$('#direction').prepend('<option value="-1" selected="selected" disabled>নির্বাচন করুন </option>');
 
-     });
+        });
     </script>
 
     <script type="text/javascript">
@@ -1074,26 +1060,52 @@
     </script>
 
     <script>
-         $('.toggle').change(function(){
+        $('.toggle').change(function(){
 
             var id = $(this).attr("id");
-           // console.log(id);
+            // console.log(id);
 
-           // $('#internet_connection').change(function () {
-               // console.log('#hidden_'+id);
+            // $('#internet_connection').change(function () {
+            // console.log('#hidden_'+id);
             if($(this).prop('checked')== true)
             {
                 //console.log('#hidden_'+id);
-            $('#hidden_'+id).val('YES');
+                $('#hidden_'+id).val('YES');
             }
             else
             {
-            $('#hidden_'+id).val('NO');
+                $('#hidden_'+id).val('NO');
             }
-           // });
+            // });
         });
     </script>
 
-@include('applications.applicationjs')
-@include('applications.application-reloadjs')
+    <script>
+        $(document).ready(function () {
+            var i = 1;
+            $('#add').click(function () {
+                i++;
+                $('#dynamic_field').append(
+                    '<tr class="" id="row' + i + '">'+
+                    '<th scope="row">' + i + '</th>'+
+                    '<td> <input type="text" class="form-control" name="lab_title[]" placeholder=""></td>'+
+                    '<td>  <input type="number" class="form-control" name="year[]" placeholder=""></td>'+
+                    '<td>  <input type="number" class="form-control" name="desktop[]" placeholder=""></td>'+
+                    '<td> <input type="number" class="form-control" name="active_desktop[]" placeholder=""></td>'+
+                    '<td> <input type="number" class="form-control" name="laptop[]" placeholder=""></td>'+
+                    '<td>  <input type="number" class="form-control" name="active_laptop[]" placeholder=""></td>'+
+                    '<td>  <textarea  class="lab-comments" name="lab_comments[]" rows="1" cols="1" placeholder=""></textarea></td>'+
+                    '<td>  <button type="button" name="add" class="btn btn-danger btn_remove" id="' + i + '"><i class="fa fa fa-trash"></i></button></td>'+
+                    '</tr>');
+            });
+            $(document).on('click', '.btn_remove', function () {
+                var button_id = $(this).attr("id");
+
+                $('#row' + button_id + '').remove();
+            });
+        });
+    </script>
+
+    @include('applications.applicationjs')
+    @include('applications.application-reloadjs')
 @endsection

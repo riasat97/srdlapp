@@ -170,7 +170,7 @@ class ApplicationsDataTable extends DataTable
                     $data->where('listed_by_deo', "NO");
             }
             // dd($data->get()->toArray());
-            return $data->with('attachment','verification','profile','internet')->orderByRaw(" division,district,seat_no asc, FIELD(lab_type , 'sof') DESC,upazila ASC");
+            return $data->with('attachment','verification')->orderByRaw(" division,district,seat_no asc, FIELD(lab_type , 'sof') DESC,upazila ASC");
             //return $this->applyScopes($data);
         }
         return $data->with('attachment','verification')->permitted(null)->latest('id');

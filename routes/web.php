@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 //https://stackoverflow.com/questions/29893859/laravel-5-login-redirect-to-a-subdomain
 //https://laravel-news.com/laravel-auth-redirection
 //https://stackoverflow.com/questions/52583886/post-request-in-laravel-error-419-sorry-your-session-419-your-page-has-exp
+//https://onlinehtmleditor.dev/
 Route::group(['prefix' => 'selected', 'as' => 'web.'], function () {
     Route::get('/institutions', 'DashboardController@application')->name('selected-institutions');
 });
@@ -191,3 +192,8 @@ Route::get('/empty-reserved', function() {
 
 
 
+
+
+Route::resource('notices', 'NoticeController');
+Route::get('notices/{id}/{path}', 'NoticeController@displayPdf')->name('displayPdf');
+Route::get('notice-attachments', 'NoticeController@notices')->name('notice.attachments');

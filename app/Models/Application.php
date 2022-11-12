@@ -121,7 +121,10 @@ class Application extends Model
     {
         return $this->hasMany('App\Models\Trainee','application_id');
     }
-
+    public function oldLabs()
+    {
+        return $this->hasMany('App\Models\ApplicationOldLab','application_id');
+    }
 
 
 }

@@ -6,11 +6,19 @@ use App\DataTables\ApplicationsDataTable;
 use App\DataTables\SelectedInstitutionsDataTable;
 use App\Models\Application;
 use App\Models\Bangladesh;
+use App\Models\Notice;
+use App\Repositories\NoticeRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
+    private $noticeRepository;
+
+    public function __construct(NoticeRepository $noticeRepo)
+    {
+        $this->noticeRepository = $noticeRepo;
+    }
     /*public function __construct()
     {
         $this->middleware('auth');
@@ -56,7 +64,9 @@ class DashboardController extends Controller
 
     }
     public function getHome(){
-        return view('index');
+        $notices = Notice::with('attachments')->where('published_at', '<', now())->orderByDesc('published_at')->take(10)->get();
+        //dd($notices);
+        return view('index')->with('notices', $notices);
     }
     public function getAbout(){
         return view('about');

@@ -51,6 +51,7 @@
       <nav id="navbar" class="navbar">
         <ul>
           <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
+          <li><a class="nav-link scrollto active" href="#notice">Notice</a></li>
           <li><a class="nav-link scrollto" href="#about">About</a></li>
           <li><a class="nav-link scrollto" href="#services">Goals</a></li>
           <li><a class="nav-link scrollto " href="#portfolio">Gallery</a></li>
@@ -74,7 +75,8 @@
             </ul>
           </li> -->
           <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
-            <li><a class="nav-link scrollto" href="{{ route('web.selected-institutions') }}">Labs</a></li>
+          <li><a class="nav-link scrollto" target="_blank" href="{{ route('web.selected-institutions') }}">Labs</a></li>
+          <li><a class="nav-link scrollto" target="_blank" href="{{ route('notice.attachments') }}">All Notices</a></li>
           <li><a class="getstarted scrollto" href="{{url('/login')}}">Login</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
@@ -138,6 +140,30 @@
 
       </div>
     </section><!-- End Clients Section -->
+
+    <!-- ======= Notice Section ======= -->
+      <section id="notice" class="notice">
+          <div class="container">
+
+              <div class="section-title" data-aos="fade-up">
+                  <h2>Notice</h2>
+              </div>
+
+              <div class="row content">
+                  <div class="col-lg-12" data-aos="fade-up" data-aos-delay="150">
+                      <div class="box box-primary">
+                          <div class="box-body">
+                              @include('notices.table')
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-lg-6 pt-4 pt-lg-0" data-aos="fade-up" data-aos-delay="300">
+                      <a href="{{ route('notice.attachments') }}" class="btn btn-info">All Notices</a>
+                  </div>
+              </div>
+
+          </div>
+      </section><!-- End About Us Section -->
 
     <!-- ======= About Us Section ======= -->
     <section id="about" class="about">
@@ -1134,7 +1160,7 @@ Secured National Award on Environment in 2010 handed over by the Prime Minister 
 
                 <div>
                   <i class="ri-phone-line"></i>
-                  <p>01944444666</p>
+                  <p>01813180300</p>
                 </div>
 
               </div>

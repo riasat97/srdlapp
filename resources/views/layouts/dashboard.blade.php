@@ -26,7 +26,7 @@
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
-
+    <link href="{{ asset('assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
     {{--    favicon--}}
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('favicon/apple-touch-icon.png') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon/favicon-32x32.png') }}">
@@ -126,7 +126,7 @@
 
                {{-- <img src="{{url('/images/srdl logo.png')}}"  style=" width: 65px; height: 60px;" alt="Image"/>--}}
                 <!-- Branding Image -->
-                <a class="navbar-left" href="#" style="transform: translateX(-50%);left: 50%;position: absolute;">
+                <a class="navbar-left" href="{{url('/')}}" style="transform: translateX(-50%);left: 50%;position: absolute;">
                     <img style="max-width:50px"
                          src="{{url('/images/srdl logo.png')}}">
                 </a>
@@ -143,6 +143,7 @@
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Authentication Links -->
+                    <li><a href="{{ url('/') }}">Home</a></li>
                     <li><a href="{{ url('/login') }}">Login</a></li>
                 </ul>
             </div>

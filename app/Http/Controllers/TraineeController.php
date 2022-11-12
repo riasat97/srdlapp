@@ -33,7 +33,7 @@ class TraineeController extends Controller
         $lab= Lab::where('id',$labId)->first();
         $requestData = $request->all();
         if(empty($lab->trainees))
-        $this->creatTrainees($requestData,$labId);
+        $this->createTrainees($requestData,$labId);
         else $this->updateTrainees($lab,$requestData);
         dd('created');
     }

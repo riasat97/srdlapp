@@ -45,7 +45,18 @@ class CreateApplicationRequest extends FormRequest
                 'ref_designation' => Rule::requiredIf(empty($request->get('listed_by_deo'))),
                 'old_application_attachment' => 'mimes:pdf|max:1000',
                 //'app_upazila_verified' => 'required|in:YES,NO',
-
+                "lab_title"    => "required_if:govlab,on|array",
+                "lab_title.*"  => "required_if:govlab,on",
+                "year"    => "required_if:govlab,on|array",
+                "year.*"  => "required_if:govlab,on",
+                "desktop"    => "required_if:govlab,on|array",
+                "desktop.*"  => "required_if:govlab,on",
+                "active_desktop"    => "required_if:govlab,on|array",
+                "active_desktop.*"  => "required_if:govlab,on",
+                "laptop"    => "required_if:govlab,on|array",
+                "laptop.*"  => "required_if:govlab,on",
+                "active_laptop"    => "required_if:govlab,on|array",
+                "active_laptop.*"  => "required_if:govlab,on"
             ];
             if ($request->hasFile('list_attachment_file') or !$request->get('list_attachment')) {
                 $list_attachment_file= ['list_attachment_file' => 'required_if:listed_by_deo,on|mimes:pdf|max:1000'];
@@ -69,6 +80,12 @@ class CreateApplicationRequest extends FormRequest
                 'mpo' => 'sometimes|nullable|numeric',
                 'total_boys' => 'required|numeric',
                 'total_girls' => 'required|numeric',
+
+                'total_teachers' => 'required|numeric',
+                'total_computer_trained_teachers' => 'required|numeric',
+                'total_staffs' => 'required|numeric',
+                'total_computer_trained_staffs' => 'required|numeric',
+
                 'head_name' => ['required','regex:/^[\p{Bengali}]/u'],
                 'institution_email' => ['required','string', 'email', 'max:255'],
                 'institution_tel' => 'required|regex:/(01)[0-9]{9}/',
@@ -90,6 +107,24 @@ class CreateApplicationRequest extends FormRequest
                 'internet_connection_type' => 'required|array',
                 'about_institution' => 'nullable|string|max:500',
                 'app_upazila_verified' => 'required|in:YES,NO',
+
+                "lab_title"    => "required_if:govlab,on|array",
+                "lab_title.*"  => "required_if:govlab,on",
+                "year"    => "required_if:govlab,on|array",
+                "year.*"  => "required_if:govlab,on",
+                "desktop"    => "required_if:govlab,on|array",
+                "desktop.*"  => "required_if:govlab,on",
+                "active_desktop"    => "required_if:govlab,on|array",
+                "active_desktop.*"  => "required_if:govlab,on",
+                "laptop"    => "required_if:govlab,on|array",
+                "laptop.*"  => "required_if:govlab,on",
+                "active_laptop"    => "required_if:govlab,on|array",
+                "active_laptop.*"  => "required_if:govlab,on",
+
+                'lab_length' => 'required|numeric',
+                'lab_width' => 'required|numeric',
+                'lab_room_status' => 'required|not_in:0',
+                'lab_window_status' => 'required|not_in:0',
             ];
             if (!empty($request->get('labs'))&& in_array('Others', $request->input('labs', []))) {
                 $rules['lab_others_title'] = 'required| string';
