@@ -22,7 +22,7 @@
 @endsection
 @section('content')
     <section class="content-header">
-        <h1 class="pull-left">শেখ রাসেল ডিজিটাল ল্যাব স্থাপন প্রকল্প (২য় পর্যায়): চূড়ান্ত তালিকা </h1>
+        <h1 class="pull-left">শেখ রাসেল ডিজিটাল ল্যাবের চূড়ান্ত তালিকা (১ম ও ২য় পর্যায়)</h1>
     </section>
     <div class="content">
         <div class="clearfix"></div>
@@ -35,6 +35,10 @@
             <div class="box-body">
                 <div class="form-row">
                     <div class="form-group  col-md-2">
+                        {{Form::label('phase', 'পর্যায়') }}
+                        {{ Form::select('phase', $phase,old('phase'),array('class'=>'form-control','id'=>'phase')) }}
+                    </div>
+                    <div class="form-group  col-md-2">
                         {{Form::label('div', 'বিভাগ') }}
                         {{ Form::select('division', $divisionList,old('division'),array('class'=>'form-control','id'=>'div')) }}
                     </div>
@@ -44,10 +48,10 @@
                         {{--                        <select name="district" id="dis" class="form-control" style="width:350px">--}}
                         {{--                        </select>--}}
                     </div>
-                    <div class="form-group  col-md-2">
+                   {{-- <div class="form-group  col-md-2">
                         {{Form::label('seat_type', 'সংসদীয় আসনের ধরণ') }}
                         {{Form::select('seat_type', ['0'=>'সকল ','general'=>'সাধারণ', 'reserved'=>'সংরক্ষিত মহিলা আসন'], old('seat_type'),['id'=>'seat_type','class'=>'form-control'])}}
-                    </div>
+                    </div>--}}
                     <div class="form-group  col-md-2">
                         {{Form::label('parliamentary_constituency', 'নির্বাচনী এলাকা') }}
                         {{Form::select('parliamentary_constituency', ['0'=>'সকল'], old('parliamentary_constituency'),['id'=>'parliamentary_constituency','class'=>'form-control'])}}
@@ -101,6 +105,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.0.3/css/buttons.dataTables.min.css">
     <script src="https://cdn.datatables.net/buttons/1.0.3/js/dataTables.buttons.min.js"></script>
     <script src="/vendor/datatables/buttons.server-side.js"></script>
+    <script src="{{ asset('web-theme/js/actived6c3d6c3.js?v=3.3')}}"></script>
     @include('applications.application-filterjs')
 
 
@@ -116,6 +121,7 @@
             var table = $("#dashboard-datatable");
             table.on('preXhr.dt',function (e,settings,d) {
                 d.filter= filter,
+                    d.phase = ($('#phase').val()) ? $('#phase').val() : '',
                     d.divId = ($('#div').val()) ? $('#div').val() : '',
                     d.disId = ($('#dis').val()) ? $('#dis').val() : '',
                     d.seat_type = ($('#seat_type').val()) ? $('#seat_type').val() : '',

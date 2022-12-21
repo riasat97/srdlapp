@@ -7,14 +7,23 @@ use Illuminate\Support\Facades\Auth;
 
 class Lab extends Model
 {
-    protected $appends = ['ins'];
+    protected $appends = ['constituency','ins','tel'];
 
     /*public function getLabTypeAttribute($value)
     {
         $labTypeArr= lab_type();
         return $labTypeArr[$value];
     }*/
-
+    public function getTelAttribute()
+    {
+        return (!empty($this->institution_tel))?
+            $this->institution_tel.",".$this->alt_tel:0;
+    }
+    public function getPhaseAttribute($value)
+   {
+       $phase= phase();
+       return $phase[$value];
+   }
     public function getInstitutionTypeAttribute($value)
     {
         $InstitutionTypeArr= ins_type();
@@ -35,15 +44,16 @@ class Lab extends Model
     }
     private function getLabId(Lab $lab)
     {
-        if($lab->lab_type=="srdl")return '';
-        if($lab->lab_type=="sof")return " (SOF)";
-        if($lab->lab_type=="srdl_sof")return " (SOF & SRDL)";
+        if($lab->lab_type=="srdl")return $lab->id;
+        if($lab->lab_type=="sof")return $lab->id." (SOF)";
+        if($lab->lab_type=="srdl_sof")return $lab->id." (SOF & SRDL)";
 
     }
     public function getInsAttribute()
     {
         $labId=$this->getLabId($this);
-        return $this->institution.''.$labId;
+        if(!empty($this->institution_corrected)) return $this->institution_corrected.'-'.$labId;
+        return $this->institution.'-'.$labId;
     }
 
     public function scopePermitted($query, $type)

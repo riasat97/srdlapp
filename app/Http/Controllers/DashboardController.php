@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\ApplicationsDataTable;
+use App\DataTables\LabDataTable;
 use App\DataTables\SelectedInstitutionsDataTable;
 use App\Models\Application;
 use App\Models\Bangladesh;
@@ -39,7 +40,7 @@ class DashboardController extends Controller
             'sof_total'=>$sof_total,'other_ref'=>$other_ref,'total_app'=>$total_app]);
     }
 
-    public function application(SelectedInstitutionsDataTable $dataTable,Request $request)
+    public function application(LabDataTable $dataTable,Request $request)
     {
         $divisionList=[];
         $divisions = Bangladesh::distinct()->get("division")->toArray();
@@ -47,7 +48,9 @@ class DashboardController extends Controller
             $divisionList[$division['division']]=$division['division'];
         $divisionList=array_merge(['-1' => 'নির্বাচন করুন'], $divisionList);
         $parliamentaryConstituencyList= $this->getParliamentaryConstituency($request);
-        return $dataTable->render('selectedInstitutions',['divisionList'=>$divisionList,'parliamentaryConstituencyList'=>$parliamentaryConstituencyList]);
+        $phase= array_merge(['-1' => 'নির্বাচন করুন'],[1=>'১ম',2=>'২য়']);
+        return $dataTable->render('selectedInstitutions',['divisionList'=>$divisionList,
+        'parliamentaryConstituencyList'=>$parliamentaryConstituencyList,'phase'=>$phase]);
     }
 
     public function getParliamentaryConstituency(Request $request)

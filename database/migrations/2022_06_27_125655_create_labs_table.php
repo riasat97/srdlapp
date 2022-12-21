@@ -16,7 +16,7 @@ class CreateLabsTable extends Migration
         Schema::create('labs', function (Blueprint $table) {
             $table->id();
             $table->integer('srdl_code');
-            $table->enum('phase',[1,2]);
+            $table->enum('phase',[1,2,3]);
 
             $table->text("institution");
             $table->bigInteger("eiin")->nullable();
@@ -31,13 +31,14 @@ class CreateLabsTable extends Migration
             $table->string("union_others")->nullable();
             $table->string("ward")->nullable();
 
-            $table->enum('seat_type',['general','reserved'])->nullable();
+            //$table->enum('seat_type',['general','reserved'])->nullable();
             $table->text("seat_no_en")->nullable();
             $table->text("seat_no")->nullable();
             $table->text("parliamentary_constituency")->nullable();
 
             $table->text("head_name")->nullable();
             $table->text("institution_tel")->nullable();
+            $table->text("alt_tel")->nullable();
             $table->text("institution_email")->nullable();
             $table->timestamps();
         });

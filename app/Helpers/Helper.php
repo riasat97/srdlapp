@@ -58,6 +58,9 @@ if (!function_exists('ReservedSeats')) {
         }
         return array_merge(['-1' => 'নির্বাচন করুন'],$ages);
     }
+    function phase(){
+        return [1=>'১ম',2=>'২য়'];
+    }
     function ReservedSeats()
     {
         return $reservedSeats=array(
