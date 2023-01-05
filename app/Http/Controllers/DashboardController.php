@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\DataTables\ApplicationsDataTable;
 use App\DataTables\LabDataTable;
 use App\DataTables\SelectedInstitutionsDataTable;
+use App\DataTables\SelectedLabsDataTable;
 use App\Models\Application;
 use App\Models\Bangladesh;
 use App\Models\Notice;
@@ -40,7 +41,7 @@ class DashboardController extends Controller
             'sof_total'=>$sof_total,'other_ref'=>$other_ref,'total_app'=>$total_app]);
     }
 
-    public function application(LabDataTable $dataTable,Request $request)
+    public function application(SelectedLabsDataTable $dataTable,Request $request)
     {
         $divisionList=[];
         $divisions = Bangladesh::distinct()->get("division")->toArray();

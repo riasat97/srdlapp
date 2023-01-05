@@ -125,6 +125,10 @@ class Application extends Model
     {
         return $this->hasMany('App\Models\ApplicationOldLab','application_id');
     }
+    public function selectedLab()
+    {
+        return $this->hasOne('App\Models\Lab','srdl_code')->where('phase',2);
+    }
 
 
 }

@@ -547,21 +547,22 @@ Secured National Award on Environment in 2010 handed over by the Prime Minister 
               </div>
             </div><!-- End testimonial item -->
 
-            <div class="swiper-slide">
-              <div class="testimonial-wrap">
-                <div class="testimonial-item">
-                  <img src="{{ asset('assets/img/jahedi sir 2.jpg') }}" class="testimonial-img" alt="">
-                  <h3>Md. Rezaul Maksud Jahedi</h3>
-                  <h4>Additional Director General (Joint Secretary), Department of ICT &
-                   Project Director Sheikh Russel Digital Lab</h4>
-                  <p>
-                    <i class="bx bxs-quote-alt-left quote-icon-left"></i>
-                    “Sheikh Russel Digital Lab” is a flagship project of the government of Bangladesh for meeting the demand of Digital Bangladesh and ensuring the quality & inclusive education. One of the foremost political commitments of the Hon’ble Prime minister Sheikh Hasina is to develop an educated Digital Bangladesh through positive change in the standard of the life of all walks in society by ensuring highest use of ICT. She announced to build up “A Digital Bangladesh within the year 2021” in ‘charter of Change of days’ in the year 2008. Since then Government has been adopting widespread plan to transform its’ public service delivery mechanism through information and communication technology (ICT) as the transformative driver.  The Honorable Prime Minister outlined the Digital Bangladesh having four key priorities – (a) developing human resources ready for the 21st century; (b) connecting citizens in ways most meaningful to them; (c) taking services to citizens’ doorsteps and (d) making the private sector and market more productive and competitive through the use of digital technology.
-                    <i class="bx bxs-quote-alt-right quote-icon-right"></i>
-                  </p>
-                </div>
-              </div>
-            </div><!-- End testimonial item -->
+{{--            <div class="swiper-slide">--}}
+{{--              <div class="testimonial-wrap">--}}
+{{--                <div class="testimonial-item">--}}
+{{--                  <img src="{{ asset('assets/img/jahedi sir 2.jpg') }}" class="testimonial-img" alt="">--}}
+{{--                  <h3>Md. Rezaul Maksud Jahedi</h3>--}}
+{{--                  <h4>Additional Director General (Joint Secretary), Department of ICT &--}}
+{{--                   Project Director Sheikh Russel Digital Lab</h4>--}}
+{{--                  <p>--}}
+{{--                    <i class="bx bxs-quote-alt-left quote-icon-left"></i>--}}
+{{--                    “Sheikh Russel Digital Lab” is a flagship project of the government of Bangladesh for meeting the demand of Digital Bangladesh and ensuring the quality & inclusive education. One of the foremost political commitments of the Hon’ble Prime minister Sheikh Hasina is to develop an educated Digital Bangladesh through positive change in the standard of the life of all walks in society by ensuring highest use of ICT. She announced to build up “A Digital Bangladesh within the year 2021” in ‘charter of Change of days’ in the year 2008. Since then Government has been adopting widespread plan to transform its’ public service delivery mechanism through information and communication technology (ICT) as the transformative driver.  The Honorable Prime Minister outlined the Digital Bangladesh having four key priorities – (a) developing human resources ready for the 21st century; (b) connecting citizens in ways most meaningful to them; (c) taking services to citizens’ doorsteps and (d) making the private sector and market more productive and competitive through the use of digital technology.--}}
+{{--                    <i class="bx bxs-quote-alt-right quote-icon-right"></i>--}}
+{{--                  </p>--}}
+{{--                </div>--}}
+{{--              </div>--}}
+{{--            </div>--}}
+              <!-- End testimonial item -->
 
             <!-- <div class="swiper-slide">
               <div class="testimonial-wrap">
@@ -793,60 +794,60 @@ Secured National Award on Environment in 2010 handed over by the Prime Minister 
 
         <div class="row">
 
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
-            <div class="member" data-aos="fade-up" data-aos-delay="100">
-              <div class="member-img mx-auto text-center">
-                <img src="{{ asset('assets/img/jahedi sir.jpg') }}" class="img-fluid" alt="" style="width:306px;height:306px;">
-                <div class="social">
-                  <!-- <a href=""><i class="bi bi-twitter"></i></a>
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a> -->
-                </div>
-              </div>
-              <div class="member-info">
-                <h4>Mr. Md. Rezaul Maksud Jahedi (Joint Secretary)</h4>
-                <h6>Project Director (Additional Duty)</h6>
-                <div>
-                  <i class="ri-phone-line"></i>
-                  <p>+880241024073, +8801711166328</p>
-                </div>
-                <div>
-                  <i class="ri-mail-send-line"></i>
-                  <p>pdsrdl@doict.gov.bd</p>
-                </div>
-              </div>
+{{--          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">--}}
+{{--            <div class="member" data-aos="fade-up" data-aos-delay="100">--}}
+{{--              <div class="member-img mx-auto text-center">--}}
+{{--                <img src="{{ asset('assets/img/jahedi sir.jpg') }}" class="img-fluid" alt="" style="width:306px;height:306px;">--}}
+{{--                <div class="social">--}}
+{{--                  <!-- <a href=""><i class="bi bi-twitter"></i></a>--}}
+{{--                  <a href=""><i class="bi bi-facebook"></i></a>--}}
+{{--                  <a href=""><i class="bi bi-linkedin"></i></a> -->--}}
+{{--                </div>--}}
+{{--              </div>--}}
+{{--              <div class="member-info">--}}
+{{--                <h4>Mr. Md. Rezaul Maksud Jahedi (Joint Secretary)</h4>--}}
+{{--                <h6>Project Director (Additional Duty)</h6>--}}
+{{--                <div>--}}
+{{--                  <i class="ri-phone-line"></i>--}}
+{{--                  <p>+880241024073, +8801711166328</p>--}}
+{{--                </div>--}}
+{{--                <div>--}}
+{{--                  <i class="ri-mail-send-line"></i>--}}
+{{--                  <p>pdsrdl@doict.gov.bd</p>--}}
+{{--                </div>--}}
+{{--              </div>--}}
 
-            </div>
-          </div>
+{{--            </div>--}}
+{{--          </div>--}}
 
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
-            <div class="member" data-aos="fade-up" data-aos-delay="200">
-              <div class="member-img">
-                <img src="{{ asset('assets/img/raja.jpg') }}" class="img-fluid" alt="" style="width:306px;height:306px;" >
-                <div class="social">
-                  <!-- <a href=""><i class="bi bi-twitter"></i></a>
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-instagram"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a> -->
-                </div>
-              </div>
-              <div class="member-info">
-                <h4>Mr. Raza Md. Abdul Hye</h4>
-                <h6>Deputy Project Director (Technical) (Additional Duty)</h6>
-                <div>
-                  <i class="ri-phone-line"></i>
-                  <p>+880241024026, +8801710873246</p>
-                </div>
-                <div>
-                  <i class="ri-mail-send-line"></i>
-                  <p>raza6676@ictd.gov.bd</p>
-                </div>
+{{--          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">--}}
+{{--            <div class="member" data-aos="fade-up" data-aos-delay="200">--}}
+{{--              <div class="member-img">--}}
+{{--                <img src="{{ asset('assets/img/raja.jpg') }}" class="img-fluid" alt="" style="width:306px;height:306px;" >--}}
+{{--                <div class="social">--}}
+{{--                  <!-- <a href=""><i class="bi bi-twitter"></i></a>--}}
+{{--                  <a href=""><i class="bi bi-facebook"></i></a>--}}
+{{--                  <a href=""><i class="bi bi-instagram"></i></a>--}}
+{{--                  <a href=""><i class="bi bi-linkedin"></i></a> -->--}}
+{{--                </div>--}}
+{{--              </div>--}}
+{{--              <div class="member-info">--}}
+{{--                <h4>Mr. Raza Md. Abdul Hye</h4>--}}
+{{--                <h6>Deputy Project Director (Technical) (Additional Duty)</h6>--}}
+{{--                <div>--}}
+{{--                  <i class="ri-phone-line"></i>--}}
+{{--                  <p>+880241024026, +8801710873246</p>--}}
+{{--                </div>--}}
+{{--                <div>--}}
+{{--                  <i class="ri-mail-send-line"></i>--}}
+{{--                  <p>raza6676@ictd.gov.bd</p>--}}
+{{--                </div>--}}
 
-              </div>
-            </div>
-          </div>
+{{--              </div>--}}
+{{--            </div>--}}
+{{--          </div>--}}
 
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+          <div class="col-lg-12 col-md-6 d-flex align-items-stretch d-flex justify-content-center">
             <div class="member" data-aos="fade-up" data-aos-delay="300">
               <div class="member-img">
                 <img src="{{ asset('assets/img/hasem.jpg') }}" class="img-fluid" alt="" style="width:306px;height:306px;">
@@ -859,7 +860,7 @@ Secured National Award on Environment in 2010 handed over by the Prime Minister 
               </div>
               <div class="member-info">
                 <h4>Mr. Mohammad Abul Hashem</h4>
-                <h6>Deputy Project Director (General) (Additional Duty)</h6>
+                <h6>Project Director (Additional Duty)</h6>
                 <div>
                   <i class="ri-phone-line"></i>
                   <p>+880255006923, +8801716223442</p>
@@ -1060,10 +1061,38 @@ Secured National Award on Environment in 2010 handed over by the Prime Minister 
           <h2>Contact with Vendor</h2>
         </div>
 
+          <div class="row faq-item d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
+              <div class="col-lg-6">
+                  <i class="ri-contacts-book-fill"></i>
+                  <h4>টিম ক্রিয়েটিভ  <a href="https://team-creative.net/">(Team Creative)</a> </h4>
+              </div>
+              <div class="col-lg-6">
+                  <div class="col-lg-12 col-md-6 mt-4 mt-md-0" data-aos="fade-up" data-aos-delay="200">
+                      <div class="info">
+                          <div>
+                              <i class="ri-map-pin-line"></i>
+                              <p>House 54, Road 10, Block E, Enamul Hoq Chowdhury Road, Banani, Dhaka 1213</p>
+                          </div>
+
+                          <div>
+                              <i class="ri-mail-send-line"></i>
+                              <p>info@sof.edu.bd</p>
+                          </div>
+
+                          <div>
+                              <i class="ri-phone-line"></i>
+                              <p>01911464710 <a href="https://sof.edu.bd/">(Sheikh Russel School of Future)</a>, 01740212121</p>
+                          </div>
+
+                      </div>
+                  </div>
+              </div>
+          </div><!-- End F.A.Q Item-->
+
         <div class="row faq-item d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
           <div class="col-lg-6">
             <i class="ri-contacts-book-fill"></i>
-            <h4>ওয়ালটন ডিজি-টেক ইন্ডাস্ট্রিজ লিমিটেড (Walton Digi-Tech Industries Limited)</h4>
+            <h4>ওয়ালটন ডিজি-টেক ইন্ডাস্ট্রিজ লিমিটেড <a href="https://waltonbd.com/contact">(Walton Digi-Tech Industries Limited)</a> </h4>
           </div>
           <div class="col-lg-6">
             <div class="col-lg-12 col-md-6 mt-4 mt-md-0" data-aos="fade-up" data-aos-delay="200">
@@ -1093,7 +1122,7 @@ Secured National Award on Environment in 2010 handed over by the Prime Minister 
         <div class="row faq-item d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
           <div class="col-lg-6">
             <i class="ri-contacts-book-fill"></i>
-            <h4>ফুনা ইনফোটেক লিমিটেড (FAUNA InfoTech Limited)</h4>
+            <h4>ফুনা ইনফোটেক লিমিটেড <a href="https://faunabd.com/contact/">(FAUNA InfoTech Limited)</a> </h4>
           </div>
           <div class="col-lg-6">
             <div class="col-lg-12 col-md-6 mt-4 mt-md-0" data-aos="fade-up" data-aos-delay="200">
@@ -1121,7 +1150,7 @@ Secured National Award on Environment in 2010 handed over by the Prime Minister 
         <div class="row faq-item d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="300">
           <div class="col-lg-6">
             <i class="ri-contacts-book-fill"></i>
-            <h4>টেলিফোন শিল্প সংস্থা লিমিটেড (Telephone Shilpa Sangstha Limited)</h4>
+            <h4>টেলিফোন শিল্প সংস্থা লিমিটেড <a href="https://www.tss.com.bd/">(Telephone Shilpa Sangstha Limited)</a></h4>
           </div>
           <div class="col-lg-6">
             <div class="col-lg-12 col-md-6 mt-4 mt-md-0" data-aos="fade-up" data-aos-delay="200">
@@ -1143,7 +1172,7 @@ Secured National Award on Environment in 2010 handed over by the Prime Minister 
         <div class="row faq-item d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="400">
           <div class="col-lg-6">
             <i class="ri-contacts-book-fill"></i>
-            <h4>হাইপারট্যাগ সলিউশন লিমিটেড (HyperTag Solutions Ltd)</h4>
+            <h4>হাইপারট্যাগ সলিউশন লিমিটেড <a href="https://hypertagsolutions.com/">(HyperTag Solutions Ltd)</a> </h4>
           </div>
           <div class="col-lg-6">
             <div class="col-lg-12 col-md-6 mt-4 mt-md-0" data-aos="fade-up" data-aos-delay="200">
@@ -1171,7 +1200,7 @@ Secured National Award on Environment in 2010 handed over by the Prime Minister 
         <div class="row faq-item d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="500">
           <div class="col-lg-6">
             <i class="ri-contacts-book-fill"></i>
-            <h4>ফ্লোরা লিমিটেড (Flora Limited)</h4>
+            <h4>ফ্লোরা লিমিটেড <a href="https://floralimited.com/">(Flora Limited)</a> </h4>
           </div>
           <div class="col-lg-6">
             <div class="col-lg-12 col-md-6 mt-4 mt-md-0" data-aos="fade-up" data-aos-delay="200">
@@ -1195,6 +1224,90 @@ Secured National Award on Environment in 2010 handed over by the Prime Minister 
             </div>
           </div>
         </div><!-- End F.A.Q Item-->
+
+          <div class="row faq-item d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="500">
+              <div class="col-lg-6">
+                  <i class="ri-contacts-book-fill"></i>
+                  <h4>টেক ভ্যালী নেটওয়ার্কস লিমিটেড <a href="www.tvnlbd.com">(Tech Valley Networks Limited)</a></h4>
+              </div>
+              <div class="col-lg-6">
+                  <div class="col-lg-12 col-md-6 mt-4 mt-md-0" data-aos="fade-up" data-aos-delay="200">
+                      <div class="info">
+                          <div>
+                              <i class="ri-map-pin-line"></i>
+                              <p>Paragon House (9th Floor), 5, Mohakhali C/A, Dhaka-1212</p>
+                          </div>
+
+                          <div>
+                              <i class="ri-mail-send-line"></i>
+                              <p>info@tvnlbd.com</p>
+                          </div>
+
+                          <div>
+                              <i class="ri-phone-line"></i>
+                              <p>01616303204 (Digital Smart Board)</p>
+                          </div>
+
+                      </div>
+                  </div>
+              </div>
+          </div><!-- End F.A.Q Item-->
+
+          <div class="row faq-item d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="500">
+              <div class="col-lg-6">
+                  <i class="ri-contacts-book-fill"></i>
+                  <h4>ওরিয়েন্ট কম্পিউটার লিমিটেড <a href="https://orient.com.bd/">(ORIENT COMPUTER LIMITED)</a></h4>
+              </div>
+              <div class="col-lg-6">
+                  <div class="col-lg-12 col-md-6 mt-4 mt-md-0" data-aos="fade-up" data-aos-delay="200">
+                      <div class="info">
+                          <div>
+                              <i class="ri-map-pin-line"></i>
+                              <p>Concord Tower, Suit No. 1401 113 Kazi Nazrul Islam Avenue, Dhaka</p>
+                          </div>
+
+                          <div>
+                              <i class="ri-mail-send-line"></i>
+                              <p>inquiry@orientcomputers.com</p>
+                          </div>
+
+                          <div>
+                              <i class="ri-phone-line"></i>
+                              <p>01811414257 (Digital Smart Board)</p>
+                          </div>
+
+                      </div>
+                  </div>
+              </div>
+          </div><!-- End F.A.Q Item-->
+
+          <div class="row faq-item d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="500">
+              <div class="col-lg-6">
+                  <i class="ri-contacts-book-fill"></i>
+                  <h4>এক্সপ্রেস সিস্টেম লিমিটেড <a href="https://esl.com.bd/">(Express Systems Ltd)</a></h4>
+              </div>
+              <div class="col-lg-6">
+                  <div class="col-lg-12 col-md-6 mt-4 mt-md-0" data-aos="fade-up" data-aos-delay="200">
+                      <div class="info">
+                          <div>
+                              <i class="ri-map-pin-line"></i>
+                              <p>House No: 8/2, Road No: 01, Shyamoli, Dhaka 1207</p>
+                          </div>
+
+                          <div>
+                              <i class="ri-mail-send-line"></i>
+                              <p>office@esl.com.bd</p>
+                          </div>
+
+                          <div>
+                              <i class="ri-phone-line"></i>
+                              <p>01977476477(Desktop), 01973438868 (Attendance Reader), 01977476430 (Digital ID Card), 01969633089 (Wifi Router)</p>
+                          </div>
+
+                      </div>
+                  </div>
+              </div>
+          </div><!-- End F.A.Q Item-->
 
         <div class="row faq-item d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="500">
           <div class="col-lg-6">

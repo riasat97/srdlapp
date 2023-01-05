@@ -139,6 +139,14 @@ class ApplicationUpdateController extends ApplicationController
             $profile->total_girls= !empty($request->get('total_girls'))?$request->get('total_girls'):0;
         $application->profile()->save($profile);
 
+        if(!empty($profile->institution_tel))
+            $selectedLab=$application->selectedLab;
+            $selectedLab->head_name= $profile->head_name;
+            $selectedLab->institution_tel= $profile->institution_tel;
+            $selectedLab->institution_email= $profile->institution_email;
+            $selectedLab->alt_tel= $profile->alt_tel;
+        $selectedLab->save();
+
         if(!empty($request->get('verification')) or Auth::user()->hasRole(['upazila admin'])) {
             $applicationlabs = (!empty($application->lab)) ? $application->lab : new ApplicationLab();
                 $labs = $request->get('labs');
