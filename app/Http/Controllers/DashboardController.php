@@ -12,6 +12,8 @@ use App\Models\Notice;
 use App\Repositories\NoticeRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
 {
@@ -74,5 +76,10 @@ class DashboardController extends Controller
     }
     public function getAbout(){
         return view('about');
+    }
+    public function showPdf($fileName){
+        $file=public_path($fileName);
+        return response(file_get_contents($file),200)
+            ->header('Content-Type','application/pdf');
     }
 }

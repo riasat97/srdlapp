@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 
 class UpdateUserRequest extends FormRequest
 {
@@ -27,6 +28,10 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules(Request $request)
     {
+        if (Auth::user()->hasRole(['vendor'])){
+            return ['email'=>'required', 'string', 'email', 'max:255', 'unique:users,email_address,'.$request->get('id'),'mobile' => 'required|regex:/(01)[0-9]{9}/',
+            ];
+        }
         $rules = User::$rules;
         $filtered = Arr::except($rules, ['email','name']);
         $add= ['email'=>'required', 'string', 'email', 'max:255', 'unique:users,email_address,'.$request->get('id'),

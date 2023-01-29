@@ -25,11 +25,13 @@
   <!-- Vendor CSS Files -->
     <link href="{{ asset('assets/vendor/aos/aos.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+{{--    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">--}}
     <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/glightbox/css/glightbox.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
+
 
   <!-- Template Main CSS File -->
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
@@ -57,6 +59,7 @@
           <li><a class="nav-link scrollto " href="#portfolio">Gallery</a></li>
           <li><a class="nav-link scrollto" href="#team">Team</a></li>
           <li><a class="nav-link scrollto" href="#faq">Vendors</a></li>
+
           <!-- <li class="dropdown"><a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
             <ul>
               <li><a href="#">Drop Down 1</a></li>
@@ -1106,13 +1109,15 @@ Secured National Award on Environment in 2010 handed over by the Prime Minister 
                   <i class="ri-mail-send-line"></i>
                   <p>liakat@waltonbd.com</p>
                 </div>
-
                 <div>
                   <i class="ri-phone-line"></i>
                   <p>01685665033,
                     01686691447,
                     01686690413</p>
                 </div>
+                  <div>
+                      <a class="btn btn-outline-info" target="_blank" href="{{ route('showPdf','walton.pdf') }}">Walton Service center List</a>
+                  </div>
 
               </div>
             </div>
@@ -1163,7 +1168,9 @@ Secured National Award on Environment in 2010 handed over by the Prime Minister 
                   <i class="ri-phone-line"></i>
                   <p>01719120975</p>
                 </div>
-
+                  <div>
+                      <a class="btn btn-outline-info" target="_blank" href="{{ route('showPdf','walton.pdf') }}">Walton Service center List</a>
+                  </div>
               </div>
             </div>
           </div>
@@ -1245,7 +1252,7 @@ Secured National Award on Environment in 2010 handed over by the Prime Minister 
 
                           <div>
                               <i class="ri-phone-line"></i>
-                              <p>01616303204 (Digital Smart Board)</p>
+                              <p>+880 1833-330291 (Digital Smart Board)</p>
                           </div>
 
                       </div>
@@ -1273,7 +1280,7 @@ Secured National Award on Environment in 2010 handed over by the Prime Minister 
 
                           <div>
                               <i class="ri-phone-line"></i>
-                              <p>01811414257 (Digital Smart Board)</p>
+                              <p>01833317787 (Digital Smart Board), 01811414257 </p>
                           </div>
 
                       </div>
@@ -1522,6 +1529,8 @@ Secured National Award on Environment in 2010 handed over by the Prime Minister 
   <script src="{{ asset('assets/vendor/purecounter/purecounter_vanilla.js') }}"></script>
   <script src="{{ asset('assets/vendor/aos/aos.js') }}"></script>
   <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+{{--  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>--}}
+
   <script src="{{ asset('assets/vendor/glightbox/js/glightbox.min.js') }}"></script>
   <script src="{{ asset('assets/vendor/isotope-layout/isotope.pkgd.min.js') }}"></script>
   <script src="{{ asset('assets/vendor/swiper/swiper-bundle.min.js') }}"></script>

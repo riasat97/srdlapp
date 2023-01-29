@@ -112,6 +112,12 @@ class UserController extends AppBaseController
 
             return redirect(route('users.index'));
         }
+        if (Auth::user()->hasRole(['vendor'])){
+            $name=$user->name;
+            $email= $user->email;
+            $designation_selected=null;
+            return view('users.edit',['user'=>$user,'name'=>$name,'email'=>$email,'designation_selected'=>$designation_selected]);
+        }
         $designation_selected= $this->getSelectedDesignation($user);
         $name = $this->getName($user);
         $email= $this->getEmail($user);

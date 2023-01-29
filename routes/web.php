@@ -74,11 +74,18 @@ Route::group(['prefix' => 'admin/labs', 'as' => 'labs.','middleware' => 'auth'],
    // Route::get('/stocks', 'StockController@index')->name('stocks.index');
     Route::get('/stocks', 'StockController@stocks')->name('stocks.index');
     /*Route::get('{labId}/stocks/{stockId}', 'StockController@show')->name('stocks.show');*/
-    Route::get('{labId}/stocks/create', 'StockController@create')->name('stocks.create');
-    Route::post('{labId}/stocks/store', 'StockController@store')->name('stocks.store');
+    //Route::get('{labId}/stocks/create', 'StockController@create')->name('stocks.create');
+    //Route::post('{labId}/stocks/store', 'StockController@store')->name('stocks.store');
     Route::get('{labId}/stocks/{stockId}/edit', 'StockController@edit')->name('stocks.edit');
     Route::patch('{labId}/stocks/{stockId}', 'StockController@update')->name('stocks.update');
 
+    Route::get('{labId}/supports', 'SupportController@supports')->name('supports.index');
+    Route::get('tickets', 'SupportController@tickets')->name('tickets.index');
+    Route::get('tickets/{ticketId}', 'SupportController@ticket')->name('tickets.show');
+    Route::post('{labId}/supports/store', 'SupportController@store')->name('tickets.store');
+    Route::get('{labId}/supports/{id}/edit', 'SupportController@edit')->name('tickets.edit');
+
+    Route::get('image/{filename}', 'SupportController@displayImage')->name('displayImage');
 });
 
 
@@ -189,11 +196,8 @@ Route::get('/empty-reserved', function() {
 });
 
 
-
-
-
-
-
 Route::resource('notices', 'NoticeController');
 Route::get('notices/{id}/{path}', 'NoticeController@displayPdf')->name('displayPdf');
 Route::get('notice-attachments', 'NoticeController@notices')->name('notice.attachments');
+
+Route::get('pdfs/{pdf}', 'DashboardController@showPdf')->name('showPdf');

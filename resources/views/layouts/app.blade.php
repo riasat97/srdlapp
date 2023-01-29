@@ -33,6 +33,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon/favicon-16x16.png') }}">
     <link rel="manifest" href="{{ asset('favicon/site.webmanifest') }}">
     {{--    favicon end--}}
+    <link rel="stylesheet" href="{{ asset('css/custom.css') }}">
     @yield('css')
 </head>
 

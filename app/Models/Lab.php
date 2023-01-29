@@ -102,4 +102,8 @@ class Lab extends Model
     {
         return $this->hasMany('App\Models\Trainee','lab_id');
     }
+    public function devices()
+    {
+        return $this->hasMany('App\Models\Device','lab_id');
+    }
 }

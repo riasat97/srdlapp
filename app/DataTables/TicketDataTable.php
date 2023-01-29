@@ -4,6 +4,7 @@ namespace App\DataTables;
 
 use App\Models\Application;
 use App\Models\Dashboard;
+use App\Models\Device;
 use App\Models\Lab;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class SelectedLabsDataTable extends DataTable
+class TicketDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -40,7 +41,7 @@ class SelectedLabsDataTable extends DataTable
                     }
                 })
                 ->addColumn('action', function ($query) {
-                    return '<a href="'.route("labs.tickets.index", ['lab_id'=>$query->id]) .'" data-toggle="tooltip" title="Support" target="_blank" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-wrench"></i></a>';
+                    return '<a href="#" onclick="editProject('.$query->lab_id.','.$query->id.')" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-question-sign"></i></a>';
                 })
 
                 ->rawColumns([
@@ -68,11 +69,10 @@ class SelectedLabsDataTable extends DataTable
      * @param \App\Models\SelectedInstitution $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query( Request $request)
+    public function query(Request $request)
     {
-        //dd($request->get('divId'));
+        //dd($request->all());
         return $data=$this->getAppData($request);
-        //return $model->newQuery();
     }
 
     /**
@@ -83,7 +83,7 @@ class SelectedLabsDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('dashboard-datatable')
+            ->setTableId('ticket-datatable')
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->dom('lBfrtip')
@@ -113,23 +113,23 @@ class SelectedLabsDataTable extends DataTable
     {
         $serial=[ Column::make('DT_RowIndex','id')->title('ক্রম')];
         $action= [Column::computed('action')
-                ->title('Action')
-                ->exportable(false)
-                ->printable(false)
-                ->orderable(false)
-                ->searchable(false)
-                ];
+            ->title('Action')
+            ->exportable(false)
+            ->printable(false)
+            ->orderable(false)
+            ->searchable(false)
+        ];
 
         $main= [
-            Column::make('phase','phase')->title('পর্যায়'),
-            Column::make('division','division')->title('বিভাগ'),
-            Column::make('district','district')->title('জেলা'),
-            Column::make('constituency','parliamentary_constituency')->title('নির্বাচনী এলাকা'),
-            Column::make('upazila','upazila')->title('উপজেলা'),
-            Column::make('ins','institution_bn')->title('শিক্ষা প্রতিষ্ঠান'),
-            Column::make('head_name','head_name')->title('প্রতিষ্ঠান প্রধান'),
-            Column::make('tel','institution_tel')->title('যোগাযোগ'),
-            Column::make('institution_email','institution_email')->title('ইমেইল')
+//            Column::make('lab.phase','phase')->title('পর্যায়'),
+//            Column::make('lab.division','division')->title('বিভাগ'),
+//            Column::make('lab.district','district')->title('জেলা'),
+//            Column::make('lab.upazila','upazila')->title('উপজেলা'),
+//            Column::make('lab.ins','institution_bn')->title('শিক্ষা প্রতিষ্ঠান'),
+            Column::make('device','device')->title('device'),
+            Column::make('device_status','device_status')->title('device status'),
+            Column::make('quantity','quantity')->title('quantity'),
+            Column::make('support_status','support_status')->title('support_status')
         ];
         if (Auth::check()) {
             return array_merge($serial, $action, $main);
@@ -150,33 +150,49 @@ class SelectedLabsDataTable extends DataTable
 
     protected function getAppData(Request $request)
     {
-        //dd(empty($request->get('upazilaId')));
-        $data = Lab::query();
+        $data = Device::query();
         if (!empty($request->get('filter'))) {
+
+//            if (!empty($request->get('lab_id'))) {
+//                $data->where('lab_id', $request->get('lab_id'));
+//            }
             if (!empty($request->get('phase'))) {
-                $data->where('phase', $request->get('phase'));
+                $data->whereHas('lab', function ($query) use ($request) {
+                    $query->where('labs.phase', $request->input('phase'));
+                });
+               // $data->where('phase', $request->get('phase'));
             }
             if (!empty($request->get('divId'))) {
-                $data->where('division', $request->get('divId'));
+                $data->whereHas('lab', function ($query) use ($request) {
+                    $query->where('labs.division', $request->input('divId'));
+                });
+                //$data->where('division', $request->get('divId'));
             }
 
             if (!empty($request->get('disId'))) {
-                $data->where('district', $request->get('disId'));
+                $data->whereHas('lab', function ($query) use ($request) {
+                    $query->where('labs.district', $request->input('disId'));
+                });
+                //$data->where('district', $request->get('disId'));
             }
-            if (!empty($request->get('parliamentaryConstituencyId'))) {
-                $data->where('parliamentary_constituency', $request->get('parliamentaryConstituencyId'));
-            }
+
             if (!empty($request->get('upazilaId'))) {
-                $data->where('upazila', $request->get('upazilaId'));
+                $data->whereHas('lab', function ($query) use ($request) {
+                    $query->where('labs.upazila', $request->input('upazilaId'));
+                });
+                //$data->where('upazila', $request->get('upazilaId'));
             }
             if (!empty($request->get('lab_type'))) {
-                $data->where('lab_type', $request->get('lab_type'));
+                $data->whereHas('lab', function ($query) use ($request) {
+                    $query->where('labs.lab_type', $request->input('lab_type'));
+                });
+                //$data->where('lab_type', $request->get('lab_type'));
             }
             // dd($data->get()->toArray());
-            return $data->orderByRaw(" phase DESC, division,district,seat_no_en asc, FIELD(lab_type , 'srdl_sof','sof','srdl'),upazila ASC");
+            return $data->with('lab');
             //return $this->applyScopes($data);
         }
-        return $data->orderByRaw("phase DESC, division,district,seat_no_en asc, FIELD(lab_type , 'srdl_sof','sof','srdl'),upazila ASC");
+        return $data->where('lab_id', $request->get('lab_id'))->with('lab');
         //return $this->applyScopes($data);
     }
 }

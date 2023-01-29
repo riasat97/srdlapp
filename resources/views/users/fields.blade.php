@@ -12,6 +12,7 @@
 </div>
 
 <!-- Designation -->
+@if(!Auth::user()->hasRole(['vendor']))
 <div class="form-group col-sm-6">
     {{Form::label('designation', 'পদবি:') }}
     @if(!empty($user))
@@ -20,6 +21,7 @@
         {{Form::select('designation', array('0' => 'নির্বাচন করুন','dc' => 'জেলা প্রশাসক', 'adc' => 'অতিরিক্ত জেলা প্রশাসক','uno'=>'উপজেলা নির্বাহী অফিসার'/*,'programmer'=>'প্রোগ্রামার','ap'=>'সহকারী প্রোগ্রামার','useo'=>'উপজেলা মাধ্যমিক শিক্ষা অফিসার','others'=>'অন্যান্য'*/), null,['class'=>'form-control', 'id'=>'designation'])}}
     @endif
 </div>
+@endif
 <!-- Posting Type -->
 {{--<div class="form-group col-sm-6">
     {{Form::label('posting_type', 'পোস্টিংয়ের ধরণ:') }}

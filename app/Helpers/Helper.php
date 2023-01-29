@@ -61,6 +61,9 @@ if (!function_exists('ReservedSeats')) {
     function phase(){
         return [1=>'১ম',2=>'২য়'];
     }
+    function device_status(){
+        return ['active'=>'Active','inactive'=>'Inactive','stolen'=> 'Stolen'];
+    }
     function ReservedSeats()
     {
         return $reservedSeats=array(
@@ -146,5 +149,4 @@ if (!function_exists('ReservedSeats')) {
         }
         return false;
     }
-
 }

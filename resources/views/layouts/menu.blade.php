@@ -43,6 +43,10 @@
 
 
 <li class="{{ Request::is('admin/labs*') ? 'active' : '' }}">
+    <a href="{{ route('labs.stocks.index') }}"><i class="fa fa-ticket"></i><span>Tickets</span></a>
+</li>
+
+<li class="{{ Request::is('admin/labs*') ? 'active' : '' }}">
     <a href="{{ route('labs.stocks.index') }}"><i class="fa fa-laptop"></i><span>Stocks</span></a>
 </li>
 
