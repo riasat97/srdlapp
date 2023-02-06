@@ -6,6 +6,7 @@
     <section class="content-header">
         <h1 class="pull-left">Support Portal</h1>
         <h2 class="institution">{{ $lab->ins }}</h2>
+        <div class="lab_id hidden">{{ $lab->id }}</div>
         <h1 class="pull-right">
             <a class="btn btn-primary pull-right"  target="_blank" href="{{ route('labs.tickets.index',['lab_id'=>$lab->id]) }}">All Tickets</a>
         </h1>

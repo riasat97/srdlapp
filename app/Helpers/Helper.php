@@ -149,4 +149,11 @@ if (!function_exists('ReservedSeats')) {
         }
         return false;
     }
+    function divisionEnToBn(){
+        return ['Dhaka'=>'ঢাকা','Chattogram'=>'চট্টগ্রাম', 'Barishal'=>'বরিশাল', 'Khulna'=>'খুলনা','Rajshahi'=>'রাজশাহী',
+            'Rangpur'=>'রংপুর','Mymensingh'=>'ময়মনসিংহ','Sylhet'=>'সিলেট'];
+    }
+    function support_status(){
+        return ['open'=>"Open",'processing'=>"Processing",'resolved'=>"Resolved",'unresolved'=>"Unsolved"];
+    }
 }

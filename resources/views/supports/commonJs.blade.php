@@ -1,7 +1,11 @@
-<script type="text/javascript">
-
+@if(Auth::user()->hasRole(['upazila admin','district admin','super admin','vendor']))
+<script>
     $(function () {
         $('select.form-control option:first').attr('disabled', true);
+    });
+    $(function () {
+        $('select#support_status option:first').attr('disabled', true);
+        $('select#support_status option:contains("Open")').attr("disabled","disabled");
     });
     $('#form-modal').on('hidden.bs.modal', function (e) {
 
@@ -11,27 +15,19 @@
     var device_quantity= {
         "laptop":17,"furniture":50,"smart_board":6,"desktop":4, "attendance_reader":5,"digital_id_card":1000
     };
-    var device_title={'laptop':'Laptop', 'led_tv': 'LED TV', 'printer':"Printer", 'scanner':"Scanner", 'web_camer':"Web Camera",
+    var device_title={'laptop':'Laptop', 'led_tv': 'LED TV', 'printer':"Printer", 'scanner':"Scanner", 'web_camera':"Web Camera",
         'router':"Router", "network_switch":"Network Switch with LAN Connectivity",'internet_connectivity':"Internet Connectivity (6 months)",
         "furniture":"Furniture",'smart_board':"Digital Smart Board",'desktop': "Desktop Computer",'attendance_reader':"Attendance Reader Machine",
         "digital_id_card":"Digital ID Card",'wifi_router':"Wi-Fi Router",'result_processing':"Online Result Processing", "online_fee":"Online Admission/Tuition Fee",
         'online_attendance_system': "Online Attendance System", 'general_issues':"General Issues"
     };
 
-    // $("#save-support").click(function(event ){
-    //     event.preventDefault();
-    //     if($("#update_id").val() == null || $("#update_id").val() == "")
-    //     {
-    //         storeProject();
-    //     } else {
-    //         updateProject();
-    //     }
-    // })
+</script>
+@endif
 
-    /*
-        show modal for creating a record and
-        empty the values of form and remove existing alerts
-    */
+@if(Auth::user()->hasRole(['upazila admin','district admin','super admin']))
+<script type="text/javascript">
+
 
     $(".device_type").click(function(){
         device = $(this).attr("data-id");
@@ -71,34 +67,6 @@
     });
 
 
-    function createProject()
-    {
-        device = $(this).attr("data-id");
-        console.log('device: '+device);
-        $("#alert-div").html("");
-        $("#error-div").html("");
-        $("#update_id").val("");
-        $("#name").val("");
-        $("#description").val("");
-        $("#device").val(device);
-
-        for (var key of Object.keys(device_quantity)) {
-            if(device==key){
-                $("#quantity").attr({
-                    "max" : device_quantity[key],
-                    "min" : 1
-                });
-            }else{
-                $("#quantity").attr({
-                    "max" : 1,
-                    "min" : 1
-                });
-            }
-        }
-        $('.modal-title').text('Support Form for '+device);
-        $("#form-modal").modal('show');
-    }
-
     /*
         submit the form and will be stored to the database
     */
@@ -113,9 +81,13 @@
         $('#support-form').submit(function(e) {
             e.preventDefault();
             var formData = new FormData(this);
+            var id = $(".lab_id").text();
+            alert(id);
+            var url = "{{ route('labs.tickets.store', ":id") }}";
+            url = url.replace(':id', id);
             $.ajax({
                 type:'POST',
-                url: "{{ route('labs.tickets.store',$lab->id) }}",
+                url: url,
                 data: formData,
                 cache:false,
                 contentType: false,
@@ -158,11 +130,13 @@
         });
     });
 
+
+
     /*
         edit record function
         it will get the existing value and show the project form
     */
-    function editProject(labId,ticketId)
+    function editTicket(labId,ticketId)
     {
         $('#attachment_file_preview').show();
         let url =  "{{ route('labs.tickets.index') }}" +'/'+ticketId+'?lab_id='+labId;
@@ -192,82 +166,9 @@
     }
 
     /*
-        sumbit the form and will update a record
-    */
-    function updateProject()
-    {
-        $("#save-project-btn").prop('disabled', true);
-        let url = $('meta[name=app-url]').attr("content") + "/projects/" + $("#update_id").val();
-        let data = {
-            id: $("#update_id").val(),
-            name: $("#name").val(),
-            description: $("#description").val(),
-        };
-        $.ajax({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            url: url,
-            type: "PUT",
-            data: data,
-            success: function(response) {
-                $("#save-project-btn").prop('disabled', false);
-                let successHtml = '<div class="alert alert-success" role="alert"><b>Project Updated Successfully</b></div>';
-                $("#alert-div").html(successHtml);
-                $("#name").val("");
-                $("#description").val("");
-                reloadTable();
-                $("#form-modal").modal('hide');
-            },
-            error: function(response) {
-                $("#save-project-btn").prop('disabled', false);
-                if (typeof response.responseJSON.errors !== 'undefined')
-                {
-                    let errors = response.responseJSON.errors;
-                    let descriptionValidation = "";
-                    if (typeof errors.description !== 'undefined')
-                    {
-                        descriptionValidation = '<li>' + errors.description[0] + '</li>';
-                    }
-                    let nameValidation = "";
-                    if (typeof errors.name !== 'undefined')
-                    {
-                        nameValidation = '<li>' + errors.name[0] + '</li>';
-                    }
-
-                    let errorHtml = '<div class="alert alert-danger" role="alert">' +
-                        '<b>Validation Error!</b>' +
-                        '<ul>' + nameValidation + descriptionValidation + '</ul>' +
-                        '</div>';
-                    $("#error-div").html(errorHtml);
-                }
-            }
-        });
-    }
-
-    /*
         get and display the record info on modal
     */
-    function showProject(id)
-    {
-        $("#name-info").html("");
-        $("#description-info").html("");
-        let url = $('meta[name=app-url]').attr("content") + "/projects/" + id +"";
-        $.ajax({
-            url: url,
-            type: "GET",
-            success: function(response) {
-                let project = response.project;
-                $("#name-info").html(project.name);
-                $("#description-info").html(project.description);
-                $("#view-modal").modal('show');
 
-            },
-            error: function(response) {
-                console.log(response.responseJSON)
-            }
-        });
-    }
 
     /*
         delete record function
@@ -297,3 +198,97 @@
         });
     }
 </script>
+@endif
+
+@if(Auth::user()->hasRole(['vendor','super admin']))
+<script>
+    function showTicket(labId,ticketId)
+    {
+        $('.preview').show();
+        $("#save-support-reply").prop('disabled', false);
+        let url =  "{{ route('labs.tickets.index') }}" +'/'+ticketId+'?lab_id='+labId;
+        $.ajax({
+            url: url,
+            type: "GET",
+            success: function(response) {
+                let ticket = response.ticket;
+                $("#alert-div").html("");
+                $("#error-div").html("");
+                $("#ticket_id").val(ticket.id);
+                $("#lab_id").val(ticket.lab_id);
+                $(".device").text( device_title[ticket.device]);
+                $(".device_status").text(ticket.device_status);
+                $(".device_quantity").text(ticket.quantity);
+                $(".problem_description").text(ticket.problem);
+                if(ticket.attachment_file==''){
+                    $('.preview').hide();
+                }
+                $('.screenshot').attr('src', ticket.attachment_file);
+                $(".ticket_status").text(ticket.support_status);
+                $("select#support_status").val(ticket.support_status);
+                $("textarea.support_description").val(ticket.support_description);
+                $('.ticket-modal-title').text('Ticket #'+ ticket.id);
+                var institute= ticket.lab.ins+', '+ticket.lab.upazila+', '+ticket.lab.district;
+                $(".panel-body.institution").text(institute);
+                if(ticket.support_status=="resolved"){
+                    $("#save-support-reply").prop('disabled', true);
+                }
+                $("#ticketShow-modal").modal('show');
+            },
+            error: function(response) {
+                console.log(response.responseJSON)
+            }
+        });
+    }
+
+    $(document).ready(function (e) {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $('#support-reply-form').submit(function(e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            var id = $("input[name=lab_id]").val();
+            var url = "{{ route('labs.tickets.store', ":id") }}";
+            url = url.replace(':id', id);
+            $.ajax({
+                type:'POST',
+                url: url,
+                data: formData,
+                cache:false,
+                contentType: false,
+                processData: false,
+                success: (data) => {
+                    let status= data.status;
+                    let successHtml;
+                    this.reset();
+                    console.log(data);
+                    $("#save-support-reply").prop('disabled', false);
+                    successHtml = '<div class="alert alert-success" role="alert"><b>Support Ticket Updated Successfully</b></div>';
+                    $("#alert-div").html(successHtml);
+                    var table = $("#ticket-datatable");
+                    table.DataTable().ajax.reload();
+                    $("#ticketShow-modal").modal('hide');
+                    $('html, body').animate({ scrollTop: 0 }, 0);
+                },
+                error: function(response){
+                    console.log(response);
+                    $("#save-support-reply").prop('disabled', false);
+                    if (typeof response.responseJSON.errors !== 'undefined')
+                    {
+                        let errors = response.responseJSON;
+                        let errorHtml = '<div class="alert alert-danger"><b>Validation Error!</b> <ul>';
+                        $.each( errors.errors, function( key, value ) {
+                            errorHtml += '<li>'+ value[0] + '</li>';
+                        });
+                        errorHtml += '</ul></div>';
+                        $("#error-div").html(errorHtml);
+                    }
+                }
+            });
+        });
+    });
+</script>
+@endif

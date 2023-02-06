@@ -27,7 +27,6 @@ Route::group(['prefix' => 'selected', 'as' => 'web.'], function () {
     Route::get('/institutions', 'DashboardController@application')->name('selected-institutions');
 });
 
-
 Route::get('/about', 'DashboardController@getAbout')->name('about');
 
 Route::get('/', function () {
@@ -84,7 +83,6 @@ Route::group(['prefix' => 'admin/labs', 'as' => 'labs.','middleware' => 'auth'],
     Route::get('tickets/{ticketId}', 'SupportController@ticket')->name('tickets.show');
     Route::post('{labId}/supports/store', 'SupportController@store')->name('tickets.store');
     Route::get('{labId}/supports/{id}/edit', 'SupportController@edit')->name('tickets.edit');
-
     Route::get('image/{filename}', 'SupportController@displayImage')->name('displayImage');
 });
 

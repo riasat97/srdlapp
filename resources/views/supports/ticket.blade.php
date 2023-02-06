@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="{{ asset('css/support.css') }}">
 @endsection
 @section('content')
+    @if(Auth::user()->hasRole(['upazila admin','district admin']))
     <section class="content-header">
         <h1 class="pull-left">Support Tickets</h1>
         <h2 class="institution">{{ $lab->ins }}</h2>
@@ -30,9 +31,30 @@
             <a class="btn btn-primary pull-right" target="_blank" href="{{ route('labs.supports.index',$lab->id) }}">Open Ticket</a>
         </h1>
     </section>
+    @endif
+    @if(Auth::user()->hasRole(['super admin']))
+        <section class="content-header">
+            <h1 class="pull-left">Support Tickets</h1>
+            <h2 class="institution">{{ !empty($lab)?$lab->ins:'All Support Tickets' }}</h2>
+            <h1 class="pull-right">
+                @if(!empty($lab))
+                <a class="btn btn-primary pull-right" target="_blank" href="{{ route('labs.supports.index',$lab->id) }}">Open Ticket</a>
+                @else
+                <a class="btn btn-primary pull-right" target="_blank" href="{{ route('web.selected-institutions') }}">All Labs</a>
+                @endif
+            </h1>
+        </section>
+    @endif
+    @if(Auth::user()->hasRole(['vendor']))
+        <section class="content-header">
+            <h1 class="pull-left">Support Tickets</h1>
+            <h2 class="institution">{{ $vendor->name }}</h2>
+        </section>
+    @endif
     <div class="content">
         <div class="clearfix"></div>
         @include('supports.form')
+        @include('supports.ticketShow')
         <div id="alert-div" class="clearfix"></div>
         @include('flash::message')
         <div class="box box-primary">
@@ -115,7 +137,7 @@
 
             var table = $("#ticket-datatable");
             table.on('preXhr.dt',function (e,settings,d) {
-                d.labId = @json($lab->id);
+                {{--d.labId = @json($lab->id);--}}
                 d.filter= filter,
                     d.divId = ($('#div').val()) ? $('#div').val() : '',
                     d.disId = ($('#dis').val()) ? $('#dis').val() : '',
@@ -130,7 +152,9 @@
         });
 
     </script>
+{{--    @if(Auth::user()->hasRole(['upazila admin','district admin','super admin']))--}}
     @include('supports.commonJs')
+{{--    @endif--}}
     <script>
         $('.modal').on('shown.bs.modal', function() {
             //Make sure the modal and backdrop are siblings (changes the DOM)

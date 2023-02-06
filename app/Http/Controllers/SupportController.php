@@ -32,19 +32,28 @@ class SupportController extends Controller
             $divisionList[$division['division']]=$division['division'];
         $divisionList=array_merge(['-1' => 'নির্বাচন করুন'], $divisionList);
         $upazilas= $this->getUpazilas($request);
+        if (Auth::user()->hasRole(['vendor'])) {
+            $user=Auth::user();
+            return $dataTable->render('supports.ticket',['vendor'=>$user,'divisionList'=>$divisionList,'upazilas'=>$upazilas,
+                'district_bn'=>$this->getDistrictBnNameByUser()]);
+        }
         return $dataTable->render('supports.ticket',['lab'=>$lab,'divisionList'=>$divisionList,'upazilas'=>$upazilas,
             'district_bn'=>$this->getDistrictBnNameByUser()]);
     }
     public function store($labId, CreateSupportRequest $request){
+        if(!empty($request->ticket_id)){
+            $device=$this->storeTicket($request);
+            return response()->json(['device'=>$device,'status'=>"Ticket Status Updated Successfully"]);
+        }
         $details = ['device' => $request->device, 'device_status' => $request->device_status,'quantity' => $request->quantity,
             'problem' => $request->problem];
-
         $lab= Lab::where('id',$labId)->first();
         $device= !empty($request->update_id)? $this->getDevice($request->update_id):new Device();
         $device->device= $details['device'];
         $device->lab_id=$labId;
         $device->device_status= $details['device_status'];
         $device->quantity= $details['quantity'];
+        $device->inactive_qty= $details['device_status']=="inactive"?$details['quantity']:0;
         $device->problem= $details['problem'];
         $device=$this->uploadAttachment($request,$device,$lab);
         $device->support_status= 'open';
@@ -120,5 +129,15 @@ class SupportController extends Controller
 
          return response(file_get_contents($path),200)
         ->header('Content-Type',$type);
+    }
+    private function storeTicket($request){
+        $device=$this->getDevice($request->ticket_id);
+        $device->support_status= $request->support_status;
+        $device->support_description= $request->support_description;
+        if($request->support_status=="resolved" && $device->device_status=="inactive"){
+            $device->inactive_qty=0;
+        }
+        $device->save();
+        return $device;
     }
 }

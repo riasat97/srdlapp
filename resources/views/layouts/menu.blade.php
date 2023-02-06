@@ -35,22 +35,16 @@
     <a href="{{ route('referenceDesignations.index') }}"><i class="fas fa-square"></i><span> রেফারেন্সের পদবী নির্ধারণ</span></a>
 </li>
 
-
+<li class="{{ Request::is('notices*') ? 'active' : '' }}">
+    <a href="{{ route('notice.attachments') }}"><i class="fa fa-newspaper-o"></i><span>Notices</span></a>
+</li>
     @endif
 <li class="{{ Request::is('admin/change-password*') ? 'active' : '' }}">
     <a href="{{ route('changePassword') }}"><i class="fas fa-lock"></i> <span> পাসওয়ার্ড পরিবর্তন</span></a>
 </li>
 
-
 <li class="{{ Request::is('admin/labs*') ? 'active' : '' }}">
-    <a href="{{ route('labs.stocks.index') }}"><i class="fa fa-ticket"></i><span>Tickets</span></a>
+    <a href="{{ route('labs.tickets.index') }}"><i class="fa fa-ticket"></i><span>Tickets</span></a>
 </li>
 
-<li class="{{ Request::is('admin/labs*') ? 'active' : '' }}">
-    <a href="{{ route('labs.stocks.index') }}"><i class="fa fa-laptop"></i><span>Stocks</span></a>
-</li>
-
-<li class="{{ Request::is('notices*') ? 'active' : '' }}">
-    <a href="{{ route('notice.attachments') }}"><i class="fa fa-newspaper-o"></i><span>Notices</span></a>
-</li>
 

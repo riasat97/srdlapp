@@ -26,7 +26,15 @@ class CreateSupportRequest extends FormRequest
      */
     public function rules(Request $request)
     {
-        //if(Auth::user()->hasRole(['super admin']) ){
+        if(!empty($request->ticket_id)){
+            if(Auth::user()->hasRole(['vendor','super admin']) ){
+                $rules= [
+                    'support_status' => 'required|string|min:2',
+                ];
+                return $rules;
+            }
+        }
+        if(Auth::user()->hasRole(['super admin','district admin','upazila admin']) ){
             $rules= [
                 'device_status' => 'required|string|min:2',
                 'quantity' => 'required|numeric',
@@ -37,10 +45,9 @@ class CreateSupportRequest extends FormRequest
                 $attachment_file= ['attachment_file' => 'image|mimes:jpeg,png,jpg,gif,svg|max:600'];
                 $rules= array_merge($rules,$attachment_file);
             }
-
             return $rules;
         }
-    //}
+    }
 
     public function messages()
     {

@@ -41,9 +41,10 @@ class TicketDataTable extends DataTable
                     }
                 })
                 ->addColumn('action', function ($query) {
-                    return '<a href="#" onclick="editProject('.$query->lab_id.','.$query->id.')" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-question-sign"></i></a>';
+                    $ticketEdit= '<a href="#" onclick="editTicket('.$query->lab_id.','.$query->id.')" class="btn btn-default btn-xs"><i class="fas fa-ticket-alt"></i></a>';
+                    $ticketSolve= '<a href="#" onclick="showTicket('.$query->lab_id.','.$query->id.')" class="btn btn-default btn-xs"><i class="fas fa-headset"></i></a>';
+                    return $ticketEdit.$ticketSolve;
                 })
-
                 ->rawColumns([
                     'action'
                 ]);
@@ -72,7 +73,8 @@ class TicketDataTable extends DataTable
     public function query(Request $request)
     {
         //dd($request->all());
-        return $data=$this->getAppData($request);
+        $data=$this->getAppData($request);
+        return $data;
     }
 
     /**
@@ -119,20 +121,22 @@ class TicketDataTable extends DataTable
             ->orderable(false)
             ->searchable(false)
         ];
-
+        $location=[
+            Column::make('lab.phase','phase')->title('পর্যায়'),
+            Column::make('lab.division','division')->title('বিভাগ'),
+            Column::make('lab.district','district')->title('জেলা'),
+            Column::make('lab.upazila','upazila')->title('উপজেলা'),
+            Column::make('lab.ins','institution_bn')->title('শিক্ষা প্রতিষ্ঠান'),
+        ];
         $main= [
-//            Column::make('lab.phase','phase')->title('পর্যায়'),
-//            Column::make('lab.division','division')->title('বিভাগ'),
-//            Column::make('lab.district','district')->title('জেলা'),
-//            Column::make('lab.upazila','upazila')->title('উপজেলা'),
-//            Column::make('lab.ins','institution_bn')->title('শিক্ষা প্রতিষ্ঠান'),
+
             Column::make('device','device')->title('device'),
             Column::make('device_status','device_status')->title('device status'),
             Column::make('quantity','quantity')->title('quantity'),
             Column::make('support_status','support_status')->title('support_status')
         ];
-        if (Auth::check()) {
-            return array_merge($serial, $action, $main);
+        if (Auth::user()->hasRole(['vendor','super admin'])) {
+            return array_merge($serial, $action, $location,$main);
         }
         return array_merge($serial,$main);
 
@@ -189,10 +193,11 @@ class TicketDataTable extends DataTable
                 //$data->where('lab_type', $request->get('lab_type'));
             }
             // dd($data->get()->toArray());
-            return $data->with('lab');
+            return $data->with('lab')->permitted(null);
             //return $this->applyScopes($data);
         }
-        return $data->where('lab_id', $request->get('lab_id'))->with('lab');
+//        return $data->where('lab_id', $request->get('lab_id'))->with('lab');
+        return $data->with('lab')->permitted(null);
         //return $this->applyScopes($data);
     }
 }

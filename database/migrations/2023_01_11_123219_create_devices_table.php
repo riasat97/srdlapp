@@ -19,6 +19,7 @@ class CreateDevicesTable extends Migration
             $table->string('device')->nullable();
             $table->enum('device_status',['active','inactive','stolen'])->nullable();
             $table->integer('quantity')->nullable();
+            $table->integer("inactive_qty")->nullable();
             $table->text("problem")->nullable();
             $table->string('attachment_file')->nullable();
             $table->string('attachment_file_path')->nullable();
