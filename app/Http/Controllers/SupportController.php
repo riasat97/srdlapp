@@ -32,13 +32,18 @@ class SupportController extends Controller
             $divisionList[$division['division']]=$division['division'];
         $divisionList=array_merge(['-1' => 'নির্বাচন করুন'], $divisionList);
         $upazilas= $this->getUpazilas($request);
-        if (Auth::user()->hasRole(['vendor'])) {
-            $user=Auth::user();
+        $phase= array_merge(['-1' => 'নির্বাচন করুন'],[1=>'১ম',2=>'২য়']);
+        $user=Auth::user();
+        if (!empty($user) && $user->hasRole(['vendor'])) {
+
+            $divisions_en=explode(',',$user->posting_type);
+            $divisions_bn=$this->getDivisionBn($divisions_en);
+            $divisionList=array_merge(['-1' => 'নির্বাচন করুন'], $divisions_bn);
             return $dataTable->render('supports.ticket',['vendor'=>$user,'divisionList'=>$divisionList,'upazilas'=>$upazilas,
                 'district_bn'=>$this->getDistrictBnNameByUser()]);
         }
         return $dataTable->render('supports.ticket',['lab'=>$lab,'divisionList'=>$divisionList,'upazilas'=>$upazilas,
-            'district_bn'=>$this->getDistrictBnNameByUser()]);
+            'district_bn'=>$this->getDistrictBnNameByUser(),'phase'=>$phase]);
     }
     public function store($labId, CreateSupportRequest $request){
         if(!empty($request->ticket_id)){
@@ -49,7 +54,8 @@ class SupportController extends Controller
             'problem' => $request->problem];
         $lab= Lab::where('id',$labId)->first();
         $device= !empty($request->update_id)? $this->getDevice($request->update_id):new Device();
-        $device->device= $details['device'];
+        $device->device= ctype_lower($details['device'])?$details['device']:getResult(\device(),$details['device']);
+
         $device->lab_id=$labId;
         $device->device_status= $details['device_status'];
         $device->quantity= $details['quantity'];
@@ -139,5 +145,13 @@ class SupportController extends Controller
         }
         $device->save();
         return $device;
+    }
+    private function getDivisionBn(array $divisions_en)
+    {
+        $division_bn=[];
+        foreach ( $divisions_en as $division_en){
+            $division_bn[divisionEnToBn()[$division_en]]=divisionEnToBn()[$division_en];
+        }
+        return $division_bn;
     }
 }

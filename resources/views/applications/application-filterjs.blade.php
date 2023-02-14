@@ -157,5 +157,40 @@
             //$("#parliamentary_constituency").empty();
         }
     }
+    $('#lab_type').change(function(){
+        let device_all={'laptop':'Laptop', 'led_tv': 'LED TV', 'printer':"Printer", 'scanner':"Scanner", 'web_camera':"Web Camera",
+            'router':"Router", "network_switch":"Network Switch with LAN Connectivity",'internet_connectivity':"Internet Connectivity (6 months)",
+           'smart_board':"Digital Smart Board",'desktop': "Desktop Computer",'attendance_reader':"Attendance Reader Machine",
+            "digital_id_card":"Digital ID Card",'wifi_router':"Wi-Fi Router"
+        };
+        let device_sof={'smart_board':"Digital Smart Board",'desktop': "Desktop Computer",'attendance_reader':"Attendance Reader Machine",
+            "digital_id_card":"Digital ID Card",'wifi_router':"Wi-Fi Router"
+        };
+        let device_srdl={
+            'laptop':'Laptop', 'led_tv': 'LED TV', 'printer':"Printer", 'scanner':"Scanner", 'web_camera':"Web Camera",
+            'router':"Router", "network_switch":"Network Switch with LAN Connectivity",'internet_connectivity':"Internet Connectivity (6 months)"
+        };
+        $("#device_type_filter").empty();
+        let labType = $(this).val();
+        //console.log(labType);
+        if(labType=="srdl"){
+            $('#device_type_filter').prepend('<option value="0" selected="selected" >সকল  </option>');
+            $.each(device_srdl, function (key, value) {
+                $("#device_type_filter").append('<option value="' + key + '">' + value + '</option>');
+            });
+        }
+        else if(labType=="sof"){
+            $('#device_type_filter').prepend('<option value="0" selected="selected" >সকল  </option>');
+            $.each(device_sof, function (key, value) {
+                $("#device_type_filter").append('<option value="' + key + '">' + value + '</option>');
+            });
+        }
+        else{
+            $('#device_type_filter').prepend('<option value="0" selected="selected" >সকল  </option>');
+            $.each(device_all, function (key, value) {
+                $("#device_type_filter").append('<option value="' + key + '">' + value + '</option>');
+            });
+        }
+    });
 
 </script>

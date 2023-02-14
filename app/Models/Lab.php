@@ -73,9 +73,22 @@ class Lab extends Model
             $district=Bangladesh::where('district_en',$district_en)->first()->district;
             return $query->where('district',$district)->where('upazila',$upazila);
         }
+        if(!empty($user)&&$user->hasRole('vendor')){
+            $divisions_en=explode(',',$user->posting_type);
+            $divisions_bn=$this->getDivisionBn($divisions_en);
+            $query->whereIn('division',$divisions_bn )->where('phase',2);
+            return $query;
+        }
         return $query;
     }
-
+    private function getDivisionBn(array $divisions_en)
+    {
+        $division_bn=[];
+        foreach ( $divisions_en as $division_en){
+            $division_bn[]=divisionEnToBn()[$division_en];
+        }
+        return $division_bn;
+    }
     public function scopeWhereLike($query, $column, $value)
     {
         return $query->where($column, 'like', '%'.$value.'%');

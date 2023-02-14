@@ -14,7 +14,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class SelectedLabsDataTable extends DataTable
+class OwnLabsDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -24,8 +24,7 @@ class SelectedLabsDataTable extends DataTable
      */
     public function dataTable($query)
     {
-        $user=Auth::user();
-        if (!empty($user) && Auth::user()->hasRole(['super admin'])) {
+        if (Auth::user()->hasRole(['super admin','upazila admin','district admin','vendor'])) {
             return datatables()
                 ->eloquent($query)
                 ->addIndexColumn()
@@ -41,26 +40,14 @@ class SelectedLabsDataTable extends DataTable
                     }
                 })
                 ->addColumn('action', function ($query) {
-                    return '<a href="'.route("labs.tickets.index", ['lab_id'=>$query->id]) .'" data-toggle="tooltip" title="Support" target="_blank" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-wrench"></i></a>';
+
+                    return '<a href="'.route("labs.supports.index",$query->id) .'" data-toggle="tooltip" title="Support" target="_blank" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-wrench"></i></a>';
                 })
 
                 ->rawColumns([
                     'action'
                 ]);
         }
-        return datatables()
-            ->eloquent($query)
-            ->addIndexColumn()
-            ->filter(function ($instance) {
-
-                if (!empty(request()->get('search')['value'])) {
-                    $instance->where(function($w){
-                        $search = request()->get('search')['value'];
-                        $w->orWhere('institution', 'LIKE', "%$search%")
-                            ->orWhere('id', 'LIKE', "%$search%");
-                    });
-                }
-            });
     }
 
     /**
@@ -114,12 +101,12 @@ class SelectedLabsDataTable extends DataTable
     {
         $serial=[ Column::make('DT_RowIndex','id')->title('ক্রম')];
         $action= [Column::computed('action')
-                ->title('Action')
-                ->exportable(false)
-                ->printable(false)
-                ->orderable(false)
-                ->searchable(false)
-                ];
+            ->title('Action')
+            ->exportable(false)
+            ->printable(false)
+            ->orderable(false)
+            ->searchable(false)
+        ];
 
         $main= [
             Column::make('phase','phase')->title('পর্যায়'),
@@ -132,8 +119,7 @@ class SelectedLabsDataTable extends DataTable
             Column::make('tel','institution_tel')->title('যোগাযোগ'),
             Column::make('institution_email','institution_email')->title('ইমেইল')
         ];
-        $user=Auth::user();
-        if (!empty($user) && Auth::user()->hasRole(['super admin'])){
+        if (Auth::user()->hasRole(['super admin','upazila admin','district admin'])) {
             return array_merge($serial, $action, $main);
         }
         return array_merge($serial,$main);
@@ -175,10 +161,10 @@ class SelectedLabsDataTable extends DataTable
                 $data->where('lab_type', $request->get('lab_type'));
             }
             // dd($data->get()->toArray());
-            return $data->orderByRaw(" phase DESC, division,district,seat_no_en asc, FIELD(lab_type , 'srdl_sof','sof','srdl'),upazila ASC");
+            return $data->permitted(null)->orderByRaw(" phase DESC, division,district,seat_no_en asc, FIELD(lab_type , 'srdl_sof','sof','srdl'),upazila ASC");
             //return $this->applyScopes($data);
         }
-        return $data->orderByRaw("phase DESC, division,district,seat_no_en asc, FIELD(lab_type , 'srdl_sof','sof','srdl'),upazila ASC");
+        return $data->permitted(null)->orderByRaw("phase DESC, division,district,seat_no_en asc, FIELD(lab_type , 'srdl_sof','sof','srdl'),upazila ASC");
         //return $this->applyScopes($data);
     }
 }

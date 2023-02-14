@@ -2,14 +2,17 @@
 <li class="{{ Request::is('dashboard*') ? 'active' : '' }}">
     <a href="{{ route('applications.dashboard') }}"><i class="fas fa-tachometer-alt"></i><span> ড্যাশবোর্ড </span></a>
 </li>
+@if(Auth::user()->hasRole(['super admin']))
 <li class="{{ Request::is('admin/applications*') ? 'active' : '' }}">
     <a href="{{ route('applications.index') }}"><i class="fas fa-envelope"></i><span> ল্যাবের আবেদন</span></a>
 </li>
-@if(Auth::user()->hasRole(['super admin']))
-<li class="{{ Request::is('admin/download*') ? 'active' : '' }}">
+@endif
+<li class="{{ Request::routeIs('web.selected-institutions') ? 'active' : '' }}">
     <a href="{{ route('web.selected-institutions') }}"><i class="fas fa-download"></i><span> চূড়ান্ত তালিকা</span></a>
 </li>
-@endif
+<li class="{{ Request::routeIs('web.selected-labs') ? 'active' : '' }}">
+    <a href="{{ route('web.selected-labs') }}"><i class="fas fa-laptop"></i><span> আওতাধীন ল্যাবসমূহ</span></a>
+</li>
 <li class="{{ Request::routeIs('users.edit') ? 'active' : '' }}">
     <a href="{{ route('users.edit',['id'=>Auth::user()->id]) }}"><i class="far fa-id-badge"></i> <span>  প্রোফাইল</span></a>
 </li>
@@ -44,7 +47,7 @@
 </li>
 
 <li class="{{ Request::is('admin/labs*') ? 'active' : '' }}">
-    <a href="{{ route('labs.tickets.index') }}"><i class="fa fa-ticket"></i><span>Tickets</span></a>
+    <a href="{{ route('labs.tickets.index') }}"><i class="fa fa-ticket"></i><span>অভিযোগসমূহ </span></a>
 </li>
 
 

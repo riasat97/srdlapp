@@ -1,6 +1,12 @@
 @if(Auth::user()->hasRole(['upazila admin','district admin','super admin','vendor']))
 <script>
     $(function () {
+        let phase = $(".phase").text();
+        if(phase!='২য়'){
+            $('.card-text').hide();
+        }
+    });
+    $(function () {
         $('select.form-control option:first').attr('disabled', true);
     });
     $(function () {
@@ -31,6 +37,7 @@
 
     $(".device_type").click(function(){
         device = $(this).attr("data-id");
+        var lab_id = $(".lab_id").text();
         console.log('device: '+device);
         $("#alert-div").html("");
         $("#error-div").html("");
@@ -40,6 +47,7 @@
         $("#problem").val("");
         $("#attachment_file").val("");
         $("#device").val(device);
+        $("#lab_id").val(lab_id);
 
         $('#attachment_file_preview').hide();
 
@@ -62,7 +70,7 @@
                 "min" : 1
             });
         }
-        $('.modal-title').text('Support Form for '+ device_title[device]);
+        $('.modal-title').text('Complain Form: '+ device_title[device]);
         $("#form-modal").modal('show');
     });
 
@@ -81,8 +89,7 @@
         $('#support-form').submit(function(e) {
             e.preventDefault();
             var formData = new FormData(this);
-            var id = $(".lab_id").text();
-            alert(id);
+            var id = $("#lab_id").val();
             var url = "{{ route('labs.tickets.store', ":id") }}";
             url = url.replace(':id', id);
             $.ajax({
@@ -145,30 +152,60 @@
             type: "GET",
             success: function(response) {
                 let ticket = response.ticket;
+                $("textarea#support_description").removeAttr("readonly");
                 $("#alert-div").html("");
                 $("#error-div").html("");
-                $("#update_id").val(ticket.id);
-                $("#device").val(ticket.device);
-                $("#device_status").val(ticket.device_status);
-                $("#quantity").val(ticket.quantity);
-                $("textarea#problem").val(ticket.problem);
-                if(ticket.attachment_file==''){
-                    $('#attachment_file_preview').hide();
+                if(ticket.support_status=="open"){
+                    $("#update_id").val(ticket.id);
+                    $("#lab_id").val(ticket.lab_id);
+                    $("#device").val(ticket.device);
+                    $("#device_status").val(ticket.device_status);
+                    $("#quantity").val(ticket.quantity);
+                    $("textarea#problem").val(ticket.problem);
+                    if(ticket.attachment_file==''){
+                        $('#attachment_file_preview').hide();
+                    }
+                    else{
+                        $('#image-src').attr('src', ticket.attachment_file);
+                    }
+                    $('.modal-title').text('Complain Form: '+ ticket.device);
+                    $("#form-modal").modal('show');
                 }
-                $('#image-src').attr('src', ticket.attachment_file);
-                $('.modal-title').text('Support Form for '+ device_title[ticket.device]);
-                $("#form-modal").modal('show');
+                else{
+                    $('#save-support-reply').hide();
+                    $('#change_ticket_status').hide();
+                    $("#ticket_id").val(ticket.id);
+                    $("#lab_id").val(ticket.lab_id);
+                    $(".device").text( ticket.device);
+                    $(".device_status").text(ticket.device_status);
+                    $(".device_quantity").text(ticket.quantity);
+                    $(".problem_description").text(ticket.problem);
+                    if(ticket.attachment_file==''){
+                        $('.preview').hide();
+                    }
+                    $('.screenshot').attr('src', ticket.attachment_file);
+                    $(".ticket_status").text(ticket.support_status);
+                    $("select#support_status").val(ticket.support_status);
+                    $("textarea.support_description").val(ticket.support_description);
+                    $('.ticket-modal-title').text('অভিযোগ #'+ ticket.id);
+                    var institute= ticket.lab.ins+', '+ticket.lab.upazila+', '+ticket.lab.district;
+                    $(".panel-body.institution").text(institute);
+                    $(".panel-body.institution_head").text(ticket.lab.head_name);
+                    $(".panel-body.institution_mobile").text(ticket.lab.institution_tel);
+                    $(".panel-body.institution_email").text(ticket.lab.institution_email);
+                    if(ticket.support_status=="resolved"){
+                        $("#save-support-reply").prop('disabled', true);
+                    }
+                    $("textarea#support_description"). attr("readonly", "readonly");
+                    $("#ticketShow-modal").modal('show');
+                }
+
             },
             error: function(response) {
                 console.log(response.responseJSON)
             }
         });
     }
-
-    /*
-        get and display the record info on modal
-    */
-
 
     /*
         delete record function
@@ -205,6 +242,9 @@
     function showTicket(labId,ticketId)
     {
         $('.preview').show();
+        $('#save-support-reply').show();
+        $('#change_ticket_status').show();
+        $("textarea#support_description").removeAttr("readonly");
         $("#save-support-reply").prop('disabled', false);
         let url =  "{{ route('labs.tickets.index') }}" +'/'+ticketId+'?lab_id='+labId;
         $.ajax({
@@ -216,7 +256,7 @@
                 $("#error-div").html("");
                 $("#ticket_id").val(ticket.id);
                 $("#lab_id").val(ticket.lab_id);
-                $(".device").text( device_title[ticket.device]);
+                $(".device").text( ticket.device);
                 $(".device_status").text(ticket.device_status);
                 $(".device_quantity").text(ticket.quantity);
                 $(".problem_description").text(ticket.problem);
@@ -227,9 +267,13 @@
                 $(".ticket_status").text(ticket.support_status);
                 $("select#support_status").val(ticket.support_status);
                 $("textarea.support_description").val(ticket.support_description);
-                $('.ticket-modal-title').text('Ticket #'+ ticket.id);
+                $('.ticket-modal-title').text('অভিযোগ #'+ ticket.id);
                 var institute= ticket.lab.ins+', '+ticket.lab.upazila+', '+ticket.lab.district;
                 $(".panel-body.institution").text(institute);
+                $(".panel-body.institution_head").text(ticket.lab.head_name);
+                $(".panel-body.institution_mobile").text(ticket.lab.institution_tel);
+                $(".panel-body.institution_email").text(ticket.lab.institution_email);
+
                 if(ticket.support_status=="resolved"){
                     $("#save-support-reply").prop('disabled', true);
                 }

@@ -23,31 +23,31 @@
     <link rel="stylesheet" href="{{ asset('css/support.css') }}">
 @endsection
 @section('content')
-    @if(Auth::user()->hasRole(['upazila admin','district admin']))
+    @if(!empty($lab) && Auth::user()->hasRole(['super admin','upazila admin','district admin']))
     <section class="content-header">
-        <h1 class="pull-left">Support Tickets</h1>
+        <h1 class="pull-left">সকল অভিযোগ</h1>
         <h2 class="institution">{{ $lab->ins }}</h2>
         <h1 class="pull-right">
-            <a class="btn btn-primary pull-right" target="_blank" href="{{ route('labs.supports.index',$lab->id) }}">Open Ticket</a>
+            <a class="btn btn-primary pull-right" href="{{ route('labs.supports.index',$lab->id) }}"> <i class="fa fa-plus"></i> নতুন অভিযোগ</a>
         </h1>
     </section>
     @endif
-    @if(Auth::user()->hasRole(['super admin']))
+    @if(empty($lab) && Auth::user()->hasRole(['upazila admin','district admin','super admin']))
         <section class="content-header">
-            <h1 class="pull-left">Support Tickets</h1>
-            <h2 class="institution">{{ !empty($lab)?$lab->ins:'All Support Tickets' }}</h2>
+            <h1 class="pull-left">অভিযোগ পোর্টাল</h1>
+            <h2 class="institution">সকল অভিযোগ</h2>
             <h1 class="pull-right">
-                @if(!empty($lab))
-                <a class="btn btn-primary pull-right" target="_blank" href="{{ route('labs.supports.index',$lab->id) }}">Open Ticket</a>
+                @if(Auth::user()->hasRole(['upazila admin','district admin']))
+                <a class="btn btn-primary pull-right" href="{{ route('web.selected-labs') }}">আওতাধীন ল্যাবসমূহ</a>
                 @else
-                <a class="btn btn-primary pull-right" target="_blank" href="{{ route('web.selected-institutions') }}">All Labs</a>
+                <a class="btn btn-primary pull-right"  href="{{ route('web.selected-institutions') }}">সকল ল্যাব</a>
                 @endif
             </h1>
         </section>
     @endif
     @if(Auth::user()->hasRole(['vendor']))
         <section class="content-header">
-            <h1 class="pull-left">Support Tickets</h1>
+            <h1 class="pull-left">সকল অভিযোগ</h1>
             <h2 class="institution">{{ $vendor->name }}</h2>
         </section>
     @endif
@@ -59,7 +59,15 @@
         @include('flash::message')
         <div class="box box-primary">
             <div class="box-body">
-                @if(Auth::user()->hasRole(['super admin']))
+                @if(Auth::user()->hasRole(['super admin','district admin','upazila admin']))
+                <div class="form-row">
+                        <div class="form-group  col-md-2">
+                            {{Form::label('phase', 'পর্যায়') }}
+                            {{ Form::select('phase', $phase,old('phase'),array('class'=>'form-control','id'=>'phase')) }}
+                        </div>
+                </div>
+                @endif
+                @if(Auth::user()->hasRole(['super admin','vendor']))
                     <div class="form-row">
                         <div class="form-group  col-md-2">
                             {{Form::label('div', 'বিভাগ') }}
@@ -88,14 +96,35 @@
                 @endif
                 <div class="form-row">
                     <div class="form-group col-md-2">
-                        <label for="">কম্পিউটার ল্যাবের ধরণ</label>
+                        <label for="">ল্যাবের ধরণ</label>
                         {{Form::select('lab_type', array('0'=>'সকল ','srdl'=>'শেখ রাসেল ডিজিটাল ল্যাব','sof' => 'স্কুল অফ ফিউচার','srdl_sof' => 'স্কুল অফ ফিউচার ও শেখ রাসেল ডিজিটাল ল্যাব'), old('lab_type'),['class'=>'form-control', 'id'=>'lab_type',])}}
                     </div>
                 </div>
+                    @if(!Auth::user()->hasRole(['vendor']))
+                    <div class="form-row">
+                        <div class="form-group col-md-2">
+                            <label for="">ডিভাইসের ধরণ  </label>
+                            {{Form::select('device_type', array_merge(['0' => 'সকল'],device()), old('device_type'),['class'=>'form-control', 'id'=>'device_type_filter',])}}
+                        </div>
+                    </div>
+                    @endif
+                    <div class="form-row">
+                        <div class="form-group col-md-2">
+                            <label for="">ডিভাইস স্ট্যাটাস</label>
+                            {{Form::select('device_status', array_merge(['0' => 'সকল'],device_status()), old('device_status'),['class'=>'form-control', 'id'=>'device_status_filter',])}}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-2">
+                            <label for="">সাপোর্ট স্ট্যাটাস </label>
+                            {{Form::select('support_status', array_merge(['0' => 'সকল'],support_status()), old('support_status'),['class'=>'form-control', 'id'=>'support_status_filter',])}}
+                        </div>
+                    </div>
 
                 <div class="form-row">
                     <div class="form-group col-md-2">
-                        <button style="margin-top: 15px;" class="btn btn-lg btn-success searchbtn"  value="submitted" id="searchbtn" type="submit"><i class="fas fa-search"></i> অনুসন্ধান</button>
+                        <label for=""></label>
+                        <button style="" class="btn btn-lg btn-success searchbtn mt-2"  value="submitted" id="searchbtn" type="submit"><i class="fas fa-search"></i> অনুসন্ধান</button>
                     </div>
                 </div>
                 <div style="font-family: sans-serif;">{{ $dataTable->table(['class' => 'table table-bordered'], false) }}</div>
@@ -137,12 +166,16 @@
 
             var table = $("#ticket-datatable");
             table.on('preXhr.dt',function (e,settings,d) {
-                {{--d.labId = @json($lab->id);--}}
                 d.filter= filter,
+                    d.phase = ($('#phase').val()) ? $('#phase').val() : '',
                     d.divId = ($('#div').val()) ? $('#div').val() : '',
                     d.disId = ($('#dis').val()) ? $('#dis').val() : '',
                     d.upazilaId= ($('#upazila').val()) ? $('#upazila').val() : '',
-                    d.lab_type= ($('#lab_type').val()) ? $('#lab_type').val() : ''
+                    d.lab_type= ($('#lab_type').val()) ? $('#lab_type').val() : '',
+
+                    d.device_type= ($('#device_type_filter').val()) ? $('#device_type_filter').val() : '',
+                    d.device_status= ($('#device_status_filter').val()) ? $('#device_status_filter').val() : '',
+                    d.support_status= ($('#support_status_filter').val()) ? $('#support_status_filter').val() : ''
             })
 
             $('#searchbtn').click(function (e) {

@@ -283,7 +283,8 @@ fieldset {
     margin-left: 32px !important;
 }
 .searchbtn{
-    margin-top:24px;
+    margin-top:4px;
+    padding: 2px;
     width: 162px !important;
     height:37px !important;
 }

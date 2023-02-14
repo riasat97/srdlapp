@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Route;
 //https://onlinehtmleditor.dev/
 Route::group(['prefix' => 'selected', 'as' => 'web.'], function () {
     Route::get('/institutions', 'DashboardController@application')->name('selected-institutions');
+    Route::get('/labs', 'DashboardController@ownLabs')->name('selected-labs');
 });
 
 Route::get('/about', 'DashboardController@getAbout')->name('about');

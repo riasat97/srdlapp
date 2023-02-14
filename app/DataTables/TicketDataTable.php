@@ -25,7 +25,6 @@ class TicketDataTable extends DataTable
      */
     public function dataTable($query)
     {
-        if (Auth::check()) {
             return datatables()
                 ->eloquent($query)
                 ->addIndexColumn()
@@ -33,35 +32,32 @@ class TicketDataTable extends DataTable
 
                     if (!empty(request()->get('search')['value'])) {
                         $instance->where(function($w){
-                            //dd(request()->all());
                             $search = request()->get('search')['value'];
-                            $w->orWhere('institution', 'LIKE', "%$search%");
-                            //->orWhere('stock.contract', 'LIKE', "%$search%");
+//                          $w->orWhere('institution', 'LIKE', "%$search%");
+                            $w->whereHas('lab', function ($query) use ($search) {
+                                $query->where('labs.institution', $search);
+                            })
+                            ->orWhere('device', 'LIKE', "%$search%")
+                            ->orWhere('device_status', 'LIKE', "%$search%")
+                            ->orWhere('support_status', 'LIKE', "%$search%");
                         });
                     }
                 })
                 ->addColumn('action', function ($query) {
                     $ticketEdit= '<a href="#" onclick="editTicket('.$query->lab_id.','.$query->id.')" class="btn btn-default btn-xs"><i class="fas fa-ticket-alt"></i></a>';
                     $ticketSolve= '<a href="#" onclick="showTicket('.$query->lab_id.','.$query->id.')" class="btn btn-default btn-xs"><i class="fas fa-headset"></i></a>';
+
+                    if (Auth::user()->hasRole(['super admin']))
                     return $ticketEdit.$ticketSolve;
+                    if (Auth::user()->hasRole(['vendor']))
+                        return $ticketSolve;
+                    if (Auth::user()->hasRole(['district admin','upazila admin']))
+                        return $ticketEdit;
                 })
                 ->rawColumns([
                     'action'
                 ]);
-        }
-        return datatables()
-            ->eloquent($query)
-            ->addIndexColumn()
-            ->filter(function ($instance) {
 
-                if (!empty(request()->get('search')['value'])) {
-                    $instance->where(function($w){
-                        $search = request()->get('search')['value'];
-                        $w->orWhere('institution', 'LIKE', "%$search%")
-                            ->orWhere('id', 'LIKE', "%$search%");
-                    });
-                }
-            });
     }
 
     /**
@@ -130,12 +126,13 @@ class TicketDataTable extends DataTable
         ];
         $main= [
 
-            Column::make('device','device')->title('device'),
-            Column::make('device_status','device_status')->title('device status'),
-            Column::make('quantity','quantity')->title('quantity'),
-            Column::make('support_status','support_status')->title('support_status')
+            Column::make('device','device')->title('ডিভাইসের ধরণ'),
+            Column::make('device_status','device_status')->title('ডিভাইস স্ট্যাটাস'),
+            Column::make('quantity','quantity')->title('মোট সংখ্যা'),
+            Column::make('support_status','support_status')->title('অভিযোগের অবস্থা'),
+            Column::make('created_at','created_at')->title('created_at')
         ];
-        if (Auth::user()->hasRole(['vendor','super admin'])) {
+        if (Auth::user()->hasRole(['vendor','super admin','district admin','upazila admin'])) {
             return array_merge($serial, $action, $location,$main);
         }
         return array_merge($serial,$main);
@@ -157,47 +154,50 @@ class TicketDataTable extends DataTable
         $data = Device::query();
         if (!empty($request->get('filter'))) {
 
-//            if (!empty($request->get('lab_id'))) {
-//                $data->where('lab_id', $request->get('lab_id'));
-//            }
+            if (!empty($request->get('lab_id'))) {
+                $data->where('lab_id', $request->get('lab_id'));
+            }
+            if (!empty($request->get('device_type'))) {
+                $data->where('device', $request->get('device_type'));
+            }
+            if (!empty($request->get('device_status'))) {
+                $data->where('device_status', $request->get('device_status'));
+            }
+            if (!empty($request->get('support_status'))) {
+                $data->where('support_status', $request->get('support_status'));
+            }
             if (!empty($request->get('phase'))) {
                 $data->whereHas('lab', function ($query) use ($request) {
                     $query->where('labs.phase', $request->input('phase'));
                 });
-               // $data->where('phase', $request->get('phase'));
             }
             if (!empty($request->get('divId'))) {
                 $data->whereHas('lab', function ($query) use ($request) {
                     $query->where('labs.division', $request->input('divId'));
                 });
-                //$data->where('division', $request->get('divId'));
             }
 
             if (!empty($request->get('disId'))) {
                 $data->whereHas('lab', function ($query) use ($request) {
                     $query->where('labs.district', $request->input('disId'));
                 });
-                //$data->where('district', $request->get('disId'));
             }
 
             if (!empty($request->get('upazilaId'))) {
                 $data->whereHas('lab', function ($query) use ($request) {
                     $query->where('labs.upazila', $request->input('upazilaId'));
                 });
-                //$data->where('upazila', $request->get('upazilaId'));
             }
             if (!empty($request->get('lab_type'))) {
                 $data->whereHas('lab', function ($query) use ($request) {
                     $query->where('labs.lab_type', $request->input('lab_type'));
                 });
-                //$data->where('lab_type', $request->get('lab_type'));
             }
-            // dd($data->get()->toArray());
-            return $data->with('lab')->permitted(null);
+            return $data->with('lab')->permitted($request)->orderByRaw(" created_at asc, FIELD(support_status , 'open','processing','resolved','unresolved') asc");
             //return $this->applyScopes($data);
         }
 //        return $data->where('lab_id', $request->get('lab_id'))->with('lab');
-        return $data->with('lab')->permitted(null);
+        return $data->with('lab')->permitted($request)->orderByRaw(" created_at asc, FIELD(support_status , 'open','processing','resolved','unresolved') asc");
         //return $this->applyScopes($data);
     }
 }

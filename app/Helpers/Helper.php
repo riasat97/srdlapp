@@ -58,12 +58,7 @@ if (!function_exists('ReservedSeats')) {
         }
         return array_merge(['-1' => 'নির্বাচন করুন'],$ages);
     }
-    function phase(){
-        return [1=>'১ম',2=>'২য়'];
-    }
-    function device_status(){
-        return ['active'=>'Active','inactive'=>'Inactive','stolen'=> 'Stolen'];
-    }
+
     function ReservedSeats()
     {
         return $reservedSeats=array(
@@ -153,7 +148,34 @@ if (!function_exists('ReservedSeats')) {
         return ['Dhaka'=>'ঢাকা','Chattogram'=>'চট্টগ্রাম', 'Barishal'=>'বরিশাল', 'Khulna'=>'খুলনা','Rajshahi'=>'রাজশাহী',
             'Rangpur'=>'রংপুর','Mymensingh'=>'ময়মনসিংহ','Sylhet'=>'সিলেট'];
     }
+    function phase(){
+        return [1=>'১ম',2=>'২য়'];
+    }
+    function device_status(){
+        return ['active'=>'Active','inactive'=>'Inactive','stolen'=> 'Stolen'];
+    }
     function support_status(){
         return ['open'=>"Open",'processing'=>"Processing",'resolved'=>"Resolved",'unresolved'=>"Unsolved"];
+    }
+    function device(){
+        return [
+            'laptop' => 'Laptop',
+            'led_tv' => 'LED TV',
+            'printer' => 'Printer',
+            'scanner' => 'Scanner',
+            'web_camera' => 'Web Camera',
+            'router' => 'Router',
+            'network_switch' => 'Network Switch with LAN Connectivity',
+            'internet_connectivity' => 'Internet Connectivity (6 months)',
+            'furniture' => 'Furniture',
+            'smart_board' => 'Digital Smart Board',
+            'desktop' => 'Desktop Computer',
+            'attendance_reader' => 'Attendance Reader Machine',
+            'digital_id_card' => 'Digital ID Card',
+            'wifi_router' => 'Wi-Fi Router',
+//            'result_processing' => 'Online Result Processing',
+//            'online_fee' => 'Online Admission/Tuition Fee',
+//            'online_attendance_system' => 'Online Attendance System',
+        ];
     }
 }

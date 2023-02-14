@@ -1,12 +1,12 @@
 $(document).ready(function() {
     var s = $(".district-index-maps");
-    var pos = s.position();                    
+    var pos = s.position();
     $(window).scroll(function() {
-       
+
        var activeId = $(".division-from-district.active").attr('id');
        if(activeId){
             var active_division = activeId.replace("-id", "");
-            var division_id = '#'+active_division;    
+            var division_id = '#'+active_division;
             division_length = $(division_id+" > div > div").length
 
             if(division_length < 5){
@@ -21,7 +21,7 @@ $(document).ready(function() {
                     });
 
                 } else {
-                    s.removeClass("stick"); 
+                    s.removeClass("stick");
                 }
             }
        }else{
@@ -34,12 +34,12 @@ $(document).ready(function() {
                 });
 
             } else {
-                s.removeClass("stick"); 
+                s.removeClass("stick");
             }
        }
-       
 
-        
+
+
     });
 });
 
@@ -100,7 +100,7 @@ function matchHeightDiv()
             // convert days
             var con_d_entobn=event.strftime('%D');
             var con_d_entobn=con_d_entobn.getDigitBanglaFromEnglish();
-            
+
 
             $this.html(event.strftime('<div>'+con_d_entobn+' <span>দিন</span></div> <div>'+con_h_entobn+' <span>ঘন্টা</span></div> <div>'+con_m_entobn+' <span>মিনিট</span></div> <div>'+con_entobn+' <span>সেকেন্ড</span></div>'));
         });
@@ -156,7 +156,7 @@ function matchHeightDiv()
     }
 
     function bdNumbers(x){
-       
+
         x=x.toString();
         var lastThree = x.substring(x.length-3);
         var otherNumbers = x.substring(0,x.length-3);
@@ -169,13 +169,13 @@ function matchHeightDiv()
     if ($.fn.counterUp) {
         $('.counter').counterUp({
             delay: 10,
-            time: 2000,
-          
+            time: 1000,
+
             formatter: function (n) {
 
 var b = bdNumbers(n);
 
-              var con_entobn = b.getDigitBanglaFromEnglish(); 
+              var con_entobn = b.getDigitBanglaFromEnglish();
               return b.replace(b, con_entobn);
 
             }
@@ -216,7 +216,7 @@ $(document).delegate('#division_id','change',function () {
 
             if(data.result == 'success'){
 
-                $('#district').html(data.data);                
+                $('#district').html(data.data);
 
             }else{
                 alert(data.message);
@@ -231,7 +231,7 @@ $(document).delegate('#division_id','change',function () {
 $('#division_id').trigger( "change" );
 
 $(document).delegate('.division-link','click', function() {
-    
+
     $('.single-catagories').show();
 
     var tabHref = $(this).attr('href');
@@ -239,7 +239,7 @@ $(document).delegate('.division-link','click', function() {
     var data_division = tabHref.replace("#", "");
 
     $('.district_select').hide();
-    
+
     $('#district_s_'+data_division).fadeIn();
 
 });
@@ -254,6 +254,6 @@ $(document).delegate('.district_select','change', function() {
     }else{
         $('.single-catagories').show();
     }
-    
+
 
 });

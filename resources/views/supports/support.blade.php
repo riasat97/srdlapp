@@ -4,11 +4,12 @@
 @endsection
 @section('content')
     <section class="content-header">
-        <h1 class="pull-left">Support Portal</h1>
+        <h1 class="pull-left">অভিযোগ পোর্টাল</h1>
         <h2 class="institution">{{ $lab->ins }}</h2>
         <div class="lab_id hidden">{{ $lab->id }}</div>
+        <div class="phase hidden">{{ $lab->phase }}</div>
         <h1 class="pull-right">
-            <a class="btn btn-primary pull-right"  target="_blank" href="{{ route('labs.tickets.index',['lab_id'=>$lab->id]) }}">All Tickets</a>
+            <a class="btn btn-primary pull-right"  href="{{ route('labs.tickets.index',['lab_id'=>$lab->id]) }}">সকল অভিযোগ</a>
         </h1>
     </section>
     <div class="content">
@@ -29,7 +30,7 @@
                             <div class="card-body">
                                 <h5 class="card-title card">Laptop</h5>
                                 <p class="card-text">Quantity: 17</p>
-                                <a href="#!" class="btn btn-primary device_type" data-id="laptop" onclick="">Support</a>
+                                <a href="#!" class="btn btn-primary device_type" data-id="laptop" onclick="">অভিযোগ</a>
                             </div>
                         </div>
                     </div>
@@ -39,7 +40,7 @@
                             <div class="card-body">
                                 <h5 class="card-title card">LED Smart TV</h5>
                                 <p class="card-text">Quantity: 01</p>
-                                <a href="#!" class="btn btn-primary device_type" data-id="led_tv" onclick="">Support</a>
+                                <a href="#!" class="btn btn-primary device_type" data-id="led_tv" onclick="">অভিযোগ</a>
                             </div>
                         </div>
                     </div>
@@ -49,7 +50,7 @@
                             <div class="card-body">
                                 <h5 class="card-title card">Printer</h5>
                                 <p class="card-text">Quantity: 01</p>
-                                <a href="#!" class="btn btn-primary device_type" data-id="printer">Support</a>
+                                <a href="#!" class="btn btn-primary device_type" data-id="printer">অভিযোগ </a>
                             </div>
                         </div>
                     </div>
@@ -59,7 +60,7 @@
                             <div class="card-body">
                                 <h5 class="card-title card">Scanner</h5>
                                 <p class="card-text">Quantity: 01</p>
-                                <a href="#!" class="btn btn-primary device_type" data-id="scanner">Support</a>
+                                <a href="#!" class="btn btn-primary device_type" data-id="scanner">অভিযোগ </a>
                             </div>
                         </div>
                     </div>
@@ -73,7 +74,7 @@
                             <div class="card-body">
                                 <h5 class="card-title card">Web Camera</h5>
                                 <p class="card-text">Quantity: 01</p>
-                                <a href="#!" class="btn btn-primary device_type" data-id="web_camera">Support</a>
+                                <a href="#!" class="btn btn-primary device_type" data-id="web_camera">অভিযোগ </a>
                             </div>
                         </div>
                     </div>
@@ -83,7 +84,7 @@
                             <div class="card-body">
                                 <h5 class="card-title card">Router</h5>
                                 <p class="card-text">Quantity: 01</p>
-                                <a href="#!" class="btn btn-primary device_type" data-id="router">Support</a>
+                                <a href="#!" class="btn btn-primary device_type" data-id="router">অভিযোগ </a>
                             </div>
                         </div>
                     </div>
@@ -93,7 +94,7 @@
                             <div class="card-body">
                                 <h5 class="card-title card">Network Switch with LAN Connectivity</h5>
                                 <p class="card-text">Quantity: 01</p>
-                                <a href="#!" class="btn btn-primary device_type" data-id="network_switch">Support</a>
+                                <a href="#!" class="btn btn-primary device_type" data-id="network_switch">অভিযোগ </a>
                             </div>
                         </div>
                     </div>
@@ -103,7 +104,7 @@
                             <div class="card-body">
                                 <h5 class="card-title card">Internet Connectivity (6 months)</h5>
                                 <p class="card-text">Quantity: 01</p>
-                                <a href="#!" class="btn btn-primary device_type" data-id="internet_connectivity">Support</a>
+                                <a href="#!" class="btn btn-primary device_type" data-id="internet_connectivity">অভিযোগ </a>
                             </div>
                         </div>
                     </div>
@@ -115,7 +116,7 @@
 {{--                            <div class="card-body">--}}
 {{--                                <h5 class="card-title card">Furniture</h5>--}}
 {{--                                <p class="card-text">Table Quantity: 17 & Chair Quantity: 33</p>--}}
-{{--                                <a href="#!" class="btn btn-primary device_type" data-id="furniture">Support</a>--}}
+{{--                                <a href="#!" class="btn btn-primary device_type" data-id="furniture">অভিযোগ </a>--}}
 {{--                            </div>--}}
 {{--                        </div>--}}
 {{--                    </div>--}}
@@ -138,7 +139,7 @@
                             <div class="card-body">
                                 <h5 class="card-title card">Digital Smart Board</h5>
                                 <p class="card-text">Quantity: 06</p>
-                                <a href="#!" class="btn btn-primary device_type" data-id="smart_board">Support</a>
+                                <a href="#!" class="btn btn-primary device_type" data-id="smart_board">অভিযোগ </a>
                             </div>
                         </div>
                     </div>
@@ -148,7 +149,7 @@
                             <div class="card-body">
                                 <h5 class="card-title card">Desktop Computer</h5>
                                 <p class="card-text">Quantity: 04</p>
-                                <a href="#!" class="btn btn-primary device_type" data-id="desktop">Support</a>
+                                <a href="#!" class="btn btn-primary device_type" data-id="desktop">অভিযোগ </a>
                             </div>
                         </div>
                     </div>
@@ -158,7 +159,7 @@
                             <div class="card-body">
                                 <h5 class="card-title card">Attendance Reader Machine</h5>
                                 <p class="card-text">Quantity: 05</p>
-                                <a href="#!" class="btn btn-primary device_type" data-id="attendance_reader">Support</a>
+                                <a href="#!" class="btn btn-primary device_type" data-id="attendance_reader">অভিযোগ </a>
                             </div>
                         </div>
                     </div>
@@ -168,7 +169,7 @@
                             <div class="card-body">
                                 <h5 class="card-title card">Digital ID Card</h5>
                                 <p class="card-text">Quantity: 1000</p>
-                                <a href="#!" class="btn btn-primary device_type" data-id="digital_id_card">Support</a>
+                                <a href="#!" class="btn btn-primary device_type" data-id="digital_id_card">অভিযোগ </a>
                             </div>
                         </div>
                     </div>
@@ -178,7 +179,7 @@
                             <div class="card-body">
                                 <h5 class="card-title card">Wi-Fi Router</h5>
                                 <p class="card-text">Quantity: 01</p>
-                                <a href="#!" class="btn btn-primary device_type" data-id="wifi_router">Support</a>
+                                <a href="#!" class="btn btn-primary device_type" data-id="wifi_router">অভিযোগ </a>
                             </div>
                         </div>
                     </div>
@@ -199,7 +200,7 @@
                         <div class="card-body">
                             <h5 class="card-title card">Result Processing</h5>
 {{--                            <p class="card-text">Quantity: 06</p>--}}
-                            <a href="#!" class="btn btn-primary service_type" data-id="result_processing">Support</a>
+                            <a href="#!" class="btn btn-primary service_type" data-id="result_processing">অভিযোগ </a>
                         </div>
                     </div>
                 </div>
@@ -209,7 +210,7 @@
                         <div class="card-body">
                             <h5 class="card-title card">Online Admission/Tuition Fee</h5>
 {{--                            <p class="card-text">Quantity: 04</p>--}}
-                            <a href="#!" class="btn btn-primary service_type" data-id="online_fee">Support</a>
+                            <a href="#!" class="btn btn-primary service_type" data-id="online_fee">অভিযোগ </a>
                         </div>
                     </div>
                 </div>
@@ -219,7 +220,7 @@
                         <div class="card-body">
                             <h5 class="card-title card">Online Attendance System</h5>
 {{--                            <p class="card-text">Quantity: 05</p>--}}
-                            <a href="#!" class="btn btn-primary service_type" data-id="online_attendance_system">Support</a>
+                            <a href="#!" class="btn btn-primary service_type" data-id="online_attendance_system">অভিযোগ </a>
                         </div>
                     </div>
                 </div>
@@ -229,7 +230,7 @@
                     <div class="card-body">
                         <h5 class="card-title card">General Issues</h5>
 {{--                        <p class="card-text">Quantity: 05</p>--}}
-                        <a href="#!" class="btn btn-primary service_type" data-id="general_issues">Support</a>
+                        <a href="#!" class="btn btn-primary service_type" data-id="general_issues">অভিযোগ </a>
                     </div>
                 </div>
             </div>

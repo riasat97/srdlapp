@@ -796,195 +796,249 @@ Secured National Award on Environment in 2010 handed over by the Prime Minister 
         </div>
 
         <div class="row">
+                   <div class="col-lg-12 d-flex align-items-stretch justify-content-center">
+                       <div class="member" data-aos="fade-up" data-aos-delay="300">
+                           <div class="member-img">
+                               <img src="{{ asset('assets/img/pdsrdl.jpeg') }}" class="img-fluid" alt="" style="width:335px;height:306px;">
+                               <div class="social">
+                               </div>
+                           </div>
+                           <div class="member-info">
+                               <h4>Mr. S. A. M. Rafiqunnabi</h4>
+                               <h6>Project Director (Additional Duty)</h6>
+                               <div>
+                                   <i class="ri-phone-line"></i>
+                                   <p>+880241024073, +8801714325386</p>
+                               </div>
+                               <div>
+                                   <i class="ri-mail-send-line"></i>
+                                   <p>pdsrdl@doict.gov.bd</p>
+                               </div>
 
-{{--          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">--}}
-{{--            <div class="member" data-aos="fade-up" data-aos-delay="100">--}}
-{{--              <div class="member-img mx-auto text-center">--}}
-{{--                <img src="{{ asset('assets/img/jahedi sir.jpg') }}" class="img-fluid" alt="" style="width:306px;height:306px;">--}}
-{{--                <div class="social">--}}
-{{--                  <!-- <a href=""><i class="bi bi-twitter"></i></a>--}}
-{{--                  <a href=""><i class="bi bi-facebook"></i></a>--}}
-{{--                  <a href=""><i class="bi bi-linkedin"></i></a> -->--}}
-{{--                </div>--}}
-{{--              </div>--}}
-{{--              <div class="member-info">--}}
-{{--                <h4>Mr. Md. Rezaul Maksud Jahedi (Joint Secretary)</h4>--}}
-{{--                <h6>Project Director (Additional Duty)</h6>--}}
-{{--                <div>--}}
-{{--                  <i class="ri-phone-line"></i>--}}
-{{--                  <p>+880241024073, +8801711166328</p>--}}
-{{--                </div>--}}
-{{--                <div>--}}
-{{--                  <i class="ri-mail-send-line"></i>--}}
-{{--                  <p>pdsrdl@doict.gov.bd</p>--}}
-{{--                </div>--}}
-{{--              </div>--}}
-
-{{--            </div>--}}
-{{--          </div>--}}
-
-{{--          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">--}}
-{{--            <div class="member" data-aos="fade-up" data-aos-delay="200">--}}
-{{--              <div class="member-img">--}}
-{{--                <img src="{{ asset('assets/img/raja.jpg') }}" class="img-fluid" alt="" style="width:306px;height:306px;" >--}}
-{{--                <div class="social">--}}
-{{--                  <!-- <a href=""><i class="bi bi-twitter"></i></a>--}}
-{{--                  <a href=""><i class="bi bi-facebook"></i></a>--}}
-{{--                  <a href=""><i class="bi bi-instagram"></i></a>--}}
-{{--                  <a href=""><i class="bi bi-linkedin"></i></a> -->--}}
-{{--                </div>--}}
-{{--              </div>--}}
-{{--              <div class="member-info">--}}
-{{--                <h4>Mr. Raza Md. Abdul Hye</h4>--}}
-{{--                <h6>Deputy Project Director (Technical) (Additional Duty)</h6>--}}
-{{--                <div>--}}
-{{--                  <i class="ri-phone-line"></i>--}}
-{{--                  <p>+880241024026, +8801710873246</p>--}}
-{{--                </div>--}}
-{{--                <div>--}}
-{{--                  <i class="ri-mail-send-line"></i>--}}
-{{--                  <p>raza6676@ictd.gov.bd</p>--}}
-{{--                </div>--}}
-
-{{--              </div>--}}
-{{--            </div>--}}
-{{--          </div>--}}
-
-          <div class="col-lg-12 col-md-6 d-flex align-items-stretch d-flex justify-content-center">
-            <div class="member" data-aos="fade-up" data-aos-delay="300">
-              <div class="member-img">
-                <img src="{{ asset('assets/img/hasem.jpg') }}" class="img-fluid" alt="" style="width:306px;height:306px;">
-                <div class="social">
-                  <!-- <a href=""><i class="bi bi-twitter"></i></a>
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-instagram"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a> -->
-                </div>
-              </div>
-              <div class="member-info">
-                <h4>Mr. Mohammad Abul Hashem</h4>
-                <h6>Project Director (Additional Duty)</h6>
-                <div>
-                  <i class="ri-phone-line"></i>
-                  <p>+880255006923, +8801716223442</p>
-                </div>
-                <div>
-                  <i class="ri-mail-send-line"></i>
-                  <p>hashem6704@gmail.com</p>
-                </div>
-
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
-            <div class="member" data-aos="fade-up" data-aos-delay="400">
-              <div class="member-img">
-                <img src="{{ asset('assets/img/shariful_islam.jpg') }}" class="img-fluid" alt="" style="width:306px;height:306px;">
-                <div class="social">
-                  <!-- <a href=""><i class="bi bi-twitter"></i></a>
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-instagram"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a> -->
-                </div>
-              </div>
-              <div class="member-info">
-                <h4>Mr. Shariful Islam</h4>
-                <h6>Assistant Programmer</h6>
-                <div>
-                  <i class="ri-phone-line"></i>
-                  <p>+880241024073, +8801912436692</p>
-                </div>
-                <div>
-                  <i class="ri-mail-send-line"></i>
-                  <p>shariful1.ap@doict.gov.bd</p>
-                </div>
-
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
-            <div class="member" data-aos="fade-up" data-aos-delay="400">
-              <div class="member-img">
-                <img src="{{ asset('assets/img/mahbub.jpeg') }}" class="img-fluid" alt="" style="width:306px;height:306px;">
-                <div class="social">
-                  <!-- <a href=""><i class="bi bi-twitter"></i></a>
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-instagram"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a> -->
-                </div>
-              </div>
-              <div class="member-info">
-                <h4>Mr. Md. Mahbubur Rahman</h4>
-                <h6>Assistant Programmer</h6>
-                <div>
-                  <i class="ri-phone-line"></i>
-                  <p>+880241024073, +8801794000011</p>
-                </div>
-                <div>
-                  <i class="ri-mail-send-line"></i>
-                  <p>mahbub.ntr@gmail.com</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
-            <div class="member" data-aos="fade-up" data-aos-delay="400">
-              <div class="member-img">
-                <img src="{{ asset('assets/img/riasat.jpg') }}" class="img-fluid" alt="" style="width:306px;height:306px;">
-                <div class="social">
-                  <!-- <a href=""><i class="bi bi-twitter"></i></a>
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-instagram"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a> -->
-                </div>
-              </div>
-              <div class="member-info">
-                <h4>Mr. Riasat Raihan Noor</h4>
-                <h6>Assistant Programmer</h6>
-                <div>
-                  <i class="ri-phone-line"></i>
-                  <p>+880241024073, +8801672702437</p>
-                </div>
-                <div>
-                  <i class="ri-mail-send-line"></i>
-                  <p>riasatraihan@gmail.com</p>
-                </div>
-
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
-            <div class="member" data-aos="fade-up" data-aos-delay="400">
-              <div class="member-img">
-                <img src="{{ asset('assets/img/zahid.jpg') }}" class="img-fluid" alt="" style="width:306px;height:306px;">
-                <div class="social">
-                  <!-- <a href=""><i class="bi bi-twitter"></i></a>
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-instagram"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a> -->
-                </div>
-              </div>
-              <div class="member-info">
-                <h4>Mr. Md. Jahidul Islam</h4>
-                <h6>Assistant Programmer</h6>
-                <div>
-                  <i class="ri-phone-line"></i>
-                  <p>+880241024073, +8801738105665</p>
-                </div>
-                <div>
-                  <i class="ri-mail-send-line"></i>
-                  <p>zahid.ruet.cse10@gmail.com</p>
-                </div>
-
-              </div>
-            </div>
-          </div>
-
+                           </div>
+                       </div>
+                   </div>
         </div>
+          <div class="row">
+              <div class="col-lg-12 d-flex align-items-stretch justify-content-center">
+                  <div class="member" data-aos="fade-up" data-aos-delay="300">
+                      <div class="member-img">
+                          <img src="{{ asset('assets/img/hasem.jpg') }}" class="img-fluid" alt=""
+                               style="width:335px;height:306px;">
+                          <div class="social">
+                              <!-- <a href=""><i class="bi bi-twitter"></i></a>
+                              <a href=""><i class="bi bi-facebook"></i></a>
+                              <a href=""><i class="bi bi-instagram"></i></a>
+                              <a href=""><i class="bi bi-linkedin"></i></a> -->
+                          </div>
+                      </div>
+                      <div class="member-info">
+                          <h4>Mr. Mohammad Abul Hashem</h4>
+                          <h6>Deputy Project Director (Additional Duty)</h6>
+                          <div>
+                              <i class="ri-phone-line"></i>
+                              <p>+880255006923, +8801716223442</p>
+                          </div>
+                          <div>
+                              <i class="ri-mail-send-line"></i>
+                              <p>hashem6704@gmail.com</p>
+                          </div>
+
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
+                  <div class="member" data-aos="fade-up" data-aos-delay="400">
+                      <div class="member-img">
+                          <img src="{{ asset('assets/img/shariful_islam.jpg') }}" class="img-fluid" alt=""
+                               style="width:306px;height:306px;">
+                          <div class="social">
+                          </div>
+                      </div>
+                      <div class="member-info">
+                          <h4>Mr. Shariful Islam</h4>
+                          <h6>Assistant Programmer</h6>
+                          <div>
+                              <i class="ri-phone-line"></i>
+                              <p>+880241024073, +8801912436692</p>
+                          </div>
+                          <div>
+                              <i class="ri-mail-send-line"></i>
+                              <p>shariful1.ap@doict.gov.bd</p>
+                          </div>
+
+                      </div>
+                  </div>
+              </div>
+
+              <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
+                  <div class="member" data-aos="fade-up" data-aos-delay="400">
+                      <div class="member-img">
+                          <img src="{{ asset('assets/img/mahbub.jpeg') }}" class="img-fluid" alt=""
+                               style="width:306px;height:306px;">
+                          <div class="social">
+                              <!-- <a href=""><i class="bi bi-twitter"></i></a>
+                              <a href=""><i class="bi bi-facebook"></i></a>
+                              <a href=""><i class="bi bi-instagram"></i></a>
+                              <a href=""><i class="bi bi-linkedin"></i></a> -->
+                          </div>
+                      </div>
+                      <div class="member-info">
+                          <h4>Mr. Md. Mahbubur Rahman</h4>
+                          <h6>Assistant Programmer</h6>
+                          <div>
+                              <i class="ri-phone-line"></i>
+                              <p>+880241024073, +8801794000011</p>
+                          </div>
+                          <div>
+                              <i class="ri-mail-send-line"></i>
+                              <p>mahbub.ntr@gmail.com</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
+                  <div class="member" data-aos="fade-up" data-aos-delay="400">
+                      <div class="member-img">
+                          <img src="{{ asset('assets/img/riasat.jpg') }}" class="img-fluid" alt=""
+                               style="width:306px;height:306px;">
+                          <div class="social">
+                              <!-- <a href=""><i class="bi bi-twitter"></i></a>
+                              <a href=""><i class="bi bi-facebook"></i></a>
+                              <a href=""><i class="bi bi-instagram"></i></a>
+                              <a href=""><i class="bi bi-linkedin"></i></a> -->
+                          </div>
+                      </div>
+                      <div class="member-info">
+                          <h4>Mr. Riasat Raihan Noor</h4>
+                          <h6>Assistant Programmer</h6>
+                          <div>
+                              <i class="ri-phone-line"></i>
+                              <p>+880241024073, +8801672702437</p>
+                          </div>
+                          <div>
+                              <i class="ri-mail-send-line"></i>
+                              <p>riasatraihan@gmail.com</p>
+                          </div>
+
+                      </div>
+                  </div>
+              </div>
+
+              <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
+                  <div class="member" data-aos="fade-up" data-aos-delay="400">
+                      <div class="member-img">
+                          <img src="{{ asset('assets/img/zahid.jpg') }}" class="img-fluid" alt=""
+                               style="width:306px;height:306px;">
+                          <div class="social">
+                              <!-- <a href=""><i class="bi bi-twitter"></i></a>
+                              <a href=""><i class="bi bi-facebook"></i></a>
+                              <a href=""><i class="bi bi-instagram"></i></a>
+                              <a href=""><i class="bi bi-linkedin"></i></a> -->
+                          </div>
+                      </div>
+                      <div class="member-info">
+                          <h4>Mr. Md. Jahidul Islam</h4>
+                          <h6>Assistant Programmer</h6>
+                          <div>
+                              <i class="ri-phone-line"></i>
+                              <p>+880241024073, +8801738105665</p>
+                          </div>
+                          <div>
+                              <i class="ri-mail-send-line"></i>
+                              <p>zahid.ruet.cse10@gmail.com</p>
+                          </div>
+
+                      </div>
+                  </div>
+              </div>
+
+          </div>
+            {{--          NEW ASSISTANT PROGRAMMERS--}}
+          <div class="row">
+              <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
+                  <div class="member" data-aos="fade-up" data-aos-delay="400">
+                      <div class="member-img">
+                          <img src="{{ asset('assets/img/shahalam.jpg') }}" class="img-fluid" alt=""
+                               style="width:306px;height:306px;">
+                          <div class="social">
+                          </div>
+                      </div>
+                      <div class="member-info">
+                          <h4>Md. Shahalam</h4>
+                          <h6>Assistant Programmer</h6>
+                          <div>
+                              <i class="ri-phone-line"></i>
+                              <p>+880241024073, +8801738433041</p>
+                          </div>
+                          <div>
+                              <i class="ri-mail-send-line"></i>
+                              <p>shahalam3041@gmail.com</p>
+                          </div>
+
+                      </div>
+                  </div>
+              </div>
+
+              <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
+                  <div class="member" data-aos="fade-up" data-aos-delay="400">
+                      <div class="member-img">
+                          <img src="{{ asset('assets/img/aninda.jpg') }}" class="img-fluid" alt=""
+                               style="width:306px;height:306px;">
+                          <div class="social">
+                              <!-- <a href=""><i class="bi bi-twitter"></i></a>
+                              <a href=""><i class="bi bi-facebook"></i></a>
+                              <a href=""><i class="bi bi-instagram"></i></a>
+                              <a href=""><i class="bi bi-linkedin"></i></a> -->
+                          </div>
+                      </div>
+                      <div class="member-info">
+                          <h4>Aninda Bhattacharjee </h4>
+                          <h6>Assistant Programmer</h6>
+                          <div>
+                              <i class="ri-phone-line"></i>
+                              <p>+880241024073, +8801705571463</p>
+                          </div>
+                          <div>
+                              <i class="ri-mail-send-line"></i>
+                              <p>bhattacharjee.aninda15@gmail.com</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
+                  <div class="member" data-aos="fade-up" data-aos-delay="400">
+                      <div class="member-img">
+                          <img src="{{ asset('assets/img/refat.jpg') }}" class="img-fluid" alt=""
+                               style="width:306px;height:306px;">
+                          <div class="social">
+                              <!-- <a href=""><i class="bi bi-twitter"></i></a>
+                              <a href=""><i class="bi bi-facebook"></i></a>
+                              <a href=""><i class="bi bi-instagram"></i></a>
+                              <a href=""><i class="bi bi-linkedin"></i></a> -->
+                          </div>
+                      </div>
+                      <div class="member-info">
+                          <h4>Md. Al Refat </h4>
+                          <h6>Assistant Programmer</h6>
+                          <div>
+                              <i class="ri-phone-line"></i>
+                              <p>+880241024073, +8801932165326</p>
+                          </div>
+                          <div>
+                              <i class="ri-mail-send-line"></i>
+                              <p>refatdoict@gmail.com</p>
+                          </div>
+
+                      </div>
+                  </div>
+              </div>
+
+          </div>
 
       </div>
     </section><!-- End Team Section -->

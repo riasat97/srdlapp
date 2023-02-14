@@ -3,9 +3,12 @@
     <link rel="stylesheet" href="{{ asset('css/dashboard.css') }}">
 @endsection
 @section('content')
-    <section class="content-header">
+    <section class="content-header d-flex">
         @if(Auth::user()->hasRole(['super admin']))
         <h1 class="pull-left"><i class="fas fa-envelope-open-text"></i> সংক্ষিপ্ত তথ্য</h1> <br>
+        @endif
+        @if(Auth::user()->hasRole(['vendor']))
+            <h1 class="text-center"><i class="fas fa-envelope-open-text"></i> প্রাপ্ত সাপোর্ট টিকেটসমূহের সংক্ষিপ্ত তথ্য</h1> <br>
         @endif
     </section>
 
@@ -48,7 +51,7 @@
 
                     <div class="row dashboard-row">
                         <div class="four col-md-3 col-box">
-                            <div class="counter-box "> <i class="fas fa-robot"></i> <span class="counter">{{$sof_total}}</span>
+                            <div class="counter-box"> <i class="fas fa-robot"></i> <span class="counter">{{$sof_total}}</span>
                                 <p>৩০০টি স্কুল অফ ফিউচারের জন্য
                                     প্রাপ্ত আবেদন সংখ্যা </p>
                             </div>
@@ -74,6 +77,44 @@
                 </div>
             </div>
         </div>
+        @endif
+        @if(Auth::user()->hasRole(['vendor']))
+            <div class="box box-primary">
+                <div class="box-body">
+                    <div class="container dashboard-container">
+                        <div class="row dashboard-row">
+                            <div class="four col-md-3 col-box">
+                                <div class="counter-box "> <i class="fa fa-ticket"></i> <span class="counter" >{{$newTicket}}</span>
+                                    <p>নতুন টিকেট সংখ্যা </p>
+                                </div>
+                            </div>
+                            <div class="four col-md-3 col-box">
+                                <div class="counter-box"> <i class="fas fa-envelope-open"></i> <span class="counter">{{$processingTicket}}</span>
+                                    <p>প্রক্রিয়াধীন টিকেট সংখ্যা </p>
+                                </div>
+                            </div>
+                            <div class="four col-md-3 col-box">
+                                <div class="counter-box"> <i class="fas fa-thumbs-up"></i> <span class="counter">{{$resolvedTicket}}</span>
+                                    <p>সমাধানকৃত টিকেট সংখ্যা </p>
+                                </div>
+                            </div>
+                            <div class="four col-md-3 col-box">
+                                <div class="counter-box"> <i class="fas fa-thumbs-down"></i> <span class="counter">{{$unresolvedTicket}}</span>
+                                    <p>অমীমাংসিত টিকেট সংখ্যা </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row dashboard-row">
+                            <div class="four col-md-12 col-box">
+                                <div class="counter-box"> <i class="fas fa-mail-bulk"></i> <span class="counter">{{$totalTicket}}</span>
+                                    <p>মোট টিকেট সংখ্যা</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         @endif
         @if(Auth::user()->hasRole(['district admin','upazila admin']))
             <div class="box">

@@ -111,11 +111,13 @@
                     @endif
                     @if(Auth::user()->hasRole(['super admin']))
                         <div class="form-group col-md-3">
+                            <label for=""></label>
                             <button class="btn btn-lg btn-success searchbtn"  value="submitted" id="searchbtn" type="submit"><i class="fas fa-search"></i> অনুসন্ধান</button>
                         </div>
                     @endif
                         @if(Auth::user()->hasRole(['district admin']))
                             <div class="form-group col-md-10">
+                                <label for=""></label>
                                 <button class="btn btn-lg btn-success searchbtn"  value="submitted" id="searchbtn" type="submit"><i class="fas fa-search"></i> অনুসন্ধান</button>
                             </div>
                         @endif
