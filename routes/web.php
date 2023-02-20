@@ -27,6 +27,9 @@ Route::group(['prefix' => 'selected', 'as' => 'web.'], function () {
     Route::get('/institutions', 'DashboardController@application')->name('selected-institutions');
     Route::get('/labs', 'DashboardController@ownLabs')->name('selected-labs');
 });
+Route::group(['prefix' => 'selected', 'as' => 'web.','middleware' => 'auth'], function () {
+    Route::get('/labs', 'DashboardController@ownLabs')->name('selected-labs');
+});
 
 Route::get('/about', 'DashboardController@getAbout')->name('about');
 
@@ -70,6 +73,8 @@ Route::group(['prefix' => 'admin/applications', 'as' => 'applications.','middlew
 Route::group(['prefix' => 'admin/labs', 'as' => 'labs.','middleware' => 'auth'], function () {
     Route::get('{labId}/trainees', 'TraineeController@edit')->name('trainees.edit');
     Route::patch('{labId}/trainees', 'TraineeController@update')->name('trainees.update');
+    Route::get('trainees', 'TraineeController@trainees')->name('trainees.index');
+    Route::post('trainees/{trainee}', 'TraineeController@updateTrainee')->name('trainee.update');
     //Route::resource('stocks', 'StockController');
    // Route::get('/stocks', 'StockController@index')->name('stocks.index');
     Route::get('/stocks', 'StockController@stocks')->name('stocks.index');
@@ -83,7 +88,7 @@ Route::group(['prefix' => 'admin/labs', 'as' => 'labs.','middleware' => 'auth'],
     Route::get('tickets', 'SupportController@tickets')->name('tickets.index');
     Route::get('tickets/{ticketId}', 'SupportController@ticket')->name('tickets.show');
     Route::post('{labId}/supports/store', 'SupportController@store')->name('tickets.store');
-    Route::get('{labId}/supports/{id}/edit', 'SupportController@edit')->name('tickets.edit');
+    //Route::get('{labId}/supports/{id}/edit', 'SupportController@edit')->name('tickets.edit');
     Route::get('image/{filename}', 'SupportController@displayImage')->name('displayImage');
 });
 

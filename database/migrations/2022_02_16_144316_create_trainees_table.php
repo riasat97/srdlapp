@@ -16,14 +16,15 @@ class CreateTraineesTable extends Migration
         Schema::create('trainees', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('lab_id');
+            $table->unsignedBigInteger('batch_id');
             $table->string('name')->nullable();
             $table->string('designation')->nullable();
-            $table->string('age')->nullable();
+            $table->string('dob')->nullable();
             $table->string('gender')->nullable();
             $table->string('qualification')->nullable();
             $table->string('subject')->nullable();
-            $table->string('email')->nullable()->unique();
-            $table->string('mobile')->nullable()->unique();
+            $table->string('email')->nullable();
+            $table->string('mobile')->nullable();
             /*$table->enum('verified', ['YES', 'NO'])->nullable();
             $table->dateTimeTz('signature_at')->nullable();*/
             $table->timestamps();

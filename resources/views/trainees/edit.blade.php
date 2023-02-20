@@ -1,11 +1,13 @@
 @extends('layouts.app')
 @section('css')
     <link type="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker3.min.css"/>
+{{--    <link rel="stylesheet" href="{{ asset('css/support.css') }}">--}}
 @endsection
 @section('content')
-    <section class="content-header">
+    <section class="content-header text-center">
+        <h2 class="institution">{{ $lab->ins.', '.$lab->upazila.', '.$lab->district }}</h2>
         <h1>
-            ০৪ জন প্রশিক্ষণার্থীদের তালিকা
+            চার (০৪) জন প্রশিক্ষণার্থীদের তালিকা
         </h1>
    </section>
    <div class="content">
@@ -13,13 +15,13 @@
        @include('adminlte-templates::common.errors')
        <div class="box box-primary">
            <div class="box-body">
-               <div class="row">
+                    <p> <span style="color:red">*</span> সব তথ্য পূরণ করতে হবে</p>
                    {!! Form::open(['route' => ['labs.trainees.update', $lab->id], 'method' => 'patch']) !!}
 
                         @include('trainees.fields')
 
                    {!! Form::close() !!}
-               </div>
+
            </div>
        </div>
    </div>
@@ -32,10 +34,20 @@
     <script type="text/javascript">
         $(function () {
 
-            $('#age1,#age2,#age3,#age4').datetimepicker({
-                format: "DD/MM/YYYY",
+            $('.date').datetimepicker({
+                format: "YYYY-MM-DD",
+                minDate: subtractYears(new Date(), 70),
+                maxDate: subtractYears(new Date(), 18),
+                useCurrent: false
             });
         });
+        function subtractYears(date, years) {
+            date.setFullYear(date.getFullYear() - years);
+            return date;
+        }
+        $(function () {
+            // $('select.form-control option:first').attr('disabled', true);
+            $('select.form-control option:contains("নির্বাচন করুন")').attr("disabled","disabled");
+        });
     </script>
-
 @endpush

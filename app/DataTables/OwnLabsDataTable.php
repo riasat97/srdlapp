@@ -40,8 +40,11 @@ class OwnLabsDataTable extends DataTable
                     }
                 })
                 ->addColumn('action', function ($query) {
-
-                    return '<a href="'.route("labs.supports.index",$query->id) .'" data-toggle="tooltip" title="Support" target="_blank" class="btn btn-default btn-xs"><i class="glyphicon glyphicon-wrench"></i></a>';
+                    $ownTicket= '<a href="'.route("labs.supports.index",$query->id) .'" data-toggle="tooltip" title="Support" target="_blank" class="btn btn-default btn-xs"><i class="fas fa-ticket-alt"></i></a>';
+                    $ownTrainees= '<a href="'.route("labs.trainees.edit", $query->id) .'" data-toggle="tooltip" title="Add Trainees" target="_blank" class="btn btn-primary btn-xs"><i class="fas fa-user-plus"></i></a>';
+                    if($query->lab_type!='sof')
+                    return $ownTicket.' '.$ownTrainees;
+                    else return $ownTicket;
                 })
 
                 ->rawColumns([

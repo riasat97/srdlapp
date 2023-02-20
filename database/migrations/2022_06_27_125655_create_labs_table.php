@@ -40,6 +40,8 @@ class CreateLabsTable extends Migration
             $table->text("institution_tel")->nullable();
             $table->text("alt_tel")->nullable();
             $table->text("institution_email")->nullable();
+
+
             $table->timestamps();
         });
     }
