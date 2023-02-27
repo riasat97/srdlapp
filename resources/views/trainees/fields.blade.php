@@ -10,9 +10,9 @@
             <div class="form-group col-sm-3">
                 {!! Form::label('name', 'নাম (বাংলায়):') !!}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() )
-                    {!! Form::text('name[]', $lab->trainees[0]->name, ['class' => 'form-control','required']) !!}
+                    {!! Form::text('name[]', $lab->trainees[0]->name, ['class' => 'form-control','required','placeholder'=>'বাংলায়']) !!}
                 @else
-                    {!! Form::text('name[]', null, ['class' => 'form-control','required']) !!}
+                    {!! Form::text('name[]', null, ['class' => 'form-control','required','placeholder'=>'বাংলায়']) !!}
                 @endif
             </div>
             <!-- Designation -->
@@ -26,11 +26,11 @@
             </div>
             {{--Subject--}}
             <div class="form-group col-sm-3">
-                {{Form::label('subject', 'বিষয়:') }}
+                {{Form::label('subject', 'বিষয় (ENGLISH):') }}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() && !empty($lab->trainees))
-                    {{Form::text('subject[]', $lab->trainees[0]->subject,['class'=>'form-control','required', 'id'=>'subject'])}}
+                    {{Form::text('subject[]', $lab->trainees[0]->subject,['class'=>'form-control','required', 'id'=>'subject','placeholder'=>'Ex- Math'])}}
                 @else
-                    {{Form::text('subject[]', null,['class'=>'form-control','required', 'id'=>'subject'])}}
+                    {{Form::text('subject[]', null,['class'=>'form-control','required', 'id'=>'subject','placeholder'=>'Ex- Math'])}}
                 @endif
             </div>
             {{--Qualification--}}
@@ -47,9 +47,9 @@
                 {{Form::label('dob', 'জন্ম তারিখ (বছর-মাস-দিন):') }}
                 <div class="input-group date" id="dob1">
                     @if(!empty($lab) && $lab->trainees->isNotEmpty() && !empty($lab->trainees))
-                        {{Form::text('dob[]',$lab->trainees[0]->dob,['class'=>'form-control','required', 'id'=>'date'])}}
+                        {{Form::text('dob[]',$lab->trainees[0]->dob,['class'=>'form-control','required', 'id'=>'date','placeholder'=>'1965-04-27'])}}
                     @else
-                        {{Form::text('dob[]',null,['class'=>'form-control','required', 'id'=>'date'])}}
+                        {{Form::text('dob[]',null,['class'=>'form-control','required', 'id'=>'date','placeholder'=>'1965-04-27'])}}
                     @endif
                     <span class="input-group-addon">
             <span class="glyphicon glyphicon-calendar"></span>
@@ -69,9 +69,9 @@
             <div class="form-group col-sm-3">
                 {!! Form::label('mobile', 'মোবাইল (ENGLISH):') !!}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() && !empty($lab->trainees))
-                    {!! Form::tel('mobile[]', $lab->trainees[0]->mobile, ['class' => 'form-control','required','pattern'=>"[0-9]{11}"]) !!}
+                    {!! Form::tel('mobile[]', $lab->trainees[0]->mobile, ['class' => 'form-control','required','pattern'=>"[0-9]{11}",'placeholder'=>'01xxxxxxxxx']) !!}
                 @else
-                    {!! Form::tel('mobile[]', null, ['class' => 'form-control','required','pattern'=>"[0-9]{11}"]) !!}
+                    {!! Form::tel('mobile[]', null, ['class' => 'form-control','required','pattern'=>"[0-9]{11}",'placeholder'=>'01xxxxxxxxx']) !!}
                 @endif
             </div>
             <!-- Email -->
@@ -96,9 +96,9 @@
             <div class="form-group col-sm-3">
                 {!! Form::label('name', 'নাম (বাংলায়):') !!}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() && !empty($lab->trainees))
-                    {!! Form::text('name[]', $lab->trainees[1]->name, ['class' => 'form-control','required']) !!}
+                    {!! Form::text('name[]', $lab->trainees[1]->name, ['class' => 'form-control','required','placeholder'=>'বাংলায়']) !!}
                 @else
-                    {!! Form::text('name[]', null, ['class' => 'form-control','required']) !!}
+                    {!! Form::text('name[]', null, ['class' => 'form-control','required','placeholder'=>'বাংলায়']) !!}
                 @endif
             </div>
             <!-- Designation -->
@@ -112,11 +112,11 @@
             </div>
             <!--Subject-->
             <div class="form-group col-sm-3">
-                {{Form::label('subject', 'বিষয়:') }}
+                {{Form::label('subject', 'বিষয় (ENGLISH):') }}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() && !empty($lab->trainees))
-                    {{Form::text('subject[]', $lab->trainees[1]->subject,['class'=>'form-control','required', 'id'=>'subject'])}}
+                    {{Form::text('subject[]', $lab->trainees[1]->subject,['class'=>'form-control','required', 'id'=>'subject','placeholder'=>'Ex- ICT'])}}
                 @else
-                    {{Form::text('subject[]', null,['class'=>'form-control','required', 'id'=>'subject'])}}
+                    {{Form::text('subject[]', null,['class'=>'form-control','required', 'id'=>'subject','placeholder'=>'Ex- ICT'])}}
                 @endif
             </div>
             <!--Qualification-->
@@ -133,9 +133,9 @@
                 {{Form::label('dob', 'জন্ম তারিখ (বছর-মাস-দিন):') }}
                 <div class="input-group date" id="dob2">
                     @if(!empty($lab) && $lab->trainees->isNotEmpty() && !empty($lab->trainees))
-                        {{Form::text('dob[]',$lab->trainees[1]->dob,['class'=>'form-control','required', 'id'=>'date'])}}
+                        {{Form::text('dob[]',$lab->trainees[1]->dob,['class'=>'form-control','required', 'id'=>'date','placeholder'=>'1965-04-27'])}}
                     @else
-                        {{Form::text('dob[]',null,['class'=>'form-control','required', 'id'=>'date'])}}
+                        {{Form::text('dob[]',null,['class'=>'form-control','required', 'id'=>'date','placeholder'=>'1965-04-27'])}}
                     @endif
                     <span class="input-group-addon">
             <span class="glyphicon glyphicon-calendar"></span>
@@ -155,9 +155,9 @@
             <div class="form-group col-sm-3">
                 {!! Form::label('mobile', 'মোবাইল (ENGLISH):') !!}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() && !empty($lab->trainees))
-                    {!! Form::tel('mobile[]', $lab->trainees[1]->mobile, ['class' => 'form-control','required','pattern'=>"[0-9]{11}"]) !!}
+                    {!! Form::tel('mobile[]', $lab->trainees[1]->mobile, ['class' => 'form-control','required','pattern'=>"[0-9]{11}",'placeholder'=>'01xxxxxxxxx']) !!}
                 @else
-                    {!! Form::tel('mobile[]', null, ['class' => 'form-control','required','pattern'=>"[0-9]{11}"]) !!}
+                    {!! Form::tel('mobile[]', null, ['class' => 'form-control','required','pattern'=>"[0-9]{11}",'placeholder'=>'01xxxxxxxxx']) !!}
                 @endif
             </div>
             <!-- Email -->
@@ -187,9 +187,9 @@
             <div class="form-group col-sm-3">
                 {!! Form::label('name', 'নাম (বাংলায়):') !!}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() && !empty($lab->trainees))
-                    {!! Form::text('name[]', $lab->trainees[2]->name, ['class' => 'form-control','required']) !!}
+                    {!! Form::text('name[]', $lab->trainees[2]->name, ['class' => 'form-control','required','placeholder'=>'বাংলায়']) !!}
                 @else
-                    {!! Form::text('name[]', null, ['class' => 'form-control','required']) !!}
+                    {!! Form::text('name[]', null, ['class' => 'form-control','required','placeholder'=>'বাংলায়']) !!}
                 @endif
             </div>
             <!-- Designation -->
@@ -203,11 +203,11 @@
             </div>
             {{--            Subject--}}
             <div class="form-group col-sm-3">
-                {{Form::label('subject', 'বিষয়:') }}
+                {{Form::label('subject', 'বিষয় (ENGLISH):') }}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() && !empty($lab->trainees))
-                    {{Form::text('subject[]', $lab->trainees[2]->subject,['class'=>'form-control','required', 'id'=>'subject'])}}
+                    {{Form::text('subject[]', $lab->trainees[2]->subject,['class'=>'form-control','required', 'id'=>'subject','placeholder'=>'Ex- Science'])}}
                 @else
-                    {{Form::text('subject[]', null,['class'=>'form-control','required', 'id'=>'subject'])}}
+                    {{Form::text('subject[]', null,['class'=>'form-control','required', 'id'=>'subject','placeholder'=>'Ex- Science'])}}
                 @endif
             </div>
             {{--            Qualification--}}
@@ -224,9 +224,9 @@
                 {{Form::label('dob', 'জন্ম তারিখ (বছর-মাস-দিন):') }}
                 <div class="input-group date" id="dob3">
                     @if(!empty($lab) && $lab->trainees->isNotEmpty() && !empty($lab->trainees))
-                        {{Form::text('dob[]',$lab->trainees[2]->dob,['class'=>'form-control','required', 'id'=>'date'])}}
+                        {{Form::text('dob[]',$lab->trainees[2]->dob,['class'=>'form-control','required', 'id'=>'date','placeholder'=>'1965-04-27'])}}
                     @else
-                        {{Form::text('dob[]',null,['class'=>'form-control','required', 'id'=>'date'])}}
+                        {{Form::text('dob[]',null,['class'=>'form-control','required', 'id'=>'date','placeholder'=>'1965-04-27'])}}
                     @endif
                     <span class="input-group-addon">
             <span class="glyphicon glyphicon-calendar"></span>
@@ -246,9 +246,9 @@
             <div class="form-group col-sm-3">
                 {!! Form::label('mobile', 'মোবাইল (ENGLISH):') !!}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() && !empty($lab->trainees))
-                    {!! Form::tel('mobile[]', $lab->trainees[2]->mobile, ['class' => 'form-control','required','pattern'=>"[0-9]{11}"]) !!}
+                    {!! Form::tel('mobile[]', $lab->trainees[2]->mobile, ['class' => 'form-control','required','pattern'=>"[0-9]{11}",'placeholder'=>'01xxxxxxxxx']) !!}
                 @else
-                    {!! Form::tel('mobile[]', null, ['class' => 'form-control','required','pattern'=>"[0-9]{11}"]) !!}
+                    {!! Form::tel('mobile[]', null, ['class' => 'form-control','required','pattern'=>"[0-9]{11}",'placeholder'=>'01xxxxxxxxx']) !!}
                 @endif
             </div>
             <!-- Email -->
@@ -278,9 +278,9 @@
             <div class="form-group col-sm-3">
                 {!! Form::label('name', 'নাম (বাংলায়):') !!}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() && !empty($lab->trainees))
-                    {!! Form::text('name[]', $lab->trainees[3]->name, ['class' => 'form-control','required']) !!}
+                    {!! Form::text('name[]', $lab->trainees[3]->name, ['class' => 'form-control','required','placeholder'=>'বাংলায়']) !!}
                 @else
-                    {!! Form::text('name[]', null, ['class' => 'form-control','required']) !!}
+                    {!! Form::text('name[]', null, ['class' => 'form-control','required','placeholder'=>'বাংলায়']) !!}
                 @endif
             </div>
             <!-- Designation -->
@@ -294,11 +294,11 @@
             </div>
             {{--            Subject--}}
             <div class="form-group col-sm-3">
-                {{Form::label('subject', 'বিষয়:') }}
+                {{Form::label('subject', 'বিষয় (ENGLISH):') }}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() && !empty($lab->trainees))
-                    {{Form::text('subject[]', $lab->trainees[3]->subject,['class'=>'form-control','required', 'id'=>'subject'])}}
+                    {{Form::text('subject[]', $lab->trainees[3]->subject,['class'=>'form-control','required', 'id'=>'subject','placeholder'=>'Ex- English'])}}
                 @else
-                    {{Form::text('subject[]', null,['class'=>'form-control','required', 'id'=>'subject'])}}
+                    {{Form::text('subject[]', null,['class'=>'form-control','required', 'id'=>'subject','placeholder'=>'Ex- English'])}}
                 @endif
             </div>
             {{--            Qualification--}}
@@ -315,9 +315,9 @@
                 {{Form::label('dob', 'জন্ম তারিখ (বছর-মাস-দিন):') }}
                 <div class="input-group date" id="dob4">
                     @if(!empty($lab) && $lab->trainees->isNotEmpty() && !empty($lab->trainees))
-                        {{Form::text('dob[]',$lab->trainees[3]->dob,['class'=>'form-control','required', 'id'=>'date'])}}
+                        {{Form::text('dob[]',$lab->trainees[3]->dob,['class'=>'form-control','required', 'id'=>'date','placeholder'=>'1965-04-27'])}}
                     @else
-                        {{Form::text('dob[]',null,['class'=>'form-control','required', 'id'=>'date'])}}
+                        {{Form::text('dob[]',null,['class'=>'form-control','required', 'id'=>'date','placeholder'=>'1965-04-27'])}}
                     @endif
                     <span class="input-group-addon">
             <span class="glyphicon glyphicon-calendar"></span>
@@ -337,9 +337,9 @@
             <div class="form-group col-sm-3">
                 {!! Form::label('mobile', 'মোবাইল (ENGLISH):') !!}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() && !empty($lab->trainees))
-                    {!! Form::tel('mobile[]', $lab->trainees[3]->mobile, ['class' => 'form-control','required','pattern'=>"[0-9]{11}"]) !!}
+                    {!! Form::tel('mobile[]', $lab->trainees[3]->mobile, ['class' => 'form-control','required','pattern'=>"[0-9]{11}",'placeholder'=>'01xxxxxxxxx']) !!}
                 @else
-                    {!! Form::tel('mobile[]', null, ['class' => 'form-control','required','pattern'=>"[0-9]{11}"]) !!}
+                    {!! Form::tel('mobile[]', null, ['class' => 'form-control','required','pattern'=>"[0-9]{11}",'placeholder'=>'01xxxxxxxxx']) !!}
                 @endif
             </div>
             <!-- Email -->

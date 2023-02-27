@@ -9,14 +9,9 @@ use Illuminate\Support\Facades\Auth;
 class Trainee extends Model
 {
     public $table = 'trainees';
-
-
     //protected $dates = ['signature_at','deleted_at'];
-
-
-
     public $guarded=[];
-
+    protected $appends = ['designation_bn'];
     /**
      * The attributes that should be casted to native types.
      *
@@ -38,10 +33,14 @@ class Trainee extends Model
         'mobile' => 'required|regex:/(01)[0-9]{9}/',
         'email' => ['required', 'string', 'email', 'max:255', 'unique:users']
     ];
-    public function getDesignationAttribute($value)
-    {
-        return trainee_designations()[$value];
+    public function getDesignationBnAttribute(){
+        $trainee_designations= trainee_designations();
+        return !empty($this->designation)? $trainee_designations[$this->designation]:null;
     }
+//    public function getDesignationAttribute($value)
+//    {
+//        return trainee_designations()[$value];
+//    }
     public function getCreatedAtAttribute($value)
     {
         return Carbon::parse($value)->addHours(6)->toDayDateTimeString();

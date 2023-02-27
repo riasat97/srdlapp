@@ -129,7 +129,7 @@ class TraineesDataTable extends DataTable
         ];
         $main= [
             Column::make('name','name')->title('নাম '),
-            Column::make('designation','designation')->title('পদবি'),
+            Column::make('designation_bn','designation')->title('পদবি'),
             Column::make('mobile','mobile')->title('মোবাইল'),
             //Column::make('email','email')->title('ইমেইল'),
             Column::make('id','id')->title('আইডি#'),

@@ -153,5 +153,15 @@ class TestController extends ApplicationController
         return ['district_admin'=>$district_admin,'upazila_admin'=>$upazila_admin];
 
     }
+    public function clear(){
+        \Artisan::call('cache:clear');
+        \Artisan::call('config:clear');
+        \Artisan::call('config:cache');
+        \Artisan::call('view:clear');
+        \Artisan::call('route:cache');
+        \Artisan::call('route:clear');
+        \Artisan::call('optimize:clear');
+        return "Cleared!";
+    }
 
 }

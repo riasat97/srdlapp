@@ -162,38 +162,27 @@ Route::get('generate-pdf','TestController@generatePDF');
 Route::get('/{application}/verification-form','TestController@createPdf')->name('loadpdf');
 Route::get('update-pdf','TestController@updatePdf')->name('downloadpdf');
 
-Route::get('/clear', function() {
+Route::get('/clear', 'TestController@clear');
 
-    Artisan::call('cache:clear');
-    Artisan::call('config:clear');
-    Artisan::call('config:cache');
-    Artisan::call('view:clear');
-    \Artisan::call('route:cache');
-    Artisan::call('route:clear');
-    \Artisan::call('optimize:clear');
-    return "Cleared!";
-
-});
-
-Route::get('/empty-reserved', function() {
-    $reserved_seats=[];
-   $reserved_seats_entered= Application::whereLike('parliamentary_constituency','মহিলা আসন-')->groupBy('seat_no')->get('seat_no')->toArray();
-   foreach ($reserved_seats_entered as $res_en){
-       $reserved_seats[]= $res_en['seat_no'];
-   }
-   //dd($reserved_seats);
-   $all_reserved= ReservedSeats();
-   $empty_seats=[];
-   foreach ($all_reserved as $all_res){
-
-       if(!in_array($all_res['seat_no'],$reserved_seats)){
-           $empty_seats[]= $all_res;
-       }
-   }
-
-    return ($empty_seats);
-
-});
+//Route::get('/empty-reserved', function() {
+//    $reserved_seats=[];
+//   $reserved_seats_entered= Application::whereLike('parliamentary_constituency','মহিলা আসন-')->groupBy('seat_no')->get('seat_no')->toArray();
+//   foreach ($reserved_seats_entered as $res_en){
+//       $reserved_seats[]= $res_en['seat_no'];
+//   }
+//   //dd($reserved_seats);
+//   $all_reserved= ReservedSeats();
+//   $empty_seats=[];
+//   foreach ($all_reserved as $all_res){
+//
+//       if(!in_array($all_res['seat_no'],$reserved_seats)){
+//           $empty_seats[]= $all_res;
+//       }
+//   }
+//
+//    return ($empty_seats);
+//
+//});
 
 
 Route::resource('notices', 'NoticeController');

@@ -38,7 +38,7 @@
             <h2 class="institution">সকল অভিযোগ</h2>
             <h1 class="pull-right">
                 @if(Auth::user()->hasRole(['upazila admin','district admin']))
-                <a class="btn btn-primary pull-right" href="{{ route('web.selected-labs') }}">আওতাধীন ল্যাবসমূহ</a>
+                <a class="btn btn-primary pull-right" href="{{ route('web.selected-labs') }}"><i class="fa fa-plus"></i> নতুন অভিযোগ</a>
                 @else
                 <a class="btn btn-primary pull-right"  href="{{ route('web.selected-institutions') }}">সকল ল্যাব</a>
                 @endif

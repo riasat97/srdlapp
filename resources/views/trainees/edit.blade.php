@@ -39,8 +39,8 @@
 
             $('.date').datetimepicker({
                 format: "YYYY-MM-DD",
-                minDate: subtractYears(new Date(), 70),
-                maxDate: subtractYears(new Date(), 18),
+                minDate: subtractYears(new Date(), 59),
+                maxDate: subtractYears(new Date(), 21),
                 useCurrent: false
             });
         });

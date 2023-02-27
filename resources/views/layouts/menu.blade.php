@@ -45,9 +45,11 @@
 <li class="{{ Request::is('admin/change-password*') ? 'active' : '' }}">
     <a href="{{ route('changePassword') }}"><i class="fas fa-lock"></i> <span> পাসওয়ার্ড পরিবর্তন</span></a>
 </li>
+@if(Auth::user()->hasRole(['super admin','district admin','upazila admin']))
 <li class="{{ Request::routeIs('labs.trainees.index') ? 'active' : '' }}">
     <a href="{{ route('labs.trainees.index') }}"><i class="fa fa-user"></i><span>ট্রেনিং </span></a>
 </li>
+@endif
 <li class="{{ Request::routeIs('labs.tickets.index') ? 'active' : ''}}">
     <a href="{{ route('labs.tickets.index') }}"><i class="fa fa-ticket"></i><span>অভিযোগসমূহ </span></a>
 </li>

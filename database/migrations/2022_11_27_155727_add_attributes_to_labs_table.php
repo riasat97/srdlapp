@@ -24,6 +24,7 @@ class AddAttributesToLabsTable extends Migration
             $table->double("latitude")->nullable()->after('total_teachers');
             $table->double("longitude")->nullable()->after('latitude');
             $table->enum('flag',[0,1])->nullable();
+            $table->tinyInteger('updated')->nullable();
         });
     }
 
@@ -43,6 +44,7 @@ class AddAttributesToLabsTable extends Migration
             $table->dropColumn('latitude');
             $table->dropColumn('longitude');
             $table->dropColumn('flag');
+            $table->dropColumn('updated');
         });
     }
 }
