@@ -40,11 +40,14 @@ class OwnLabsDataTable extends DataTable
                     }
                 })
                 ->addColumn('action', function ($query) {
+                    $labBtn=($query->updated)?"title='Edit Lab'  class='btn btn-primary btn-xs' ":"title='Update Lab'  class='btn btn-default btn-xs'";
+                    $lab= '<a href="'.route("web.labs.edit", $query->id) .'" data-toggle="tooltip"'.$labBtn.' target="_blank" ><i class="fas fa-edit"></i></a>';
+                    $btnTrainees=($query->trainees->count())?"title='Update Trainees'  class='btn btn-success btn-xs' ":"title='Add Trainees'  class='btn btn-default btn-xs'";
+                    $ownTrainees= '<a href="'.route("labs.trainees.edit", $query->id) .'" data-toggle="tooltip"'.$btnTrainees.' target="_blank"><i class="fas fa-user-plus"></i> </a>';
                     $ownTicket= '<a href="'.route("labs.supports.index",$query->id) .'" data-toggle="tooltip" title="Support" target="_blank" class="btn btn-default btn-xs"><i class="fas fa-ticket-alt"></i></a>';
-                    $ownTrainees= '<a href="'.route("labs.trainees.edit", $query->id) .'" data-toggle="tooltip" title="Add Trainees" target="_blank" class="btn btn-primary btn-xs"><i class="fas fa-user-plus"></i></a>';
                     if($query->lab_type!='sof')
-                    return $ownTicket.' '.$ownTrainees;
-                    else return $ownTicket;
+                    return $lab.' '.$ownTicket.' '.$ownTrainees;
+                    else return $lab.' '.$ownTicket;
                 })
 
                 ->rawColumns([
@@ -112,7 +115,7 @@ class OwnLabsDataTable extends DataTable
         ];
 
         $main= [
-            Column::make('phase','phase')->title('পর্যায়'),
+            Column::make('phase_bn','phase')->title('পর্যায়'),
             Column::make('division','division')->title('বিভাগ'),
             Column::make('district','district')->title('জেলা'),
             Column::make('constituency','parliamentary_constituency')->title('নির্বাচনী এলাকা'),
@@ -164,10 +167,10 @@ class OwnLabsDataTable extends DataTable
                 $data->where('lab_type', $request->get('lab_type'));
             }
             // dd($data->get()->toArray());
-            return $data->permitted(null)->orderByRaw(" phase DESC, division,district,seat_no_en asc, FIELD(lab_type , 'srdl_sof','sof','srdl'),upazila ASC");
+            return $data->with('trainees')->whereNull('flag')->permitted(null)->orderByRaw("phase DESC, division,district,seat_no_en asc, FIELD(lab_type , 'sof','srdl_sof','srdl'),upazila ASC");
             //return $this->applyScopes($data);
         }
-        return $data->permitted(null)->orderByRaw("phase DESC, division,district,seat_no_en asc, FIELD(lab_type , 'srdl_sof','sof','srdl'),upazila ASC");
+        return $data->with('trainees')->whereNull('flag')->permitted(null)->orderByRaw("phase DESC, division,district,seat_no_en asc, FIELD(lab_type , 'sof','srdl_sof','srdl'),upazila ASC");
         //return $this->applyScopes($data);
     }
 }

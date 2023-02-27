@@ -122,7 +122,7 @@ class SelectedLabsDataTable extends DataTable
                 ];
 
         $main= [
-            Column::make('phase','phase')->title('পর্যায়'),
+            Column::make('phase_bn','phase')->title('পর্যায়'),
             Column::make('division','division')->title('বিভাগ'),
             Column::make('district','district')->title('জেলা'),
             Column::make('constituency','parliamentary_constituency')->title('নির্বাচনী এলাকা'),

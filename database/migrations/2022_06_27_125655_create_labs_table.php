@@ -35,6 +35,8 @@ class CreateLabsTable extends Migration
             $table->text("seat_no_en")->nullable();
             $table->text("seat_no")->nullable();
             $table->text("parliamentary_constituency")->nullable();
+            $table->enum("is_parliamentary_constituency_ok", ['YES', 'NO'])->nullable();
+
 
             $table->text("head_name")->nullable();
             $table->text("institution_tel")->nullable();

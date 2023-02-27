@@ -37,7 +37,7 @@
             <h1 class="pull-left">প্রশিক্ষণার্থী পোর্টাল</h1>
             <h2 class="institution">সকল প্রশিক্ষণার্থী</h2>
             <h1 class="pull-right">
-                <a class="btn btn-primary pull-right" href="{{ route('web.selected-labs') }}">আওতাধীন ল্যাবসমূহ</a>
+                <a class="btn btn-primary pull-right" href="{{ route('web.selected-labs') }}"><i class="fa fa-plus"></i> নতুন প্রশিক্ষণার্থী</a>
             </h1>
         </section>
     @endif

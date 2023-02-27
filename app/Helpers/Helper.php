@@ -12,6 +12,7 @@ if (!function_exists('ReservedSeats')) {
      * @return
      */
     function getResult(array $arr,$res){
+
         $input = array_flip($arr);
         return $input[$res];
     }

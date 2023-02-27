@@ -7,23 +7,27 @@ use Illuminate\Support\Facades\Auth;
 
 class Lab extends Model
 {
-    protected $appends = ['constituency','ins','tel'];
+    protected $appends = ['constituency','ins','tel','phase_bn'];
 
     /*public function getLabTypeAttribute($value)
     {
         $labTypeArr= lab_type();
         return $labTypeArr[$value];
     }*/
+    public function getPhaseBnAttribute(){
+        $phase= phase();
+        return !empty($this->phase)? $phase[$this->phase]:null;
+    }
     public function getTelAttribute()
     {
         return (!empty($this->institution_tel))?
             $this->institution_tel.",".$this->alt_tel:0;
     }
-    public function getPhaseAttribute($value)
+   /* public function getPhaseAttribute($value)
    {
        $phase= phase();
        return $phase[$value];
-   }
+   }*/
     public function getInstitutionTypeAttribute($value)
     {
         $InstitutionTypeArr= ins_type();

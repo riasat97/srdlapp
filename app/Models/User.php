@@ -46,8 +46,8 @@ class User extends Authenticatable
      */
     public static $rules = [
         'name' => ['required', 'string', 'max:255'],
-        'designation' => 'required|min:2',
-        'posting_type' => '',
+        'designation' => 'sometimes|required|min:2',
+        'posting_type' => 'sometimes|required|not_in:0',
         'mobile' => 'required|regex:/(01)[0-9]{9}/',
         'email' => ['required', 'string', 'email', 'max:255', 'unique:users']
     ];

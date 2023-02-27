@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
+use App\Models\UserLog;
 use App\Repositories\UserRepository;
 use Flash;
 use App\Http\Controllers\AppBaseController;
@@ -105,23 +106,24 @@ class UserController extends AppBaseController
             $user = $this->userRepository->find($id);
         elseif (Auth::user()->id == $id)
             $user = $this->userRepository->find($id);
-        else  return abort(404);
+        else  return abort(403);
 
         if (empty($user)) {
             Flash::error('User not found');
-
             return redirect(route('users.index'));
         }
+        $isPap= Auth::user()->hasAnyRole(['district','upazila'])?true:false;
         if (Auth::user()->hasRole(['vendor'])){
             $name=$user->name;
             $email= $user->email;
-            $designation_selected=null;
-            return view('users.edit',['user'=>$user,'name'=>$name,'email'=>$email,'designation_selected'=>$designation_selected]);
+            return view('users.edit',['user'=>$user,'name'=>$name,'email'=>$email,'isPap'=>$isPap]);
         }
+        $designations= $this->getDesignationsByUserRole($user);
         $designation_selected= $this->getSelectedDesignation($user);
         $name = $this->getName($user);
         $email= $this->getEmail($user);
-        return view('users.edit',['user'=>$user,'name'=>$name,'email'=>$email,'designation_selected'=>$designation_selected]);
+        return view('users.edit',['user'=>$user,'name'=>$name,'email'=>$email,'designations'=>$designations,
+            'designation_selected'=>$designation_selected,'isPap'=>$isPap]);
     }
 
     /**
@@ -141,11 +143,12 @@ class UserController extends AppBaseController
             return redirect(route('users.index'));
         }
         elseif (Auth::user()->id == $id){
-            $user = $this->userRepository->update($request->all(), $id);
+            $user = $this->userRepository->update(array_merge($request->all(),['status'=>1]), $id);
+            $this->updateUserLog($user,$request);
             Flash::success('User updated successfully.');
             return redirect(route('users.edit',['id'=>$id]));
         }
-        else  return abort(404);
+        else  return abort(403);
     }
 
     /**
@@ -175,12 +178,12 @@ class UserController extends AppBaseController
     private function getName(User $user)
     {
         $name_parts = explode(" ", $user->name);
-        if (Auth::user()->hasROle(['district admin'])) {
+        if (Auth::user()->hasRole(['district admin'])) {
             if (count(explode(" ",$user->name)) == 3)
                 $name = strtolower($name_parts[0]) . "_" . strtolower($name_parts[2]);
             return (!empty($name)&&$name == $user->username) ? "" : $user->name;
         }
-        if (Auth::user()->hasROle(['upazila admin'])) {
+        if (Auth::user()->hasRole(['upazila admin'])) {
             if (count(explode(" ",$user->name)) == 3)
                 $name = strtolower($name_parts[0]). "_"  . explode("_", $user->username)[1] . "_" . strtolower($name_parts[2]);
             return (!empty($name)&&$name == $user->username) ? "" : $user->name;
@@ -194,17 +197,46 @@ class UserController extends AppBaseController
         $email_match = '@'.strtolower($email_parts[1]);
         return (!empty($email_match)&&$email_match == '@mail.com') ? "" : $user->email;
     }
+    private function getDesignationsByUserRole(User $user){
+        if ($user->hasRole(['district admin']) && !$user->hasRole(['district'])) {
+            return array('0' => 'নির্বাচন করুন', 'dc' => 'জেলা প্রশাসক', 'adc' => 'অতিরিক্ত জেলা প্রশাসক');
+        }
+        if ($user->hasRole(['district'])) {
+            return array('0' => 'নির্বাচন করুন', 'programmer' => 'প্রোগ্রামার', 'ap' => 'সহকারী প্রোগ্রামার', 'ane' => 'সহকারী নেটওয়ার্ক ইঞ্জিনিয়ার');
+        }
+        if ($user->hasRole(['upazila admin']) && !$user->hasRole(['upazila'])) {
+            return array('0' => 'নির্বাচন করুন', 'uno' => 'উপজেলা নির্বাহী অফিসার');
+        }
+        if ($user->hasRole(['upazila'])) {
+            return array('0' => 'নির্বাচন করুন', 'ap' => 'সহকারী প্রোগ্রামার');
+        }
+        return [];
+    }
 
     private function getSelectedDesignation(User $user)
     {
         if(!empty($user)&&$user->designation)
             return $user->designation;
-        if (Auth::user()->hasROle(['district admin'])) {
+        if ($user->hasRole(['district admin']) && !$user->hasRole(['district'])) {
             return 'dc';
         }
-        if (Auth::user()->hasROle(['upazila admin'])) {
+        if ($user->hasRole(['district'])) {
+            return 'programmer';
+        }
+        if ($user->hasRole(['upazila admin']) && !$user->hasRole(['upazila'])) {
             return 'uno';
         }
+        if ($user->hasRole(['upazila'])) {
+            return 'ap';
+        }
         return 0;
+    }
+
+    private function updateUserLog(User $user,$request)
+    {
+        if($user->wasChanged('name') && $user->wasChanged('mobile') or $user->wasChanged('name') && $user->wasChanged('email') ){
+            $userlog= UserLog::create(array_merge($request->all(),['user_id'=>$user->id]));
+        }
+
     }
 }

@@ -1,8 +1,8 @@
 
 <div class="form-row">
     <!-- Name Field -->
-    <div class="form-group col-md-6">
-        {!! Form::label('name', 'নাম (বাংলায়):') !!}
+    <div class="form-group {{$isPap?'col-md-4':'col-md-6'}} ">
+        {!! Form::label('name', $user->hasRole(['vendor'])?'নাম (English):':'নাম (বাংলায়):') !!}
         @if(!empty($user))
             {!! Form::text('name', empty($name)?'':$user->name, ['class' => 'form-control','placeholder'=>'বাংলাতে']) !!}
         @else
@@ -12,28 +12,30 @@
 </div>
 
 <!-- Designation -->
-@if(!Auth::user()->hasRole(['vendor']))
-<div class="form-group col-sm-6">
+@if(!$user->hasRole(['vendor']))
+<div class="form-group {{$isPap?'col-md-4':'col-md-6'}}">
     {{Form::label('designation', 'পদবি:') }}
     @if(!empty($user))
-        {{Form::select('designation', array('0' => 'নির্বাচন করুন','dc' => 'জেলা প্রশাসক', 'adc' => 'অতিরিক্ত জেলা প্রশাসক','uno'=>'উপজেলা নির্বাহী অফিসার'/*,'programmer'=>'প্রোগ্রামার','ap'=>'সহকারী প্রোগ্রামার','useo'=>'উপজেলা মাধ্যমিক শিক্ষা অফিসার','others'=>'অন্যান্য'*/), $designation_selected,['class'=>'form-control', 'id'=>'designation'])}}
+        {{Form::select('designation', $designations, $designation_selected,['class'=>'form-control', 'id'=>'designation'])}}
     @else
-        {{Form::select('designation', array('0' => 'নির্বাচন করুন','dc' => 'জেলা প্রশাসক', 'adc' => 'অতিরিক্ত জেলা প্রশাসক','uno'=>'উপজেলা নির্বাহী অফিসার'/*,'programmer'=>'প্রোগ্রামার','ap'=>'সহকারী প্রোগ্রামার','useo'=>'উপজেলা মাধ্যমিক শিক্ষা অফিসার','others'=>'অন্যান্য'*/), null,['class'=>'form-control', 'id'=>'designation'])}}
+        {{Form::select('designation', $designations, null,['class'=>'form-control', 'id'=>'designation'])}}
     @endif
 </div>
 @endif
+
 <!-- Posting Type -->
-{{--<div class="form-group col-sm-6">
+@if($user->hasRole(['district','upazila']))
+<div class="form-group col-md-4">
     {{Form::label('posting_type', 'পোস্টিংয়ের ধরণ:') }}
-    {{Form::select('posting_type', array('0' => 'নির্বাচন করুন','incharge' => 'ভারপ্রাপ্ত (মূল দায়িত্বে)', 'attached' => 'সংযুক্ত','additional'=>'অতিরিক্ত দায়িত্ব','others'=>'অন্যান্য'), null,['class'=>'form-control', 'id'=>'designation'])}}
-</div>--}}
-<!-- Mobile Field -->
+    {{Form::select('posting_type', array('0' => 'নির্বাচন করুন','main' => 'মূল দায়িত্ব', 'attached' => 'সংযুক্ত','additional'=>'অতিরিক্ত দায়িত্ব'), $user->posting_type,['class'=>'form-control', 'id'=>'posting_type'])}}
+</div>
+@endif
 <div class="form-group col-sm-6">
     {!! Form::label('mobile', 'মোবাইল (ENGLISH):') !!}
     @if(!empty($user))
-        {!! Form::tel('mobile', $user->mobile??'', ['class' => 'form-control','pattern'=>"[0-9]{11}"]) !!}
+        {!! Form::tel('mobile', $user->mobile??'', ['class' => 'form-control','pattern'=>"[0-9]{11}",'placeholder'=>'01xxxxxxxxx']) !!}
     @else
-        {!! Form::tel('mobile', null, ['class' => 'form-control','pattern'=>"[0-9]{11}"]) !!}
+        {!! Form::tel('mobile', null, ['class' => 'form-control','pattern'=>"[0-9]{11}",'placeholder'=>'01xxxxxxxxx']) !!}
     @endif
 </div>
 

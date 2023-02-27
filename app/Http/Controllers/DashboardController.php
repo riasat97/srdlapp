@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Laracasts\Flash\Flash;
 
 class DashboardController extends Controller
 {
@@ -32,6 +33,10 @@ class DashboardController extends Controller
     public function index()
     {
         $user= Auth::user();
+        if(!empty($user)&& !$user->hasRole('super admin')  && $user->status!=1){
+            Flash::warning('প্রোফাইল হালনাগাদ করা আবশ্যক!!!');
+            return redirect()->route('users.edit',$user->id);
+        }
         if($user->hasRole(['super admin','district admin','upazila admin'])) {
             $deo_app_seat_count = Application::where("listed_by_deo", "YES")->whereNotLike('parliamentary_constituency', 'মহিলা আসন')->groupBy('seat_no')->get()->count();
             //dd($deo_app_seat_count);
@@ -70,27 +75,6 @@ class DashboardController extends Controller
         return $dataTable->render('selectedInstitutions',['divisionList'=>$divisionList,
         'parliamentaryConstituencyList'=>$parliamentaryConstituencyList,'phase'=>$phase]);
     }
-    public function ownLabs(OwnLabsDataTable $dataTable,Request $request)
-    {
-        $divisionList=[];
-        $divisions = Bangladesh::distinct()->get("division")->toArray();
-        foreach ($divisions as $key=>$division)
-            $divisionList[$division['division']]=$division['division'];
-        $divisionList=array_merge(['-1' => 'নির্বাচন করুন'], $divisionList);
-        $user=Auth::user();
-        if(!empty($user) && $user->hasRole(['vendor'])){
-            $divisions_en=explode(',',$user->posting_type);
-            $divisions_bn=$this->getDivisionBn($divisions_en);
-            $divisionList=array_merge(['-1' => 'নির্বাচন করুন'], $divisions_bn);
-        }
-        $parliamentaryConstituencyList= $this->getParliamentaryConstituency($request);
-        $upazilas= $this->getUpazilas($request);
-        $phase= array_merge(['-1' => 'নির্বাচন করুন'],[1=>'১ম',2=>'২য়']);
-        return $dataTable->render('selectedLabs',['divisionList'=>$divisionList,
-            'parliamentaryConstituencyList'=>$parliamentaryConstituencyList,'upazilas'=>$upazilas,
-            'district_bn'=>$this->getDistrictBnNameByUser(),'phase'=>$phase]);
-    }
-
     public function getParliamentaryConstituency(Request $request)
     {
         // dd($request->all());

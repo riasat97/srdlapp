@@ -131,7 +131,7 @@
             </div>
             <div class="text-center">
                 <div class="agree-btn">
-                    <a href="{{route('applications.index')}}">
+                    <a href="{{route('web.selected-labs')}}">
                         <button class="btn btn-success btn-sm" type="button">
                             <i class="fa fa-check"></i> আমি সম্মত
                         </button>

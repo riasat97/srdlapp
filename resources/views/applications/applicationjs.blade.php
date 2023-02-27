@@ -123,7 +123,7 @@
         if(unionPourashavaWardID !="অন্যান্য"){
             getParlimentaryConstituencies();
             $('#union_others').val('');
-            $('#union_others').hide();
+            $('#union_others_label').hide();
             $("#hidethis").show();
             $('#is_parliamentary_constituency_ok').bootstrapToggle('on');
         }else{
@@ -132,7 +132,7 @@
     }
     function othersSelected() {
         //var unionPourashavaWardID = $('#union_pourashava_ward').val();
-        $('#union_others').show();
+        $('#union_others_label').show();
         getParliamentaryConstituencyIfnotOk();
     }
     function getParlimentaryConstituencies() {
@@ -171,7 +171,7 @@
             }
         }
     }
-    @if(Auth::user()->hasRole(['super admin']))
+    @if(Auth::user()->hasRole(['super admin','upazila admin','district admin']))
     $('#is_parliamentary_constituency_ok').on('change',function(){
         if ($("#is_parliamentary_constituency_ok").prop("checked") == false ) {
             getParliamentaryConstituencyIfnotOk();

@@ -44,21 +44,21 @@ class TraineesDataTable extends DataTable
                             ->orWhere('designation', 'LIKE', "%$search%");
                     });
                 }
-            })
-            ->addColumn('action', function ($query) {
-                $ticketEdit= '<a href="#" onclick="editTicket('.$query->lab_id.','.$query->id.')" class="btn btn-default btn-xs"><i class="fas fa-ticket-alt"></i></a>';
-                $ticketSolve= '<input type="number" class="batch" name="batch" min="1" max="201" value="'.$query->batch.'" data-trainee="'.$query->id.'">';
-
-                if (Auth::user()->hasRole(['super admin']))
-                    return $ticketEdit.$ticketSolve;
-                if (Auth::user()->hasRole(['vendor']))
-                    return $ticketSolve;
-                if (Auth::user()->hasRole(['district admin','upazila admin']))
-                    return $ticketEdit;
-            })
-            ->rawColumns([
-                'action'
-            ]);
+            });
+//            ->addColumn('action', function ($query) {
+//                $ticketEdit= '<a href="#" onclick="editTicket('.$query->lab_id.','.$query->id.')" class="btn btn-default btn-xs"><i class="fas fa-ticket-alt"></i></a>';
+//                $ticketSolve= '<input type="number" class="batch" name="batch" min="1" max="201" value="'.$query->batch.'" data-trainee="'.$query->id.'">';
+//
+//                if (Auth::user()->hasRole(['super admin']))
+//                    return $ticketEdit.$ticketSolve;
+//                if (Auth::user()->hasRole(['vendor']))
+//                    return $ticketSolve;
+//                if (Auth::user()->hasRole(['district admin','upazila admin']))
+//                    return $ticketEdit;
+//            })
+//            ->rawColumns([
+//                'action'
+//            ]);
 
     }
 
@@ -88,7 +88,7 @@ class TraineesDataTable extends DataTable
             ->minifiedAjax()
 
             ->dom('lBfrtip')
-            ->orderBy(1)
+            //->orderBy(1)
 
             ->parameters([
                 'dom' => 'lBfrtip',
@@ -113,15 +113,15 @@ class TraineesDataTable extends DataTable
     protected function getColumns()
     {
         $serial=[ Column::make('DT_RowIndex','id')->title('ক্রম')];
-        $action= [Column::computed('action')
-            ->title('Action')
-            ->exportable(false)
-            ->printable(false)
-            ->orderable(false)
-            ->searchable(false)
-        ];
+//      $action= [Column::computed('action')
+//            ->title('Action')
+//            ->exportable(false)
+//            ->printable(false)
+//            ->orderable(false)
+//            ->searchable(false)
+//        ];
         $location=[
-            Column::make('lab.phase','phase')->title('পর্যায়'),
+            Column::make('lab.phase_bn','phase')->title('পর্যায়'),
             Column::make('lab.division','division')->title('বিভাগ'),
             Column::make('lab.district','district')->title('জেলা'),
             Column::make('lab.upazila','upazila')->title('উপজেলা'),
@@ -137,7 +137,8 @@ class TraineesDataTable extends DataTable
             Column::make('created_at','created_at')->title('রেজিস্ট্রেশনের তারিখ')
         ];
         if (Auth::user()->hasRole(['vendor','super admin','district admin','upazila admin'])) {
-            return array_merge($serial, $action, $location,$main);
+            //return array_merge($serial, $action, $location,$main);
+            return array_merge($serial, $location,$main);
         }
         return array_merge($serial,$main);
 

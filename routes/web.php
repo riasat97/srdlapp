@@ -25,10 +25,11 @@ use Illuminate\Support\Facades\Route;
 //https://onlinehtmleditor.dev/
 Route::group(['prefix' => 'selected', 'as' => 'web.'], function () {
     Route::get('/institutions', 'DashboardController@application')->name('selected-institutions');
-    Route::get('/labs', 'DashboardController@ownLabs')->name('selected-labs');
 });
-Route::group(['prefix' => 'selected', 'as' => 'web.','middleware' => 'auth'], function () {
-    Route::get('/labs', 'DashboardController@ownLabs')->name('selected-labs');
+Route::group(['prefix' => 'selected/labs', 'as' => 'web.','middleware' => 'auth'], function () {
+    Route::get('/', 'LabController@ownLabs')->name('selected-labs');
+    Route::get('/{lab}', 'LabController@edit')->name('labs.edit');
+    Route::patch('{lab}', 'LabController@update')->name('labs.update');
 });
 
 Route::get('/about', 'DashboardController@getAbout')->name('about');
@@ -40,13 +41,8 @@ Route::get('/', function () {
     return redirect('/');
 });
 Route::get('/', 'DashboardController@getHome')->name('home');
-Route::get('/fantasy', 'FantasyController@index')->name('fantasy');
-Route::get('/fantasy/{event}/teams', 'FantasyController@teams')->name('fantasyTeams');
-Route::get('/fantasy/login', 'FantasyController@login')->name('fantasylogin');
-
-//Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
 Auth::routes(['register' => false, 'verify' => true]);
-//Route::get('/{application}', 'ApplicationController@show')->name('show');
+
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard', 'DashboardController@index')->name('applications.dashboard');
 });

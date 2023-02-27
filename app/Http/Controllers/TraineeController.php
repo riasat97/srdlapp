@@ -40,8 +40,12 @@ class TraineeController extends Controller
     public function edit($labId)
     {
         $lab= Lab::where('id',$labId)->first();
+        if( !Auth::user()->hasRole('super admin') && !$lab->updated){
+            Flash::warning('০৪জন প্রশিক্ষণার্থীদের তালিকা তৈরির পূর্বে ল্যাবটির তথ্য হালনাগাদ করতে হবে।');
+            return redirect()->route('web.labs.edit',$labId);
+        }
         if( !Auth::user()->hasAnyRole(['super admin','upazila admin','district admin']) or !permitted($lab))
-            return abort(404);
+            return abort(403);
         return view('trainees.edit',['lab'=>$lab]);
     }
 
@@ -65,7 +69,7 @@ class TraineeController extends Controller
             $trainees=$this->updateTrainees($lab,$requestData);
             Flash::success('প্রশিক্ষণার্থীদের তালিকা সফল ভাবে আপডেট করা হয়েছে।');
         }
-        return redirect()->route('labs.trainees.edit',$lab->id)->with('status','প্রশিক্ষণার্থীদের তালিকা সফল ভাবে নিবন্ধিত হয়েছে। ');
+        return redirect()->route('web.selected-labs');
     }
     public function updateTrainee($traineeId,Request $request){
         $trainee= Trainee::find($traineeId);
