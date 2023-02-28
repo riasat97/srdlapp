@@ -235,6 +235,13 @@
                                 {{Form::number('longitude',$lab->longitude??"",['id'=>'longitude','class'=>'form-control','style'=>'','placeholder'=>'90.344352'])}}
                             </div>
                         </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                    <!-- Button trigger modal -->
+                                    <a href="#" class="alert-link" data-toggle="modal" data-target="#latlong">
+                                        কিভাবে অক্ষাংশ (LATITUDE) এবং দ্রাঘিমাংশ (LONGITUDE) বের করবো ? </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -248,6 +255,24 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="latlong" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">LAT LONG</h4>
+                </div>
+                <div class="modal-body text-center">
+                    <img class="img-fluid" src="{{asset("images/latlong.png")}}" alt="">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('scripts')
@@ -313,32 +338,6 @@
         </script>
     @endif
 
-
-    <script type="text/javascript">
-
-        $(document).ready(function(){
-            $("#submitbtn").click(function(e){
-                e.preventDefault();
-                swal({
-                    title: "Are you sure?",
-                    text: "",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: false,
-                })
-                    .then((update) => {
-                        if (update) {
-                            swal("Thank you! Given Information has been updated!", {
-                                icon: "success",
-                            });
-                            $("#labUpdate-form").submit();
-                        } else {
-                            swal("Continue to fill out.......!");
-                        }
-                    });
-            });
-        });
-    </script>
     {{--LAB TYPE SELECTION--}}
     <script type="text/javascript">
         $(function () {
@@ -348,7 +347,7 @@
                 var ins_type_selected= "{{$lab->institution_type}}";
                 console.log(ins_type_selected);
                 console.log($("#lab_type").val());
-                if ($(this).val() == "sof") {
+                if ($(this).val() == "sof" || $(this).val() == "srdl_sof") {
                     $("#institution_type").empty();
                     $.each(ins_type_sof,function(key,value){
                         $("#institution_type").append('<option value="'+key+'">'+value+'</option>');
@@ -425,7 +424,7 @@
                         return $(this).text() == text1;
                     }).prop('selected', true);
                 }
-                else if($.inArray(ins_type, ["general","madrasha","technical"]) >= 0 && lab_type=="sof"){
+                else if($.inArray(ins_type, ["general","madrasha","technical"]) >= 0 && lab_type=="sof" || lab_type=='srdl_sof'){
                     $("#institution_level").removeAttr("disabled");
                     $("#institution_level").empty();
                     $.each(ins_level_sof,function(key,value){
@@ -456,11 +455,9 @@
                 if ($.inArray(ins_type, ["gov_training","gov_rel_ins","others"]) >= 0) {
                     //alert($("#institution_type option:selected" ).val());
                     $("#eiin").attr("disabled", "disabled");
-                    $("#mpo").attr("disabled", "disabled");
                 } else {
                     //alert('hi');
                     $("#eiin").removeAttr("disabled");
-                    $("#mpo").removeAttr("disabled");
                 }
             });
         });
@@ -504,6 +501,32 @@
             });
         </script>
     @endif
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#submitbtn").click(function (e) {
+                e.preventDefault();
+                swal({
+                    title: "Are you sure?",
+                    text: "",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: false,
+                })
+                    .then((update) => {
+                        if (update) {
+                            swal("Thank you! Given Information has been updated!", {
+                                icon: "success",
+                            });
+                            $("#labUpdate-form").submit();
+                        } else {
+                            swal("Continue to fill out.......!");
+                        }
+                    });
+            });
+        });
+    </script>
     @include('applications.applicationjs')
     @include('applications.application-edit-reloadjs')
 @endpush

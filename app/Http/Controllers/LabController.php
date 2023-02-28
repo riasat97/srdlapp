@@ -54,10 +54,10 @@ class LabController extends Controller
         $upazilaList= array_merge(['-1' => 'নির্বাচন করুন'],Bangladesh::where("district",$lab->district)->groupBy('upazila')->pluck('upazila','upazila')->toArray());
         $unionPourashavaWardList= array_merge(['-1' => 'নির্বাচন করুন'],Bangladesh::where("district",$lab->district)->where("upazila",$lab->upazila)->pluck('union_pourashava_ward','union_pourashava_ward')->toArray());
         $unionPourashavaWardList= Arr::add($unionPourashavaWardList, 'অন্যান্য', 'অন্যান্য');
-        //dd(filter_var($application->attachment->list_attachment_file_path, FILTER_VALIDATE_URL));
+
         $ins_type= array_merge(['-1' => 'নির্বাচন করুন'], Arr::except(ins_type(),[""]));
         $ins_level= array_merge(['-1' => 'নির্বাচন করুন'], Arr::only(ins_level(), array('primary','junior_secondary','secondary','higher_secondary','secondary_and_higher',"graduation","others")));
-        $ins_type_sof= array_merge(['-1' => 'নির্বাচন করুন'], Arr::only($ins_type, array('general', 'madrasha', 'technical')));
+        $ins_type_sof= array_merge(['-1' => 'নির্বাচন করুন'], Arr::only($ins_type, array('general')));
         $ins_level_sof= $array = array_merge(['-1' => 'নির্বাচন করুন'],Arr::only(ins_level(), array('secondary', 'secondary_and_higher')));
 
         $ins_level_technical= $array = array_merge(['-1' => 'নির্বাচন করুন'],Arr::only(ins_level(), array('junior_secondary','secondary','higher_secondary','secondary_and_higher',"diploma","others")));
@@ -169,5 +169,13 @@ class LabController extends Controller
             }
             return "";
         }
+    }
+    private function getDivisionBn(array $divisions_en)
+    {
+        $division_bn=[];
+        foreach ( $divisions_en as $division_en){
+            $division_bn[divisionEnToBn()[$division_en]]=divisionEnToBn()[$division_en];
+        }
+        return $division_bn;
     }
 }

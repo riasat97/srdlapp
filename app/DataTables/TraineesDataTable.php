@@ -44,21 +44,21 @@ class TraineesDataTable extends DataTable
                             ->orWhere('designation', 'LIKE', "%$search%");
                     });
                 }
-            });
-//            ->addColumn('action', function ($query) {
-//                $ticketEdit= '<a href="#" onclick="editTicket('.$query->lab_id.','.$query->id.')" class="btn btn-default btn-xs"><i class="fas fa-ticket-alt"></i></a>';
-//                $ticketSolve= '<input type="number" class="batch" name="batch" min="1" max="201" value="'.$query->batch.'" data-trainee="'.$query->id.'">';
-//
-//                if (Auth::user()->hasRole(['super admin']))
-//                    return $ticketEdit.$ticketSolve;
-//                if (Auth::user()->hasRole(['vendor']))
-//                    return $ticketSolve;
-//                if (Auth::user()->hasRole(['district admin','upazila admin']))
-//                    return $ticketEdit;
-//            })
-//            ->rawColumns([
-//                'action'
-//            ]);
+            })
+            ->addColumn('action', function ($query) {
+                $trainee= '<a href="'.route("labs.trainees.edit", $query->lab_id) .'" data-toggle="tooltip" title="Update Trainees"  class="btn btn-success btn-xs" target="_blank"><i class="fas fa-user-graduate"></i> </a>';
+                $batch= '<input type="number" class="batch" name="batch" min="1" max="201" value="'.$query->batch.'" data-trainee="'.$query->id.'">';
+
+                if (Auth::user()->hasRole(['super admin']))
+                    return $trainee." ".$batch;
+                if (Auth::user()->hasRole(['vendor']))
+                    return $batch;
+                if (Auth::user()->hasRole(['district admin','upazila admin']))
+                    return $trainee;
+            })
+            ->rawColumns([
+                'action'
+            ]);
 
     }
 
@@ -113,13 +113,13 @@ class TraineesDataTable extends DataTable
     protected function getColumns()
     {
         $serial=[ Column::make('DT_RowIndex','id')->title('ক্রম')];
-//      $action= [Column::computed('action')
-//            ->title('Action')
-//            ->exportable(false)
-//            ->printable(false)
-//            ->orderable(false)
-//            ->searchable(false)
-//        ];
+      $action= [Column::computed('action')
+            ->title('Action')
+            ->exportable(false)
+            ->printable(false)
+            ->orderable(false)
+            ->searchable(false)
+        ];
         $location=[
             Column::make('lab.phase_bn','phase')->title('পর্যায়'),
             Column::make('lab.division','division')->title('বিভাগ'),
@@ -137,8 +137,8 @@ class TraineesDataTable extends DataTable
             Column::make('created_at','created_at')->title('রেজিস্ট্রেশনের তারিখ')
         ];
         if (Auth::user()->hasRole(['vendor','super admin','district admin','upazila admin'])) {
-            //return array_merge($serial, $action, $location,$main);
-            return array_merge($serial, $location,$main);
+            return array_merge($serial, $action, $location,$main);
+
         }
         return array_merge($serial,$main);
 
