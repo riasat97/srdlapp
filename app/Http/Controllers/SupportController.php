@@ -54,7 +54,8 @@ class SupportController extends Controller
             'problem' => $request->problem];
         $lab= Lab::where('id',$labId)->first();
         $device= !empty($request->update_id)? $this->getDevice($request->update_id):new Device();
-        $device->device= ctype_lower($details['device'])?$details['device']:getResult(\device(),$details['device']);
+        //dd(preg_match("/^[a-z-0-9_\-]+$/", $details['device']));
+        $device->device= preg_match("/^[a-z-0-9_\-]+$/", $details['device'])?$details['device']:getResult(\device(),$details['device']);
 
         $device->lab_id=$labId;
         $device->device_status= $details['device_status'];

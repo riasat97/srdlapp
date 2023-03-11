@@ -61,6 +61,7 @@ class TraineeController extends Controller
     {
         $lab= Lab::where('id',$labId)->first();
         $requestData = $request->all();
+        //dd($requestData);
         if($lab->trainees->isEmpty()){
             $trainees=$this->createTrainees($requestData,$labId);
             Flash::success('প্রশিক্ষণার্থীদের তালিকা সফল ভাবে নিবন্ধিত হয়েছে।');
@@ -85,13 +86,17 @@ class TraineeController extends Controller
             $trainee=Trainee::create([
                 'lab_id'=>  $labId,
                 'name'=>  $requestData['name'][$i],
+                'name_en'=>  $requestData['name_en'][$i],
                 'designation'=>  $requestData['designation'][$i],
                 'dob'=>  $requestData['dob'][$i],
                 'gender'=>  $requestData['gender'][$i],
                 'qualification'=>  $requestData['qualification'][$i],
                 'subject'=>  $requestData['subject'][$i],
                 'email'=>  $requestData['email'][$i],
-                'mobile'=>  $requestData['mobile'][$i]
+                'mobile'=>  $requestData['mobile'][$i],
+                'nid'=>  $requestData['nid'][$i],
+                'training_title'=>  $requestData['training_title'][$i],
+                'training_duration'=>  $requestData['training_duration'][$i],
             ]);
             $trainees[]=$trainee;
         }
@@ -101,6 +106,7 @@ class TraineeController extends Controller
         $trainees= $lab->trainees;
         foreach ($trainees as $i=>$trainee){
         $trainee->name= $requestData['name'][$i];
+        $trainee->name_en= $requestData['name_en'][$i];
         $trainee->designation= $requestData['designation'][$i];
         $trainee->dob= $requestData['dob'][$i];
         $trainee->gender= $requestData['gender'][$i];
@@ -108,6 +114,9 @@ class TraineeController extends Controller
         $trainee->subject= $requestData['subject'][$i];
         $trainee->email= $requestData['email'][$i];
         $trainee->mobile= $requestData['mobile'][$i];
+        $trainee->nid= $requestData['nid'][$i];
+        $trainee->training_title= !empty($requestData['training_title'][$i])??null;
+        $trainee->training_duration= !empty($requestData['training_duration'][$i])??null;
             $lab->trainees()->save($trainee);
         }
         return $trainees;

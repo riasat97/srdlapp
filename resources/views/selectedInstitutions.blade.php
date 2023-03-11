@@ -22,7 +22,7 @@
 @endsection
 @section('content')
     <section class="content-header">
-        <h1 class="pull-left">শেখ রাসেল ডিজিটাল ল্যাবের চূড়ান্ত তালিকা (১ম ও ২য় পর্যায়)</h1>
+        <h1 class="text-center">সকল শেখ রাসেল ডিজিটাল ল্যাবের তালিকা (১ম ও ২য় পর্যায়)</h1>
     </section>
     <div class="content">
         <div class="clearfix"></div>

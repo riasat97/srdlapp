@@ -41,13 +41,13 @@ class OwnLabsDataTable extends DataTable
                 })
                 ->addColumn('action', function ($query) {
                     $access=Auth::user()->hasRole(['super admin','upazila','district']);
-                    $labBtn=($query->updated)?"title='Edit Lab'  class='btn btn-primary btn-xs' ":"title='Update Lab'  class='btn btn-default btn-xs'";
-                    $lab= '<a href="'.route("web.labs.edit", $query->id) .'" data-toggle="tooltip"'.$labBtn.' target="_blank" ><i class="fas fa-edit"></i></a>';
-                    $btnTrainees=($query->trainees->count())?"title='Update Trainees'  class='btn btn-success btn-xs' ":"title='Add Trainees'  class='btn btn-default btn-xs'";
-                    $ownTrainees= '<a href="'.route("labs.trainees.edit", $query->id) .'" data-toggle="tooltip"'.$btnTrainees.' target="_blank"><i class="fas fa-user-plus"></i> </a>';
-                    $ownTicket= '<a href="'.route("labs.supports.index",$query->id) .'" data-toggle="tooltip" title="Support" target="_blank" class="btn btn-default btn-xs"><i class="fas fa-ticket-alt"></i></a>';
+                    $labBtn=($query->updated)?"title='Edit Lab'  class='btn btn-primary btn-xs mb-2' ":"title='Update Lab'  class='btn btn-default btn-xs mb-2'";
+                    $lab= '<a href="'.route("web.labs.edit", $query->id) .'" data-toggle="tooltip"'.$labBtn.' target="_blank" ><i class="fas fa-edit"></i> Update Lab</a>';
+                    $btnTrainees=($query->trainees->count())?"title='Update Trainees'  class='btn btn-success btn-xs mb-2' ":"title='Add Trainees'  class='btn btn-default btn-xs mb-2'";
+                    $ownTrainees= '<a href="'.route("labs.trainees.edit", $query->id) .'" data-toggle="tooltip"'.$btnTrainees.' target="_blank"><i class="fas fa-user-plus"></i> Add Trainees</a>';
+                    $ownTicket= '<a href="'.route("labs.supports.index",$query->id) .'" data-toggle="tooltip" title="Support" target="_blank" class="btn btn-info btn-xs"><i class="fas fa-ticket-alt"></i> File Complaint</a>';
                     if($query->lab_type!='sof'&&$access)
-                    return $lab.' '.$ownTicket.' '.$ownTrainees;
+                    return $lab.' '.$ownTrainees.' '.$ownTicket;
                     else return $lab.' '.$ownTicket;
                 })
 

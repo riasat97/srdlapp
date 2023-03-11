@@ -6,13 +6,22 @@
             <h3 class="panel-title">১ম প্রশিক্ষণার্থীর তথ্য</h3>
         </div>
         <div class="panel-body">
-            {{--            Name--}}
+            {{--Name--}}
             <div class="form-group col-sm-3">
                 {!! Form::label('name', 'নাম (বাংলায়):') !!}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() )
                     {!! Form::text('name[]', $lab->trainees[0]->name, ['class' => 'form-control','required','placeholder'=>'বাংলায়']) !!}
                 @else
                     {!! Form::text('name[]', null, ['class' => 'form-control','required','placeholder'=>'বাংলায়']) !!}
+                @endif
+            </div>
+            {{--Name in English--}}
+            <div class="form-group col-sm-3">
+                {!! Form::label('name', 'নাম (ENGLISH):') !!}
+                @if(!empty($lab) && $lab->trainees->isNotEmpty() )
+                    {!! Form::text('name_en[]', $lab->trainees[0]->name_en, ['class' => 'form-control','required','placeholder'=>'ইংরেজিতে']) !!}
+                @else
+                    {!! Form::text('name_en[]', null, ['class' => 'form-control','required','placeholder'=>'ইংরেজিতে']) !!}
                 @endif
             </div>
             <!-- Designation -->
@@ -26,7 +35,7 @@
             </div>
             {{--Subject--}}
             <div class="form-group col-sm-3">
-                {{Form::label('subject', 'বিষয় (ENGLISH):') }}
+                {{Form::label('subject', 'পাঠদানের বিষয় (ENGLISH):') }}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() && !empty($lab->trainees))
                     {{Form::text('subject[]', $lab->trainees[0]->subject,['class'=>'form-control','required', 'id'=>'subject','placeholder'=>'Ex- Math'])}}
                 @else
@@ -83,6 +92,40 @@
                     {!! Form::email('email[]', null, ['class' => 'form-control','required']) !!}
                 @endif
             </div>
+            {{--NID--}}
+            <div class="form-group col-sm-3">
+                {!! Form::label('nid', 'NID (ENGLISH):') !!}
+                @if(!empty($lab) && $lab->trainees->isNotEmpty())
+                    {!! Form::text('nid[]', $lab->trainees[0]->nid, ['class' => 'form-control','required','pattern'=>"^([0-9]{10}|[0-9]{13}|[0-9]{17})$"]) !!}
+                @else
+                    {!! Form::email('nid[]', null, ['class' => 'form-control','required','pattern'=>"^([0-9]{10}|[0-9]{13}|[0-9]{17})$"]) !!}
+                @endif
+            </div>
+            {{--ICT Training--}}
+            <div class="form-group col-sm-3" style="">
+                {{ Form::label('ict_training1', 'আইসিটি বিষয়ক কোনো প্রশিক্ষণ সম্পন্ন করা আছে কিনা?') }}
+                <input name="training[]"
+                       @if(!empty($lab) && $lab->trainees->isNotEmpty() && $lab->trainees[0]->training_title )checked
+                       @endif id="ict_training1" type="checkbox" data-width="50"
+                       class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না"
+                       data-onstyle="success" data-offstyle="danger">
+            </div>
+            <div class="form-group col-sm-3" id="ict_training1_title_label">
+                {!! Form::label('ict_training1_title', 'প্রশিক্ষণের নাম:') !!}
+                @if(!empty($lab) && $lab->trainees->isNotEmpty() && $lab->trainees[0]->training_title)
+                    {!! Form::text('training_title[]', $lab->trainees[0]->training_title, ['class' => 'form-control','','id'=>'ict_training1_title']) !!}
+                @else
+                    {!! Form::text('training_title[]', null, ['class' => 'form-control','','id'=>'ict_training1_title']) !!}
+                @endif
+            </div>
+            <div class="form-group col-sm-3" id="ict_training1_duration_label">
+                {!! Form::label('ict_training1_duration', 'প্রশিক্ষণের মেয়াদ (কত দিন):') !!}
+                @if(!empty($lab) && $lab->trainees->isNotEmpty() && $lab->trainees[0]->training_duration)
+                    {!! Form::text('training_duration[]', $lab->trainees[0]->training_duration, ['class' => 'form-control','','id'=>'ict_training1_duration','placeholder'=>' দিন সংখ্যা']) !!}
+                @else
+                    {!! Form::text('training_duration[]', null, ['class' => 'form-control','','id'=>'ict_training1_duration','placeholder'=>' দিন সংখ্যা']) !!}
+                @endif
+            </div>
         </div>
     </div>
 </div>
@@ -101,6 +144,15 @@
                     {!! Form::text('name[]', null, ['class' => 'form-control','required','placeholder'=>'বাংলায়']) !!}
                 @endif
             </div>
+            {{--Name in English--}}
+            <div class="form-group col-sm-3">
+                {!! Form::label('name', 'নাম (ENGLISH):') !!}
+                @if(!empty($lab) && $lab->trainees->isNotEmpty() )
+                    {!! Form::text('name_en[]', $lab->trainees[1]->name_en, ['class' => 'form-control','required','placeholder'=>'ইংরেজিতে']) !!}
+                @else
+                    {!! Form::text('name_en[]', null, ['class' => 'form-control','required','placeholder'=>'ইংরেজিতে']) !!}
+                @endif
+            </div>
             <!-- Designation -->
             <div class="form-group col-sm-3">
                 {{Form::label('designation', 'পদবি:') }}
@@ -112,7 +164,7 @@
             </div>
             <!--Subject-->
             <div class="form-group col-sm-3">
-                {{Form::label('subject', 'বিষয় (ENGLISH):') }}
+                {{Form::label('subject', 'পাঠদানের বিষয় (ENGLISH):') }}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() && !empty($lab->trainees))
                     {{Form::text('subject[]', $lab->trainees[1]->subject,['class'=>'form-control','required', 'id'=>'subject','placeholder'=>'Ex- ICT'])}}
                 @else
@@ -169,7 +221,40 @@
                     {!! Form::email('email[]', null, ['class' => 'form-control','required']) !!}
                 @endif
             </div>
-
+            {{--NID--}}
+            <div class="form-group col-sm-3">
+                {!! Form::label('nid', 'NID (ENGLISH):') !!}
+                @if(!empty($lab) && $lab->trainees->isNotEmpty())
+                    {!! Form::text('nid[]', $lab->trainees[1]->nid, ['class' => 'form-control','required','pattern'=>"^([0-9]{10}|[0-9]{13}|[0-9]{17})$"]) !!}
+                @else
+                    {!! Form::email('nid[]', null, ['class' => 'form-control','required','pattern'=>"^([0-9]{10}|[0-9]{13}|[0-9]{17})$"]) !!}
+                @endif
+            </div>
+            {{--ICT Training--}}
+            <div class="form-group col-sm-3" style="">
+                {{ Form::label('ict_training2', 'আইসিটি বিষয়ক কোনো প্রশিক্ষণ সম্পন্ন করা আছে কিনা?') }}
+                <input name="training[]"
+                       @if(!empty($lab) && $lab->trainees->isNotEmpty() && $lab->trainees[1]->training_title )checked
+                       @endif id="ict_training2" type="checkbox" data-width="50"
+                       class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না"
+                       data-onstyle="success" data-offstyle="danger">
+            </div>
+            <div class="form-group col-sm-3" id="ict_training2_title_label">
+                {!! Form::label('ict_training2_title', 'প্রশিক্ষণের নাম:') !!}
+                @if(!empty($lab) && $lab->trainees->isNotEmpty() && $lab->trainees[1]->training_title)
+                    {!! Form::text('training_title[]', $lab->trainees[1]->training_title, ['class' => 'form-control','','id'=>'ict_training2_title']) !!}
+                @else
+                    {!! Form::text('training_title[]', null, ['class' => 'form-control','','id'=>'ict_training2_title']) !!}
+                @endif
+            </div>
+            <div class="form-group col-sm-3" id="ict_training2_duration_label">
+                {!! Form::label('ict_training2_duration', 'প্রশিক্ষণের মেয়াদ (কত দিন):') !!}
+                @if(!empty($lab) && $lab->trainees->isNotEmpty() && $lab->trainees[1]->training_duration)
+                    {!! Form::text('training_duration[]', $lab->trainees[1]->training_duration, ['class' => 'form-control','','id'=>'ict_training2_duration','placeholder'=>' দিন সংখ্যা']) !!}
+                @else
+                    {!! Form::text('training_duration[]', null, ['class' => 'form-control','','id'=>'ict_training2_duration','placeholder'=>' দিন সংখ্যা']) !!}
+                @endif
+            </div>
 
         </div>
     </div>
@@ -192,6 +277,15 @@
                     {!! Form::text('name[]', null, ['class' => 'form-control','required','placeholder'=>'বাংলায়']) !!}
                 @endif
             </div>
+            {{--Name in English--}}
+            <div class="form-group col-sm-3">
+                {!! Form::label('name', 'নাম (ENGLISH):') !!}
+                @if(!empty($lab) && $lab->trainees->isNotEmpty() )
+                    {!! Form::text('name_en[]', $lab->trainees[2]->name_en, ['class' => 'form-control','required','placeholder'=>'ইংরেজিতে']) !!}
+                @else
+                    {!! Form::text('name_en[]', null, ['class' => 'form-control','required','placeholder'=>'ইংরেজিতে']) !!}
+                @endif
+            </div>
             <!-- Designation -->
             <div class="form-group col-sm-3">
                 {{Form::label('designation', 'পদবি:') }}
@@ -203,7 +297,7 @@
             </div>
             {{--            Subject--}}
             <div class="form-group col-sm-3">
-                {{Form::label('subject', 'বিষয় (ENGLISH):') }}
+                {{Form::label('subject', 'পাঠদানের বিষয় (ENGLISH):') }}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() && !empty($lab->trainees))
                     {{Form::text('subject[]', $lab->trainees[2]->subject,['class'=>'form-control','required', 'id'=>'subject','placeholder'=>'Ex- Science'])}}
                 @else
@@ -260,7 +354,40 @@
                     {!! Form::email('email[]', null, ['class' => 'form-control','required']) !!}
                 @endif
             </div>
-
+            {{--NID--}}
+            <div class="form-group col-sm-3">
+                {!! Form::label('nid', 'NID (ENGLISH):') !!}
+                @if(!empty($lab) && $lab->trainees->isNotEmpty())
+                    {!! Form::text('nid[]', $lab->trainees[2]->nid, ['class' => 'form-control','required','pattern'=>"^([0-9]{10}|[0-9]{13}|[0-9]{17})$"]) !!}
+                @else
+                    {!! Form::email('nid[]', null, ['class' => 'form-control','required','pattern'=>"^([0-9]{10}|[0-9]{13}|[0-9]{17})$"]) !!}
+                @endif
+            </div>
+            {{--ICT Training--}}
+            <div class="form-group col-sm-3" style="">
+                {{ Form::label('ict_training3', 'আইসিটি বিষয়ক কোনো প্রশিক্ষণ সম্পন্ন করা আছে কিনা?') }}
+                <input name="training[]"
+                       @if(!empty($lab) && $lab->trainees->isNotEmpty() && $lab->trainees[2]->training_title )checked
+                       @endif id="ict_training3" type="checkbox" data-width="50"
+                       class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না"
+                       data-onstyle="success" data-offstyle="danger">
+            </div>
+            <div class="form-group col-sm-3" id="ict_training3_title_label">
+                {!! Form::label('ict_training3_title', 'প্রশিক্ষণের নাম:') !!}
+                @if(!empty($lab) && $lab->trainees->isNotEmpty() && $lab->trainees[2]->training_title)
+                    {!! Form::text('training_title[]', $lab->trainees[2]->training_title, ['class' => 'form-control','','id'=>'ict_training3_title']) !!}
+                @else
+                    {!! Form::text('training_title[]', null, ['class' => 'form-control','','id'=>'ict_training3_title']) !!}
+                @endif
+            </div>
+            <div class="form-group col-sm-3" id="ict_training3_duration_label">
+                {!! Form::label('ict_training3_duration', 'প্রশিক্ষণের মেয়াদ (কত দিন):') !!}
+                @if(!empty($lab) && $lab->trainees->isNotEmpty() && $lab->trainees[2]->training_duration)
+                    {!! Form::text('training_duration[]', $lab->trainees[2]->training_duration, ['class' => 'form-control','','id'=>'ict_training3_duration','placeholder'=>' দিন সংখ্যা']) !!}
+                @else
+                    {!! Form::text('training_duration[]', null, ['class' => 'form-control','','id'=>'ict_training3_duration','placeholder'=>' দিন সংখ্যা']) !!}
+                @endif
+            </div>
 
         </div>
     </div>
@@ -274,13 +401,22 @@
             <h3 class="panel-title">৪র্থ প্রশিক্ষণার্থীর তথ্য </h3>
         </div>
         <div class="panel-body">
-            {{--            Name--}}
+            {{--Name--}}
             <div class="form-group col-sm-3">
                 {!! Form::label('name', 'নাম (বাংলায়):') !!}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() && !empty($lab->trainees))
                     {!! Form::text('name[]', $lab->trainees[3]->name, ['class' => 'form-control','required','placeholder'=>'বাংলায়']) !!}
                 @else
                     {!! Form::text('name[]', null, ['class' => 'form-control','required','placeholder'=>'বাংলায়']) !!}
+                @endif
+            </div>
+            {{--Name in English--}}
+            <div class="form-group col-sm-3">
+                {!! Form::label('name', 'নাম (ENGLISH):') !!}
+                @if(!empty($lab) && $lab->trainees->isNotEmpty() )
+                    {!! Form::text('name_en[]', $lab->trainees[3]->name_en, ['class' => 'form-control','required','placeholder'=>'ইংরেজিতে']) !!}
+                @else
+                    {!! Form::text('name_en[]', null, ['class' => 'form-control','required','placeholder'=>'ইংরেজিতে']) !!}
                 @endif
             </div>
             <!-- Designation -->
@@ -294,7 +430,7 @@
             </div>
             {{--            Subject--}}
             <div class="form-group col-sm-3">
-                {{Form::label('subject', 'বিষয় (ENGLISH):') }}
+                {{Form::label('subject', 'পাঠদানের বিষয় (ENGLISH):') }}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() && !empty($lab->trainees))
                     {{Form::text('subject[]', $lab->trainees[3]->subject,['class'=>'form-control','required', 'id'=>'subject','placeholder'=>'Ex- English'])}}
                 @else
@@ -351,7 +487,40 @@
                     {!! Form::email('email[]', null, ['class' => 'form-control','required']) !!}
                 @endif
             </div>
-
+            {{--NID--}}
+            <div class="form-group col-sm-3">
+                {!! Form::label('nid', 'NID (ENGLISH):') !!}
+                @if(!empty($lab) && $lab->trainees->isNotEmpty())
+                    {!! Form::text('nid[]', $lab->trainees[3]->nid, ['class' => 'form-control','required','pattern'=>"^([0-9]{10}|[0-9]{13}|[0-9]{17})$"]) !!}
+                @else
+                    {!! Form::email('nid[]', null, ['class' => 'form-control','required','pattern'=>"^([0-9]{10}|[0-9]{13}|[0-9]{17})$"]) !!}
+                @endif
+            </div>
+            {{--ICT Training--}}
+            <div class="form-group col-sm-3" style="">
+                {{ Form::label('ict_training4', 'আইসিটি বিষয়ক কোনো প্রশিক্ষণ সম্পন্ন করা আছে কিনা?') }}
+                <input name="training[]"
+                       @if(!empty($lab) && $lab->trainees->isNotEmpty() && $lab->trainees[3]->training_title )checked
+                       @endif id="ict_training4" type="checkbox" data-width="50"
+                       class="toggle form-control" data-toggle="toggle" data-on="হ্যাঁ" data-off="না"
+                       data-onstyle="success" data-offstyle="danger">
+            </div>
+            <div class="form-group col-sm-3" id="ict_training4_title_label">
+                {!! Form::label('ict_training4_title', 'প্রশিক্ষণের নাম:') !!}
+                @if(!empty($lab) && $lab->trainees->isNotEmpty() && $lab->trainees[3]->training_title)
+                    {!! Form::text('training_title[]', $lab->trainees[3]->training_title, ['class' => 'form-control','','id'=>'ict_training4_title']) !!}
+                @else
+                    {!! Form::text('training_title[]', null, ['class' => 'form-control','','id'=>'ict_training4_title']) !!}
+                @endif
+            </div>
+            <div class="form-group col-sm-3" id="ict_training4_duration_label">
+                {!! Form::label('ict_training4_duration', 'প্রশিক্ষণের মেয়াদ (কত দিন):') !!}
+                @if(!empty($lab) && $lab->trainees->isNotEmpty() && $lab->trainees[3]->training_duration)
+                    {!! Form::text('training_duration[]', $lab->trainees[3]->training_duration, ['class' => 'form-control','','id'=>'ict_training4_duration','placeholder'=>' দিন সংখ্যা']) !!}
+                @else
+                    {!! Form::text('training_duration[]', null, ['class' => 'form-control','','id'=>'ict_training4_duration','placeholder'=>' দিন সংখ্যা']) !!}
+                @endif
+            </div>
         </div>
     </div>
 </div>

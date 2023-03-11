@@ -8,7 +8,7 @@
 </li>
 @endif
 <li class="{{ Request::routeIs('web.selected-institutions') ? 'active' : '' }}">
-    <a href="{{ route('web.selected-institutions') }}"><i class="fas fa-download"></i><span> চূড়ান্ত তালিকা</span></a>
+    <a href="{{ route('web.selected-institutions') }}"><i class="fas fa-download"></i><span> সকল ল্যাবের তালিকা </span></a>
 </li>
 <li class="{{ Request::routeIs('web.selected-labs') ? 'active' : '' }}">
     <a href="{{ route('web.selected-labs') }}"><i class="fas fa-laptop"></i><span> আওতাধীন ল্যাবসমূহ</span></a>

@@ -22,6 +22,8 @@ class LabController extends Controller
             Flash::warning('আপনার আওতাধীন লাবসমূহ দেখার পূর্বে নিজ প্রোফাইল তৈরি করতে হবে!!!');
             return redirect(route('users.edit',['id'=>Auth::user()->id]));
         }
+        if(!Auth::user()->hasRole(['super admin']))
+        dd('please check tomorrow morning');
         $divisionList=[];
         $divisions = Bangladesh::distinct()->get("division")->toArray();
         foreach ($divisions as $key=>$division)
@@ -112,6 +114,7 @@ class LabController extends Controller
 
         $lab->latitude= !empty($request->get('latitude'))?$request->get('latitude'):null;
         $lab->longitude= !empty($request->get('longitude'))?$request->get('longitude'):null;
+        if(!$user->hasRole('super admin'))
         $lab->updated= 1;
         $lab->save();
 

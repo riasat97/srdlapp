@@ -44,8 +44,8 @@ if (!function_exists('ReservedSeats')) {
         return array('0' => 'নির্বাচন করুন','dc' => 'জেলা প্রশাসক', 'adc' => 'অতিরিক্ত জেলা প্রশাসক','uno'=>'উপজেলা নির্বাহী অফিসার'/*,'programmer'=>'প্রোগ্রামার','ap'=>'সহকারী প্রোগ্রামার','useo'=>'উপজেলা মাধ্যমিক শিক্ষা অফিসার','others'=>'অন্যান্য'*/);
     }
     function trainee_designations(){
-        return array('0' => 'নির্বাচন করুন', 'principal'=>'অধ্যক্ষ/প্রধান শিক্ষক','vice principal'=>'উপাধ্যক্ষ/সহকারী প্রধান শিক্ষক',
-            'assistant professor'=>'সহকারী অধ্যাপক','senior_lecturer'=>'জ্যেষ্ঠ প্রভাষক','lecturer'=>'প্রভাষক','physical_education_teacher'=>'শরীরচর্চা শিক্ষক','demonstrator'=>'প্রদর্শক','librarian'=>'গ্রন্থাগারিক',
+        return array('0' => 'নির্বাচন করুন', 'principal'=>'অধ্যক্ষ','head'=>'প্রধান শিক্ষক','vice_principal'=>'উপাধ্যক্ষ','assistant_head'=>'সহকারী প্রধান শিক্ষক',
+            'assistant_professor'=>'সহকারী অধ্যাপক','senior_lecturer'=>'জ্যেষ্ঠ প্রভাষক','lecturer'=>'প্রভাষক','physical_education_teacher'=>'শরীরচর্চা শিক্ষক','demonstrator'=>'প্রদর্শক','librarian'=>'গ্রন্থাগারিক',
             'chief_instructor'=>'চীফ ইন্সট্রাক্টর','superintendent'=>'সুপারিনটেনডেন্ট','assistant_superintendent'=>'সহকারী সুপারিনটেনডেন্ট','senior_instructor'=>'সিনিয়র ইন্সট্রাক্টর','trade_instructor'=>'ট্রেড ইন্সট্রাক্টর','instructor'=>'ইন্সট্রাক্টর',
             'senior_assistant_teacher'=>'সিনিয়র সহকারী শিক্ষক','assistant_teacher'=>'সহকারী শিক্ষক','assistant_moulavi'=>'সহকারী মৌলভী','assistant_librarian'=>'সহকারী গ্রন্থাগারিক','junior_instructor'=>'জুনিয়র ইন্সট্রাক্টর','others'=>'অন্যান্য');
     }
@@ -178,5 +178,29 @@ if (!function_exists('ReservedSeats')) {
 //            'online_fee' => 'Online Admission/Tuition Fee',
 //            'online_attendance_system' => 'Online Attendance System',
         ];
+    }
+    function title(){
+        $user=Auth::user();
+        if(!empty($user)&&$user->hasRole('district admin')){
+            $district_en=explode('_',$user->username)[0];
+            $district=Bangladesh::where('district_en',$district_en)->first()->district;
+            return $district;
+        }
+        if(!empty($user)&&$user->hasRole('upazila admin')){
+            $upazila_en_domain=explode('_',$user->username)[0];
+            $district_en=explode('_',$user->username)[1];
+            $upazila=Bangladesh::where('district_en',$district_en)->where('upazila_en_domain',$upazila_en_domain)->first()->upazila;
+            $district=Bangladesh::where('district_en',$district_en)->first()->district;
+            return $upazila.', '.$district;
+        }
+        if(!empty($user)&&$user->hasRole('vendor')){
+            $divisions_en=explode(',',$user->posting_type);
+            $division_bn=[];
+            foreach ( $divisions_en as $division_en){
+                $division_bn[]=divisionEnToBn()[$division_en];
+            }
+            return implode(',',$division_bn) ;
+        }
+        return '';
     }
 }

@@ -63,8 +63,8 @@ class UpdateLabRequest extends FormRequest
                 'union_others' => 'sometimes|required_if:union_pourashava_ward,অন্যান্য',
                 'ward' => 'sometimes|required|digits_between:1,100',
                 'parliamentary_constituency' => 'required|string',
-                'latitude' => 'required|numeric',
-                'longitude' => 'required|numeric',
+                'latitude' => 'numeric',
+                'longitude' => 'numeric',
             ];
             return $rules;
         }

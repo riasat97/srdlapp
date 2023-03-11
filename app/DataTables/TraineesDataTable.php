@@ -46,8 +46,8 @@ class TraineesDataTable extends DataTable
                 }
             })
             ->addColumn('action', function ($query) {
-                $trainee= '<a href="'.route("labs.trainees.edit", $query->lab_id) .'" data-toggle="tooltip" title="Update Trainees"  class="btn btn-success btn-xs" target="_blank"><i class="fas fa-user-graduate"></i> </a>';
-                $batch= '<input type="number" class="batch" name="batch" min="1" max="201" value="'.$query->batch.'" data-trainee="'.$query->id.'">';
+                $trainee= '<a href="'.route("labs.trainees.edit", $query->lab_id) .'" data-toggle="tooltip" title="Update Trainees"  class="btn btn-success btn-xs mx-auto mb-2" target="_blank"><i class="fas fa-user-graduate"></i> Update</a>';
+                $batch= '<span class="label label-primary">Batch:</span> <input type="number" class="batch w-2 mt-2" name="batch" min="1" max="201" value="'.$query->batch.'" data-trainee="'.$query->id.'">';
 
                 if (Auth::user()->hasRole(['super admin']))
                     return $trainee." ".$batch;

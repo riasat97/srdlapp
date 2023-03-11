@@ -49,7 +49,7 @@ class User extends Authenticatable
         'designation' => 'sometimes|required|min:2',
         'posting_type' => 'sometimes|required|not_in:0',
         'mobile' => 'required|regex:/(01)[0-9]{9}/',
-        'email' => ['required', 'string', 'email', 'max:255', 'unique:users']
+        'email' => 'required|string|email|max:255|unique:users,email'
     ];
 
     protected $hidden = [

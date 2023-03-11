@@ -1,4 +1,12 @@
-
+.mb-2{
+    margin:0px 0px 2px 0px;
+}
+.mt-2{
+    margin:2px 0px 2px 0px;
+}
+.w-2{
+    width: 96%;
+}
 .main-container {
     box-shadow: none;
     background: none;

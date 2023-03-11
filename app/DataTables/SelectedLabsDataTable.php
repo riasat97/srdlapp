@@ -175,10 +175,10 @@ class SelectedLabsDataTable extends DataTable
                 $data->where('lab_type', $request->get('lab_type'));
             }
             // dd($data->get()->toArray());
-            return $data->orderByRaw(" phase DESC, division,district,seat_no_en asc, FIELD(lab_type , 'srdl_sof','sof','srdl'),upazila ASC");
+            return $data->whereNull('flag')->orderByRaw(" phase DESC, division,district,seat_no_en asc, FIELD(lab_type , 'srdl_sof','sof','srdl'),upazila ASC");
             //return $this->applyScopes($data);
         }
-        return $data->orderByRaw("phase DESC, division,district,seat_no_en asc, FIELD(lab_type , 'srdl_sof','sof','srdl'),upazila ASC");
+        return $data->whereNull('flag')->orderByRaw("phase DESC, division,district,seat_no_en asc, FIELD(lab_type , 'srdl_sof','sof','srdl'),upazila ASC");
         //return $this->applyScopes($data);
     }
 }

@@ -35,7 +35,7 @@
     @if(empty($lab) && Auth::user()->hasRole(['upazila admin','district admin','super admin']))
         <section class="content-header">
             <h1 class="pull-left">প্রশিক্ষণার্থী পোর্টাল</h1>
-            <h2 class="institution">সকল প্রশিক্ষণার্থী</h2>
+            <h2 class="institution">সকল প্রশিক্ষণার্থী {{ !empty(title())?'('.title().')':'' }}</h2>
             <h1 class="pull-right">
                 <a class="btn btn-primary pull-right" href="{{ route('web.selected-labs') }}"><i class="fa fa-plus"></i> নতুন প্রশিক্ষণার্থী</a>
             </h1>
@@ -43,7 +43,7 @@
     @endif
     @if(Auth::user()->hasRole(['vendor']))
         <section class="content-header">
-            <h1 class="pull-left">সকল অভিযোগ</h1>
+            <h1 class="pull-left">সকল অভিযোগ {{ !empty(title())?'('.title().')':'' }}</h1>
             <h2 class="institution">{{ $vendor->name }}</h2>
         </section>
     @endif

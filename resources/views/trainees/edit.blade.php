@@ -2,6 +2,7 @@
 @section('css')
     <link type="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker3.min.css"/>
 {{--    <link rel="stylesheet" href="{{ asset('css/support.css') }}">--}}
+    <link rel="stylesheet" href="{{ asset('css/labEdit.css') }}">
 @endsection
 @section('content')
     <section class="content-header text-center">
@@ -33,6 +34,7 @@
 @push('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
     <script type="text/javascript">
         $(function () {
@@ -51,6 +53,259 @@
         $(function () {
             // $('select.form-control option:first').attr('disabled', true);
             $('select.form-control option:contains("নির্বাচন করুন")').attr("disabled","disabled");
+        });
+        $('.toggle').change(function(){
+
+            var id = $(this).attr("id");
+            // console.log(id);
+            // $('#internet_connection').change(function () {
+            // console.log('#hidden_'+id);
+            if($(this).prop('checked'))
+            {
+                //console.log('#hidden_'+id);
+                $('#hidden_'+id).val('YES');
+            }
+            else
+            {
+                $('#hidden_'+id).val('NO');
+            }
+            // });
+        });
+
+        @if(!empty(old('training.0')))
+        $(function () {
+            $('#ict_training1').bootstrapToggle('on');
+            $("#ict_training1_title_label").prop('disabled', false).show();
+            $("#ict_training1_title").focus();
+            $("#ict_training1_title").prop('required',true);
+            $("#ict_training1_title").prop('disabled',false);
+            $("#ict_training1_duration").prop('required',true);
+            $("#ict_training1_duration").prop('disabled',false);
+            $("#ict_training1_duration_label").prop('disabled', false).show();
+        });
+        @endif
+        @if(empty(old('training.0')))
+        @if(!empty($lab->trainees[0]->training_title))
+
+        $(function () {
+            $("#ict_training1_title_label").prop('disabled', false).show();
+            $("#ict_training1_title").focus();
+            $("#ict_training1_title").prop('required',true);
+            $("#ict_training1_title").prop('disabled',false);
+            $("#ict_training1_duration").prop('required',true);
+            $("#ict_training1_duration").prop('disabled',false);
+            $("#ict_training1_duration_label").prop('disabled', false).show();
+            //$("#labs_multiple").removeAttr("disabled");
+        });
+        @else
+            $(function () {
+            $("#ict_training1_title_label").prop('disabled', true).hide();
+            $("#ict_training1_duration_label").prop('disabled', true).hide();
+            $("#ict_training1_title").prop('required',false);
+            $("#ict_training1_title").prop('disabled',true);
+            $("#ict_training1_duration").prop('required',false);
+            $("#ict_training1_duration").prop('disabled',true);
+            });
+        @endif
+        @endif
+        $(function () {
+            $("#ict_training1").change(function () {
+
+                if ($(this).prop("checked") == true) {
+                    $("#ict_training1_title_label").prop('disabled', false).show();
+                    $("#ict_training1_title").focus();
+                    $("#ict_training1_title").prop('required',true);
+                    $("#ict_training1_title").prop('disabled',false);
+                    $("#ict_training1_duration").prop('required',true);
+                    $("#ict_training1_duration").prop('disabled',false);
+                    $("#ict_training1_duration_label").prop('disabled', false).show();
+                }
+                else{
+                    $("#ict_training1_title_label").prop('disabled', true).hide();
+                    $("#ict_training1_duration_label").prop('disabled', true).hide();
+                    $("#ict_training1_title").prop('required',false);
+                    $("#ict_training1_title").prop('disabled',true);
+                    $("#ict_training1_duration").prop('required',false);
+                    $("#ict_training1_duration").prop('disabled',true);
+                }
+            });
+        });
+        // 2ND
+
+        @if(!empty(old('training.1')))
+        $(function () {
+            $('#ict_training2').bootstrapToggle('on');
+            $("#ict_training2_title_label").prop('disabled', false).show();
+            $("#ict_training2_title").focus();
+            $("#ict_training2_title").prop('required',true);
+            $("#ict_training2_title").prop('disabled',false);
+            $("#ict_training2_duration").prop('required',true);
+            $("#ict_training2_duration").prop('disabled',false);
+            $("#ict_training2_duration_label").prop('disabled', false).show();
+        });
+        @endif
+        @if(empty(old('training.1')))
+        @if(!empty($lab->trainees[1]->training_title))
+        $(function () {
+            $("#ict_training2_title_label").prop('disabled', false).show();
+            $("#ict_training2_title").focus();
+            $("#ict_training2_title").prop('required',true);
+            $("#ict_training2_title").prop('disabled',false);
+            $("#ict_training2_duration").prop('required',true);
+            $("#ict_training2_duration").prop('disabled',false);
+            $("#ict_training2_duration_label").prop('disabled', false).show();
+            //$("#labs_multiple").removeAttr("disabled");
+        });
+        @else
+        $(function () {
+            $("#ict_training2_title_label").prop('disabled', true).hide();
+            $("#ict_training2_duration_label").prop('disabled', true).hide();
+            $("#ict_training2_title").prop('required',false);
+            $("#ict_training2_title").prop('disabled',true);
+            $("#ict_training2_duration").prop('required',false);
+            $("#ict_training2_duration").prop('disabled',true);
+        });
+        @endif
+        @endif
+        $(function () {
+            $("#ict_training2").change(function () {
+
+                if ($(this).prop("checked") == true) {
+                    $("#ict_training2_title_label").prop('disabled', false).show();
+                    $("#ict_training2_title").focus();
+                    $("#ict_training2_title").prop('required',true);
+                    $("#ict_training2_title").prop('disabled',false);
+                    $("#ict_training2_duration").prop('required',true);
+                    $("#ict_training2_duration").prop('disabled',false);
+                    $("#ict_training2_duration_label").prop('disabled', false).show();
+                }
+                else{
+                    $("#ict_training2_title_label").prop('disabled', true).hide();
+                    $("#ict_training2_duration_label").prop('disabled', true).hide();
+                    $("#ict_training2_title").prop('required',false);
+                    $("#ict_training2_title").prop('disabled',true);
+                    $("#ict_training2_duration").prop('required',false);
+                    $("#ict_training2_duration").prop('disabled',true);
+                }
+            });
+        });
+        // 3RD
+
+        @if(!empty(old('training.2')))
+        $(function () {
+            $('#ict_training3').bootstrapToggle('on');
+            $("#ict_training3_title_label").prop('disabled', false).show();
+            $("#ict_training3_title").focus();
+            $("#ict_training3_title").prop('required',true);
+            $("#ict_training3_title").prop('disabled',false);
+            $("#ict_training3_duration").prop('required',true);
+            $("#ict_training3_duration").prop('disabled',false);
+            $("#ict_training3_duration_label").prop('disabled', false).show();
+        });
+        @endif
+        @if(empty(old('training.2')))
+        @if(!empty($lab->trainees[2]->training_title))
+        $(function () {
+            $("#ict_training3_title_label").prop('disabled', false).show();
+            $("#ict_training3_title").focus();
+            $("#ict_training3_title").prop('required',true);
+            $("#ict_training3_title").prop('disabled',false);
+            $("#ict_training3_duration").prop('required',true);
+            $("#ict_training3_duration").prop('disabled',false);
+            $("#ict_training3_duration_label").prop('disabled', false).show();
+            //$("#labs_multiple").removeAttr("disabled");
+        });
+        @else
+        $(function () {
+            $("#ict_training3_title_label").prop('disabled', true).hide();
+            $("#ict_training3_duration_label").prop('disabled', true).hide();
+            $("#ict_training3_title").prop('required',false);
+            $("#ict_training3_title").prop('disabled',true);
+            $("#ict_training3_duration").prop('required',false);
+            $("#ict_training3_duration").prop('disabled',true);
+        });
+        @endif
+        @endif
+        $(function () {
+            $("#ict_training3").change(function () {
+
+                if ($(this).prop("checked") == true) {
+                    $("#ict_training3_title_label").prop('disabled', false).show();
+                    $("#ict_training3_title").focus();
+                    $("#ict_training3_title").prop('required',true);
+                    $("#ict_training3_title").prop('disabled',false);
+                    $("#ict_training3_duration").prop('required',true);
+                    $("#ict_training3_duration").prop('disabled',false);
+                    $("#ict_training3_duration_label").prop('disabled', false).show();
+                }
+                else{
+                    $("#ict_training3_title_label").prop('disabled', true).hide();
+                    $("#ict_training3_duration_label").prop('disabled', true).hide();
+                    $("#ict_training3_title").prop('required',false);
+                    $("#ict_training3_title").prop('disabled',true);
+                    $("#ict_training3_duration").prop('required',false);
+                    $("#ict_training3_duration").prop('disabled',true);
+                }
+            });
+        });
+        // 4TH
+
+        @if(!empty(old('training.3')))
+        $(function () {
+            $('#ict_training4').bootstrapToggle('on');
+            $("#ict_training4_title_label").prop('disabled', false).show();
+            $("#ict_training4_title").focus();
+            $("#ict_training4_title").prop('required',true);
+            $("#ict_training4_title").prop('disabled',false);
+            $("#ict_training4_duration").prop('required',true);
+            $("#ict_training4_duration").prop('disabled',false);
+            $("#ict_training4_duration_label").prop('disabled', false).show();
+        });
+        @endif
+        @if(empty(old('training.3')))
+        @if(!empty($lab->trainees[3]->training_title))
+        $(function () {
+            $("#ict_training4_title_label").prop('disabled', false).show();
+            $("#ict_training4_title").focus();
+            $("#ict_training4_title").prop('required',true);
+            $("#ict_training4_title").prop('disabled',false);
+            $("#ict_training4_duration").prop('required',true);
+            $("#ict_training4_duration").prop('disabled',false);
+            $("#ict_training4_duration_label").prop('disabled', false).show();
+            //$("#labs_multiple").removeAttr("disabled");
+        });
+        @else
+        $(function () {
+            $("#ict_training4_title_label").prop('disabled', true).hide();
+            $("#ict_training4_duration_label").prop('disabled', true).hide();
+            $("#ict_training4_title").prop('required',false);
+            $("#ict_training4_title").prop('disabled',true);
+            $("#ict_training4_duration").prop('required',false);
+            $("#ict_training4_duration").prop('disabled',true);
+        });
+        @endif
+        @endif
+        $(function () {
+            $("#ict_training4").change(function () {
+
+                if ($(this).prop("checked") == true) {
+                    $("#ict_training4_title_label").prop('disabled', false).show();
+                    $("#ict_training4_title").focus();
+                    $("#ict_training4_title").prop('required',true);
+                    $("#ict_training4_title").prop('disabled',false);
+                    $("#ict_training4_duration").prop('required',true);
+                    $("#ict_training4_duration").prop('disabled',false);
+                    $("#ict_training4_duration_label").prop('disabled', false).show();
+                }
+                else{
+                    $("#ict_training4_title_label").prop('disabled', true).hide();
+                    $("#ict_training4_duration_label").prop('disabled', true).hide();
+                    $("#ict_training4_title").prop('required',false);
+                    $("#ict_training4_title").prop('disabled',true);
+                    $("#ict_training4_duration").prop('required',false);
+                    $("#ict_training4_duration").prop('disabled',true);
+                }
+            });
         });
     </script>
 @endpush
