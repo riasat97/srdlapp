@@ -127,6 +127,11 @@ class TraineesDataTable extends DataTable
             Column::make('lab.upazila','upazila')->title('উপজেলা'),
             Column::make('lab.ins','institution_bn')->title('শিক্ষা প্রতিষ্ঠান'),
         ];
+        $papLocation=[
+            Column::make('lab.phase_bn','phase')->title('পর্যায়'),
+            Column::make('lab.upazila','upazila')->title('উপজেলা'),
+            Column::make('lab.ins','institution_bn')->title('শিক্ষা প্রতিষ্ঠান'),
+        ];
         $main= [
             Column::make('name','name')->title('নাম '),
             Column::make('designation_bn','designation')->title('পদবি'),
@@ -136,8 +141,22 @@ class TraineesDataTable extends DataTable
             Column::make('batch','batch')->title('ব্যাচ#'),
             Column::make('created_at','created_at')->title('রেজিস্ট্রেশনের তারিখ')
         ];
-        if (Auth::user()->hasRole(['vendor','super admin','district admin','upazila admin'])) {
+        $papMain= [
+            Column::make('name','name')->title('নাম '),
+            Column::make('designation_bn','designation')->title('পদবি'),
+            Column::make('gender','gender')->title('জেন্ডার'),
+            Column::make('qualification','qualification')->title('শিক্ষাগত যোগ্যতা'),
+            Column::make('mobile','mobile')->title('মোবাইল'),
+            Column::make('id','id')->title('আইডি#'),
+            Column::make('batch','batch')->title('ব্যাচ#'),
+            Column::make('created_at','created_at')->title('রেজিস্ট্রেশনের তারিখ')
+        ];
+        if (Auth::user()->hasRole(['vendor','super admin'])) {
             return array_merge($serial, $action, $location,$main);
+
+        }
+        if (Auth::user()->hasRole(['district admin','upazila admin'])) {
+            return array_merge($serial, $action, $papLocation,$papMain);
 
         }
         return array_merge($serial,$main);

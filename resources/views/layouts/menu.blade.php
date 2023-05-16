@@ -22,9 +22,9 @@
     <a href="{{ route('users.index') }}"><i class="fas fa-users"></i><span> ইউজার ম্যানেজমেন্ট </span></a>
 </li>
 
-{{--<li class="{{ Request::is('admin/roles*') ? 'active' : '' }}">--}}
-{{--    <a href="{{ route('roles.index') }}"><i class="fas fa-user-tag"></i><span> ভূমিকা নির্ধারণ</span></a>--}}
-{{--</li>--}}
+<li class="{{ Request::is('admin/roles*') ? 'active' : '' }}">
+    <a href="{{ route('roles.index') }}"><i class="fas fa-user-tag"></i><span> ভূমিকা নির্ধারণ</span></a>
+</li>
 
 {{--<li class="{{ Request::is('admin/permissions*') ? 'active' : '' }}">--}}
 {{--    <a href="{{ route('permissions.index') }}"><i class="fas fa-key"></i><span> অনুমতি প্রদান</span></a>--}}

@@ -31,38 +31,41 @@ class CreateTraineesRequest extends FormRequest
         //dd($request->all());
         $rules= [
             'name.*' => 'required|string|min:2||regex:/^[\p{Bengali}]/u',
-            'name_en.*' => 'required|string|min:2||regex:/^[a-zA-Z\s\.]+$/u',
+            'name_en.*' => 'required|string|min:2||regex:/^[a-zA-Z\s\.\&\_\-\,\!\()]+$/u',
+            //'designation'=>["required","array","min:4"],
             'designation.*' => 'required|string|min:2',
             'dob.*' => ['required','date', new DobRule],
+            //'gender'=>["required","array","min:4"],
             'gender.*' => 'required|string|min:2',
             'mobile.*' => 'required|regex:/(01)[0-9]{9}/|distinct',
             'email.*' => ['required', 'email', 'max:255'],
             'nid.*' => ['required', new Nid],
+            //'qualification'=>["required","array","min:4"],
             'qualification.*' => 'required|string|min:2',
-            'subject.*' => 'required|regex:/^[a-zA-Z]+$/u|min:2|max:50',
+            'subject.*' => 'required|regex:/^[a-zA-Z\s\.\&\_\-\,\!\()]+$/u|min:2|max:50',
             //'training_title.*' => 'sometimes|required_if:training.*,in:on|string|min:2',
             //'training_duration.*' => 'sometimes|required_if:training.*,in:on|string|min:2',
         ];
-        $trainings=$request->get('training')??[];
-            if(count($trainings)>0){
-                if(!empty($trainings[0])&&$trainings[0]=='on'){
-                    $rules['training_title.0'] = 'required';
-                    $rules['training_duration.0'] = 'required';
-                }
-                if(!empty($trainings[1])&&$trainings[1]=='on'){
+        //$trainings=$request->get('training')??[];
 
-                    $rules['training_title.1'] = 'required';
-                    $rules['training_duration.1'] = 'required';
+            //if(count($trainings)>0){
+                if($request->get('hidden_ict_training1')=='yes'){
+                    $rules['training_title.0'] = 'required|string|min:2';
+                    $rules['training_duration.0'] = 'required|numeric';
                 }
-                if(!empty($trainings[2])&&$trainings[2]=='on'){
-                    $rules['training_title.2'] = 'required';
-                    $rules['training_duration.2'] = 'required';
+                if($request->get('hidden_ict_training2')=='yes'){
+                    $rules['training_title.1'] = 'required|string|min:2';
+                    $rules['training_duration.1'] = 'required|numeric';
                 }
-                if(!empty($trainings[3])&&$trainings[3]=='on'){
-                    $rules['training_title.3'] = 'required';
-                    $rules['training_duration.3'] = 'required';
+                if($request->get('hidden_ict_training3')=='yes'){
+                    $rules['training_title.2'] = 'required|string|min:2';
+                    $rules['training_duration.2'] = 'required|numeric';
                 }
-            }
+                if($request->get('hidden_ict_training4')=='yes'){
+                    $rules['training_title.3'] = 'required|string|min:2';
+                    $rules['training_duration.3'] = 'required|numeric';
+                }
+           // }
 
         //dd($rules);
         return  $rules;
@@ -75,12 +78,14 @@ class CreateTraineesRequest extends FormRequest
             'designation.*' => 'পদবি অবশ্যক!',
             'dob.*' => 'জন্ম তারিখ অবশ্যক (ইংরেজিতে yyyy-mm-dd)!',
             'gender.*' => 'জেন্ডার অবশ্যক!',
+            'gender.min' => 'select gender',
             'mobile.*' => 'মোবাইল অবশ্যক!',
             'mobile.*.distinct' => 'মোবাইল নম্বর একই হতে পারে না!',
             'email.*' => 'ইমেইল অবশ্যক!',
             'qualification.*' => 'সর্বোচ্চ শিক্ষাগত যোগ্যতা অবশ্যক!',
             'subject.*' => 'বিষয় অবশ্যক (ইংরেজিতে)!!',
             'subject.*.regex' => 'বিষয় অবশ্যক (ইংরেজিতে)!!',
+            'nid.*.distinct' => 'nid নম্বর একই হতে পারে না!',
         ];
     }
 }

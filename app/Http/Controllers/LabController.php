@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Laracasts\Flash\Flash;
 
 class LabController extends Controller
@@ -22,8 +23,8 @@ class LabController extends Controller
             Flash::warning('আপনার আওতাধীন লাবসমূহ দেখার পূর্বে নিজ প্রোফাইল তৈরি করতে হবে!!!');
             return redirect(route('users.edit',['id'=>Auth::user()->id]));
         }
-        if(!Auth::user()->hasRole(['super admin']))
-        dd('please check tomorrow morning');
+//        if(!Auth::user()->hasRole(['super admin']))
+//        dd('please check tomorrow morning');
         $divisionList=[];
         $divisions = Bangladesh::distinct()->get("division")->toArray();
         foreach ($divisions as $key=>$division)
@@ -43,7 +44,7 @@ class LabController extends Controller
             'district_bn'=>$this->getDistrictBnNameByUser(),'phase'=>$phase]);
     }
     public function edit($id){
-
+        dd(Hash::make('12345678'));
         $lab= Lab::where('id',$id)->first();
         if( !Auth::user()->hasAnyRole(['super admin','upazila admin','district admin']) or !permitted($lab))
             return abort(404);

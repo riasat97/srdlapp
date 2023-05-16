@@ -69,9 +69,9 @@
             <div class="form-group col-sm-3">
                 {{Form::label('gender', 'জেন্ডার:') }}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() && !empty($lab->trainees))
-                    {{Form::select('gender[]', ['0' => 'নির্বাচন করুন','male'=>'পুরুষ','female'=>'মহিলা'], $lab->trainees[0]->gender,['class'=>'form-control','required', 'id'=>'gender'])}}
+                    {{Form::select('gender[]', ['' => 'নির্বাচন করুন','male'=>'পুরুষ','female'=>'মহিলা'], $lab->trainees[0]->gender,['class'=>'form-control','required', 'id'=>'gender'])}}
                 @else
-                    {{Form::select('gender[]', ['0' => 'নির্বাচন করুন','male'=>'পুরুষ','female'=>'মহিলা'], null,['class'=>'form-control','required', 'id'=>'gender'])}}
+                    {{Form::select('gender[]', ['' => 'নির্বাচন করুন','male'=>'পুরুষ','female'=>'মহিলা'], null,['class'=>'form-control','required', 'id'=>'gender'])}}
                 @endif
             </div>
             <!-- Mobile -->
@@ -87,7 +87,7 @@
             <div class="form-group col-sm-3">
                 {!! Form::label('email', 'ইমেইল:') !!}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() && !empty($lab->trainees))
-                    {!! Form::text('email[]', $lab->trainees[0]->email, ['class' => 'form-control','required']) !!}
+                    {!! Form::email('email[]', $lab->trainees[0]->email, ['class' => 'form-control','required']) !!}
                 @else
                     {!! Form::email('email[]', null, ['class' => 'form-control','required']) !!}
                 @endif
@@ -98,7 +98,7 @@
                 @if(!empty($lab) && $lab->trainees->isNotEmpty())
                     {!! Form::text('nid[]', $lab->trainees[0]->nid, ['class' => 'form-control','required','pattern'=>"^([0-9]{10}|[0-9]{13}|[0-9]{17})$"]) !!}
                 @else
-                    {!! Form::email('nid[]', null, ['class' => 'form-control','required','pattern'=>"^([0-9]{10}|[0-9]{13}|[0-9]{17})$"]) !!}
+                    {!! Form::text('nid[]', null, ['class' => 'form-control','required','pattern'=>"^([0-9]{10}|[0-9]{13}|[0-9]{17})$"]) !!}
                 @endif
             </div>
             {{--ICT Training--}}
@@ -121,9 +121,9 @@
             <div class="form-group col-sm-3" id="ict_training1_duration_label">
                 {!! Form::label('ict_training1_duration', 'প্রশিক্ষণের মেয়াদ (কত দিন):') !!}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() && $lab->trainees[0]->training_duration)
-                    {!! Form::text('training_duration[]', $lab->trainees[0]->training_duration, ['class' => 'form-control','','id'=>'ict_training1_duration','placeholder'=>' দিন সংখ্যা']) !!}
+                    {!! Form::number('training_duration[]', $lab->trainees[0]->training_duration, ['class' => 'form-control','','id'=>'ict_training1_duration','placeholder'=>' দিন সংখ্যা']) !!}
                 @else
-                    {!! Form::text('training_duration[]', null, ['class' => 'form-control','','id'=>'ict_training1_duration','placeholder'=>' দিন সংখ্যা']) !!}
+                    {!! Form::number('training_duration[]', null, ['class' => 'form-control','','id'=>'ict_training1_duration','placeholder'=>' দিন সংখ্যা']) !!}
                 @endif
             </div>
         </div>
@@ -198,9 +198,9 @@
             <div class="form-group col-sm-3">
                 {{Form::label('gender', 'জেন্ডার:') }}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() && !empty($lab->trainees))
-                    {{Form::select('gender[]', ['0' => 'নির্বাচন করুন','male'=>'পুরুষ','female'=>'মহিলা'], $lab->trainees[1]->gender,['class'=>'form-control','required', 'id'=>'gender'])}}
+                    {{Form::select('gender[]', ['' => 'নির্বাচন করুন','male'=>'পুরুষ','female'=>'মহিলা'], $lab->trainees[1]->gender,['class'=>'form-control','required', 'id'=>'gender'])}}
                 @else
-                    {{Form::select('gender[]', ['0' => 'নির্বাচন করুন','male'=>'পুরুষ','female'=>'মহিলা'], null,['class'=>'form-control','required', 'id'=>'gender'])}}
+                    {{Form::select('gender[]', ['' => 'নির্বাচন করুন','male'=>'পুরুষ','female'=>'মহিলা'], null,['class'=>'form-control','required', 'id'=>'gender'])}}
                 @endif
             </div>
             <!-- Mobile -->
@@ -216,7 +216,7 @@
             <div class="form-group col-sm-3">
                 {!! Form::label('email', 'ইমেইল:') !!}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() && !empty($lab->trainees))
-                    {!! Form::text('email[]', $lab->trainees[1]->email, ['class' => 'form-control','required']) !!}
+                    {!! Form::email('email[]', $lab->trainees[1]->email, ['class' => 'form-control','required']) !!}
                 @else
                     {!! Form::email('email[]', null, ['class' => 'form-control','required']) !!}
                 @endif
@@ -227,7 +227,7 @@
                 @if(!empty($lab) && $lab->trainees->isNotEmpty())
                     {!! Form::text('nid[]', $lab->trainees[1]->nid, ['class' => 'form-control','required','pattern'=>"^([0-9]{10}|[0-9]{13}|[0-9]{17})$"]) !!}
                 @else
-                    {!! Form::email('nid[]', null, ['class' => 'form-control','required','pattern'=>"^([0-9]{10}|[0-9]{13}|[0-9]{17})$"]) !!}
+                    {!! Form::text('nid[]', null, ['class' => 'form-control','required','pattern'=>"^([0-9]{10}|[0-9]{13}|[0-9]{17})$"]) !!}
                 @endif
             </div>
             {{--ICT Training--}}
@@ -250,9 +250,9 @@
             <div class="form-group col-sm-3" id="ict_training2_duration_label">
                 {!! Form::label('ict_training2_duration', 'প্রশিক্ষণের মেয়াদ (কত দিন):') !!}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() && $lab->trainees[1]->training_duration)
-                    {!! Form::text('training_duration[]', $lab->trainees[1]->training_duration, ['class' => 'form-control','','id'=>'ict_training2_duration','placeholder'=>' দিন সংখ্যা']) !!}
+                    {!! Form::number('training_duration[]', $lab->trainees[1]->training_duration, ['class' => 'form-control','','id'=>'ict_training2_duration','placeholder'=>' দিন সংখ্যা']) !!}
                 @else
-                    {!! Form::text('training_duration[]', null, ['class' => 'form-control','','id'=>'ict_training2_duration','placeholder'=>' দিন সংখ্যা']) !!}
+                    {!! Form::number('training_duration[]', null, ['class' => 'form-control','','id'=>'ict_training2_duration','placeholder'=>' দিন সংখ্যা']) !!}
                 @endif
             </div>
 
@@ -331,9 +331,9 @@
             <div class="form-group col-sm-3">
                 {{Form::label('gender', 'জেন্ডার:') }}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() && !empty($lab->trainees))
-                    {{Form::select('gender[]', ['0' => 'নির্বাচন করুন','male'=>'পুরুষ','female'=>'মহিলা'], $lab->trainees[2]->gender,['class'=>'form-control','required', 'id'=>'gender'])}}
+                    {{Form::select('gender[]', ['' => 'নির্বাচন করুন','male'=>'পুরুষ','female'=>'মহিলা'], $lab->trainees[2]->gender,['class'=>'form-control','required', 'id'=>'gender'])}}
                 @else
-                    {{Form::select('gender[]', ['0' => 'নির্বাচন করুন','male'=>'পুরুষ','female'=>'মহিলা'], null,['class'=>'form-control','required', 'id'=>'gender'])}}
+                    {{Form::select('gender[]', ['' => 'নির্বাচন করুন','male'=>'পুরুষ','female'=>'মহিলা'], null,['class'=>'form-control','required', 'id'=>'gender'])}}
                 @endif
             </div>
             <!-- Mobile -->
@@ -349,7 +349,7 @@
             <div class="form-group col-sm-3">
                 {!! Form::label('email', 'ইমেইল:') !!}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() && !empty($lab->trainees))
-                    {!! Form::text('email[]', $lab->trainees[2]->email, ['class' => 'form-control','required']) !!}
+                    {!! Form::email('email[]', $lab->trainees[2]->email, ['class' => 'form-control','required']) !!}
                 @else
                     {!! Form::email('email[]', null, ['class' => 'form-control','required']) !!}
                 @endif
@@ -360,7 +360,7 @@
                 @if(!empty($lab) && $lab->trainees->isNotEmpty())
                     {!! Form::text('nid[]', $lab->trainees[2]->nid, ['class' => 'form-control','required','pattern'=>"^([0-9]{10}|[0-9]{13}|[0-9]{17})$"]) !!}
                 @else
-                    {!! Form::email('nid[]', null, ['class' => 'form-control','required','pattern'=>"^([0-9]{10}|[0-9]{13}|[0-9]{17})$"]) !!}
+                    {!! Form::text('nid[]', null, ['class' => 'form-control','required','pattern'=>"^([0-9]{10}|[0-9]{13}|[0-9]{17})$"]) !!}
                 @endif
             </div>
             {{--ICT Training--}}
@@ -383,9 +383,9 @@
             <div class="form-group col-sm-3" id="ict_training3_duration_label">
                 {!! Form::label('ict_training3_duration', 'প্রশিক্ষণের মেয়াদ (কত দিন):') !!}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() && $lab->trainees[2]->training_duration)
-                    {!! Form::text('training_duration[]', $lab->trainees[2]->training_duration, ['class' => 'form-control','','id'=>'ict_training3_duration','placeholder'=>' দিন সংখ্যা']) !!}
+                    {!! Form::number('training_duration[]', $lab->trainees[2]->training_duration, ['class' => 'form-control','','id'=>'ict_training3_duration','placeholder'=>' দিন সংখ্যা']) !!}
                 @else
-                    {!! Form::text('training_duration[]', null, ['class' => 'form-control','','id'=>'ict_training3_duration','placeholder'=>' দিন সংখ্যা']) !!}
+                    {!! Form::number('training_duration[]', null, ['class' => 'form-control','','id'=>'ict_training3_duration','placeholder'=>' দিন সংখ্যা']) !!}
                 @endif
             </div>
 
@@ -464,9 +464,9 @@
             <div class="form-group col-sm-3">
                 {{Form::label('gender', 'জেন্ডার:') }}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() && !empty($lab->trainees))
-                    {{Form::select('gender[]', ['0' => 'নির্বাচন করুন','male'=>'পুরুষ','female'=>'মহিলা'], $lab->trainees[3]->gender,['class'=>'form-control','required', 'id'=>'gender'])}}
+                    {{Form::select('gender[]', ['' => 'নির্বাচন করুন','male'=>'পুরুষ','female'=>'মহিলা'], $lab->trainees[3]->gender,['class'=>'form-control','required', 'id'=>'gender'])}}
                 @else
-                    {{Form::select('gender[]', ['0' => 'নির্বাচন করুন','male'=>'পুরুষ','female'=>'মহিলা'], null,['class'=>'form-control','required', 'id'=>'gender'])}}
+                    {{Form::select('gender[]', ['' => 'নির্বাচন করুন','male'=>'পুরুষ','female'=>'মহিলা'], null,['class'=>'form-control','required', 'id'=>'gender'])}}
                 @endif
             </div>
             <!-- Mobile -->
@@ -482,7 +482,7 @@
             <div class="form-group col-sm-3">
                 {!! Form::label('email', 'ইমেইল:') !!}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() && !empty($lab->trainees))
-                    {!! Form::text('email[]', $lab->trainees[3]->email, ['class' => 'form-control','required']) !!}
+                    {!! Form::email('email[]', $lab->trainees[3]->email, ['class' => 'form-control','required']) !!}
                 @else
                     {!! Form::email('email[]', null, ['class' => 'form-control','required']) !!}
                 @endif
@@ -493,7 +493,7 @@
                 @if(!empty($lab) && $lab->trainees->isNotEmpty())
                     {!! Form::text('nid[]', $lab->trainees[3]->nid, ['class' => 'form-control','required','pattern'=>"^([0-9]{10}|[0-9]{13}|[0-9]{17})$"]) !!}
                 @else
-                    {!! Form::email('nid[]', null, ['class' => 'form-control','required','pattern'=>"^([0-9]{10}|[0-9]{13}|[0-9]{17})$"]) !!}
+                    {!! Form::text('nid[]', null, ['class' => 'form-control','required','pattern'=>"^([0-9]{10}|[0-9]{13}|[0-9]{17})$"]) !!}
                 @endif
             </div>
             {{--ICT Training--}}
@@ -516,9 +516,9 @@
             <div class="form-group col-sm-3" id="ict_training4_duration_label">
                 {!! Form::label('ict_training4_duration', 'প্রশিক্ষণের মেয়াদ (কত দিন):') !!}
                 @if(!empty($lab) && $lab->trainees->isNotEmpty() && $lab->trainees[3]->training_duration)
-                    {!! Form::text('training_duration[]', $lab->trainees[3]->training_duration, ['class' => 'form-control','','id'=>'ict_training4_duration','placeholder'=>' দিন সংখ্যা']) !!}
+                    {!! Form::number('training_duration[]', $lab->trainees[3]->training_duration, ['class' => 'form-control','','id'=>'ict_training4_duration','placeholder'=>' দিন সংখ্যা']) !!}
                 @else
-                    {!! Form::text('training_duration[]', null, ['class' => 'form-control','','id'=>'ict_training4_duration','placeholder'=>' দিন সংখ্যা']) !!}
+                    {!! Form::number('training_duration[]', null, ['class' => 'form-control','','id'=>'ict_training4_duration','placeholder'=>' দিন সংখ্যা']) !!}
                 @endif
             </div>
         </div>

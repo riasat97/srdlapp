@@ -9,8 +9,10 @@ use App\Models\Application;
 use App\Models\Bangladesh;
 use App\Models\Lab;
 use App\Models\Trainee;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Laracasts\Flash\Flash;
 
 class TraineeController extends Controller
@@ -83,7 +85,7 @@ class TraineeController extends Controller
     private function createTrainees($requestData,$labId){
         $trainees=[];
         for ($i=0;$i<4;$i++) {
-            $trainee=Trainee::create([
+            $traineeData=[
                 'lab_id'=>  $labId,
                 'name'=>  $requestData['name'][$i],
                 'name_en'=>  $requestData['name_en'][$i],
@@ -95,12 +97,16 @@ class TraineeController extends Controller
                 'email'=>  $requestData['email'][$i],
                 'mobile'=>  $requestData['mobile'][$i],
                 'nid'=>  $requestData['nid'][$i],
-                'training_title'=>  $requestData['training_title'][$i],
-                'training_duration'=>  $requestData['training_duration'][$i],
-            ]);
-            $trainees[]=$trainee;
+                'training_title'=>  !empty($requestData['training_title'][$i])?$requestData['training_title'][$i]:null,
+                'training_duration'=>  !empty($requestData['training_duration'][$i])?$requestData['training_duration'][$i]:null,
+                'created_at'=>Carbon::now()->toDateTimeString()
+            ];
+            $trainees[]=$traineeData;
         }
-        return $trainees;
+        $trainees=Trainee::insert($trainees);
+        $lab= Lab::where('id',$labId)->first();
+        //dd($lab->trainees);
+        return $lab->trainees;
     }
     private function updateTrainees($lab,$requestData){
         $trainees= $lab->trainees;
@@ -115,8 +121,8 @@ class TraineeController extends Controller
         $trainee->email= $requestData['email'][$i];
         $trainee->mobile= $requestData['mobile'][$i];
         $trainee->nid= $requestData['nid'][$i];
-        $trainee->training_title= !empty($requestData['training_title'][$i])??null;
-        $trainee->training_duration= !empty($requestData['training_duration'][$i])??null;
+        $trainee->training_title= !empty($requestData['training_title'][$i])?$requestData['training_title'][$i]:null;
+        $trainee->training_duration= !empty($requestData['training_duration'][$i])?$requestData['training_duration'][$i]:null;
             $lab->trainees()->save($trainee);
         }
         return $trainees;

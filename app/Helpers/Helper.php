@@ -44,13 +44,22 @@ if (!function_exists('ReservedSeats')) {
         return array('0' => 'নির্বাচন করুন','dc' => 'জেলা প্রশাসক', 'adc' => 'অতিরিক্ত জেলা প্রশাসক','uno'=>'উপজেলা নির্বাহী অফিসার'/*,'programmer'=>'প্রোগ্রামার','ap'=>'সহকারী প্রোগ্রামার','useo'=>'উপজেলা মাধ্যমিক শিক্ষা অফিসার','others'=>'অন্যান্য'*/);
     }
     function trainee_designations(){
-        return array('0' => 'নির্বাচন করুন', 'principal'=>'অধ্যক্ষ','head'=>'প্রধান শিক্ষক','vice_principal'=>'উপাধ্যক্ষ','assistant_head'=>'সহকারী প্রধান শিক্ষক',
-            'assistant_professor'=>'সহকারী অধ্যাপক','senior_lecturer'=>'জ্যেষ্ঠ প্রভাষক','lecturer'=>'প্রভাষক','physical_education_teacher'=>'শরীরচর্চা শিক্ষক','demonstrator'=>'প্রদর্শক','librarian'=>'গ্রন্থাগারিক',
-            'chief_instructor'=>'চীফ ইন্সট্রাক্টর','superintendent'=>'সুপারিনটেনডেন্ট','assistant_superintendent'=>'সহকারী সুপারিনটেনডেন্ট','senior_instructor'=>'সিনিয়র ইন্সট্রাক্টর','trade_instructor'=>'ট্রেড ইন্সট্রাক্টর','instructor'=>'ইন্সট্রাক্টর',
-            'senior_assistant_teacher'=>'সিনিয়র সহকারী শিক্ষক','assistant_teacher'=>'সহকারী শিক্ষক','assistant_moulavi'=>'সহকারী মৌলভী','assistant_librarian'=>'সহকারী গ্রন্থাগারিক','junior_instructor'=>'জুনিয়র ইন্সট্রাক্টর','others'=>'অন্যান্য');
+        return array('' => 'নির্বাচন করুন', 'principal'=>'অধ্যক্ষ','head'=>'প্রধান শিক্ষক','super'=>'সুপার','vice_principal'=>'উপাধ্যক্ষ',
+            'senior_vice_principal' => 'সিনিয়র উপাধ্যক্ষ','associate_professor' => 'সহযোগী অধ্যাপক','assistant_professor'=>'সহকারী অধ্যাপক',
+            'assistant_head'=>'সহকারী প্রধান শিক্ষক','assistant_super'=> 'সহকারী সুপার','senior_lecturer'=>'জ্যেষ্ঠ প্রভাষক','lecturer'=>'প্রভাষক',
+            'physical_education_teacher'=>'শরীরচর্চা শিক্ষক','demonstrator'=>'প্রদর্শক','librarian'=>'গ্রন্থাগারিক',
+            'assistant_librarian'=>'সহকারী গ্রন্থাগারিক/ ক্যাটালগার','chief_instructor'=>'চীফ ইন্সট্রাক্টর','superintendent'=>'সুপারিনটেনডেন্ট',
+            'assistant_superintendent'=>'সহকারী সুপারিনটেনডেন্ট','senior_instructor'=>'সিনিয়র ইন্সট্রাক্টর','trade_instructor'=>'ট্রেড ইন্সট্রাক্টর',
+            'instructor'=>'ইন্সট্রাক্টর','junior_instructor'=>'জুনিয়র ইন্সট্রাক্টর', 'senior_teacher'=>'সিনিয়র শিক্ষক','junior_teacher' => 'জুনিয়র শিক্ষক',
+            'senior_assistant_teacher'=>'সিনিয়র সহকারী শিক্ষক','assistant_teacher'=>'সহকারী শিক্ষক','assistant_moulavi'=>'সহকারী মৌলভী',
+            'junior_moulavi'=> 'জুনিয়র মৌলভী','moulavi' => 'মৌলভী','ebtedayee_head'=> 'ইবতেদায়ী প্রধান','ebtedayee_junior_moulavi'=> 'ইবতেদায়ী জুনিয়র মৌলভী',
+            'ebtedayee_quari'=>'ইবতেদায়ী কারী');
     }
     function qualifications(){
-        return array('0' => 'নির্বাচন করুন','m.eng'=>"M.Sc (Engineering)",'msc'=>"M.Sc",'kamil'=>"Kamil","llm"=>"LL.M",'ma'=>"M.A","mcom"=>"M.Com","med"=>"M.Ed","mss"=>"M.S.S","mba"=>"MBA","mbs"=>"MBS","me/mtech"=>"ME/Mtech","mmed"=>"Mmed","bsc.eng"=>"B.Sc (Engineering)",'bsc'=>"B.Sc (Honors)","ba"=>"B.A","bcom"=>"B.Com","bed"=>"B.Ed","bss"=>"B.S.S","btech"=>"B.Tech","bba"=>"BBA","bbs"=>"BBS","fazil"=>"Fazil","llb"=>"LL.B","others"=>"Others");
+        return array('' => 'নির্বাচন করুন','m.eng'=>"M.Sc (Engineering)",'msc'=>"M.Sc","diploma"=>"Diploma",'kamil'=>"Kamil","llm"=>"LL.M","honours"=>"Honours",
+            'ma'=>"M.A","mcom"=>"M.Com","med"=>"M.Ed","mss"=>"M.S.S","mba"=>"MBA","mbs"=>"MBS","me/mtech"=>"ME/Mtech",
+            "mmed"=>"Mmed","bsc.eng"=>"B.Sc (Engineering)",'bsc'=>"B.Sc (Honors)","ba"=>"B.A","bcom"=>"B.Com",
+            "bed"=>"B.Ed","bss"=>"B.S.S","btech"=>"B.Tech","bba"=>"BBA","bbs"=>"BBS","fazil"=>"Fazil","llb"=>"LL.B","others"=>"Others");
     }
     function ages(){
         $ages=[];

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Trainee extends Model
 {
+
     public $table = 'trainees';
     //protected $dates = ['signature_at','deleted_at'];
     public $guarded=[];

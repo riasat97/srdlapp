@@ -226,6 +226,19 @@
                             </div>
                         </div>
                         <div class="form-row">
+                            <div class="form-group col-md-12">
+                                <!-- Button trigger modal -->
+                                <p><a href="#" class="alert-danger">
+                                        *ইউনিয়ন/পৌরসভা/ওয়ার্ড এর তথ্য পূরণ করার পর নির্বাচনী এলাকার নাম দেখা যাবে।
+                                    </a></p>
+                                <p>
+                                    <a href="#" class="alert-danger">
+                                        ***জেলা/উপজেলা ফাঁকা থাকলে বা ল্যাব আপডেট সংশ্লিষ্ট সমস্যায় (01672702437) এই নম্বরে whatsapp (শুধুমাত্র মেসেজ) করার জন্য অনুরোধ করা হলো।
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-row">
                             <div class="form-group  col-md-6">
                                 {{Form::label('latitude', 'অক্ষাংশ (LATITUDE)') }}
                                 {{Form::number('latitude',  $lab->latitude??"",['id'=>'latitude','class'=>'form-control','style'=>'','placeholder'=>'23.694312'])}}

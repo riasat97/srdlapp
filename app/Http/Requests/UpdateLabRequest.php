@@ -63,8 +63,8 @@ class UpdateLabRequest extends FormRequest
                 'union_others' => 'sometimes|required_if:union_pourashava_ward,অন্যান্য',
                 'ward' => 'sometimes|required|digits_between:1,100',
                 'parliamentary_constituency' => 'required|string',
-                'latitude' => 'numeric',
-                'longitude' => 'numeric',
+                //'latitude' => 'numeric',
+                //'longitude' => 'numeric',
             ];
             return $rules;
         }
@@ -100,8 +100,10 @@ class UpdateLabRequest extends FormRequest
             'head_name.regex' => 'প্রতিষ্ঠান প্রধানের নাম বাংলাতে হতে হবে!',
             'institution_email.required' => 'প্রতিষ্ঠানের ইমেইল অবশ্যক!',
             'institution_tel.required' => 'প্রতিষ্ঠানের মোবাইল নম্বর অবশ্যক!',
+            'institution_tel.regex' => 'প্রতিষ্ঠানের মোবাইল নম্বরটির ফরম্যাট ভুল আছে।  ১১ ডিজিট হবে এবং ০ দিয়ে শুরু হবে !',
             'alt_tel.required' => 'বিকল্প প্রতিষ্ঠান প্রতিনিধি/কমিটির সভাপতির মোবাইল নম্বর অবশ্যক!',
             'alt_tel.different' => 'বিকল্প মোবাইল নম্বর ভিন্ন হওয়া অবশ্যক!',
+            'alt_tel.regex' => 'বিকল্প মোবাইল নম্বরটির ফরম্যাট ভুল আছে। ১১ ডিজিট হবে এবং ০ দিয়ে শুরু হবে !',
 
             'union_pourashava_ward.required' => 'ইউনিয়ন/পৌরসভা অবশ্যক!',
             'union_others.required' => 'ইউনিয়ন/পৌরসভা অন্যান্য নির্বাচন করলে এর নাম দেয়া অবশ্যক !',
