@@ -42,7 +42,7 @@
                     </div>
                 @endif
                 <div class="form-row">
-                    @if(Auth::user()->hasRole(['super admin','vendor']))
+                    @if(Auth::user()->hasRole(['super admin','vendor','trainer']))
                     <div class="form-group  col-md-2">
                         {{Form::label('div', 'বিভাগ') }}
                         {{ Form::select('division', $divisionList,old('division'),array('class'=>'form-control','id'=>'div')) }}

@@ -99,6 +99,12 @@ class Trainee extends Model
             $devices=explode(',',$user->designation);
             return $query->whereIn('device',$devices);
         }
+        if(!empty($user)&&$user->hasRole('trainer')){
+            $query->whereHas('lab', function ($data) use ($user) {
+                $data->where('labs.user_id',$user->id );
+            });
+            return $query;
+        }
         return $query;
     }
 

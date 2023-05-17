@@ -113,7 +113,7 @@ class UserController extends AppBaseController
             return redirect(route('users.index'));
         }
         $isPap= Auth::user()->hasAnyRole(['district','upazila'])?true:false;
-        if (Auth::user()->hasRole(['vendor'])){
+        if (Auth::user()->hasRole(['vendor','trainer'])){
             $name=$user->name;
             $email= $user->email;
             return view('users.edit',['user'=>$user,'name'=>$name,'email'=>$email,'isPap'=>$isPap]);

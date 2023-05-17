@@ -57,4 +57,9 @@ class User extends Authenticatable
         'password', 'remember_token','otp'
     ];
 
+    public function labs()
+    {
+        return $this->hasMany('App\Models\Lab','user_id');
+    }
+
 }

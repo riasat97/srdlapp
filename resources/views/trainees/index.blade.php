@@ -41,10 +41,10 @@
             </h1>
         </section>
     @endif
-    @if(Auth::user()->hasRole(['vendor']))
+    @if(Auth::user()->hasRole(['trainer']))
         <section class="content-header">
-            <h1 class="pull-left">সকল অভিযোগ {{ !empty(title())?'('.title().')':'' }}</h1>
-            <h2 class="institution">{{ $vendor->name }}</h2>
+            <h1 class="pull-left">প্রশিক্ষণার্থী পোর্টাল</h1>
+            <h2 class="institution">সকল প্রশিক্ষণার্থী {{ !empty(title())?'('.title().')':'' }}</h2>
         </section>
     @endif
     <div class="content">
@@ -63,7 +63,7 @@
                         </div>
                     </div>
                 @endif
-                @if(Auth::user()->hasRole(['super admin','vendor']))
+                @if(Auth::user()->hasRole(['super admin','trainer']))
                     <div class="form-row">
                         <div class="form-group  col-md-2">
                             {{Form::label('div', 'বিভাগ') }}

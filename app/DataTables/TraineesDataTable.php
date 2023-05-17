@@ -51,7 +51,7 @@ class TraineesDataTable extends DataTable
 
                 if (Auth::user()->hasRole(['super admin']))
                     return $trainee." ".$batch;
-                if (Auth::user()->hasRole(['vendor']))
+                if (Auth::user()->hasRole(['trainer']))
                     return $batch;
                 if (Auth::user()->hasRole(['district admin','upazila admin']))
                     return $trainee;
@@ -151,7 +151,7 @@ class TraineesDataTable extends DataTable
             Column::make('batch','batch')->title('ব্যাচ#'),
             Column::make('created_at','created_at')->title('রেজিস্ট্রেশনের তারিখ')
         ];
-        if (Auth::user()->hasRole(['vendor','super admin'])) {
+        if (Auth::user()->hasRole(['vendor','trainer','super admin'])) {
             return array_merge($serial, $action, $location,$main);
 
         }

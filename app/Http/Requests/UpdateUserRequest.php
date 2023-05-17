@@ -29,9 +29,9 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules(Request $request)
     {
-        if (Auth::user()->hasRole(['vendor'])){
-            return ['email'=>'required|string|email|max:255|unique:users,email',
-                'mobile' => 'required|regex:/(01)[0-9]{9}/|unique:users,mobile','name' => ['required', 'string', 'max:255'],
+        if (Auth::user()->hasRole(['vendor','trainer'])){
+            return ['email'=>['required', 'string', 'email', Rule::unique('users')->ignore(Auth::user()->id)],
+                'mobile' => ['required','regex:/(01)[0-9]{9}/',Rule::unique('users')->ignore(Auth::user()->id)],'name' => ['required', 'string', 'max:255'],
             ];
         }
         $rules = User::$rules;

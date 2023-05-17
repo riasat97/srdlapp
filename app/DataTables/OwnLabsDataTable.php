@@ -24,7 +24,7 @@ class OwnLabsDataTable extends DataTable
      */
     public function dataTable($query)
     {
-        if (Auth::user()->hasRole(['super admin','upazila admin','district admin','vendor'])) {
+        if (Auth::user()->hasRole(['super admin','upazila admin','district admin','vendor','trainer'])) {
             return datatables()
                 ->eloquent($query)
                 ->addIndexColumn()
@@ -40,7 +40,7 @@ class OwnLabsDataTable extends DataTable
                     }
                 })
                 ->addColumn('action', function ($query) {
-                    $access=Auth::user()->hasRole(['super admin','upazila','district']);
+                    $access=Auth::user()->hasRole(['super admin','upazila','district','trainer']);
                     $labBtn=($query->updated)?"title='Edit Lab'  class='btn btn-primary btn-xs mb-2' ":"title='Update Lab'  class='btn btn-default btn-xs mb-2'";
                     $lab= '<a href="'.route("web.labs.edit", $query->id) .'" data-toggle="tooltip"'.$labBtn.' target="_blank" ><i class="fas fa-edit"></i> Update Lab</a>';
                     $btnTrainees=($query->trainees->count())?"title='Update Trainees'  class='btn btn-success btn-xs mb-2' ":"title='Add Trainees'  class='btn btn-default btn-xs mb-2'";

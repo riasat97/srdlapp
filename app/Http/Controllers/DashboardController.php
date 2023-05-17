@@ -57,6 +57,9 @@ class DashboardController extends Controller
                 'resolvedTicket'=>$resolvedTicket,'unresolvedTicket'=>$unresolvedTicket,
                 'totalTicket'=>$totalTicket]);
         }
+        if($user->hasRole(['trainer'])){
+            return redirect()->route('web.selected-labs');
+        }
 
         return view('dashboard',['deo_app_seat_count'=>$deo_app_seat_count,'deo_app_seat_total'=>$deo_app_seat_total,
             'deo_app_reserved_seat_count'=>$deo_app_reserved_seat_count,'deo_app_reserved_seat_total'=>$deo_app_reserved_seat_total,

@@ -83,6 +83,10 @@ class Lab extends Model
             $query->whereIn('division',$divisions_bn )->where('phase',2);
             return $query;
         }
+        if(!empty($user)&&$user->hasRole('trainer')){
+            $query->where('user_id',$user->id);
+            return $query;
+        }
         return $query;
     }
     private function getDivisionBn(array $divisions_en)
@@ -122,5 +126,9 @@ class Lab extends Model
     public function devices()
     {
         return $this->hasMany('App\Models\Device','lab_id');
+    }
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User','user_id');
     }
 }

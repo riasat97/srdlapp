@@ -44,7 +44,7 @@ class LabController extends Controller
             'district_bn'=>$this->getDistrictBnNameByUser(),'phase'=>$phase]);
     }
     public function edit($id){
-        dd(Hash::make('12345678'));
+        //dd(Hash::make('12345678'));
         $lab= Lab::where('id',$id)->first();
         if( !Auth::user()->hasAnyRole(['super admin','upazila admin','district admin']) or !permitted($lab))
             return abort(404);

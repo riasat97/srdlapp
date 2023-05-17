@@ -12,7 +12,7 @@
 </div>
 
 <!-- Designation -->
-@if(!$user->hasRole(['vendor']))
+@if(!$user->hasRole(['vendor','trainer']))
 <div class="form-group {{$isPap?'col-md-4':'col-md-6'}}">
     {{Form::label('designation', 'পদবি:') }}
     @if(!empty($user))
