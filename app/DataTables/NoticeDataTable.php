@@ -41,7 +41,7 @@ class NoticeDataTable extends DataTable
                 ->addColumn('download', function ($query) {
                     $html='';
                     foreach ($query->attachments as $attachment){
-                        $html.='<a href='.$attachment->file.' target="_blank"> <i class="glyphicon glyphicon-save-file"></i></a>';
+                        $html.='<a href='.$attachment->file.' target="_blank"> <i class="ri-file-pdf-line"></i></a>';
                     }
                     return $html;
                 })
@@ -75,7 +75,7 @@ class NoticeDataTable extends DataTable
                 ->addColumn('download', function ($query) {
                     $html='';
                     foreach ($query->attachments as $attachment){
-                        $html.='<a href='.$attachment->file.' target="_blank"> <i class="glyphicon glyphicon-save-file"></i></a>';
+                        $html.='<a href='.$attachment->file.' target="_blank"> <i class="ri-file-pdf-line"></i></a>';
                     }
                     return $html;
                 })

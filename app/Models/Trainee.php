@@ -59,14 +59,39 @@ class Trainee extends Model
     {
         return $this->belongsTo('App\Models\Lab','lab_id');
     }
+    public function bat()
+    {
+        return $this->belongsTo('App\Models\Batch','batch');
+    }
+    public function filterByBatchAndUserId($batch)
+    {
+        $user= Auth::user();
+        return $user->batches()->where('batch', $batch)->first();
+    }
+    public function batchStarted($batch){
+        $today= carbon::today();
+        $user= Auth::user();
+        $userBatch=$user->batches()->where('batch', $batch)->first();
+        if(empty($userBatch)) return false;
+        $batch_start_date= carbon::parse($userBatch->batch_start_date) ;
+        //dd($batch_start_date);
+        return ($today->gte($batch_start_date));
+    }
     public function scopePermitted($query, $request)
     {
         $user=Auth::user();
+        $trainer_id=$request->get('trainer_id');
         if(!empty($user)&&$user->hasRole('super admin')){
             if(!empty($request->get('lab_id'))){
                 $labId=$request->get('lab_id');
-                $query->whereHas('lab', function ($data) use ($labId) {
+                $query->whereHas('lab', function ($data) use ($labId,$trainer_id) {
                     $data->where('id',$labId);
+                });
+                return  $query;
+            }
+            if($trainer_id){
+                $query->whereHas('lab', function ($data) use ($trainer_id) {
+                        $data->where('user_id', $trainer_id);
                 });
                 return  $query;
             }
@@ -75,8 +100,10 @@ class Trainee extends Model
         if(!empty($user)&&$user->hasRole('district admin')){
             $district_en=explode('_',$user->username)[0];
             $district=Bangladesh::where('district_en',$district_en)->first()->district;
-            $query->whereHas('lab', function ($data) use ($district) {
+            $query->whereHas('lab', function ($data) use ($district,$trainer_id) {
                 $data->where('district',$district);
+                if ($trainer_id)
+                    $data->where('user_id', $trainer_id);
             });
             return $query;
         }
@@ -85,8 +112,10 @@ class Trainee extends Model
             $district_en=explode('_',$user->username)[1];
             $upazila=Bangladesh::where('district_en',$district_en)->where('upazila_en_domain',$upazila_en_domain)->first()->upazila;
             $district=Bangladesh::where('district_en',$district_en)->first()->district;
-            $query->whereHas('lab', function ($data) use ($upazila,$district) {
+            $query->whereHas('lab', function ($data) use ($upazila,$district,$trainer_id) {
                 $data->where('district',$district)->where('upazila',$upazila);
+                if ($trainer_id)
+                    $data->where('user_id', $trainer_id);
             });
             return $query;
         }
@@ -102,6 +131,7 @@ class Trainee extends Model
         if(!empty($user)&&$user->hasRole('trainer')){
             $query->whereHas('lab', function ($data) use ($user) {
                 $data->where('labs.user_id',$user->id );
+
             });
             return $query;
         }

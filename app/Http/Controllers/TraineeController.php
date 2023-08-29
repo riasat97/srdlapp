@@ -7,8 +7,10 @@ use App\Http\Requests\CreateTraineesRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\Application;
 use App\Models\Bangladesh;
+use App\Models\Batch;
 use App\Models\Lab;
 use App\Models\Trainee;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,16 +30,20 @@ class TraineeController extends Controller
         $upazilas= $this->getUpazilas($request);
         $phase= array_merge(['-1' => 'নির্বাচন করুন'],[1=>'১ম',2=>'২য়']);
         $user=Auth::user();
-        if (!empty($user) && $user->hasRole(['vendor'])) {
+        $trainerList= User::whereBetween('id',[1170,1178])->pluck('username','id');
+        $select= ['0' => 'সকল'];
+        $trainerList= $select+ $trainerList->toArray();
+        //dd($trainerList);
+        if (!empty($user) && $user->hasRole(['trainer'])) {
 
             $divisions_en=explode(',',$user->posting_type);
             $divisions_bn=$this->getDivisionBn($divisions_en);
             $divisionList=array_merge(['-1' => 'নির্বাচন করুন'], $divisions_bn);
-            return $dataTable->render('supports.ticket',['vendor'=>$user,'divisionList'=>$divisionList,'upazilas'=>$upazilas,
-                'district_bn'=>$this->getDistrictBnNameByUser()]);
+            return $dataTable->render('trainees.index',['lab'=>$lab,'divisionList'=>$divisionList,'upazilas'=>$upazilas,
+                'district_bn'=>$this->getDistrictBnNameByUser(),'phase'=>$phase]);
         }
         return $dataTable->render('trainees.index',['lab'=>$lab,'divisionList'=>$divisionList,'upazilas'=>$upazilas,
-            'district_bn'=>$this->getDistrictBnNameByUser(),'phase'=>$phase]);
+            'district_bn'=>$this->getDistrictBnNameByUser(),'phase'=>$phase, 'trainerList'=>$trainerList]);
     }
     public function edit($labId)
     {
@@ -76,11 +82,53 @@ class TraineeController extends Controller
     }
     public function updateTrainee($traineeId,Request $request){
         $trainee= Trainee::find($traineeId);
-        if(!empty($request->batch)){
-            $trainee->batch=$request->batch;
+        $user=Auth::user();
+        $batch= $request->batch;
+        $batchCount= Trainee::where('batch',$batch)->whereHas('lab', function ($data) use ($user) {
+            $data->where('labs.user_id',$user->id );
+        })->count();
+        $batchExists= Trainee::where('batch',$batch)->whereHas('lab', function ($data) use ($user) {
+            $data->where('labs.user_id',$user->id );
+        })->count();
+        if(!$batch){
+            return response()->json(['information'=>'please input batch number']);
+        }
+        if(!$batchExists){
+            return response()->json(['status'=>'modal','batch_id'=>$batch,'trainee_id'=>$traineeId]);
+        }
+        if($batchCount>=20){
+            $id=($trainee->batch)?'':$traineeId;
+            return response()->json(['information'=>'Maximum 20 trainees per batch','status'=>"Batch-$batch: $batchCount/20",'action'=>true,
+                'batch_id'=>$batch,'trainee_id'=>$id]);
+        }
+        if(!empty($batch)){
+            $trainee->batch=$batch;
             $trainee->save();
         }
-        return response()->json(['trainee'=>$trainee,'status'=>"Batch Updated Successfully"]);
+        $batchCount= Trainee::where('batch',$batch)->whereHas('lab', function ($data) use ($user) {
+            $data->where('labs.user_id',$user->id );
+        })->count();
+        return response()->json(['trainee'=>$trainee,
+            'information'=>'Batch updated successfully...<a href="#" onclick="openModal()">Update Batch Start Date</a>',
+            'status'=>"Batch-$batch: $batchCount/20",'trainee_id'=>$traineeId]);
+    }
+    public function postBatchDate(Request $request){
+        $user= Auth::user();
+        $batch= $request->batch_id;
+        $batchObj= new Batch();
+        $batchObj->batch= $batch;
+        $batchObj->batch_start_date= $request->batch_start_date;
+        $batchObj->user_id= $user->id;
+        $batchObj->save();
+        $trainee= Trainee::find($request->trainee_id);
+        if(!empty($trainee) && !empty($batch)){
+            $trainee->batch=$batch;
+            $trainee->save();
+        }
+        $batchCount= Trainee::where('batch',$batch)->whereHas('lab', function ($data) use ($user) {
+            $data->where('labs.user_id',$user->id );
+        })->count();
+        return response()->json(['trainee'=>$trainee,'information'=>'batch updated successfully','status'=>"Batch-$batch: $batchCount/20"]);
     }
     private function createTrainees($requestData,$labId){
         $trainees=[];

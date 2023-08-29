@@ -48,11 +48,14 @@ class TraineesDataTable extends DataTable
             ->addColumn('action', function ($query) {
                 $trainee= '<a href="'.route("labs.trainees.edit", $query->lab_id) .'" data-toggle="tooltip" title="Update Trainees"  class="btn btn-success btn-xs mx-auto mb-2" target="_blank"><i class="fas fa-user-graduate"></i> Update</a>';
                 $batch= '<span class="label label-primary">Batch:</span> <input type="number" class="batch w-2 mt-2" name="batch" min="1" max="201" value="'.$query->batch.'" data-trainee="'.$query->id.'">';
-
+                $checkBatch= ($query->status)?'<div class="alert-success  p-5"> completed </div>': $batch;
                 if (Auth::user()->hasRole(['super admin']))
-                    return $trainee." ".$batch;
-                if (Auth::user()->hasRole(['trainer']))
-                    return $batch;
+                    return $trainee." ".$checkBatch;
+                if (Auth::user()->hasRole(['trainer'])){
+                    if ($query->status)
+                    return '<div class="alert-success  p-5"> completed </div>';
+                    else return $batch;
+                }
                 if (Auth::user()->hasRole(['district admin','upazila admin']))
                     return $trainee;
             })
@@ -132,6 +135,13 @@ class TraineesDataTable extends DataTable
             Column::make('lab.upazila','upazila')->title('উপজেলা'),
             Column::make('lab.ins','institution_bn')->title('শিক্ষা প্রতিষ্ঠান'),
         ];
+        $trainerLocation=[
+            Column::make('batch','batch')->title('Batch#'),
+            Column::make('lab.phase_bn','phase')->title('পর্যায়'),
+            Column::make('lab.district','district')->title('জেলা'),
+            Column::make('lab.upazila','upazila')->title('উপজেলা'),
+            Column::make('lab.ins','institution_bn')->title('শিক্ষা প্রতিষ্ঠান'),
+        ];
         $main= [
             Column::make('name','name')->title('নাম '),
             Column::make('designation_bn','designation')->title('পদবি'),
@@ -151,8 +161,23 @@ class TraineesDataTable extends DataTable
             Column::make('batch','batch')->title('ব্যাচ#'),
             Column::make('created_at','created_at')->title('রেজিস্ট্রেশনের তারিখ')
         ];
-        if (Auth::user()->hasRole(['vendor','trainer','super admin'])) {
+        $trainerMain= [
+            Column::make('name','name')->title('নাম '),
+            Column::make('designation_bn','designation')->title('পদবি'),
+            Column::make('mobile','mobile')->title('মোবাইল'),
+            Column::make('email','email')->title('ইমেইল'),
+            Column::make('training_title','training_title')->title('ICT Training'),
+            Column::make('training_duration','training_duration')->title('Duration'),
+            Column::make('subject','subject')->title('subject '),
+            Column::make('id','id')->title('ID'),
+            Column::make('created_at','created_at')->title('রেজিস্ট্রেশনের তারিখ')
+        ];
+        if (Auth::user()->hasRole(['vendor','super admin'])) {
             return array_merge($serial, $action, $location,$main);
+
+        }
+        if (Auth::user()->hasRole(['trainer'])) {
+            return array_merge($serial, $action, $trainerLocation,$trainerMain);
 
         }
         if (Auth::user()->hasRole(['district admin','upazila admin'])) {
@@ -181,6 +206,7 @@ class TraineesDataTable extends DataTable
             if (!empty($request->get('lab_id'))) {
                 $data->where('lab_id', $request->get('lab_id'));
             }
+
             if (!empty($request->get('name'))) {
                 $data->where('name', $request->get('name'));
             }
@@ -220,8 +246,14 @@ class TraineesDataTable extends DataTable
                     $query->where('labs.lab_type', $request->input('lab_type'));
                 });
             }
-            return $data->with('lab')->permitted($request);
+            return $data->with('lab','bat')->permitted($request);
         }
-        return $data->with('lab')->permitted($request);
+        if(!empty($request->get('findBatch'))){
+            if (!empty($request->get('batch'))) {
+                $data->where('batch', $request->get('batch'));
+            }
+            return $data->with('lab','bat')->permitted($request);
+        }
+        return $data->with('lab','bat')->permitted($request);
     }
 }

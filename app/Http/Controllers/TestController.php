@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Application;
+use App\Models\Batch;
+use App\Models\Trainee;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Mpdf\QrCode\QrCode;
@@ -16,18 +19,38 @@ use Spatie\Permission\Models\Role;
 
 class TestController extends ApplicationController
 {
+    public function test(){
+        $batches = Batch::get();
+        //dd($batches->toArray());
+        foreach ($batches as $batch){
+            // Calculate the date after 10 days from the batch start date
+            $batchStartDate= $batch->batch_start_date;
+            $batchId= $batch->batch;
+            $user_id= $batch->user_id;
+            $completionDate = Carbon::parse($batchStartDate)->addDays(10);
 
-    public function test($subdomain){
-
-        dd($subdomain);
-        //dd(Auth::user()->hasPermissionTo('new application'));
-//        $role= Role::where('name','super admin')->first();
-//        $newApp= Permission::where('name','new application')->first();
-//        $role->givePermissionTo($newApp);
-          $role= Role::where('name','district admin')->first();
-          Auth::user()->assignRole($role);
-          return "role given to district admin";
+            // Check if the current date is equal to or greater than the completion date
+            if (Carbon::now()->greaterThanOrEqualTo($completionDate)) {
+                // Update trainees' status to "completed" for the given batch
+                Trainee::where('batch', $batchId)->whereHas('lab', function ($query) use ($user_id) {
+                    $query->where('user_id', $user_id);
+                })->update(['status' => 1]);
+            }
+        }
+        dd('passed');
     }
+
+//    public function test($subdomain){
+//
+//        dd($subdomain);
+//        //dd(Auth::user()->hasPermissionTo('new application'));
+////        $role= Role::where('name','super admin')->first();
+////        $newApp= Permission::where('name','new application')->first();
+////        $role->givePermissionTo($newApp);
+//          $role= Role::where('name','district admin')->first();
+//          Auth::user()->assignRole($role);
+//          return "role given to district admin";
+//    }
     public function generatePDF()
     {
 

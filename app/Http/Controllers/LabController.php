@@ -19,6 +19,8 @@ class LabController extends Controller
 {
     public function ownLabs(OwnLabsDataTable $dataTable,Request $request)
     {
+        dd(Hash::make('12345678'));
+
         if(empty(Auth::user()->mobile) && !Auth::user()->hasRole(['super admin'])){
             Flash::warning('আপনার আওতাধীন লাবসমূহ দেখার পূর্বে নিজ প্রোফাইল তৈরি করতে হবে!!!');
             return redirect(route('users.edit',['id'=>Auth::user()->id]));
@@ -31,7 +33,7 @@ class LabController extends Controller
             $divisionList[$division['division']]=$division['division'];
         $divisionList=array_merge(['-1' => 'নির্বাচন করুন'], $divisionList);
         $user=Auth::user();
-        if(!empty($user) && $user->hasRole(['vendor'])){
+        if(!empty($user) && $user->hasRole(['vendor','trainer'])){
             $divisions_en=explode(',',$user->posting_type);
             $divisions_bn=$this->getDivisionBn($divisions_en);
             $divisionList=array_merge(['-1' => 'নির্বাচন করুন'], $divisions_bn);
@@ -44,7 +46,6 @@ class LabController extends Controller
             'district_bn'=>$this->getDistrictBnNameByUser(),'phase'=>$phase]);
     }
     public function edit($id){
-        //dd(Hash::make('12345678'));
         $lab= Lab::where('id',$id)->first();
         if( !Auth::user()->hasAnyRole(['super admin','upazila admin','district admin']) or !permitted($lab))
             return abort(404);

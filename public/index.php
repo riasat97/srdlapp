@@ -1,4 +1,5 @@
 <?php
+//phpinfo();
 ini_set('memory_limit', '-1');
 /**
  * Laravel - A PHP Framework For Web Artisans
@@ -58,3 +59,6 @@ $response = $kernel->handle(
 $response->send();
 
 $kernel->terminate($request, $response);
+
+?>
+

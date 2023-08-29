@@ -23,6 +23,9 @@ use Illuminate\Support\Facades\Route;
 //https://laravel-news.com/laravel-auth-redirection
 //https://stackoverflow.com/questions/52583886/post-request-in-laravel-error-419-sorry-your-session-419-your-page-has-exp
 //https://onlinehtmleditor.dev/
+
+Route::get('/test', 'TestController@test');
+
 Route::group(['prefix' => 'selected', 'as' => 'web.'], function () {
     Route::get('/institutions', 'DashboardController@application')->name('selected-institutions');
 });
@@ -71,6 +74,7 @@ Route::group(['prefix' => 'admin/labs', 'as' => 'labs.','middleware' => 'auth'],
     Route::patch('{labId}/trainees', 'TraineeController@update')->name('trainees.update');
     Route::get('trainees', 'TraineeController@trainees')->name('trainees.index');
     Route::post('trainees/{trainee}', 'TraineeController@updateTrainee')->name('trainee.update');
+    Route::post('batches/start-date', 'TraineeController@postBatchDate')->name('trainee.postBatchDate');
     //Route::resource('stocks', 'StockController');
    // Route::get('/stocks', 'StockController@index')->name('stocks.index');
     Route::get('/stocks', 'StockController@stocks')->name('stocks.index');
@@ -94,7 +98,6 @@ Route::group(['prefix' => 'admin/download_print', 'as' => 'applications.','middl
 });
 //Route::domain('{subdomain}.'. env('APP_URL', 'srdl.gov.bd'))->group(function () {
 //
-//    Route::get('/test', 'TestController@test');
 //
 //    Route::group(['prefix' => 'admin/applications', 'as' => 'applications.','middleware' => 'auth'], function () {
 //

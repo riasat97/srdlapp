@@ -61,5 +61,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Lab','user_id');
     }
+    public function batches()
+    {
+        return $this->hasMany('App\Models\Batch','user_id');
+    }
 
 }
