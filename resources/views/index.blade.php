@@ -83,6 +83,8 @@
                 <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
                 <li><a class="nav-link scrollto" target="_blank"
                        href="{{ route('web.selected-institutions') }}">Labs</a></li>
+                <li><a class="nav-link scrollto" target="_blank" href="https://drive.google.com/drive/folders/1iw8CTgL2ZB_-QoCOqBxEurbORC7L5P7y?usp=sharing">
+                        Manuals</a></li>
                 <li><a class="nav-link scrollto" target="_blank" href="{{ route('notice.attachments') }}">All
                         Notices</a></li>
                 <li><a class="getstarted scrollto" href="{{url('/login')}}">Login</a></li>

@@ -128,13 +128,16 @@ class SelectedLabsDataTable extends DataTable
             Column::make('constituency','parliamentary_constituency')->title('নির্বাচনী এলাকা'),
             Column::make('upazila','upazila')->title('উপজেলা'),
             Column::make('ins','institution_bn')->title('শিক্ষা প্রতিষ্ঠান'),
+            Column::make('id','id')->title('Lab Code'),
+        ];
+        $contact= [
             Column::make('head_name','head_name')->title('প্রতিষ্ঠান প্রধান'),
             Column::make('tel','institution_tel')->title('যোগাযোগ'),
             Column::make('institution_email','institution_email')->title('ইমেইল')
         ];
         $user=Auth::user();
         if (!empty($user) && Auth::user()->hasRole(['super admin'])){
-            return array_merge($serial, $action, $main);
+            return array_merge($serial, $action, $main,$contact);
         }
         return array_merge($serial,$main);
 
